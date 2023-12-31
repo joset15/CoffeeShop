@@ -1,5 +1,3 @@
-#include "mainwindow.h"
-
 #include "UseCase/UseCase.hpp"
 
 #include "Model/BeverageVariety.hpp"
@@ -9,12 +7,10 @@
 #include "Adapter/OrderRepository.hpp"
 #include "Adapter/PrinterPresenter.hpp"
 
-#include <QApplication>
-#include <QMessageBox>
+#include <iostream>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  QApplication a(argc, argv);
 
   PrinterPresenter printerPresenter; // IOutput & output
   OrderRepository orderRepository;
@@ -26,19 +22,17 @@ int main(int argc, char *argv[])
 
   bool res = uc.addNewOrder(beverageType, beverageVariety, extraIngredient);
   if (res)
-    QMessageBox::information(
-        nullptr, "Info", "Coffee Espresso with Sugar ordered", QMessageBox::Ok);
+  {
+    std::cout << "Info: Coffee Espresso with Sugar ordered" << std::endl;
+  }
   else
-    QMessageBox::critical(nullptr, "Error",
-                          "Couldn't order an Expresso with sugar",
-                          QMessageBox::Ok);
+  {
+    std::cout << "Error: Couldn't order an Expresso with sugar" << std::endl;
+  }
 
   auto orderList = orderRepository.getOrders();
   printerPresenter.printOutOrders(orderList);
 
-  // TODO Develop User Interface
 
-  // MainWindow w;
-  // w.show();
-  return a.exec();
+  return 0;
 }
