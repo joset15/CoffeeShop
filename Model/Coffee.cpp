@@ -1,10 +1,13 @@
 #include "Coffee.hpp"
 
+#include <stdexcept>
+
+
 Coffee::Coffee(BeverageVariety beverageVariety) : IBeverage(beverageVariety)
 {
   if (beverageVariety != BeverageVariety::CoffeeLatte &&
-      beverageVariety != BeverageVariety::CoffeeEspresso &&
-      beverageVariety != BeverageVariety::CoffeeDecaf)
+    beverageVariety != BeverageVariety::CoffeeEspresso &&
+    beverageVariety != BeverageVariety::CoffeeDecaf)
   {
     throw std::runtime_error("Invalid main ingredient for Coffee");
   }
@@ -13,7 +16,7 @@ Coffee::Coffee(BeverageVariety beverageVariety) : IBeverage(beverageVariety)
 bool Coffee::addExtraIngredient(Ingredient extraIngredient)
 {
   if (extraIngredient == Ingredient::Honey ||
-      extraIngredient == Ingredient::Lemon)
+    extraIngredient == Ingredient::Lemon)
   {
     return false;
   }
@@ -22,9 +25,9 @@ bool Coffee::addExtraIngredient(Ingredient extraIngredient)
   {
   case Ingredient::Milk:
     if (m_ExtraIngredientSet.find(Ingredient::SoyMilk) !=
-            m_ExtraIngredientSet.end() ||
-        m_ExtraIngredientSet.find(Ingredient::Cream) !=
-            m_ExtraIngredientSet.end())
+      m_ExtraIngredientSet.end() ||
+      m_ExtraIngredientSet.find(Ingredient::Cream) !=
+      m_ExtraIngredientSet.end())
     {
       return false;
     }
@@ -32,9 +35,9 @@ bool Coffee::addExtraIngredient(Ingredient extraIngredient)
 
   case Ingredient::SoyMilk:
     if (m_ExtraIngredientSet.find(Ingredient::Milk) !=
-            m_ExtraIngredientSet.end() ||
-        m_ExtraIngredientSet.find(Ingredient::Cream) !=
-            m_ExtraIngredientSet.end())
+      m_ExtraIngredientSet.end() ||
+      m_ExtraIngredientSet.find(Ingredient::Cream) !=
+      m_ExtraIngredientSet.end())
     {
       return false;
     }
@@ -42,9 +45,9 @@ bool Coffee::addExtraIngredient(Ingredient extraIngredient)
 
   case Ingredient::Cream:
     if (m_ExtraIngredientSet.find(Ingredient::Milk) !=
-            m_ExtraIngredientSet.end() ||
-        m_ExtraIngredientSet.find(Ingredient::SoyMilk) !=
-            m_ExtraIngredientSet.end())
+      m_ExtraIngredientSet.end() ||
+      m_ExtraIngredientSet.find(Ingredient::SoyMilk) !=
+      m_ExtraIngredientSet.end())
     {
       return false;
     }
@@ -84,7 +87,7 @@ std::string Coffee::description() const
 
     std::unordered_set<Ingredient>::iterator it;
     for (it = m_ExtraIngredientSet.begin(); it != m_ExtraIngredientSet.end();
-         ++it)
+      ++it)
     {
       Ingredient ing = *it;
 
