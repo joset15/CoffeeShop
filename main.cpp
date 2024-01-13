@@ -4,8 +4,7 @@
 #include "Model/IBeverage.hpp"
 #include "Model/Coffee.hpp"
 
-#include "Model/Ingredient/IngredientDecorator.hpp"
-#include "Model/Ingredient/Sugar.hpp"
+#include "Model/Ingredient/Ingredients.hpp"
 
 #include "Adapter/OrderRepository.hpp"
 #include "Adapter/PrinterPresenter.hpp"
@@ -15,6 +14,8 @@
 
 int main(int argc, char* argv[])
 {
+  _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
   {
     PrinterPresenter printerPresenter; // IOutput & output
     OrderRepository orderRepository;
@@ -26,10 +27,11 @@ int main(int argc, char* argv[])
 
     std::shared_ptr<IBeverage> beverage = std::make_shared<Coffee>();
     beverage = std::make_shared<Sugar>(beverage);
+    beverage = std::make_shared<Cream>(beverage);
 
     std::cout << beverage->getDescription();
 
-    bool res = uc.addNewOrder(beverageType, beverageVariety, extraIngredient);
+    // bool res = uc.addNewOrder(beverageType, beverageVariety, extraIngredient);
     /*
     if (res)
     {
