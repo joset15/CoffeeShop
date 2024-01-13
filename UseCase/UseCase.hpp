@@ -10,17 +10,19 @@
 #include "..\Model\BeverageVariety.hpp"
 #include "..\Model\IBeverage.hpp"
 
+#include "../Model/Ingredient/IngredientDecorator.hpp"
+
 #include "IOrderOutput.hpp"
 #include "IOrderRepository.hpp"
 
 class UseCase
 {
 public:
-  UseCase(IOrderOutput &output, IOrderRepository &orderRepository)
-      : m_Output(output), m_OrderRepository(orderRepository){};
+  UseCase(IOrderOutput& output, IOrderRepository& orderRepository)
+    : m_Output(output), m_OrderRepository(orderRepository) {};
 
   bool addNewOrder(IBeverage::BeverageType beverageType,
-                   BeverageVariety beverageVariety, Ingredient extraIngredient);
+    BeverageVariety beverageVariety, IngredientDecorator* extraIngredient);
 
   bool cancelExistingOrders();
 
@@ -29,9 +31,9 @@ public:
   bool storeOrders();
 
 protected:
-  IOrderOutput &m_Output;
+  IOrderOutput& m_Output;
 
-  IOrderRepository &m_OrderRepository;
+  IOrderRepository& m_OrderRepository;
 };
 
 #endif // USECASE_H

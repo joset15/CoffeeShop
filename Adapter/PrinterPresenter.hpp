@@ -17,7 +17,7 @@ public:
     for (auto&& beverage : orderList)
     {
       //JT qDebug() << QString::fromStdString(beverage->description());
-      std::cout << beverage->description() << std::endl;
+      std::cout << beverage->getDescription() << std::endl;
     }
 
     return true;

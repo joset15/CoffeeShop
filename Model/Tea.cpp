@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 
+/*
 Tea::Tea(BeverageVariety beverageVariety) : IBeverage(beverageVariety)
 {
   if (beverageVariety != BeverageVariety::TeaBlack &&
@@ -10,7 +11,9 @@ Tea::Tea(BeverageVariety beverageVariety) : IBeverage(beverageVariety)
     throw std::runtime_error("Invalid main ingredient for Tea");
   }
 }
+*/
 
+/*
 bool Tea::addExtraIngredient(Ingredient extraIngredient)
 {
   if (extraIngredient == Ingredient::Lemon)
@@ -64,3 +67,4 @@ bool Tea::addExtraIngredient(Ingredient extraIngredient)
 
   return true;
 }
+*/

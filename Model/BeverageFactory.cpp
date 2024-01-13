@@ -8,10 +8,11 @@
 
 std::shared_ptr<IBeverage>
 BeverageFactory::createBeverage(IBeverage::BeverageType beverageType,
-                                BeverageVariety beverageVariety)
+  BeverageVariety beverageVariety)
 {
   std::shared_ptr<IBeverage> newBeverage = nullptr;
 
+  /*
   try
   {
     switch (beverageType)
@@ -35,6 +36,7 @@ BeverageFactory::createBeverage(IBeverage::BeverageType beverageType,
     // newBeverage.reset(nullptr);
     newBeverage.reset();
   }
+  */
 
   return newBeverage;
 }

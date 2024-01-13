@@ -3,7 +3,7 @@
 
 #include "BeverageVariety.hpp"
 #include "IBeverage.hpp"
-#include "Ingredient.hpp"
+#include "Ingredient/IngredientDecorator.hpp"
 
 #include <memory>
 
@@ -15,7 +15,7 @@ public:
   BeverageFactory() = default;
 
   /// \brief
-  static BeverageFactory *getInstance()
+  static BeverageFactory* getInstance()
   {
     static BeverageFactory m_BeverageFactoryInstance;
     return &m_BeverageFactoryInstance;
@@ -23,8 +23,8 @@ public:
 
   /// \brief
   std::shared_ptr<IBeverage>
-  createBeverage(IBeverage::BeverageType beverageType,
-                 BeverageVariety beverageVariety);
+    createBeverage(IBeverage::BeverageType beverageType,
+      BeverageVariety beverageVariety);
 };
 
 #endif // BEVERAGEFACTORY_HPP

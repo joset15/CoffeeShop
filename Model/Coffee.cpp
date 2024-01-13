@@ -3,16 +3,19 @@
 #include <stdexcept>
 
 
-Coffee::Coffee(BeverageVariety beverageVariety) : IBeverage(beverageVariety)
+//Coffee::Coffee(BeverageVariety beverageVariety) : IBeverage(beverageVariety)
+Coffee::Coffee() : IBeverage()
 {
+  /*
   if (beverageVariety != BeverageVariety::CoffeeLatte &&
     beverageVariety != BeverageVariety::CoffeeEspresso &&
     beverageVariety != BeverageVariety::CoffeeDecaf)
   {
     throw std::runtime_error("Invalid main ingredient for Coffee");
-  }
+  }*/
 }
 
+/*
 bool Coffee::addExtraIngredient(Ingredient extraIngredient)
 {
   if (extraIngredient == Ingredient::Honey ||
@@ -58,10 +61,13 @@ bool Coffee::addExtraIngredient(Ingredient extraIngredient)
 
   return true;
 }
+ */
 
-std::string Coffee::description() const
+ /*
+std::string Coffee::getDescription() const
 {
   std::string description;
+
   switch (m_BeverageVariety)
   {
   case BeverageVariety::CoffeeEspresso:
@@ -105,3 +111,4 @@ std::string Coffee::description() const
 
   return description;
 }
+  */

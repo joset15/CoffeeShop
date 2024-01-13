@@ -4,15 +4,16 @@
 #include <memory>
 
 bool UseCase::addNewOrder(IBeverage::BeverageType beverageType,
-                          BeverageVariety beverageVariety,
-                          Ingredient extraIngredient)
+  BeverageVariety beverageVariety,
+  IngredientDecorator* extraIngredient)
 {
-
+  /*
   std::shared_ptr<IBeverage> newBeverage =
-      BeverageBuilder::getInstance()->getBeverage(beverageType, beverageVariety,
-                                                  extraIngredient);
+    BeverageBuilder::getInstance()->getBeverage(beverageType, beverageVariety,
+      extraIngredient);
 
   m_OrderRepository.save(std::move(newBeverage));
+  */
 
   return true;
 };

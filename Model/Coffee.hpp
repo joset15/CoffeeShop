@@ -9,11 +9,12 @@
 class Coffee : public IBeverage
 {
 public:
-  Coffee(BeverageVariety beverageVariety);
+  //Coffee(BeverageVariety beverageVariety);
+  Coffee();
 
-  bool addExtraIngredient(Ingredient extraIngredient) override;
+  //bool addExtraIngredient(IngredientDecorator extraIngredient) override;
 
-  std::string description() const override;
+  std::string getDescription() const override { return "Coffee"; }
 };
 
 #endif // BEVERAGE_HPP

@@ -3,22 +3,27 @@
 
 std::shared_ptr<IBeverage>
 BeverageBuilder::getBeverage(IBeverage::BeverageType beverageType,
-                             BeverageVariety beverageVariety,
-                             Ingredient extraIngredient)
+  BeverageVariety beverageVariety,
+  IngredientDecorator* extraIngredient)
 {
+  /*
   std::shared_ptr<IBeverage> newBeverage =
-      BeverageFactory::getInstance()->createBeverage(beverageType,
-                                                     beverageVariety);
+    BeverageFactory::getInstance()->createBeverage(beverageType,
+      beverageVariety);
 
   if (newBeverage == nullptr)
   {
     return nullptr;
   }
+  */
 
+  /*
   if (!newBeverage->addExtraIngredient(extraIngredient))
   {
     return nullptr;
-  }
+  }*/
 
-  return newBeverage;
+  //return newBeverage;
+
+  return nullptr;
 };

@@ -45,9 +45,6 @@
     <ClInclude Include="Model\IBeverage.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Ingredient.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Model\Tea.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -58,6 +55,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UseCase\UseCase.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\Ingredient\Sugar.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\Ingredient\IngredientDecorator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

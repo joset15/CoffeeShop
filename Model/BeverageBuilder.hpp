@@ -3,7 +3,7 @@
 
 #include "BeverageVariety.hpp"
 #include "IBeverage.hpp"
-#include "Ingredient.hpp"
+#include "Ingredient/IngredientDecorator.hpp"
 
 #include <memory>
 
@@ -15,15 +15,16 @@ public:
   BeverageBuilder() = default;
 
   /// \brief
-  static BeverageBuilder *getInstance()
+  static BeverageBuilder* getInstance()
   {
     static BeverageBuilder m_BeverageBuilderInstance;
     return &m_BeverageBuilderInstance;
   }
 
   std::shared_ptr<IBeverage> getBeverage(IBeverage::BeverageType beverageType,
-                                         BeverageVariety beverageVariety,
-                                         Ingredient extraIngredient);
+    BeverageVariety beverageVariety,
+    //IngredientDecorator extraIngredient);
+    IngredientDecorator* extraIngredient);
 };
 
 #endif // BEVERAGEBUILDER_HPP

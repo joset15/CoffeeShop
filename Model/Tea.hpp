@@ -8,14 +8,15 @@ class Tea : public IBeverage
 {
 public:
   /// \brief
-  Tea(BeverageVariety beverageVariety);
+  //Tea(BeverageVariety beverageVariety);
+  Tea() {};
 
   /// \brief
-  bool addExtraIngredient(Ingredient extraIngredient) override;
+  // bool addExtraIngredient(Ingredient extraIngredient) override;
 
-  std::string description() const override
+  std::string getDescription() const override
   {
-    return "Tea descrition not implemented";
+    return "Tea description not implemented";
   }
 };
 

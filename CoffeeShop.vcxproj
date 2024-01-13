@@ -29,7 +29,8 @@
     <ClInclude Include="Model\Cocoa.hpp" />
     <ClInclude Include="Model\Coffee.hpp" />
     <ClInclude Include="Model\IBeverage.hpp" />
-    <ClInclude Include="Model\Ingredient.hpp" />
+    <ClInclude Include="Model\Ingredient\IngredientDecorator.hpp" />
+    <ClInclude Include="Model\Ingredient\Sugar.hpp" />
     <ClInclude Include="Model\Tea.hpp" />
     <ClInclude Include="UseCase\IOrderOutput.hpp" />
     <ClInclude Include="UseCase\IOrderRepository.hpp" />
