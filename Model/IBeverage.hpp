@@ -1,7 +1,7 @@
 #ifndef IBEVERAGE_HPP
 #define IBEVERAGE_HPP
 
-#include "BeverageVariety.hpp"
+//#include "BeverageVariety.hpp"
 //#include "Ingredient/IngredientDecorator.hpp"
 
 #include <unordered_set>
@@ -23,33 +23,33 @@ public:
   };
 
   /// \brief IBeverage
-  //IBeverage() = delete;
+  // IBeverage() = delete;
 
   /// \brief IBeverage
   /// \param beverageVariety
-  //IBeverage(BeverageVariety beverageVariety)
-    //    : m_BeverageVariety(beverageVariety){};
-  //IBeverage();
+  // IBeverage(BeverageVariety beverageVariety)
+  //    : m_BeverageVariety(beverageVariety){};
+  // IBeverage();
 
   /// \brief ~IBeverage
-  virtual ~IBeverage() {};
+  virtual ~IBeverage(){};
 
   ///
   /// \brief AddExtraIngredient
   /// \param extraIngredient
   /// \return
   ///
-  //virtual bool addExtraIngredient(IngredientDecorator extraIngredient) = 0;
+  // virtual bool addExtraIngredient(IngredientDecorator extraIngredient) = 0;
 
   /// \brief
   virtual std::string getDescription() const = 0;
 
 protected:
   /// \brief
-  //BeverageVariety m_BeverageVariety;
+  // BeverageVariety m_BeverageVariety;
 
   /// \brief
-  //std::unordered_set<Ingredient> m_ExtraIngredientSet{};
+  // std::unordered_set<Ingredient> m_ExtraIngredientSet{};
 };
 
 #endif // IBEVERAGE_HPP

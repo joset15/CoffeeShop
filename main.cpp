@@ -1,21 +1,24 @@
 #include "UseCase/UseCase.hpp"
 
 #include "Model/BeverageVariety.hpp"
-#include "Model/IBeverage.hpp"
 #include "Model/Coffee.hpp"
+#include "Model/IBeverage.hpp"
 
 #include "Model/Ingredient/Ingredients.hpp"
 
 #include "Adapter/OrderRepository.hpp"
 #include "Adapter/PrinterPresenter.hpp"
 
+#include "Model/BeverageFactory.hpp"
+
 #include <iostream>
 #include <memory>
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
   _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
+  // Don't delete: scope needed to memory leak report
   {
     PrinterPresenter printerPresenter; // IOutput & output
     OrderRepository orderRepository;
@@ -23,15 +26,22 @@ int main(int argc, char* argv[])
 
     IBeverage::BeverageType beverageType(IBeverage::BeverageType::Coffee);
     BeverageVariety beverageVariety(BeverageVariety::CoffeeEspresso);
-    //IngredientDecorator extraIngredient(IngredientDecorator::Sugar);
+    // IngredientDecorator extraIngredient(IngredientDecorator::Sugar);
 
     std::shared_ptr<IBeverage> beverage = std::make_shared<Coffee>();
     beverage = std::make_shared<Sugar>(beverage);
     beverage = std::make_shared<Cream>(beverage);
 
-    std::cout << beverage->getDescription();
+    std::cout << beverage->getDescription() << std::endl;
 
-    // bool res = uc.addNewOrder(beverageType, beverageVariety, extraIngredient);
+    std::shared_ptr<IBeverage> newBeverage =
+        BeverageFactory::getInstance()->createBeverage(
+            BeverageVariety::CoffeeEspresso);
+
+    std::cout << newBeverage->getDescription() << std::endl;
+
+    // bool res = uc.addNewOrder(beverageType, beverageVariety,
+    // extraIngredient);
     /*
     if (res)
     {
