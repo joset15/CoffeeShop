@@ -24,6 +24,11 @@
     <ClInclude Include="Adapter\PrinterPresenter.hpp" />
     <ClInclude Include="Data\OrderDiskDataSource.hpp" />
     <ClInclude Include="Model\BeverageBuilder.hpp" />
+    <ClInclude Include="Model\BeverageBuilder\BeverageBuildDirector.hpp" />
+    <ClInclude Include="Model\BeverageBuilder\BeverageDirector.hpp" />
+    <ClInclude Include="Model\BeverageBuilder\CoffeeBuilder.hpp" />
+    <ClInclude Include="Model\BeverageBuilder\IBeverageBuilder.hpp" />
+    <ClInclude Include="Model\BeverageBuilder\TeaBuilder.hpp" />
     <ClInclude Include="Model\BeverageFactory.hpp" />
     <ClInclude Include="Model\Beverages\CoffeeDecaf.hpp" />
     <ClInclude Include="Model\Beverages\CoffeeEspresso.hpp" />
@@ -49,9 +54,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Adapter\OrderRepository.cpp" />
+    <ClCompile Include="BeverageDirector.cpp" />
     <ClCompile Include="Data\OrderDiskDataSource.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model\BeverageBuilder.cpp" />
+    <ClCompile Include="Model\BeverageBuilder\BeverageBuildDirector.cpp" />
+    <ClCompile Include="Model\BeverageBuilder\CoffeeBuilder.cpp" />
+    <ClCompile Include="Model\BeverageBuilder\TeaBuilder.cpp" />
     <ClCompile Include="Model\BeverageFactory.cpp" />
     <ClCompile Include="Model\Cocoa.cpp" />
     <ClCompile Include="Model\Coffee.cpp" />

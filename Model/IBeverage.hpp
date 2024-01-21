@@ -8,6 +8,18 @@
 
 // TODO Complete doxygen comments.
 
+enum class Ingredient
+{
+  Sugar,
+  Milk,
+  Cream,
+  Honey,
+  Lemon,
+  SoyMilk,
+  Water,
+  LastIngredient
+};
+
 ///
 /// \brief The IBeverage class
 ///
@@ -43,6 +55,17 @@ public:
 
   /// \brief
   virtual std::string getDescription() const = 0;
+
+  ///
+  /// \brief AddIngredients
+  /// \return
+  ///
+  // virtual bool addIngredient(std::shared_ptr<IBeverage> ingredient)
+  virtual bool addIngredient(IBeverage *ingredient) { return false; }
+
+  // virtual bool prepare(std::shared_ptr<IBeverage> beverage) { return false; }
+
+  Ingredient m_Ingredient = Ingredient::LastIngredient;
 
 protected:
   /// \brief

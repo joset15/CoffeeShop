@@ -3,8 +3,8 @@
 
 #include "../IBeverage.hpp"
 
-#include <string>
 #include <memory>
+#include <string>
 
 /*
 enum class Ingredient
@@ -13,21 +13,38 @@ enum class Ingredient
   Milk,
   Cream,
   Honey,
-    Lemon,
+  Lemon,
   SoyMilk,
-    Water,
-    LastIngredient
-};
-*/
+  Water,
+  LastIngredient
+};*/
 
 class IngredientDecorator : public IBeverage
 {
 public:
   /// \brief
-  IngredientDecorator(std::shared_ptr<IBeverage> beverage) : m_Beverage(beverage) {}
+  IngredientDecorator(std::shared_ptr<IBeverage> beverage)
+      : m_Beverage(beverage)
+  {
+  }
 
-  /// @brief 
-  virtual ~IngredientDecorator() { }
+  IngredientDecorator(Ingredient ingredient) { m_Ingredient = ingredient; }
+
+  bool addToBeverage(std::shared_ptr<IBeverage> beverage)
+  {
+    if (beverage->addIngredient(this))
+    {
+      m_Beverage = beverage;
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  /// @brief
+  virtual ~IngredientDecorator() {}
 
   /// @return The description.
   virtual std::string getDescription() const = 0;

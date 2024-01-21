@@ -2,8 +2,7 @@
 
 #include <stdexcept>
 
-
-//Coffee::Coffee(BeverageVariety beverageVariety) : IBeverage(beverageVariety)
+// Coffee::Coffee(BeverageVariety beverageVariety) : IBeverage(beverageVariety)
 Coffee::Coffee() : IBeverage()
 {
   /*
@@ -14,6 +13,10 @@ Coffee::Coffee() : IBeverage()
     throw std::runtime_error("Invalid main ingredient for Coffee");
   }*/
 }
+
+/// \brief AddIngredients
+/// \return
+// bool Coffee::addIngredients() {}
 
 /*
 bool Coffee::addExtraIngredient(Ingredient extraIngredient)
@@ -63,52 +66,52 @@ bool Coffee::addExtraIngredient(Ingredient extraIngredient)
 }
  */
 
- /*
+/*
 std::string Coffee::getDescription() const
 {
-  std::string description;
+ std::string description;
 
-  switch (m_BeverageVariety)
-  {
-  case BeverageVariety::CoffeeEspresso:
-    description = "Coffee Expresso";
-    break;
+ switch (m_BeverageVariety)
+ {
+ case BeverageVariety::CoffeeEspresso:
+   description = "Coffee Expresso";
+   break;
 
-  case BeverageVariety::CoffeeLatte:
-    description = "Coffee Latte";
-    break;
+ case BeverageVariety::CoffeeLatte:
+   description = "Coffee Latte";
+   break;
 
-  case BeverageVariety::CoffeeDecaf:
-    description = "Coffee Decaf";
-    break;
+ case BeverageVariety::CoffeeDecaf:
+   description = "Coffee Decaf";
+   break;
 
-  default:
-    description = "Coffee unknown";
-  }
+ default:
+   description = "Coffee unknown";
+ }
 
-  /// \brief
-  if (m_ExtraIngredientSet.size() > 0)
-  {
-    description = description + ". Extra ingredients: ";
+ /// \brief
+ if (m_ExtraIngredientSet.size() > 0)
+ {
+   description = description + ". Extra ingredients: ";
 
-    std::unordered_set<Ingredient>::iterator it;
-    for (it = m_ExtraIngredientSet.begin(); it != m_ExtraIngredientSet.end();
-      ++it)
-    {
-      Ingredient ing = *it;
+   std::unordered_set<Ingredient>::iterator it;
+   for (it = m_ExtraIngredientSet.begin(); it != m_ExtraIngredientSet.end();
+     ++it)
+   {
+     Ingredient ing = *it;
 
-      switch (ing)
-      {
-      case Ingredient::Sugar:
-        description = description + " sugar";
-        break;
-      default:
-        description = description + " unexpected ingredient";
-        break;
-      }
-    }
-  }
+     switch (ing)
+     {
+     case Ingredient::Sugar:
+       description = description + " sugar";
+       break;
+     default:
+       description = description + " unexpected ingredient";
+       break;
+     }
+   }
+ }
 
-  return description;
+ return description;
 }
-  */
+ */

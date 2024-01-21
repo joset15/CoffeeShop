@@ -2,15 +2,26 @@
 #define INGREDIENTS_HPP
 #pragma once
 
-#include "IngredientDecorator.hpp"
-#include "Sugar.hpp"
 #include "Cream.hpp"
 #include "Honey.hpp"
+#include "IngredientDecorator.hpp"
 #include "Lemon.hpp"
 #include "Milk.hpp"
 #include "SoyMilk.hpp"
 #include "Sugar.hpp"
 #include "Water.hpp"
 
-#endif // INGREDIENTS_HPP
+/*
+enum class Ingredient
+{
+  Sugar,
+  Milk,
+  Cream,
+  Honey,
+  Lemon,
+  SoyMilk,
+  Water,
+  LastIngredient
+};*/
 
+#endif // INGREDIENTS_HPP

@@ -11,6 +11,10 @@
 
 #include "Model/BeverageFactory.hpp"
 
+#include "Model/BeverageBuilder/BeverageBuildDirector.hpp"
+#include "Model/BeverageBuilder/CoffeeBuilder.hpp"
+#include "Model/BeverageBuilder/TeaBuilder.hpp"
+
 #include <iostream>
 #include <memory>
 
@@ -39,6 +43,37 @@ int main(int argc, char *argv[])
             BeverageVariety::CoffeeEspresso);
 
     std::cout << newBeverage->getDescription() << std::endl;
+
+    //------------------------------------------------------------------------------
+    std::shared_ptr<IBeverage> newBeverage2 =
+        BeverageFactory::getInstance()->createBeverage(
+            BeverageVariety::CoffeeEspresso);
+
+    std::shared_ptr<IngredientDecorator> newIngredient =
+        std::make_shared<Sugar>(Ingredient::Sugar);
+
+    // if (!newBeverage2->addIngredient(newIngredient.get()))
+    if (!newIngredient->addToBeverage(newBeverage2))
+    {
+      std::cout << "newBeverage2 Error" << std::endl;
+    }
+    std::cout << newBeverage2->getDescription() << std::endl;
+    std::cout << newIngredient->getDescription() << std::endl;
+
+    // =============================================================
+
+    std::unique_ptr<BeverageBuildDirector> director =
+        std::make_unique<BeverageBuildDirector>();
+    std::shared_ptr<CoffeeBuilder> coffeeBuilder =
+        std::make_shared<CoffeeBuilder>();
+    director->setBuilder(coffeeBuilder);
+
+    std::list<Ingredient> ingredients;
+    ingredients.push_back(Ingredient::Sugar);
+    director->buildCoffee(ingredients);
+
+    std::shared_ptr<IBeverage> newBeverage3 = coffeeBuilder->getBeverage();
+    std::cout << newBeverage3->getDescription() << std::endl;
 
     // bool res = uc.addNewOrder(beverageType, beverageVariety,
     // extraIngredient);
