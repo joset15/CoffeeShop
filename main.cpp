@@ -44,22 +44,6 @@ int main(int argc, char *argv[])
 
     std::cout << newBeverage->getDescription() << std::endl;
 
-    //------------------------------------------------------------------------------
-    std::shared_ptr<IBeverage> newBeverage2 =
-        BeverageFactory::getInstance()->createBeverage(
-            BeverageVariety::CoffeeEspresso);
-
-    std::shared_ptr<IngredientDecorator> newIngredient =
-        std::make_shared<Sugar>(Ingredient::Sugar);
-
-    // if (!newBeverage2->addIngredient(newIngredient.get()))
-    if (!newIngredient->addToBeverage(newBeverage2))
-    {
-      std::cout << "newBeverage2 Error" << std::endl;
-    }
-    std::cout << newBeverage2->getDescription() << std::endl;
-    std::cout << newIngredient->getDescription() << std::endl;
-
     // =============================================================
 
     std::unique_ptr<BeverageBuildDirector> director =

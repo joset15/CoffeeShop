@@ -11,7 +11,6 @@
 #include "Sugar.hpp"
 #include "Water.hpp"
 
-/*
 enum class Ingredient
 {
   Sugar,
@@ -22,6 +21,6 @@ enum class Ingredient
   SoyMilk,
   Water,
   LastIngredient
-};*/
+};
 
 #endif // INGREDIENTS_HPP

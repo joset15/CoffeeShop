@@ -5,14 +5,11 @@
 #include "IngredientDecorator.hpp"
 
 class Sugar : public IngredientDecorator
-// class Sugar : public IBeverage
 {
 public:
   /// \brief
   Sugar(std::shared_ptr<IBeverage> beverage) : IngredientDecorator(beverage) {}
   // Sugar(IBeverage* beverage) : IngredientDecorator(beverage) { }
-
-  Sugar(Ingredient ingredient) : IngredientDecorator(ingredient){};
 
   /// @brief Gets the description of the ingredient.
   /// @return The description.

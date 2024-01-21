@@ -54,7 +54,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Adapter\OrderRepository.cpp" />
-    <ClCompile Include="BeverageDirector.cpp" />
     <ClCompile Include="Data\OrderDiskDataSource.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model\BeverageBuilder.cpp" />

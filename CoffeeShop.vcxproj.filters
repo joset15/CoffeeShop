@@ -140,9 +140,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BeverageDirector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Model\BeverageBuilder\CoffeeBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

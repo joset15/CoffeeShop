@@ -6,19 +6,6 @@
 #include <memory>
 #include <string>
 
-/*
-enum class Ingredient
-{
-  Sugar,
-  Milk,
-  Cream,
-  Honey,
-  Lemon,
-  SoyMilk,
-  Water,
-  LastIngredient
-};*/
-
 class IngredientDecorator : public IBeverage
 {
 public:
@@ -26,21 +13,6 @@ public:
   IngredientDecorator(std::shared_ptr<IBeverage> beverage)
       : m_Beverage(beverage)
   {
-  }
-
-  IngredientDecorator(Ingredient ingredient) { m_Ingredient = ingredient; }
-
-  bool addToBeverage(std::shared_ptr<IBeverage> beverage)
-  {
-    if (beverage->addIngredient(this))
-    {
-      m_Beverage = beverage;
-      return true;
-    }
-    else
-    {
-      return false;
-    }
   }
 
   /// @brief

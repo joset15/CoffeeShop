@@ -5,13 +5,12 @@
 #include "../Ingredient/Ingredients.hpp"
 #include "IBeverageBuilder.hpp"
 
+#include <list>
 #include <memory>
 
 class BeverageBuildDirector
 {
 public:
-  // BeverageBuildDirector() = delete;
-
   void setBuilder(std::shared_ptr<IBeverageBuilder> beverageBuilder)
   {
     m_BeverageBuilder = beverageBuilder;
@@ -29,6 +28,9 @@ private:
   void addHoney(const std::list<Ingredient> &ingredients);
 
   void addLemon(const std::list<Ingredient> &ingredients);
+
+  static bool find(const std::list<Ingredient> &ingredients,
+                   Ingredient ingredient);
 
   std::shared_ptr<IBeverageBuilder> m_BeverageBuilder;
 };

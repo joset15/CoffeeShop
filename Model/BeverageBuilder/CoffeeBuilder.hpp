@@ -14,14 +14,16 @@ class CoffeeBuilder : public IBeverageBuilder
 public:
   CoffeeBuilder() { reset(); }
 
-  //~CoffeeBuilder() { m_Beverage.reset(); };
-
   /// @brief Gets the beverage.
   /// @return A pointer to the beverage.
   std::shared_ptr<IBeverage> getBeverage() override { return m_Beverage; };
 
   /// @brief
-  void reset() override { m_Beverage = std::make_shared<Coffee>(); }
+  void reset() override
+  {
+    m_Beverage = std::make_shared<Coffee>();
+    m_HasMilk = false;
+  }
 
   /// @brief Adds sugar to the beverage.
   void addSugar() override
@@ -31,29 +33,16 @@ public:
 
   /// @brief Adds milk to the beverage.
   /// @param typeOfMilk The type of milk we are adding.
-  void addMilk(Ingredient typeOfMilk) override
-  {
-    switch (typeOfMilk)
-    {
-    case Ingredient::Milk:
-      m_Beverage = std::make_shared<Milk>(m_Beverage);
-      break;
-    case Ingredient::Cream:
-      m_Beverage = std::make_shared<Cream>(m_Beverage);
-      break;
-    case Ingredient::SoyMilk:
-      m_Beverage = std::make_shared<SoyMilk>(m_Beverage);
-      break;
-    default:
-      assert(false && "Invalid type of milk");
-    }
-  };
+  void addMilk(Ingredient typeOfMilk) override;
 
   /// @brief Adds honey to the beverage.
   void addHoney() override{};
 
   /// @brief Adds lemon to the beverage.
   void addLemon() override{};
+
+private:
+  bool m_HasMilk = false;
 };
 
 #endif // COFFEEBUILDER_HPP

@@ -10,16 +10,9 @@ class Cocoa : public IBeverage
 {
 public:
   /// \brief
-  //Cocoa(BeverageVariety beverageVariety);
-  Cocoa();
+  Cocoa(){};
 
-  /// \brief
-  //bool addExtraIngredient(Ingredient extraIngredient) override;
-
-  std::string getDescription() const override
-  {
-    return "Cocoa description not implemented";
-  }
+  std::string getDescription() const override { return "Cocoa"; }
 };
 
 #endif // COCOA_HPP
