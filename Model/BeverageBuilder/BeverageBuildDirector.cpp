@@ -7,12 +7,24 @@ void BeverageBuildDirector::buildCoffee(
   addMilk(ingredients);
 }
 
+void BeverageBuildDirector::buildCoffeeEspresso(
+    const std::list<Ingredient> &ingredients)
+{
+  buildCoffee(ingredients);
+}
+
 void BeverageBuildDirector::buildTea(const std::list<Ingredient> &ingredients)
 {
   addSugar(ingredients);
   addMilk(ingredients);
   addHoney(ingredients);
   addLemon(ingredients);
+}
+
+void BeverageBuildDirector::buildTeaBlack(
+    const std::list<Ingredient> &ingredients)
+{
+  buildTea(ingredients);
 }
 
 bool BeverageBuildDirector::find(const std::list<Ingredient> &ingredients,

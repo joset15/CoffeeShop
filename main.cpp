@@ -11,9 +11,7 @@
 
 #include "Model/BeverageFactory.hpp"
 
-#include "Model/BeverageBuilder/BeverageBuildDirector.hpp"
-#include "Model/BeverageBuilder/CoffeeBuilder.hpp"
-#include "Model/BeverageBuilder/TeaBuilder.hpp"
+#include "Model/BeverageBuilder/BeverageBuilder.hpp"
 
 #include <iostream>
 #include <memory>
@@ -58,6 +56,27 @@ int main(int argc, char *argv[])
 
     std::shared_ptr<IBeverage> newBeverage3 = coffeeBuilder->getBeverage();
     std::cout << newBeverage3->getDescription() << std::endl;
+
+    //------------------
+    std::shared_ptr<CoffeeEspressoBuilder> coffeeEspressoBuilder =
+        std::make_shared<CoffeeEspressoBuilder>();
+    director->setBuilder(coffeeEspressoBuilder);
+
+    director->buildCoffeeEspresso(ingredients);
+
+    std::shared_ptr<IBeverage> newBeverage4 =
+        coffeeEspressoBuilder->getBeverage();
+    std::cout << newBeverage4->getDescription() << std::endl;
+
+    //------------------
+    std::shared_ptr<TeaBlackBuilder> teaBlackBuilder =
+        std::make_shared<TeaBlackBuilder>();
+    director->setBuilder(teaBlackBuilder);
+
+    director->buildTeaBlack(ingredients);
+
+    std::shared_ptr<IBeverage> newBeverage5 = teaBlackBuilder->getBeverage();
+    std::cout << newBeverage5->getDescription() << std::endl;
 
     // bool res = uc.addNewOrder(beverageType, beverageVariety,
     // extraIngredient);

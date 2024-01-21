@@ -41,7 +41,10 @@ public:
   /// @brief Adds lemon to the beverage.
   void addLemon() override{};
 
-private:
+  /// @brief Adds water to the beverage.
+  void addWater() override{};
+
+protected:
   bool m_HasMilk = false;
 };
 

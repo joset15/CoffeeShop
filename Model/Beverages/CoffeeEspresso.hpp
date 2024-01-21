@@ -1,12 +1,14 @@
-#ifndef COFFEE_EXPRESSO_HPP
-#define COFFEE_EXPRESSO_HPP
+#ifndef COFFEE_ESPRESSO_HPP
+#define COFFEE_ESPRESSO_HPP
 
-#include "../IBeverage.hpp"
+//#include "../IBeverage.hpp"
+#include "../Coffee.hpp"
 
-#include <iostream>
+//#include <iostream>
 #include <string>
 
-class CoffeeEspresso : public IBeverage
+// class CoffeeEspresso : public IBeverage
+class CoffeeEspresso : public Coffee
 {
 public:
   CoffeeEspresso() = default;

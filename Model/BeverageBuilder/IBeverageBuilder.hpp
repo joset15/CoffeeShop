@@ -32,6 +32,9 @@ public:
   /// @brief Adds lemon to the beverage.
   virtual void addLemon() = 0;
 
+  /// @brief Adds Water to the beverage.
+  virtual void addWater() = 0;
+
 protected:
   std::shared_ptr<IBeverage> m_Beverage;
 };

@@ -18,7 +18,11 @@ public:
 
   void buildCoffee(const std::list<Ingredient> &ingredients);
 
+  void buildCoffeeEspresso(const std::list<Ingredient> &ingredients);
+
   void buildTea(const std::list<Ingredient> &ingredients);
+
+  void buildTeaBlack(const std::list<Ingredient> &ingredients);
 
 private:
   void addSugar(const std::list<Ingredient> &ingredients);

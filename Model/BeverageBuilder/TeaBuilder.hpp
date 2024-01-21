@@ -1,5 +1,5 @@
-#ifndef TEABUILDER_HPP
-#define TEABUILDER_HPP
+#ifndef TEA_BUILDER_HPP
+#define TEA_BUILDER_HPP
 #pragma once
 
 #include "../Tea.hpp"
@@ -14,7 +14,7 @@ public:
 
   /// @brief Gets the beverage.
   /// @return A pointer to the beverage.
-  std::shared_ptr<IBeverage> getBeverage() override{};
+  std::shared_ptr<IBeverage> getBeverage() override { return m_Beverage; }
 
   /// @brief
   void reset() override
@@ -32,31 +32,7 @@ public:
 
   /// @brief Adds milk to the beverage.
   /// @param typeOfMilk The type of milk we are adding.
-  void addMilk(Ingredient typeOfMilk) override
-  {
-    if (m_HasLemon || m_HasMilk)
-    {
-      return;
-    }
-
-    switch (typeOfMilk)
-    {
-    case Ingredient::Milk:
-      m_Beverage = std::make_shared<Milk>(m_Beverage);
-      m_HasMilk = true;
-      break;
-    case Ingredient::Cream:
-      m_Beverage = std::make_shared<Cream>(m_Beverage);
-      m_HasMilk = true;
-      break;
-    case Ingredient::SoyMilk:
-      m_Beverage = std::make_shared<SoyMilk>(m_Beverage);
-      m_HasMilk = true;
-      break;
-    default:
-      assert(false && "Invalid type of milk");
-    }
-  };
+  void addMilk(Ingredient typeOfMilk) override;
 
   /// @brief Adds honey to the beverage.
   void addHoney() override
@@ -65,16 +41,10 @@ public:
   };
 
   /// @brief Adds lemon to the beverage.
-  void addLemon() override
-  {
-    if (m_HasMilk)
-    {
-      return;
-    }
+  void addLemon() override;
 
-    m_Beverage = std::make_shared<Lemon>(m_Beverage);
-    m_HasLemon = true;
-  };
+  /// @brief Adds water to the beverage.
+  void addWater() override{};
 
 protected:
   /// @brief
@@ -84,4 +54,4 @@ protected:
   bool m_HasLemon = false;
 };
 
-#endif // COFFEEBUILDER_HPP
+#endif // TEA_BUILDER_HPP
