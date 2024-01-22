@@ -1,7 +1,7 @@
 #ifndef PRINTER_PRESENTER_HPP
 #define PRINTER_PRESENTER_HPP
 
-#include "..\Model\IBeverage.hpp"
+#include "..\Model\Beverages\IBeverage.hpp"
 #include "..\UseCase\IOrderOutput.hpp"
 
 #include <iostream>
@@ -12,11 +12,11 @@ class PrinterPresenter : public IOrderOutput
 public:
   /// \brief
   bool printOutOrders(
-    const std::list<std::shared_ptr<IBeverage>>& orderList) override
+      const std::list<std::shared_ptr<IBeverage>> &orderList) override
   {
-    for (auto&& beverage : orderList)
+    for (auto &&beverage : orderList)
     {
-      //JT qDebug() << QString::fromStdString(beverage->description());
+      // JT qDebug() << QString::fromStdString(beverage->description());
       std::cout << beverage->getDescription() << std::endl;
     }
 

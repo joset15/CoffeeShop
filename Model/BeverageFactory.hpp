@@ -1,8 +1,8 @@
 #ifndef BEVERAGEFACTORY_HPP
 #define BEVERAGEFACTORY_HPP
 
-#include "BeverageVariety.hpp"
-#include "IBeverage.hpp"
+#include "Beverages/BeverageVariety.hpp"
+#include "Beverages/IBeverage.hpp"
 //#include "Ingredient/IngredientDecorator.hpp"
 
 #include <memory>

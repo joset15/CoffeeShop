@@ -1,8 +1,8 @@
 #include "UseCase/UseCase.hpp"
 
-#include "Model/BeverageVariety.hpp"
-#include "Model/Coffee.hpp"
-#include "Model/IBeverage.hpp"
+#include "Model/Beverages/BeverageVariety.hpp"
+#include "Model/Beverages/Coffee.hpp"
+#include "Model/Beverages/IBeverage.hpp"
 
 #include "Model/Ingredient/Ingredients.hpp"
 

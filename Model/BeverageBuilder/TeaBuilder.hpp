@@ -2,7 +2,7 @@
 #define TEA_BUILDER_HPP
 #pragma once
 
-#include "../Tea.hpp"
+#include "../Beverages/Tea.hpp"
 #include "IBeverageBuilder.hpp"
 
 #include <assert.h>

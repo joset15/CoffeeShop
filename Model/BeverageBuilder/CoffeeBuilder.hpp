@@ -2,7 +2,7 @@
 #define COFFEE_BUILDER_HPP
 #pragma once
 
-#include "../Coffee.hpp"
+#include "../Beverages/Coffee.hpp"
 #include "IBeverageBuilder.hpp"
 
 #include "../Ingredient/Ingredients.hpp"

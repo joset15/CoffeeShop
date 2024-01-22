@@ -1,7 +1,7 @@
 #ifndef INGREDIENT_DECORATOR_HPP
 #define INGREDIENT_DECORATOR_HPP
 
-#include "../IBeverage.hpp"
+#include "../Beverages/IBeverage.hpp"
 
 #include <memory>
 #include <string>

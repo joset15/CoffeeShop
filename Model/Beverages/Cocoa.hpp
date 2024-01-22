@@ -1,10 +1,10 @@
 #ifndef COCOA_HPP
 #define COCOA_HPP
 
-#include "BeverageVariety.hpp"
+//#include "BeverageVariety.hpp"
 #include "IBeverage.hpp"
 
-#include <list>
+//#include <list>
 
 class Cocoa : public IBeverage
 {

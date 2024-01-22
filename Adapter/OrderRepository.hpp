@@ -1,8 +1,8 @@
 #ifndef ORDER_REPOSITORY_HPP
 #define ORDER_REPOSITORY_HPP
 
-#include "..\Model\IBeverage.hpp"
-#include "..\UseCase\IOrderRepository.hpp"
+#include "../Model/Beverages/IBeverage.hpp"
+#include "../UseCase/IOrderRepository.hpp"
 #include "IOrderDataSource.hpp"
 
 #include <list>

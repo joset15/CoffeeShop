@@ -2,7 +2,7 @@
 #define TEA_BLACK_HPP
 
 //#include "BeverageVariety.hpp"
-#include "../IBeverage.hpp"
+#include "IBeverage.hpp"
 
 class TeaBlack : public IBeverage
 {

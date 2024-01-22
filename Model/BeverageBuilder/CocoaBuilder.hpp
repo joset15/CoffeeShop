@@ -2,7 +2,7 @@
 #define COCOA_BUILDER_HPP
 #pragma once
 
-#include "../Cocoa.hpp"
+#include "../Beverages/Cocoa.hpp"
 #include "IBeverageBuilder.hpp"
 
 #include <assert.h>

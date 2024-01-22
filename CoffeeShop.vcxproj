@@ -23,7 +23,6 @@
     <ClInclude Include="Adapter\OrderRepository.hpp" />
     <ClInclude Include="Adapter\PrinterPresenter.hpp" />
     <ClInclude Include="Data\OrderDiskDataSource.hpp" />
-    <ClInclude Include="Model\BeverageBuilder.hpp" />
     <ClInclude Include="Model\BeverageBuilder\BeverageBuildDirector.hpp" />
     <ClInclude Include="Model\BeverageBuilder\BeverageBuilder.hpp" />
     <ClInclude Include="Model\BeverageBuilder\BeverageDirector.hpp" />
@@ -34,15 +33,16 @@
     <ClInclude Include="Model\BeverageBuilder\TeaBlackBuilder.hpp" />
     <ClInclude Include="Model\BeverageBuilder\TeaBuilder.hpp" />
     <ClInclude Include="Model\BeverageFactory.hpp" />
+    <ClInclude Include="Model\Beverages\BeverageVariety.hpp" />
+    <ClInclude Include="Model\Beverages\Cocoa.hpp" />
+    <ClInclude Include="Model\Beverages\Coffee.hpp" />
     <ClInclude Include="Model\Beverages\CoffeeDecaf.hpp" />
     <ClInclude Include="Model\Beverages\CoffeeEspresso.hpp" />
     <ClInclude Include="Model\Beverages\CoffeeLatte.hpp" />
+    <ClInclude Include="Model\Beverages\IBeverage.hpp" />
+    <ClInclude Include="Model\Beverages\Tea.hpp" />
     <ClInclude Include="Model\Beverages\TeaBlack.hpp" />
     <ClInclude Include="Model\Beverages\TeaGreen.hpp" />
-    <ClInclude Include="Model\BeverageVariety.hpp" />
-    <ClInclude Include="Model\Cocoa.hpp" />
-    <ClInclude Include="Model\Coffee.hpp" />
-    <ClInclude Include="Model\IBeverage.hpp" />
     <ClInclude Include="Model\Ingredient\Cream.hpp" />
     <ClInclude Include="Model\Ingredient\Honey.hpp" />
     <ClInclude Include="Model\Ingredient\IngredientDecorator.hpp" />
@@ -51,7 +51,6 @@
     <ClInclude Include="Model\Ingredient\SoyMilk.hpp" />
     <ClInclude Include="Model\Ingredient\Sugar.hpp" />
     <ClInclude Include="Model\Ingredient\Water.hpp" />
-    <ClInclude Include="Model\Tea.hpp" />
     <ClInclude Include="UseCase\IOrderOutput.hpp" />
     <ClInclude Include="UseCase\IOrderRepository.hpp" />
     <ClInclude Include="UseCase\UseCase.hpp" />
@@ -60,7 +59,6 @@
     <ClCompile Include="Adapter\OrderRepository.cpp" />
     <ClCompile Include="Data\OrderDiskDataSource.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Model\BeverageBuilder.cpp" />
     <ClCompile Include="Model\BeverageBuilder\BeverageBuildDirector.cpp" />
     <ClCompile Include="Model\BeverageBuilder\CocoaBuilder.cpp" />
     <ClCompile Include="Model\BeverageBuilder\CoffeeBuilder.cpp" />
@@ -68,9 +66,9 @@
     <ClCompile Include="Model\BeverageBuilder\TeaBlackBuilder.cpp" />
     <ClCompile Include="Model\BeverageBuilder\TeaBuilder.cpp" />
     <ClCompile Include="Model\BeverageFactory.cpp" />
-    <ClCompile Include="Model\Cocoa.cpp" />
-    <ClCompile Include="Model\Coffee.cpp" />
-    <ClCompile Include="Model\Tea.cpp" />
+    <ClCompile Include="Model\Beverages\Cocoa.cpp" />
+    <ClCompile Include="Model\Beverages\Coffee.cpp" />
+    <ClCompile Include="Model\Beverages\Tea.cpp" />
     <ClCompile Include="UseCase\UseCase.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -133,6 +131,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

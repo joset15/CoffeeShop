@@ -2,12 +2,13 @@
 #define TEA_BLACK_BUILDER_HPP
 #pragma once
 
+#include "../Beverages/TeaBlack.hpp"
 #include "IBeverageBuilder.hpp"
 #include "TeaBuilder.hpp"
 
 #include <assert.h>
 
-class TeaBlackBuilder : public TeaBuilder // IBeverageBuilder
+class TeaBlackBuilder : public TeaBuilder
 {
 public:
   TeaBlackBuilder() { reset(); }

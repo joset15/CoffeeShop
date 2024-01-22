@@ -1,7 +1,7 @@
 #ifndef COFFEE_LATTE_HPP
 #define COFFEE_LATTE_HPP
 
-#include "../IBeverage.hpp"
+#include "IBeverage.hpp"
 #include <string>
 
 class CoffeeLatte : public IBeverage

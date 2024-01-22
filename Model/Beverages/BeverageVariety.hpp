@@ -1,12 +1,12 @@
 #ifndef BEVERAGE_VARIETY_HPP
 #define BEVERAGE_VARIETY_HPP
 
-#include "./Beverages/CoffeeDecaf.hpp"
-#include "./Beverages/CoffeeEspresso.hpp"
-#include "./Beverages/CoffeeLatte.hpp"
-#include "./Beverages/TeaBlack.hpp"
-#include "./Beverages/TeaGreen.hpp"
-#include "./Cocoa.hpp"
+#include "Cocoa.hpp"
+#include "CoffeeDecaf.hpp"
+#include "CoffeeEspresso.hpp"
+#include "CoffeeLatte.hpp"
+#include "TeaBlack.hpp"
+#include "TeaGreen.hpp"
 
 // TODO Complete doxygen comments.
 

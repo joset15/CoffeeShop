@@ -1,7 +1,7 @@
 #ifndef IORDERDATASOURCE_HPP
 #define IORDERDATASOURCE_HPP
 
-#include "..\Model\IBeverage.hpp"
+#include "..\Model\Beverages\IBeverage.hpp"
 
 class IOrderDataSource
 {
