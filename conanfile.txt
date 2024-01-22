@@ -1,8 +1,8 @@
 [requires]
-gtest/1.8.1
+#gtest/1.8.1
 
 [options]
 #gtest:shared=False
 
 [generators]
-MSBuildDeps
+#MSBuildDeps
