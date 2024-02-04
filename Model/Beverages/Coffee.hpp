@@ -1,17 +1,16 @@
 #ifndef COFFEE_HPP
 #define COFFEE_HPP
 
-//#include "BeverageVariety.hpp"
 #include "IBeverage.hpp"
 
-//#include <unordered_set>
+static const std::string CoffeName = "Coffee";
 
 class Coffee : public IBeverage
 {
 public:
   Coffee();
 
-  std::string getDescription() const override { return "Coffee"; }
+  std::string getDescription() const override { return CoffeName; }
 };
 
-#endif // BEVERAGE_HPP
+#endif // COFFEE_HPP

@@ -4,18 +4,20 @@
 
 #include "IngredientDecorator.hpp"
 
+static const std::string SugarName = "Sugar";
+
 class Sugar : public IngredientDecorator
 {
 public:
-  /// \brief
+  /// @brief
+  /// @param beverage
   Sugar(std::shared_ptr<IBeverage> beverage) : IngredientDecorator(beverage) {}
-  // Sugar(IBeverage* beverage) : IngredientDecorator(beverage) { }
 
   /// @brief Gets the description of the ingredient.
   /// @return The description.
   std::string getDescription() const override
   {
-    return m_Beverage->getDescription() + ", Sugar";
+    return m_Beverage->getDescription() + ", " + SugarName;
   }
 };
 
