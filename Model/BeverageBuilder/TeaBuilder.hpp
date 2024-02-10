@@ -10,19 +10,14 @@
 class TeaBuilder : public IBeverageBuilder
 {
 public:
-  TeaBuilder() { reset(); }
+  TeaBuilder() { resetImpl(); }
 
   /// @brief Gets the beverage.
   /// @return A pointer to the beverage.
   std::shared_ptr<IBeverage> getBeverage() override { return m_Beverage; }
 
   /// @brief
-  void reset() override
-  {
-    m_Beverage = std::make_shared<Tea>();
-    m_HasMilk = false;
-    m_HasLemon = false;
-  }
+  void reset() override { resetImpl(); }
 
   /// @brief Adds sugar to the beverage.
   bool addSugar() override
@@ -48,7 +43,17 @@ public:
   /// @brief Adds water to the beverage.
   bool addWater() override { return false; }
 
-protected:
+  /// @brief
+  /// @param hasMilk
+  void setHasMilk(bool hasMilk) { m_HasMilk = hasMilk; }
+
+  /// @brief
+  /// @param hasLemon
+  void setHasLemon(bool hasLemon) { m_HasLemon = hasLemon; }
+
+private:
+  void resetImpl();
+
   /// @brief
   bool m_HasMilk = false;
 

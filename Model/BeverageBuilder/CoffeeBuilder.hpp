@@ -11,26 +11,18 @@
 class CoffeeBuilder : public IBeverageBuilder
 {
 public:
-  CoffeeBuilder() { reset(); }
+  CoffeeBuilder() { resetImpl(); }
 
   /// @brief Gets the beverage.
   /// @return A pointer to the beverage.
   std::shared_ptr<IBeverage> getBeverage() override { return m_Beverage; };
 
   /// @brief
-  void reset() override
-  {
-    m_Beverage = std::make_shared<Coffee>();
-    m_HasMilk = false;
-  }
+  void reset() override { resetImpl(); };
 
   /// @brief Adds sugar to the beverage.
   /// @return
-  bool addSugar() override
-  {
-    m_Beverage = std::make_shared<Sugar>(m_Beverage);
-    return true;
-  };
+  bool addSugar() override;
 
   /// @brief Adds milk to the beverage.
   /// @param typeOfMilk The type of milk we are adding.
@@ -48,13 +40,15 @@ public:
 
   /// @brief Returns if Milk has been added to the beverage.
   /// @return True if milk was added.
-  bool hasMilk() const { return m_HasMilk; }
+  bool getHasMilk() const { return m_HasMilk; }
 
   /// @brief Sets if milk has been added to the beverage.
   /// @param hasMilk True if milk has been added, False otherwise.
   void setHasMilk(bool hasMilk) { m_HasMilk = hasMilk; }
 
-protected:
+private:
+  void resetImpl();
+
   /// @brief True if the beverage has milk.
   bool m_HasMilk = false;
 };

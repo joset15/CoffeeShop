@@ -20,7 +20,7 @@ public:
   };
 
   /// \brief ~IBeverage
-  virtual ~IBeverage(){};
+  virtual ~IBeverage() = default;
 
   /// \brief
   virtual std::string getDescription() const = 0;
@@ -31,6 +31,7 @@ public:
   ///
   // virtual bool addIngredient(std::shared_ptr<IBeverage> ingredient)
   virtual bool addIngredient(IBeverage *ingredient) { return false; }
+  // virtual bool addIngredient(IBeverage *ingredient) const = 0;
 };
 
 #endif // IBEVERAGE_HPP

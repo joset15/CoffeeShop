@@ -10,18 +10,14 @@
 class CocoaBuilder : public IBeverageBuilder
 {
 public:
-  CocoaBuilder() { reset(); }
+  CocoaBuilder() { resetImpl(); }
 
   /// @brief Gets the beverage.
   /// @return A pointer to the beverage.
   std::shared_ptr<IBeverage> getBeverage() override { return m_Beverage; }
 
   /// @brief
-  void reset() override
-  {
-    m_Beverage = std::make_shared<Cocoa>();
-    m_HasMilk = false;
-  }
+  void reset() override { resetImpl(); }
 
   /// @brief Adds sugar to the beverage.
   bool addSugar() override
@@ -47,7 +43,10 @@ public:
   /// @brief Adds water to the beverage.
   bool addWater() override { return false; }
 
-protected:
+private:
+  /// @brief
+  void resetImpl();
+
   /// @brief
   bool m_HasMilk = false;
 };

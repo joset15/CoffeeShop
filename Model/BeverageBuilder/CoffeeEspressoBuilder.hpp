@@ -12,14 +12,14 @@
 class CoffeeEspressoBuilder : public CoffeeBuilder
 {
 public:
-  CoffeeEspressoBuilder() { reset(); }
+  CoffeeEspressoBuilder() { resetImpl(); }
 
   /// @brief
-  void reset() override
-  {
-    m_Beverage = std::make_shared<CoffeeEspresso>();
-    m_HasMilk = false;
-  }
+  void reset() override { resetImpl(); }
+
+private:
+  /// @brief
+  void resetImpl();
 };
 
 #endif // COFFEE_ESPRESSO_BUILDER_HPP

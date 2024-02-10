@@ -1,5 +1,11 @@
 #include "CocoaBuilder.hpp"
 
+void CocoaBuilder::resetImpl()
+{
+  m_Beverage = std::make_shared<Cocoa>();
+  m_HasMilk = false;
+}
+
 bool CocoaBuilder::addMilk(Ingredient typeOfMilk)
 {
   if (m_HasMilk)

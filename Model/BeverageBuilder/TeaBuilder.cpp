@@ -1,5 +1,12 @@
 #include "TeaBuilder.hpp"
 
+void TeaBuilder::resetImpl()
+{
+  m_Beverage = std::make_shared<Tea>();
+  m_HasMilk = false;
+  m_HasLemon = false;
+}
+
 /// @brief Adds milk to the beverage.
 /// @param typeOfMilk The type of milk we are adding.
 bool TeaBuilder::addMilk(Ingredient typeOfMilk)

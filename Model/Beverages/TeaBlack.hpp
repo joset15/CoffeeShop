@@ -1,19 +1,16 @@
 #ifndef TEA_BLACK_HPP
 #define TEA_BLACK_HPP
 
-//#include "BeverageVariety.hpp"
 #include "IBeverage.hpp"
 
 class TeaBlack : public IBeverage
 {
 public:
-  /// \brief
-  // Tea(BeverageVariety beverageVariety);
-  TeaBlack(){};
+  /// @brief
+  TeaBlack() = default;
 
-  /// \brief
-  // bool addExtraIngredient(Ingredient extraIngredient) override;
-
+  /// @brief
+  /// @return
   std::string getDescription() const override { return "TeaBlack"; }
 };
 
