@@ -16,22 +16,22 @@ public:
     m_BeverageBuilder = beverageBuilder;
   }
 
-  void buildCoffee(const std::list<Ingredient> &ingredients);
+  bool buildCoffee(const std::list<Ingredient> &ingredients);
 
-  void buildCoffeeEspresso(const std::list<Ingredient> &ingredients);
+  bool buildCoffeeEspresso(const std::list<Ingredient> &ingredients);
 
-  void buildTea(const std::list<Ingredient> &ingredients);
+  bool buildTea(const std::list<Ingredient> &ingredients);
 
-  void buildTeaBlack(const std::list<Ingredient> &ingredients);
+  bool buildTeaBlack(const std::list<Ingredient> &ingredients);
 
 private:
-  void addSugar(const std::list<Ingredient> &ingredients);
+  bool addSugar(const std::list<Ingredient> &ingredients);
 
-  void addMilk(const std::list<Ingredient> &ingredients);
+  bool addMilk(const std::list<Ingredient> &ingredients);
 
-  void addHoney(const std::list<Ingredient> &ingredients);
+  bool addHoney(const std::list<Ingredient> &ingredients);
 
-  void addLemon(const std::list<Ingredient> &ingredients);
+  bool addLemon(const std::list<Ingredient> &ingredients);
 
   static bool find(const std::list<Ingredient> &ingredients,
                    Ingredient ingredient);

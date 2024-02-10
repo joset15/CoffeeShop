@@ -1,32 +1,66 @@
 #include "BeverageBuildDirector.hpp"
 
-void BeverageBuildDirector::buildCoffee(
+bool BeverageBuildDirector::buildCoffee(
     const std::list<Ingredient> &ingredients)
 {
-  // TODO: add return bool
+  if (!addSugar(ingredients))
+  {
+    return false;
+  }
 
-  addSugar(ingredients);
-  addMilk(ingredients);
+  if (!addMilk(ingredients))
+  {
+    return false;
+  }
+
+  if (!addHoney(ingredients))
+  {
+    return false;
+  }
+
+  if (!addLemon(ingredients))
+  {
+    return false;
+  }
+
+  return true;
 }
 
-void BeverageBuildDirector::buildCoffeeEspresso(
+bool BeverageBuildDirector::buildCoffeeEspresso(
     const std::list<Ingredient> &ingredients)
 {
-  buildCoffee(ingredients);
+  return buildCoffee(ingredients);
 }
 
-void BeverageBuildDirector::buildTea(const std::list<Ingredient> &ingredients)
+bool BeverageBuildDirector::buildTea(const std::list<Ingredient> &ingredients)
 {
-  addSugar(ingredients);
-  addMilk(ingredients);
-  addHoney(ingredients);
-  addLemon(ingredients);
+  if (!addSugar(ingredients))
+  {
+    return false;
+  }
+
+  if (!addMilk(ingredients))
+  {
+    return false;
+  }
+
+  if (!addHoney(ingredients))
+  {
+    return false;
+  }
+
+  if (!addLemon(ingredients))
+  {
+    return false;
+  }
+
+  return true;
 }
 
-void BeverageBuildDirector::buildTeaBlack(
+bool BeverageBuildDirector::buildTeaBlack(
     const std::list<Ingredient> &ingredients)
 {
-  buildTea(ingredients);
+  return buildTea(ingredients);
 }
 
 bool BeverageBuildDirector::find(const std::list<Ingredient> &ingredients,
@@ -36,42 +70,50 @@ bool BeverageBuildDirector::find(const std::list<Ingredient> &ingredients,
           ingredients.end());
 }
 
-void BeverageBuildDirector::addSugar(const std::list<Ingredient> &ingredients)
+bool BeverageBuildDirector::addSugar(const std::list<Ingredient> &ingredients)
 {
   if (find(ingredients, Ingredient::Sugar))
   {
-    m_BeverageBuilder->addSugar();
+    return m_BeverageBuilder->addSugar();
   }
+
+  return true;
 }
 
-void BeverageBuildDirector::addMilk(const std::list<Ingredient> &ingredients)
+bool BeverageBuildDirector::addMilk(const std::list<Ingredient> &ingredients)
 {
   if (find(ingredients, Ingredient::Milk))
   {
-    m_BeverageBuilder->addMilk(Ingredient::Milk);
+    return m_BeverageBuilder->addMilk(Ingredient::Milk);
   }
   else if (find(ingredients, Ingredient::SoyMilk))
   {
-    m_BeverageBuilder->addMilk(Ingredient::SoyMilk);
+    return m_BeverageBuilder->addMilk(Ingredient::SoyMilk);
   }
   else if (find(ingredients, Ingredient::Cream))
   {
-    m_BeverageBuilder->addMilk(Ingredient::Cream);
+    return m_BeverageBuilder->addMilk(Ingredient::Cream);
   }
+
+  return true;
 }
 
-void BeverageBuildDirector::addHoney(const std::list<Ingredient> &ingredients)
+bool BeverageBuildDirector::addHoney(const std::list<Ingredient> &ingredients)
 {
   if (find(ingredients, Ingredient::Honey))
   {
-    m_BeverageBuilder->addHoney();
+    return m_BeverageBuilder->addHoney();
   }
+
+  return true;
 }
 
-void BeverageBuildDirector::addLemon(const std::list<Ingredient> &ingredients)
+bool BeverageBuildDirector::addLemon(const std::list<Ingredient> &ingredients)
 {
   if (find(ingredients, Ingredient::Lemon))
   {
-    m_BeverageBuilder->addLemon();
+    return m_BeverageBuilder->addLemon();
   }
+
+  return true;
 }

@@ -10,7 +10,7 @@
 class IBeverageBuilder
 {
 public:
-  virtual ~IBeverageBuilder(){};
+  virtual ~IBeverageBuilder() = default;
 
   /// @brief Gets the beverage.
   /// @return A pointer to the beverage.
@@ -20,20 +20,20 @@ public:
   virtual void reset() = 0;
 
   /// @brief Adds sugar to the beverage.
-  virtual void addSugar() = 0;
+  virtual bool addSugar() = 0;
 
   /// @brief Adds milk to the beverage.
   /// @param typeOfMilk The type of milk we are adding.
-  virtual void addMilk(Ingredient typeOfMilk) = 0;
+  virtual bool addMilk(Ingredient typeOfMilk) = 0;
 
   /// @brief Adds honey to the beverage.
-  virtual void addHoney() = 0;
+  virtual bool addHoney() = 0;
 
   /// @brief Adds lemon to the beverage.
-  virtual void addLemon() = 0;
+  virtual bool addLemon() = 0;
 
   /// @brief Adds Water to the beverage.
-  virtual void addWater() = 0;
+  virtual bool addWater() = 0;
 
 protected:
   std::shared_ptr<IBeverage> m_Beverage;

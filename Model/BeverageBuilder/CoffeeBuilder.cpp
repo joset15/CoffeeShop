@@ -1,12 +1,10 @@
 #include "CoffeeBuilder.hpp"
 
-/// @brief Adds milk to the beverage.
-/// @param typeOfMilk The type of milk we are adding.
-void CoffeeBuilder::addMilk(Ingredient typeOfMilk)
+bool CoffeeBuilder::addMilk(Ingredient typeOfMilk)
 {
   if (m_HasMilk)
   {
-    return;
+    return false;
   }
 
   switch (typeOfMilk)
@@ -22,8 +20,10 @@ void CoffeeBuilder::addMilk(Ingredient typeOfMilk)
     break;
   default:
     assert(false && "Invalid type of milk");
-    return;
+    return false;
   }
 
   m_HasMilk = true;
+
+  return true;
 };

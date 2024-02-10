@@ -14,7 +14,7 @@ public:
 
   /// @brief Gets the beverage.
   /// @return A pointer to the beverage.
-  std::shared_ptr<IBeverage> getBeverage() override{};
+  std::shared_ptr<IBeverage> getBeverage() override { return m_Beverage; }
 
   /// @brief
   void reset() override
@@ -24,26 +24,28 @@ public:
   }
 
   /// @brief Adds sugar to the beverage.
-  void addSugar() override
+  bool addSugar() override
   {
     m_Beverage = std::make_shared<Sugar>(m_Beverage);
+    return true;
   };
 
   /// @brief Adds milk to the beverage.
   /// @param typeOfMilk The type of milk we are adding.
-  void addMilk(Ingredient typeOfMilk) override;
+  bool addMilk(Ingredient typeOfMilk) override;
 
   /// @brief Adds honey to the beverage.
-  void addHoney() override
+  bool addHoney() override
   {
     m_Beverage = std::make_shared<Honey>(m_Beverage);
+    return true;
   };
 
   /// @brief Adds lemon to the beverage.
-  void addLemon() override{};
+  bool addLemon() override { return false; }
 
   /// @brief Adds water to the beverage.
-  void addWater() override{};
+  bool addWater() override { return false; }
 
 protected:
   /// @brief

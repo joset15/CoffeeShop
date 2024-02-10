@@ -2,11 +2,11 @@
 
 /// @brief Adds milk to the beverage.
 /// @param typeOfMilk The type of milk we are adding.
-void TeaBuilder::addMilk(Ingredient typeOfMilk)
+bool TeaBuilder::addMilk(Ingredient typeOfMilk)
 {
   if (m_HasLemon || m_HasMilk)
   {
-    return;
+    return false;
   }
 
   switch (typeOfMilk)
@@ -22,19 +22,21 @@ void TeaBuilder::addMilk(Ingredient typeOfMilk)
     break;
   default:
     assert(false && "Invalid type of milk");
-    return;
+    return false;
   }
 
   m_HasMilk = true;
+  return true;
 };
 
-void TeaBuilder::addLemon()
+bool TeaBuilder::addLemon()
 {
   if (m_HasMilk)
   {
-    return;
+    return false;
   }
 
   m_Beverage = std::make_shared<Lemon>(m_Beverage);
   m_HasLemon = true;
+  return true;
 };
