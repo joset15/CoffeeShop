@@ -5,6 +5,7 @@
 
 namespace CoffeeShop
 {
+
 INSTANTIATE_TEST_CASE_P(
     GiveSomeValidIngredients, GivenSomeIngredientsForCoffeeEspressoBuilder,
     ::testing::Values(
@@ -26,47 +27,14 @@ TEST_P(GivenSomeIngredientsForCoffeeEspressoBuilder,
   std::string beverageName = std::get<2>(GetParam());
 
   // Act
-  m_BeverageBuildDirector->buildCoffee(ingredients);
-  // TODO: EXPECT_TRUE(buildSuccess);
+  bool buildSuccess = m_BeverageBuildDirector->buildCoffee(ingredients);
+  EXPECT_EQ(buildSuccess, isValidMix);
 
   std::string coffeeWithSomeIngredients =
       m_CoffeeEspressoBuilder->getBeverage()->getDescription();
 
   // Assert
   ASSERT_EQ(coffeeWithSomeIngredients.compare(beverageName), 0);
-};
-
-// Since, release 1.10 INSTANTIATE_TEST_CASE_P is replaced with
-// INSTANTIATE_TEST_SUITE_P!
-/*
-INSTANTIATE_TEST_CASE_P(GiveSomeInvalidIngredients,
-                        GivenSomeIngredientsForCoffeeEspressoBuilder,
-                        ::testing::Values(std::list<Ingredient>{
-                            Ingredient::Lemon}));
-                            */
-/*
-TEST_P(GivenSomeIngredientsForCoffeeEspressoBuilder,
-       WhenInvalidIngredientsAreAddedToCoffeeThenDescriptionHasRightFormat)
-{
-  // AAA: Arrange, Act, Assert
-  // Arrange
-  std::list<Ingredient> ingredients = GetParam();
-
-  // Act
-  m_BeverageBuildDirector->buildCoffee(ingredients);
-  // TODO: EXPECT_TRUE(buildSuccess);
-
-  std::string coffeeWithSomeInvalidIngredients =
-      m_CoffeeEspressoBuilder->getBeverage()->getDescription();
-
-  // Assert
-  /*
-  ASSERT_EQ(coffeeWithSomeInvalidIngredients.compare(CoffeEspressoName + ", " +
-                                                     SugarName),
-            0);
-            */
-/*
-  ASSERT_EQ(1, 1);
-}*/
+}
 
 } // namespace CoffeeShop
