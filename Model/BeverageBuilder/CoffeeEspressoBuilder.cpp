@@ -2,6 +2,8 @@
 
 void CoffeeEspressoBuilder::resetImpl()
 {
-  m_Beverage = std::make_shared<CoffeeEspresso>();
-  setHasMilk(false);
+  m_Beverage =
+      m_BeverageFactory->createBeverage(BeverageVariety::CoffeeEspresso);
+
+  CoffeeBuilder::resetImpl();
 }

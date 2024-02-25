@@ -1,15 +1,26 @@
 #ifndef IBEVERAGE_BUILDER_HPP
 #define IBEVERAGE_BUILDER_HPP
-#pragma once
+//#pragma once
 
 #include "../Beverages/IBeverage.hpp"
 #include "../Ingredient/Ingredients.hpp"
+
+#include "../BeverageFactories/IBeverageFactory.hpp"
+#include "../BeverageFactories/IIngredientFactory.hpp"
 
 #include <memory>
 
 class IBeverageBuilder
 {
 public:
+  /// @brief
+  /// @param beverageFactory
+  IBeverageBuilder(IBeverageFactory *beverageFactory,
+                   IIngredientFactory *ingredientFactory)
+      : m_BeverageFactory(beverageFactory),
+        m_IngredientFactory(ingredientFactory){};
+
+  /// @brief
   virtual ~IBeverageBuilder() = default;
 
   /// @brief Gets the beverage.
@@ -36,7 +47,14 @@ public:
   virtual bool addWater() = 0;
 
 protected:
+  /// @brief The beverage that will be built.
   std::shared_ptr<IBeverage> m_Beverage;
+
+  /// @brief A reference to the beverage factory.
+  IBeverageFactory *m_BeverageFactory = nullptr;
+
+  /// @brief
+  IIngredientFactory *m_IngredientFactory = nullptr;
 };
 
 #endif // IBEVERAGE_BUILDER_HPP

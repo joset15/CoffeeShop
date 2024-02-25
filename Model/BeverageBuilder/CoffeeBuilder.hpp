@@ -2,16 +2,17 @@
 #define COFFEE_BUILDER_HPP
 #pragma once
 
-#include "../Beverages/Coffee.hpp"
-#include "../Ingredient/Ingredients.hpp"
 #include "IBeverageBuilder.hpp"
-
-#include <assert.h>
 
 class CoffeeBuilder : public IBeverageBuilder
 {
 public:
-  CoffeeBuilder() { resetImpl(); }
+  CoffeeBuilder(IBeverageFactory *beverageFactory,
+                IIngredientFactory *ingredientFactory)
+      : IBeverageBuilder(beverageFactory, ingredientFactory)
+  {
+    resetImpl();
+  }
 
   /// @brief Gets the beverage.
   /// @return A pointer to the beverage.
@@ -40,15 +41,16 @@ public:
 
   /// @brief Returns if Milk has been added to the beverage.
   /// @return True if milk was added.
-  bool getHasMilk() const { return m_HasMilk; }
+  // bool getHasMilk() const { return m_HasMilk; }
 
   /// @brief Sets if milk has been added to the beverage.
   /// @param hasMilk True if milk has been added, False otherwise.
-  void setHasMilk(bool hasMilk) { m_HasMilk = hasMilk; }
+  // void setHasMilk(bool hasMilk) { m_HasMilk = hasMilk; }
 
-private:
+protected:
   void resetImpl();
 
+private:
   /// @brief True if the beverage has milk.
   bool m_HasMilk = false;
 };

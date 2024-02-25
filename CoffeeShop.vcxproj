@@ -32,7 +32,10 @@
     <ClInclude Include="Model\BeverageBuilder\IBeverageBuilder.hpp" />
     <ClInclude Include="Model\BeverageBuilder\TeaBlackBuilder.hpp" />
     <ClInclude Include="Model\BeverageBuilder\TeaBuilder.hpp" />
-    <ClInclude Include="Model\BeverageFactory.hpp" />
+    <ClInclude Include="Model\BeverageFactories\BeverageFactory.hpp" />
+    <ClInclude Include="Model\BeverageFactories\IBeverageFactory.hpp" />
+    <ClInclude Include="Model\BeverageFactories\IIngredientFactory.hpp" />
+    <ClInclude Include="Model\BeverageFactories\IngredientFactory.hpp" />
     <ClInclude Include="Model\Beverages\BeverageVariety.hpp" />
     <ClInclude Include="Model\Beverages\Cocoa.hpp" />
     <ClInclude Include="Model\Beverages\Coffee.hpp" />
@@ -65,9 +68,9 @@
     <ClCompile Include="Model\BeverageBuilder\CoffeeEspressoBuilder.cpp" />
     <ClCompile Include="Model\BeverageBuilder\TeaBlackBuilder.cpp" />
     <ClCompile Include="Model\BeverageBuilder\TeaBuilder.cpp" />
-    <ClCompile Include="Model\BeverageFactory.cpp" />
+    <ClCompile Include="Model\BeverageFactories\BeverageFactory.cpp" />
+    <ClCompile Include="Model\BeverageFactories\IngredientFactory.cpp" />
     <ClCompile Include="Model\Beverages\Cocoa.cpp" />
-    <ClCompile Include="Model\Beverages\Coffee.cpp" />
     <ClCompile Include="Model\Beverages\Tea.cpp" />
     <ClCompile Include="UseCase\UseCase.cpp" />
   </ItemGroup>

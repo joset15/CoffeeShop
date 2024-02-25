@@ -43,6 +43,10 @@
     <ClInclude Include="..\Model\BeverageBuilder\CoffeeBuilder.hpp" />
     <ClInclude Include="..\Model\BeverageBuilder\CoffeeEspressoBuilder.hpp" />
     <ClInclude Include="..\Model\BeverageBuilder\IBeverageBuilder.hpp" />
+    <ClInclude Include="..\Model\BeverageFactories\BeverageFactory.hpp" />
+    <ClInclude Include="..\Model\BeverageFactories\IBeverageFactory.hpp" />
+    <ClInclude Include="..\Model\BeverageFactories\IIngredientFactory.hpp" />
+    <ClInclude Include="..\Model\BeverageFactories\IngredientFactory.hpp" />
     <ClInclude Include="..\Model\Beverages\Coffee.hpp" />
     <ClInclude Include="..\Model\Beverages\IBeverage.hpp" />
     <ClInclude Include="functionaltest\BeverageBuilder\include\CoffeeEspressoBuilderParameterized_TestFixtures.hpp" />
@@ -59,6 +63,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\Model\BeverageBuilder\CoffeeEspressoBuilder.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Model\BeverageFactories\BeverageFactory.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Model\BeverageFactories\IngredientFactory.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\Model\Beverages\Coffee.cpp">

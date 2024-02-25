@@ -8,7 +8,7 @@ static const std::string CoffeName = "Coffee";
 class Coffee : public IBeverage
 {
 public:
-  Coffee();
+  Coffee() = default;
 
   std::string getDescription() const override { return CoffeName; }
 };

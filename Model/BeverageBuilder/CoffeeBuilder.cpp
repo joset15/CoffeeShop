@@ -1,14 +1,12 @@
 #include "CoffeeBuilder.hpp"
+#include <cassert>
 
-void CoffeeBuilder::resetImpl()
-{
-  m_Beverage = std::make_shared<Coffee>();
-  m_HasMilk = false;
-}
+void CoffeeBuilder::resetImpl() { m_HasMilk = false; }
 
 bool CoffeeBuilder::addSugar()
 {
-  m_Beverage = std::make_shared<Sugar>(m_Beverage);
+  m_Beverage =
+      m_IngredientFactory->createIngredient(Ingredient::Sugar, m_Beverage);
   return true;
 };
 
@@ -22,13 +20,16 @@ bool CoffeeBuilder::addMilk(Ingredient typeOfMilk)
   switch (typeOfMilk)
   {
   case Ingredient::Milk:
-    m_Beverage = std::make_shared<Milk>(m_Beverage);
+    m_Beverage =
+        m_IngredientFactory->createIngredient(Ingredient::Milk, m_Beverage);
     break;
   case Ingredient::Cream:
-    m_Beverage = std::make_shared<Cream>(m_Beverage);
+    m_Beverage =
+        m_IngredientFactory->createIngredient(Ingredient::Cream, m_Beverage);
     break;
   case Ingredient::SoyMilk:
-    m_Beverage = std::make_shared<SoyMilk>(m_Beverage);
+    m_Beverage =
+        m_IngredientFactory->createIngredient(Ingredient::SoyMilk, m_Beverage);
     break;
   default:
     assert(false && "Invalid type of milk");

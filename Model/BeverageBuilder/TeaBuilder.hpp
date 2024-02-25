@@ -2,15 +2,17 @@
 #define TEA_BUILDER_HPP
 #pragma once
 
-#include "../Beverages/Tea.hpp"
 #include "IBeverageBuilder.hpp"
-
-#include <assert.h>
 
 class TeaBuilder : public IBeverageBuilder
 {
 public:
-  TeaBuilder() { resetImpl(); }
+  TeaBuilder(IBeverageFactory *beverageFactory,
+             IIngredientFactory *ingredientFactory)
+      : IBeverageBuilder(beverageFactory, ingredientFactory)
+  {
+    resetImpl();
+  }
 
   /// @brief Gets the beverage.
   /// @return A pointer to the beverage.
@@ -20,22 +22,14 @@ public:
   void reset() override { resetImpl(); }
 
   /// @brief Adds sugar to the beverage.
-  bool addSugar() override
-  {
-    m_Beverage = std::make_shared<Sugar>(m_Beverage);
-    return true;
-  };
+  bool addSugar() override;
 
   /// @brief Adds milk to the beverage.
   /// @param typeOfMilk The type of milk we are adding.
   bool addMilk(Ingredient typeOfMilk) override;
 
   /// @brief Adds honey to the beverage.
-  bool addHoney() override
-  {
-    m_Beverage = std::make_shared<Honey>(m_Beverage);
-    return true;
-  };
+  bool addHoney() override;
 
   /// @brief Adds lemon to the beverage.
   bool addLemon() override;
@@ -45,15 +39,16 @@ public:
 
   /// @brief
   /// @param hasMilk
-  void setHasMilk(bool hasMilk) { m_HasMilk = hasMilk; }
+  // void setHasMilk(bool hasMilk) { m_HasMilk = hasMilk; }
 
   /// @brief
   /// @param hasLemon
-  void setHasLemon(bool hasLemon) { m_HasLemon = hasLemon; }
+  // void setHasLemon(bool hasLemon) { m_HasLemon = hasLemon; }
 
-private:
+protected:
   void resetImpl();
 
+private:
   /// @brief
   bool m_HasMilk = false;
 

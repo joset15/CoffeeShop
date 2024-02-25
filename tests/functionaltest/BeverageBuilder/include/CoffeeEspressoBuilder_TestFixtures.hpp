@@ -6,6 +6,9 @@
 #include "Model/BeverageBuilder/CoffeeEspressoBuilder.hpp"
 //#include "Model/Beverages/Coffee.hpp"
 
+#include "Model/BeverageFactories/BeverageFactory.hpp"
+#include "Model/BeverageFactories/IngredientFactory.hpp"
+
 #include <gtest/gtest.h>
 #include <memory>
 
@@ -20,7 +23,8 @@ protected:
   virtual void SetUp()
   {
     m_BeverageBuildDirector = std::make_unique<BeverageBuildDirector>();
-    m_CoffeeEspressoBuilder = std::make_shared<CoffeeEspressoBuilder>();
+    m_CoffeeEspressoBuilder = std::make_shared<CoffeeEspressoBuilder>(
+        BeverageFactory::getInstance(), IngredientFactory::getInstance());
     m_BeverageBuildDirector->setBuilder(m_CoffeeEspressoBuilder);
   }
 

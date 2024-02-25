@@ -27,9 +27,6 @@
     <ClInclude Include="Data\OrderDiskDataSource.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\BeverageFactory.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UseCase\IOrderOutput.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -120,15 +117,24 @@
     <ClInclude Include="Model\Beverages\BeverageVariety.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Model\BeverageFactories\IBeverageFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\BeverageFactories\BeverageFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\BeverageFactories\IIngredientFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\BeverageFactories\IngredientFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Adapter\OrderRepository.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\OrderDiskDataSource.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Model\BeverageFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UseCase\UseCase.cpp">
@@ -158,10 +164,13 @@
     <ClCompile Include="Model\Beverages\Cocoa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model\Beverages\Coffee.cpp">
+    <ClCompile Include="Model\Beverages\Tea.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model\Beverages\Tea.cpp">
+    <ClCompile Include="Model\BeverageFactories\BeverageFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\BeverageFactories\IngredientFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

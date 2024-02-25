@@ -2,19 +2,21 @@
 #define COFFEE_ESPRESSO_BUILDER_HPP
 #pragma once
 
-#include "../Beverages/CoffeeEspresso.hpp"
-#include "../Ingredient/Ingredients.hpp"
 #include "CoffeeBuilder.hpp"
 #include "IBeverageBuilder.hpp"
-
-#include <assert.h>
 
 class CoffeeEspressoBuilder : public CoffeeBuilder
 {
 public:
-  CoffeeEspressoBuilder() { resetImpl(); }
+  /// @brief The constructor.
+  CoffeeEspressoBuilder(IBeverageFactory *beverageFactory,
+                        IIngredientFactory *ingredientFactory)
+      : CoffeeBuilder(beverageFactory, ingredientFactory)
+  {
+    resetImpl();
+  }
 
-  /// @brief
+  /// @brief Resets. the builder.
   void reset() override { resetImpl(); }
 
 private:

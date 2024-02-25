@@ -18,11 +18,6 @@ public:
   /// @brief
   virtual ~IngredientDecorator() = default;
 
-  // TODO Remove
-  /// @return The description.
-  // virtual std::string getDescription() const = 0;
-  // std::string getDescription() override;
-
 protected:
   /// @brief The decorator owns the decorated object.
   std::shared_ptr<IBeverage> m_Beverage;

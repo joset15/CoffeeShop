@@ -9,7 +9,9 @@
 #include "Adapter/OrderRepository.hpp"
 #include "Adapter/PrinterPresenter.hpp"
 
-#include "Model/BeverageFactory.hpp"
+//#include "Model/BeverageFactory.hpp"
+#include "Model/BeverageFactories/BeverageFactory.hpp"
+#include "Model/BeverageFactories/IngredientFactory.hpp"
 
 #include "Model/BeverageBuilder/BeverageBuilder.hpp"
 
@@ -26,8 +28,8 @@ int main(int argc, char *argv[])
     OrderRepository orderRepository;
     UseCase uc(printerPresenter, orderRepository);
 
-    IBeverage::BeverageType beverageType(IBeverage::BeverageType::Coffee);
-    BeverageVariety beverageVariety(BeverageVariety::CoffeeEspresso);
+    // JT IBeverage::BeverageType beverageType(IBeverage::BeverageType::Coffee);
+    // JT BeverageVariety beverageVariety(BeverageVariety::CoffeeEspresso);
     // IngredientDecorator extraIngredient(IngredientDecorator::Sugar);
 
     std::shared_ptr<IBeverage> beverage = std::make_shared<Coffee>();
@@ -47,7 +49,8 @@ int main(int argc, char *argv[])
     std::unique_ptr<BeverageBuildDirector> director =
         std::make_unique<BeverageBuildDirector>();
     std::shared_ptr<CoffeeBuilder> coffeeBuilder =
-        std::make_shared<CoffeeBuilder>();
+        std::make_shared<CoffeeBuilder>(BeverageFactory::getInstance(),
+                                        IngredientFactory::getInstance());
     director->setBuilder(coffeeBuilder);
 
     std::list<Ingredient> ingredients;
@@ -59,7 +62,8 @@ int main(int argc, char *argv[])
 
     //------------------
     std::shared_ptr<CoffeeEspressoBuilder> coffeeEspressoBuilder =
-        std::make_shared<CoffeeEspressoBuilder>();
+        std::make_shared<CoffeeEspressoBuilder>(
+            BeverageFactory::getInstance(), IngredientFactory::getInstance());
     director->setBuilder(coffeeEspressoBuilder);
 
     director->buildCoffeeEspresso(ingredients);
@@ -69,8 +73,10 @@ int main(int argc, char *argv[])
     std::cout << newBeverage4->getDescription() << std::endl;
 
     //------------------
+    //* JT
     std::shared_ptr<TeaBlackBuilder> teaBlackBuilder =
-        std::make_shared<TeaBlackBuilder>();
+        std::make_shared<TeaBlackBuilder>(BeverageFactory::getInstance(),
+                                          IngredientFactory::getInstance());
     director->setBuilder(teaBlackBuilder);
 
     director->buildTeaBlack(ingredients);

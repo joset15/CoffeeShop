@@ -2,15 +2,19 @@
 #define COCOA_BUILDER_HPP
 #pragma once
 
-#include "../Beverages/Cocoa.hpp"
+//#include "../Beverages/Cocoa.hpp"
 #include "IBeverageBuilder.hpp"
-
 #include <assert.h>
 
 class CocoaBuilder : public IBeverageBuilder
 {
 public:
-  CocoaBuilder() { resetImpl(); }
+  CocoaBuilder(IBeverageFactory *beverageFactory,
+               IIngredientFactory *ingredientFactory)
+      : IBeverageBuilder(beverageFactory, ingredientFactory)
+  {
+    resetImpl();
+  }
 
   /// @brief Gets the beverage.
   /// @return A pointer to the beverage.
@@ -22,7 +26,8 @@ public:
   /// @brief Adds sugar to the beverage.
   bool addSugar() override
   {
-    m_Beverage = std::make_shared<Sugar>(m_Beverage);
+    m_Beverage =
+        m_IngredientFactory->createIngredient(Ingredient::Sugar, m_Beverage);
     return true;
   };
 
