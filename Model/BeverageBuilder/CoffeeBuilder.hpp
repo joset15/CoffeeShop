@@ -7,13 +7,6 @@
 class CoffeeBuilder : public IBeverageBuilder
 {
 public:
-  CoffeeBuilder(IBeverageFactory *beverageFactory,
-                IIngredientFactory *ingredientFactory)
-      : IBeverageBuilder(beverageFactory, ingredientFactory)
-  {
-    resetImpl();
-  }
-
   /// @brief Gets the beverage.
   /// @return A pointer to the beverage.
   std::shared_ptr<IBeverage> getBeverage() override { return m_Beverage; };
@@ -48,6 +41,13 @@ public:
   // void setHasMilk(bool hasMilk) { m_HasMilk = hasMilk; }
 
 protected:
+  CoffeeBuilder(IBeverageFactory *beverageFactory,
+                IIngredientFactory *ingredientFactory)
+      : IBeverageBuilder(beverageFactory, ingredientFactory)
+  {
+    resetImpl();
+  }
+
   void resetImpl();
 
 private:
