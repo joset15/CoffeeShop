@@ -33,9 +33,6 @@
     <ClInclude Include="UseCase\IOrderRepository.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UseCase\UseCase.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Model\Ingredient\Sugar.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -129,15 +126,18 @@
     <ClInclude Include="Model\BeverageFactories\IngredientFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UseCase\AddNewOrderUC.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UseCase\UseCase.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Adapter\OrderRepository.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\OrderDiskDataSource.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UseCase\UseCase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -171,6 +171,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Model\BeverageFactories\IngredientFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UseCase\AddNewOrderUC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

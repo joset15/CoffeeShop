@@ -1,40 +1,46 @@
-#ifndef USECASE_H
-#define USECASE_H
+#ifndef USECASE_HPP
+#define USECASE_HPP
 
-/*
-#include "..\Model\Cocoa.hpp"
-#include "..\Model\Coffee.hpp"
-#include "..\Model\Tea.hpp"
-*/
-
-#include "../Model/Beverages/BeverageVariety.hpp"
-#include "../Model/Beverages/IBeverage.hpp"
-
-#include "../Model/Ingredient/IngredientDecorator.hpp"
-
-#include "IOrderOutput.hpp"
-#include "IOrderRepository.hpp"
+#include <string>
 
 class UseCase
 {
+  //    // Disallow copy constructor.
+  //    UseCase(const UseCase &);
+  //    // Disallow assignment operator.
+  //    void operator=(const UseCase &);
+
 public:
-  UseCase(IOrderOutput &output, IOrderRepository &orderRepository)
-      : m_Output(output), m_OrderRepository(orderRepository){};
+  /// @brief Destructor for an UseCase.
+  virtual ~UseCase() = 0;
 
-  bool addNewOrder(IBeverage::BeverageType beverageType,
-                   BeverageVariety beverageVariety,
-                   IngredientDecorator *extraIngredient);
+  /// @brief Get the name of the UseCase.
+  /// @return UseCaseName
+  const std::string &getName() const { return m_UseCaseName; }
 
-  bool cancelExistingOrders();
+  /// @brief Get the success execution status of the UseCase. This method should
+  /// be overwritten in derived classes.Default implementation always indicates
+  /// success.
+  /// @return bool indicating the success (true) or not (false) of the UseCase
+  /// execution.
+  virtual const bool isSucceed() { return true; }
 
-  bool printOutOrders();
-
-  bool storeOrders();
+  /// @brief Get the execution state of the UseCase. This method should be
+  /// overwritten in derived classes.Default implementation always indicates
+  /// finished.
+  /// @return bool indicating the ending (true) or not (false) of the UseCase
+  /// execution.
+  virtual const bool isFinished() { return true; }
 
 protected:
-  IOrderOutput &m_Output;
+  /// @brief Protected constructor for an UseCase given its UseCaseName.
+  /// @param UseCaseName
+  explicit UseCase(const std::string &UseCaseName) : m_UseCaseName(UseCaseName)
+  {
+  }
 
-  IOrderRepository &m_OrderRepository;
+private:
+  const std::string m_UseCaseName;
 };
 
-#endif // USECASE_H
+#endif // USECASE_HPP

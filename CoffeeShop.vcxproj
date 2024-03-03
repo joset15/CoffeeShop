@@ -54,6 +54,7 @@
     <ClInclude Include="Model\Ingredient\SoyMilk.hpp" />
     <ClInclude Include="Model\Ingredient\Sugar.hpp" />
     <ClInclude Include="Model\Ingredient\Water.hpp" />
+    <ClInclude Include="UseCase\AddNewOrderUC.hpp" />
     <ClInclude Include="UseCase\IOrderOutput.hpp" />
     <ClInclude Include="UseCase\IOrderRepository.hpp" />
     <ClInclude Include="UseCase\UseCase.hpp" />
@@ -72,7 +73,7 @@
     <ClCompile Include="Model\BeverageFactories\IngredientFactory.cpp" />
     <ClCompile Include="Model\Beverages\Cocoa.cpp" />
     <ClCompile Include="Model\Beverages\Tea.cpp" />
-    <ClCompile Include="UseCase\UseCase.cpp" />
+    <ClCompile Include="UseCase\AddNewOrderUC.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

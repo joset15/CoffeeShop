@@ -1,4 +1,4 @@
-#include "UseCase/UseCase.hpp"
+#include "UseCase/AddNewOrderUC.hpp"
 
 #include "Model/Beverages/BeverageVariety.hpp"
 #include "Model/Beverages/Coffee.hpp"
@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
   {
     PrinterPresenter printerPresenter; // IOutput & output
     OrderRepository orderRepository;
-    UseCase uc(printerPresenter, orderRepository);
+    AddNewOrderUC addNewOrderUC(printerPresenter, orderRepository);
 
     // JT IBeverage::BeverageType beverageType(IBeverage::BeverageType::Coffee);
     // JT BeverageVariety beverageVariety(BeverageVariety::CoffeeEspresso);
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
     std::shared_ptr<IBeverage> newBeverage5 = teaBlackBuilder->getBeverage();
     std::cout << newBeverage5->getDescription() << std::endl;
 
-    // bool res = uc.addNewOrder(beverageType, beverageVariety,
+    // bool res = addNewOrderUC.addNewOrder(beverageType, beverageVariety,
     // extraIngredient);
     /*
     if (res)
