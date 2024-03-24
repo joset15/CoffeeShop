@@ -27,7 +27,7 @@ TEST_P(GivenSomeIngredientsForCoffeeEspressoBuilder,
   std::string beverageName = std::get<2>(GetParam());
 
   // Act
-  bool buildSuccess = m_BeverageBuildDirector->buildCoffee(ingredients);
+  bool buildSuccess = m_BeverageBuildDirector->buildCoffeeEspresso(ingredients);
   EXPECT_EQ(buildSuccess, isValidMix);
 
   std::string coffeeWithSomeIngredients =

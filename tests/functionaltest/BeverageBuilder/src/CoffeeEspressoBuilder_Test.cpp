@@ -15,7 +15,7 @@ TEST_F(GivenACoffeeEspressoBuilder,
   ingredients.push_back(Ingredient::Sugar);
 
   // Act
-  m_BeverageBuildDirector->buildCoffee(ingredients);
+  m_BeverageBuildDirector->buildCoffeeEspresso(ingredients);
   // TODO: EXPECT_TRUE(buildSuccess);
 
   std::string coffeeWithSugar =
