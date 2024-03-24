@@ -5,6 +5,7 @@
 
 # OpenCppCoverage
 .opencppcov/*
+tests/.opencppcov/*
 
 # User-specific files
 *.rsuser

@@ -12,7 +12,7 @@ class UseCase
 
 public:
   /// @brief Destructor for an UseCase.
-  virtual ~UseCase() = 0;
+  virtual ~UseCase(){};
 
   /// @brief Get the name of the UseCase.
   /// @return UseCaseName

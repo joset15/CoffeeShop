@@ -1,26 +1,35 @@
 #include "AddNewOrderUC.hpp"
-#include "../Model/BeverageBuilder.hpp"
 
+#include "../Model/BeverageBuilder/BeverageBuilder.hpp"
+#include "../Model/BeverageFactories/BeverageBuilderFactory.hpp"
+#include "../Model/BeverageFactories/BeverageFactory.hpp"
+#include "../Model/BeverageFactories/IngredientFactory.hpp"
+
+#include <iostream>
 #include <memory>
 
 bool AddNewOrderUC::addNewOrder(IBeverage::BeverageType beverageType,
                                 BeverageVariety beverageVariety,
-                                IngredientDecorator *extraIngredient)
+                                const std::list<Ingredient> &ingredients)
 {
-  /*
-  std::shared_ptr<IBeverage> newBeverage =
-    BeverageBuilder::getInstance()->getBeverage(beverageType, beverageVariety,
-      extraIngredient);
+  std::unique_ptr<BeverageBuildDirector> director =
+      std::make_unique<BeverageBuildDirector>();
 
-  m_OrderRepository.save(std::move(newBeverage));
-  */
+  std::shared_ptr<IBeverageBuilder> beverageBuilder =
+      BeverageBuilderFactory::getInstance()->createBeverageBuilder(
+          beverageVariety);
+
+  director->setBuilder(beverageBuilder);
+
+  if (!director->buildBeverage(beverageVariety, ingredients))
+  {
+    return false;
+  }
+
+  std::shared_ptr<IBeverage> newBeverage = beverageBuilder->getBeverage();
+  std::cout << newBeverage->getDescription() << std::endl;
+
+  // TODO add to the OrderRepository
 
   return true;
 };
-
-// TODO Develop Use Cases
-bool AddNewOrderUC::cancelExistingOrders() { return true; }
-
-bool AddNewOrderUC::printOutOrders() { return true; }
-
-bool AddNewOrderUC::storeOrders() { return true; }

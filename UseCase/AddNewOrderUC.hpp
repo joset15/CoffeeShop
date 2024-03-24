@@ -1,35 +1,24 @@
 #ifndef ADD_NEW_ORDER_UC_HPP
 #define ADD_NEW_ORDER_UC_HPP
 
-/*
-#include "..\Model\Cocoa.hpp"
-#include "..\Model\Coffee.hpp"
-#include "..\Model\Tea.hpp"
-*/
+#include "UseCase.hpp"
 
 #include "../Model/Beverages/BeverageVariety.hpp"
 #include "../Model/Beverages/IBeverage.hpp"
-
-#include "../Model/Ingredient/IngredientDecorator.hpp"
+#include "../Model/Ingredient/Ingredients.hpp"
 
 #include "IOrderOutput.hpp"
 #include "IOrderRepository.hpp"
 
-class AddNewOrderUC
+class AddNewOrderUC : public UseCase
 {
 public:
-  AddNewOrderUC(IOrderOutput &output, IOrderRepository &orderRepository)
-      : m_Output(output), m_OrderRepository(orderRepository){};
+  AddNewOrderUC(const std::string &name, IOrderOutput &output, IOrderRepository &orderRepository)
+      : UseCase(name), m_Output(output), m_OrderRepository(orderRepository){};
 
   bool addNewOrder(IBeverage::BeverageType beverageType,
                    BeverageVariety beverageVariety,
-                   IngredientDecorator *extraIngredient);
-
-  bool cancelExistingOrders();
-
-  bool printOutOrders();
-
-  bool storeOrders();
+                   const std::list<Ingredient> &ingredients);
 
 private:
   IOrderOutput &m_Output;
