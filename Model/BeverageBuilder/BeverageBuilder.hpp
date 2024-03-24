@@ -14,4 +14,4 @@
 
 #include "CocoaBuilder.hpp"
 
-#endif BEVERAGE_BUILDER_HPP
+#endif // BEVERAGE_BUILDER_HPP

@@ -1,5 +1,38 @@
 #include "BeverageBuildDirector.hpp"
 
+bool BeverageBuildDirector::buildBeverage(
+    BeverageVariety beverageVariety, const std::list<Ingredient> &ingredients)
+{
+  bool isValidBeverage = false;
+
+  switch (beverageVariety)
+  {
+  case BeverageVariety::CoffeeEspresso:
+    isValidBeverage = buildCoffeeEspresso(ingredients);
+    break;
+  case BeverageVariety::CoffeeLatte:
+    // TODO add build.
+    break;
+  case BeverageVariety::CoffeeDecaf:
+    // TODO add build.
+    break;
+  case BeverageVariety::TeaBlack:
+    isValidBeverage = buildTeaBlack(ingredients);
+    break;
+  case BeverageVariety::TeaGreen:
+    // TODO add build.
+    break;
+  case BeverageVariety::Cocoa:
+    // TODO add build.
+    break;
+  default:
+    isValidBeverage = false;
+    break;
+  }
+
+  return isValidBeverage;
+}
+
 bool BeverageBuildDirector::buildCoffee(
     const std::list<Ingredient> &ingredients)
 {
