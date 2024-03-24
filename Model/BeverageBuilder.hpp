@@ -9,11 +9,9 @@
 
 // TODO Refactor
 
-class BeverageBuilder
+class BeverageBuilder final
 {
 public:
-  BeverageBuilder() = default;
-
   /// \brief
   static BeverageBuilder *getInstance()
   {
@@ -26,6 +24,16 @@ public:
               BeverageVariety beverageVariety,
               // IngredientDecorator extraIngredient);
               IngredientDecorator *extraIngredient);
+
+private:
+  BeverageBuilder() = default;
+  ~BeverageBuilder() = default;
+
+  BeverageBuilder(const BeverageBuilder &) = delete;
+  BeverageBuilder &operator=(const BeverageBuilder &) = delete;
+
+  BeverageBuilder(BeverageBuilder &&) = delete;
+  BeverageBuilder &operator=(BeverageBuilder &&) = delete;
 };
 
 #endif // BEVERAGE_BUILDER_HPP

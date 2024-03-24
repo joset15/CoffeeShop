@@ -7,15 +7,9 @@
 
 // TODO Complete doxygen comments.
 
-class BeverageFactory : public IBeverageFactory
+class BeverageFactory final : public IBeverageFactory
 {
 public:
-  /// @brief
-  BeverageFactory() = default;
-
-  /// @brief
-  virtual ~BeverageFactory() = default;
-
   /// @brief
   /// @return
   static BeverageFactory *getInstance()
@@ -29,6 +23,19 @@ public:
   /// @return
   std::shared_ptr<IBeverage>
   createBeverage(BeverageVariety beverageVariety) override;
+
+private:
+  /// @brief
+  BeverageFactory() = default;
+
+  /// @brief
+  ~BeverageFactory() = default;
+
+  BeverageFactory(const BeverageFactory &) = delete;
+  BeverageFactory &operator=(const BeverageFactory &) = delete;
+
+  BeverageFactory(BeverageFactory &&) = delete;
+  BeverageFactory &operator=(BeverageFactory &&) = delete;
 };
 
 #endif // BEVERAGE_FACTORY_HPP

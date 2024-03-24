@@ -6,15 +6,9 @@
 
 // TODO Complete doxygen comments.
 
-class IngredientFactory : public IIngredientFactory
+class IngredientFactory final : public IIngredientFactory
 {
 public:
-  /// @brief
-  IngredientFactory() = default;
-
-  /// @brief
-  virtual ~IngredientFactory() = default;
-
   /// @brief
   /// @return
   static IngredientFactory *getInstance()
@@ -29,6 +23,19 @@ public:
   std::shared_ptr<IBeverage>
   createIngredient(Ingredient ingredient,
                    std::shared_ptr<IBeverage> beverage) override;
+
+private:
+  /// @brief
+  IngredientFactory() = default;
+
+  /// @brief
+  ~IngredientFactory() = default;
+
+  IngredientFactory(const IngredientFactory &) = delete;
+  IngredientFactory &operator=(const IngredientFactory &) = delete;
+
+  IngredientFactory(IngredientFactory &&) = delete;
+  IngredientFactory &operator=(IngredientFactory &&) = delete;
 };
 
 #endif // INGREDIENT_FACTORY_HPP
