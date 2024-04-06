@@ -4,6 +4,8 @@
 
 #include "IngredientDecorator.hpp"
 
+static const std::string LemonName = "Lemon";
+
 class Lemon : public IngredientDecorator
 {
 public:
@@ -17,7 +19,7 @@ public:
   /// @return The description.
   std::string getDescription() const override
   {
-    return m_Beverage->getDescription() + ", Lemon";
+    return m_Beverage->getDescription() + ", " + LemonName;
   }
 };
 

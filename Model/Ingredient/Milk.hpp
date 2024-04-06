@@ -4,10 +4,13 @@
 
 #include "IngredientDecorator.hpp"
 
+static const std::string MilkName = "Milk";
+
 class Milk : public IngredientDecorator
 {
 public:
-  /// \brief
+  /// @brief 
+  /// @param beverage 
   explicit Milk(std::shared_ptr<IBeverage> beverage)
       : IngredientDecorator(beverage)
   {
@@ -17,7 +20,7 @@ public:
   /// @return The description.
   std::string getDescription() const override
   {
-    return m_Beverage->getDescription() + ", Milk";
+    return m_Beverage->getDescription() + ", " + MilkName;
   }
 };
 

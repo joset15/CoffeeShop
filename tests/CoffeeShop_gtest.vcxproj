@@ -43,6 +43,8 @@
     <ClInclude Include="..\Model\BeverageBuilder\CoffeeBuilder.hpp" />
     <ClInclude Include="..\Model\BeverageBuilder\CoffeeEspressoBuilder.hpp" />
     <ClInclude Include="..\Model\BeverageBuilder\IBeverageBuilder.hpp" />
+    <ClInclude Include="..\Model\BeverageBuilder\TeaBlackBuilder.hpp" />
+    <ClInclude Include="..\Model\BeverageBuilder\TeaBuilder.hpp" />
     <ClInclude Include="..\Model\BeverageFactories\BeverageFactory.hpp" />
     <ClInclude Include="..\Model\BeverageFactories\IBeverageFactory.hpp" />
     <ClInclude Include="..\Model\BeverageFactories\IIngredientFactory.hpp" />
@@ -51,6 +53,7 @@
     <ClInclude Include="..\Model\Beverages\IBeverage.hpp" />
     <ClInclude Include="functionaltest\BeverageBuilder\include\CoffeeEspressoBuilderParameterized_TestFixtures.hpp" />
     <ClInclude Include="functionaltest\BeverageBuilder\include\CoffeeEspressoBuilder_TestFixtures.hpp" />
+    <ClInclude Include="functionaltest\BeverageBuilder\include\TeaBlackBuilderParameterized_TestFixtures.hpp" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="unittest\Beverages\include\Coffee_TestFixtures.hpp" />
     <ClInclude Include="unittest\Ingredients\include\Sugar_TestFixtures.hpp" />
@@ -65,6 +68,12 @@
     <ClCompile Include="..\Model\BeverageBuilder\CoffeeEspressoBuilder.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\Model\BeverageBuilder\TeaBlackBuilder.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Model\BeverageBuilder\TeaBuilder.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\Model\BeverageFactories\BeverageFactory.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -76,6 +85,7 @@
     </ClCompile>
     <ClCompile Include="functionaltest\BeverageBuilder\src\CoffeeEspressoBuilderParameterized_Test.cpp" />
     <ClCompile Include="functionaltest\BeverageBuilder\src\CoffeeEspressoBuilder_Test.cpp" />
+    <ClCompile Include="functionaltest\BeverageBuilder\src\TeaBlackBuilderParameterized_Test.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

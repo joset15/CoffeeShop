@@ -1,18 +1,17 @@
 #ifndef COCOA_HPP
 #define COCOA_HPP
 
-//#include "BeverageVariety.hpp"
 #include "IBeverage.hpp"
+#include <string>
 
-//#include <list>
+static const std::string CocoaName = "Cocoa";
 
 class Cocoa : public IBeverage
 {
 public:
-  /// \brief
-  Cocoa(){};
+  Cocoa() = default;
 
-  std::string getDescription() const override { return "Cocoa"; }
+  std::string getDescription() const override { return CocoaName; }
 };
 
 #endif // COCOA_HPP

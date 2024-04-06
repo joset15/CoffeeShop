@@ -1,9 +1,12 @@
 #ifndef TEA_BLACK_HPP
 #define TEA_BLACK_HPP
 
-#include "IBeverage.hpp"
+#include "Tea.hpp"
+#include <string>
 
-class TeaBlack : public IBeverage
+static const std::string TeaBlackName = "TeaBlack";
+
+class TeaBlack : public Tea
 {
 public:
   /// @brief
@@ -11,7 +14,7 @@ public:
 
   /// @brief
   /// @return
-  std::string getDescription() const override { return "TeaBlack"; }
+  std::string getDescription() const override { return TeaBlackName; }
 };
 
 #endif // TEA_BLACK_HPP

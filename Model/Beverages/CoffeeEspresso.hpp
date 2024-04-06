@@ -2,7 +2,6 @@
 #define COFFEE_ESPRESSO_HPP
 
 #include "Coffee.hpp"
-
 #include <string>
 
 static const std::string CoffeEspressoName = "CoffeeEspresso";
