@@ -1,6 +1,7 @@
 #ifndef USECASE_HPP
 #define USECASE_HPP
 
+//#include "IRequest.hpp"
 #include <string>
 
 class UseCase
@@ -31,6 +32,10 @@ public:
   /// @return bool indicating the ending (true) or not (false) of the UseCase
   /// execution.
   virtual const bool isFinished() { return true; }
+
+  // TODO return ErrorCode
+  // virtual bool execute(const IRequest &request) = 0;
+  virtual bool execute() = 0;
 
 protected:
   /// @brief Protected constructor for an UseCase given its UseCaseName.

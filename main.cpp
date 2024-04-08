@@ -1,4 +1,5 @@
 #include "UseCase/AddNewOrderUC.hpp"
+#include "UseCase/NewOrderReq.hpp"
 
 #include "Model/Beverages/BeverageVariety.hpp"
 #include "Model/Beverages/Coffee.hpp"
@@ -63,15 +64,28 @@ int main(int argc, char *argv[])
   std::cout << newBeverage5->getDescription() << std::endl;
 
   //------------------
+  /*
   PrinterPresenter printerPresenter; // IOutput & output
   OrderRepository orderRepository;
-  AddNewOrderUC addNewOrderUC(std::string("AddNewOrderUC"), printerPresenter, orderRepository);
+  AddNewOrderUC addNewOrderUC(std::string("AddNewOrderUC"), printerPresenter,
+  orderRepository);
 
   IBeverage::BeverageType beverageType(IBeverage::BeverageType::Coffee);
   BeverageVariety beverageVariety(BeverageVariety::CoffeeEspresso);
 
   bool res =
       addNewOrderUC.addNewOrder(beverageType, beverageVariety, ingredients);
+      */
+  //------------------
+  PrinterPresenter printerPresenter; // IOutput & output
+  OrderRepository orderRepository;
+  IBeverage::BeverageType beverageType(IBeverage::BeverageType::Coffee);
+  BeverageVariety beverageVariety(BeverageVariety::CoffeeEspresso);
+  NewOrderReq newOrderReq(beverageType, beverageVariety, ingredients,
+                          printerPresenter, orderRepository);
+
+  AddNewOrderUC addNewOrderUC(std::string("AddNewOrderUC"), newOrderReq);
+  bool res = addNewOrderUC.execute();
 
   if (res)
   {
