@@ -1,5 +1,5 @@
-#ifndef ADD_NEW_ORDER_REQ_HPP
-#define ADD_NEW_ORDER_REQ_HPP
+#ifndef NEW_ORDER_REQ_HPP
+#define NEW_ORDER_REQ_HPP
 
 #pragma once
 
@@ -14,16 +14,16 @@
 
 #include <list>
 
-struct AddNewOrderReq : IRequest
+struct NewOrderReq : IRequest
 {
 public:
-  AddNewOrderReq() = delete;
-  ~AddNewOrderReq(){};
+  NewOrderReq() = delete;
+  ~NewOrderReq(){};
 
-  AddNewOrderReq(IBeverage::BeverageType beverageType,
-                 BeverageVariety beverageVariety,
-                 const std::list<Ingredient> &ingredients, IOrderOutput &output,
-                 IOrderRepository &orderRepository)
+  NewOrderReq(IBeverage::BeverageType beverageType,
+              BeverageVariety beverageVariety,
+              const std::list<Ingredient> &ingredients, IOrderOutput &output,
+              IOrderRepository &orderRepository)
       : m_BeverageType(beverageType), m_BeverageVariety(beverageVariety),
         m_Ingredients(ingredients), m_Output(output),
         m_OrderRepository(orderRepository){};
@@ -46,4 +46,4 @@ private:
   IOrderRepository &m_OrderRepository;
 };
 
-#endif // ADD_NEW_ORDER_REQ_HPP
+#endif // NEW_ORDER_REQ_HPP
