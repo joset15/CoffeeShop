@@ -132,10 +132,10 @@
     <ClInclude Include="UseCase\UseCase.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\BeverageFactories\BeverageBuilderFactory.hpp">
+    <ClInclude Include="Model\BeverageFactories\IBeverageBuilderFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\BeverageFactories\IBeverageBuilderFactory.hpp">
+    <ClInclude Include="Model\BeverageFactories\BeverageBuilderSimpleFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -182,7 +182,7 @@
     <ClCompile Include="UseCase\AddNewOrderUC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model\BeverageFactories\BeverageBuilderFactory.cpp">
+    <ClCompile Include="Model\BeverageFactories\BeverageBuilderSimpleFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

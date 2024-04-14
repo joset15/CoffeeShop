@@ -5,7 +5,8 @@
 #include <assert.h>
 
 std::shared_ptr<IBeverageBuilder>
-BeverageBuilderFactory::createBeverageBuilder(BeverageVariety beverageVariety)
+BeverageBuilderSimpleFactory::createBeverageBuilder(
+    BeverageVariety beverageVariety)
 {
   std::shared_ptr<IBeverageBuilder> newBeverageBuilder = nullptr;
 

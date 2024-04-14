@@ -1,5 +1,5 @@
-#ifndef BEVERAGE_BUILDER_FACTORY_HPP
-#define BEVERAGE_BUILDER_FACTORY_HPP
+#ifndef BEVERAGE_BUILDER_SIMPLE_FACTORY_HPP
+#define BEVERAGE_BUILDER_SIMPLE_FACTORY_HPP
 
 #include "../Beverages/BeverageVariety.hpp"
 #include "IBeverageBuilderFactory.hpp"
@@ -7,14 +7,14 @@
 
 // TODO Complete doxygen comments.
 
-class BeverageBuilderFactory final : public IBeverageBuilderFactory
+class BeverageBuilderSimpleFactory final : public IBeverageBuilderFactory
 {
 public:
   /// @brief
   /// @return
-  static BeverageBuilderFactory *getInstance()
+  static BeverageBuilderSimpleFactory *getInstance()
   {
-    static BeverageBuilderFactory m_BeverageBuilderFactoryInstance;
+    static BeverageBuilderSimpleFactory m_BeverageBuilderFactoryInstance;
     return &m_BeverageBuilderFactoryInstance;
   }
 
@@ -26,15 +26,17 @@ public:
 
 private:
   /// @brief Protected constructor
-  BeverageBuilderFactory() = default;
+  BeverageBuilderSimpleFactory() = default;
   /// @brief
-  ~BeverageBuilderFactory() = default;
+  ~BeverageBuilderSimpleFactory() = default;
 
-  BeverageBuilderFactory(const BeverageBuilderFactory &) = delete;
-  BeverageBuilderFactory &operator=(const BeverageBuilderFactory &) = delete;
+  BeverageBuilderSimpleFactory(const BeverageBuilderSimpleFactory &) = delete;
+  BeverageBuilderSimpleFactory &
+  operator=(const BeverageBuilderSimpleFactory &) = delete;
 
-  BeverageBuilderFactory(BeverageBuilderFactory &&) = delete;
-  BeverageBuilderFactory &operator=(BeverageBuilderFactory &&) = delete;
+  BeverageBuilderSimpleFactory(BeverageBuilderSimpleFactory &&) = delete;
+  BeverageBuilderSimpleFactory &
+  operator=(BeverageBuilderSimpleFactory &&) = delete;
 };
 
-#endif // BEVERAGE_BUILDER_FACTORY_HPP
+#endif // BEVERAGE_BUILDER_SIMPLE_FACTORY_HPP
