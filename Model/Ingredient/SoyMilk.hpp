@@ -8,7 +8,7 @@ class SoyMilk : public IngredientDecorator
 {
 public:
   /// \brief
-  explicit SoyMilk(std::shared_ptr<IBeverage> beverage)
+  explicit SoyMilk(const std::shared_ptr<IBeverage> &beverage)
       : IngredientDecorator(beverage)
   {
   }

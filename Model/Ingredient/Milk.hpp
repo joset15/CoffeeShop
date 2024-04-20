@@ -9,9 +9,9 @@ static const std::string MilkName = "Milk";
 class Milk : public IngredientDecorator
 {
 public:
-  /// @brief 
-  /// @param beverage 
-  explicit Milk(std::shared_ptr<IBeverage> beverage)
+  /// @brief
+  /// @param beverage
+  explicit Milk(const std::shared_ptr<IBeverage> &beverage)
       : IngredientDecorator(beverage)
   {
   }

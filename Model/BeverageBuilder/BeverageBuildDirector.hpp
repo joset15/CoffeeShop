@@ -11,7 +11,7 @@
 class BeverageBuildDirector
 {
 public:
-  void setBuilder(std::shared_ptr<IBeverageBuilder> beverageBuilder)
+  void setBuilder(const std::shared_ptr<IBeverageBuilder> &beverageBuilder)
   {
     m_BeverageBuilder = beverageBuilder;
   }

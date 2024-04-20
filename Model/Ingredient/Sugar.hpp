@@ -11,7 +11,7 @@ class Sugar : public IngredientDecorator
 public:
   /// @brief
   /// @param beverage
-  explicit Sugar(std::shared_ptr<IBeverage> beverage)
+  explicit Sugar(const std::shared_ptr<IBeverage> &beverage)
       : IngredientDecorator(beverage)
   {
   }

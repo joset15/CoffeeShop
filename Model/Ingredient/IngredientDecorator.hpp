@@ -10,7 +10,7 @@ class IngredientDecorator : public IBeverage
 {
 public:
   /// \brief
-  explicit IngredientDecorator(std::shared_ptr<IBeverage> beverage)
+  explicit IngredientDecorator(const std::shared_ptr<IBeverage> &beverage)
       : m_Beverage(beverage)
   {
   }
@@ -19,6 +19,7 @@ public:
   virtual ~IngredientDecorator() = default;
 
 protected:
+  // TODO Convert to std::unique_ptr
   /// @brief The decorator owns the decorated object.
   std::shared_ptr<IBeverage> m_Beverage;
 };

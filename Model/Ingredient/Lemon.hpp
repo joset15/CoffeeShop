@@ -10,7 +10,7 @@ class Lemon : public IngredientDecorator
 {
 public:
   /// \brief
-  explicit Lemon(std::shared_ptr<IBeverage> beverage)
+  explicit Lemon(const std::shared_ptr<IBeverage> &beverage)
       : IngredientDecorator(beverage)
   {
   }
