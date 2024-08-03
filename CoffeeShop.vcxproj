@@ -62,21 +62,57 @@
     <ClInclude Include="UseCase\UseCase.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Adapter\OrderRepository.cpp" />
-    <ClCompile Include="Data\OrderDiskDataSource.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Model\BeverageBuilder\BeverageBuildDirector.cpp" />
-    <ClCompile Include="Model\BeverageBuilder\CocoaBuilder.cpp" />
-    <ClCompile Include="Model\BeverageBuilder\CoffeeBuilder.cpp" />
-    <ClCompile Include="Model\BeverageBuilder\CoffeeEspressoBuilder.cpp" />
-    <ClCompile Include="Model\BeverageBuilder\TeaBlackBuilder.cpp" />
-    <ClCompile Include="Model\BeverageBuilder\TeaBuilder.cpp" />
-    <ClCompile Include="Model\BeverageFactories\BeverageBuilderSimpleFactory.cpp" />
-    <ClCompile Include="Model\BeverageFactories\BeverageFactory.cpp" />
-    <ClCompile Include="Model\BeverageFactories\IngredientFactory.cpp" />
-    <ClCompile Include="Model\Beverages\Cocoa.cpp" />
-    <ClCompile Include="Model\Beverages\Tea.cpp" />
-    <ClCompile Include="UseCase\AddNewOrderUC.cpp" />
+    <ClCompile Include="Adapter\BeverageController.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Adapter\OrderRepository.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Data\OrderDiskDataSource.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Model\BeverageBuilder\BeverageBuildDirector.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Model\BeverageBuilder\CocoaBuilder.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Model\BeverageBuilder\CoffeeBuilder.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Model\BeverageBuilder\CoffeeEspressoBuilder.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Model\BeverageBuilder\TeaBlackBuilder.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Model\BeverageBuilder\TeaBuilder.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Model\BeverageFactories\BeverageBuilderSimpleFactory.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Model\BeverageFactories\BeverageFactory.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Model\BeverageFactories\IngredientFactory.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Model\Beverages\Cocoa.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Model\Beverages\Tea.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="UseCase\AddNewOrderUC.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -180,6 +216,9 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>StdAfx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
