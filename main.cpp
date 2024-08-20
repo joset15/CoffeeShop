@@ -1,6 +1,3 @@
-#include "UseCase/AddNewOrderUC.hpp"
-#include "UseCase/NewOrderReq.hpp"
-
 #include "Model/Beverages/BeverageVariety.hpp"
 #include "Model/Beverages/Coffee.hpp"
 #include "Model/Beverages/IBeverage.hpp"
@@ -9,14 +6,24 @@
 
 #include "Adapter/OrderRepository.hpp"
 #include "Adapter/PrinterPresenter.hpp"
+#include "Adapter/ScreenPresenter.hpp"
 
 #include "Model/BeverageFactories/BeverageFactory.hpp"
 #include "Model/BeverageFactories/IngredientFactory.hpp"
 
 #include "Model/BeverageBuilder/BeverageBuilder.hpp"
 
+#include "UseCase/AddNewOrderUC.hpp"
+#include "UseCase/NewOrderReq.hpp"
+
+#include "Adapter/BeverageController.hpp"
+
+//#include <conio.h> //clrscr(), getch()
 #include <iostream>
 #include <memory>
+#include <stdlib.h> // system("cls"); system("pause")
+
+int consoleMenu();
 
 int main(int argc, char *argv[])
 {
@@ -35,15 +42,13 @@ int main(int argc, char *argv[])
   std::cout << newBeverage->getDescription() << std::endl;
 
   // =============================================================
-  std::unique_ptr<BeverageBuildDirector> director =
-      std::make_unique<BeverageBuildDirector>();
+  auto director = std::make_unique<BeverageBuildDirector>();
 
   std::list<Ingredient> ingredients;
   ingredients.push_back(Ingredient::Sugar);
 
-  std::shared_ptr<CoffeeEspressoBuilder> coffeeEspressoBuilder =
-      std::make_shared<CoffeeEspressoBuilder>(BeverageFactory::getInstance(),
-                                              IngredientFactory::getInstance());
+  auto coffeeEspressoBuilder = std::make_shared<CoffeeEspressoBuilder>(
+      BeverageFactory::getInstance(), IngredientFactory::getInstance());
   director->setBuilder(coffeeEspressoBuilder);
 
   director->buildCoffeeEspresso(ingredients);
@@ -53,9 +58,8 @@ int main(int argc, char *argv[])
   std::cout << newBeverage4->getDescription() << std::endl;
 
   //------------------
-  std::shared_ptr<TeaBlackBuilder> teaBlackBuilder =
-      std::make_shared<TeaBlackBuilder>(BeverageFactory::getInstance(),
-                                        IngredientFactory::getInstance());
+  auto teaBlackBuilder = std::make_shared<TeaBlackBuilder>(
+      BeverageFactory::getInstance(), IngredientFactory::getInstance());
   director->setBuilder(teaBlackBuilder);
 
   director->buildTeaBlack(ingredients);
@@ -81,10 +85,11 @@ int main(int argc, char *argv[])
   OrderRepository orderRepository;
   IBeverage::BeverageType beverageType(IBeverage::BeverageType::Coffee);
   BeverageVariety beverageVariety(BeverageVariety::CoffeeEspresso);
-  NewOrderReq newOrderReq(beverageType, beverageVariety, ingredients,
-                          printerPresenter, orderRepository);
+  NewOrderReq newOrderReq(beverageType, beverageVariety, ingredients);
+  //                          printerPresenter, orderRepository);
 
-  AddNewOrderUC addNewOrderUC(std::string("AddNewOrderUC"), newOrderReq);
+  AddNewOrderUC addNewOrderUC(std::string("AddNewOrderUC"), newOrderReq,
+                              orderRepository);
   bool res = addNewOrderUC.execute();
 
   if (res)
@@ -96,8 +101,85 @@ int main(int argc, char *argv[])
     std::cout << "Error: Couldn't order an Espresso with sugar" << std::endl;
   }
 
-  auto orderList = orderRepository.getOrders();
+  const auto &orderList = orderRepository.getOrders();
   printerPresenter.printOutOrders(orderList);
+
+  //------------------
+
+  /*int resMenu =*/consoleMenu();
+
+  return 0;
+}
+
+int consoleMenu()
+{
+  constexpr int AddOrderCommand = 1;
+  constexpr int ScreenListOrdersCommand = 2;
+  constexpr int PrintListOrdersCommand = 3;
+  constexpr int QuitCommand = 0;
+
+  OrderRepository orderRepository;
+  int userInput = 0;
+
+  do
+  {
+    system("cls");
+
+    // Show Main menu options (Add order, list order...)
+    std::cout << "Main menu" << std::endl;
+    std::cout << "1. Add beverage order" << std::endl;
+    std::cout << "2. Screen list beverage orders" << std::endl;
+    std::cout << "3. Print list beverage orders" << std::endl;
+    std::cout << "0. Exit" << std::endl;
+
+    std::cin >> userInput;
+
+    if (userInput == AddOrderCommand)
+    {
+      //*************************************************************************************************
+      // Here we're connecting our app framework layer with our Use Case
+      // Interactors This would typically go in a Controller Action in an MVC
+      // context or ViewModel in MVVM etc.
+      //*************************************************************************************************
+      // 1. instantiate "Add Beverage Order" Use Case injecting Gateways
+      // implemented in this layer
+
+      NewOrderReq newOrderReq(IBeverage::BeverageType::Coffee,
+                              BeverageVariety::CoffeeEspresso,
+                              {Ingredient::Sugar});
+      AddNewOrderResponseMessage response;
+
+      BeverageController beverageController(orderRepository);
+      response = beverageController.execAddOrderUC(newOrderReq);
+
+      ScreenPresenter screenPresenter;
+      screenPresenter.print(response.getMessage()); // getErrors()
+      screenPresenter.print("");
+
+      if (!response.getSuccess())
+      {
+        // screenPresenter.print(response.getErrors());
+      }
+    }
+    else if (userInput == ScreenListOrdersCommand)
+    {
+      ScreenPresenter screenPresenter;
+      const auto &orderList = orderRepository.getOrders();
+      screenPresenter.print(orderList);
+    }
+    else if (userInput == PrintListOrdersCommand)
+    {
+      PrinterPresenter printerPresenter;
+      const auto &orderList = orderRepository.getOrders();
+      printerPresenter.printOutOrders(orderList);
+    }
+
+    if (userInput != QuitCommand)
+    {
+      system("pause");
+    }
+
+  } while (userInput != QuitCommand);
 
   return 0;
 }

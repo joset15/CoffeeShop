@@ -18,33 +18,27 @@
 class AddNewOrderUC : public UseCase
 {
 public:
-  /*
-  AddNewOrderUC(const std::string &name, IOrderOutput &output,
-                IOrderRepository &orderRepository)
-      : UseCase(name), m_Output(output), m_OrderRepository(orderRepository){};
-  */
-  AddNewOrderUC(const std::string &name, const NewOrderReq &request)
-      : UseCase(name), m_NewOrderReq(request){};
+  AddNewOrderUC(const std::string &name, const NewOrderReq &request,
+                const IOrderRepository &orderRepository)
+      : UseCase(name), m_OrderRepository(orderRepository),
+        m_NewOrderReq(request){};
 
   // TODO bool execute() or execute(Args<T>) ver servidor y virtual execute() en
   // base, no parece que una lista genérica sea lo mejor
-  // sino una estructura de datos para request y otra para response https
-  //    : //
-  //    bocato.medium.com/encapsulating-business-logic-using-the-command-pattern-dee6460cbf20
+  // sino una estructura de datos para request y otra para response
+  // https://bocato.medium.com/encapsulating-business-logic-using-the-command-pattern-dee6460cbf20
 
-  // TODO return ErrorCode
-  // bool execute(const NewOrderReq &request) override;
   bool execute() override;
 
 private:
   bool addNewOrder(IBeverage::BeverageType beverageType,
                    BeverageVariety beverageVariety,
-                   const std::list<Ingredient> &ingredients);
+                   const std::list<Ingredient> &ingredients) const;
 
-  // IOrderOutput &m_Output;
-  // IOrderRepository &m_OrderRepository;
+  // IUseCaseOutputPort &m_Presenter;
+  const IOrderRepository &m_OrderRepository;
 
-  const NewOrderReq &m_NewOrderReq;
+  NewOrderReq m_NewOrderReq;
 };
 
 #endif // ADD_NEW_ORDER_UC_HPP
