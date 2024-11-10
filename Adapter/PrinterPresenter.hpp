@@ -1,8 +1,8 @@
 #ifndef PRINTER_PRESENTER_HPP
 #define PRINTER_PRESENTER_HPP
 
-#include "..\Model\Beverages\IBeverage.hpp"
-#include "..\UseCase\IOrderOutput.hpp"
+#include "../UseCase/IOrderOutput.hpp"
+#include "Domain/Beverages/IBeverage.hpp"
 
 #include <iostream>
 #include <memory>

@@ -2,11 +2,11 @@
 #define IBEVERAGE_BUILDER_HPP
 //#pragma once
 
-#include "../Beverages/IBeverage.hpp"
-#include "../Ingredient/Ingredients.hpp"
+#include "Domain/Beverages/IBeverage.hpp"
+#include "Domain/Ingredients/Ingredients.hpp"
 
-#include "../BeverageFactories/IBeverageFactory.hpp"
-#include "../BeverageFactories/IIngredientFactory.hpp"
+#include "Domain/BeverageFactories/IBeverageFactory.hpp"
+#include "Domain/BeverageFactories/IIngredientFactory.hpp"
 
 #include <memory>
 

@@ -1,4 +1,4 @@
-#include "IngredientFactory.hpp"
+#include "Domain/BeverageFactories/IngredientFactory.hpp"
 #include <assert.h>
 
 std::shared_ptr<IBeverage>

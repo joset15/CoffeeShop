@@ -2,7 +2,7 @@
 #define SUGAR_TESTFIXTURES_HPP
 
 // #include "InputCommand_TestDoubles.h"
-#include "Model/Beverages/Coffee.hpp"
+#include "Domain/Beverages/Coffee.hpp"
 
 #include <gtest/gtest.h>
 #include <memory>

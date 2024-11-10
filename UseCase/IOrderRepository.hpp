@@ -1,7 +1,7 @@
 #ifndef IORDER_REPOSITORY_HPP
 #define IORDER_REPOSITORY_HPP
 
-#include "../Model/Beverages/IBeverage.hpp"
+#include "Domain/Beverages/IBeverage.hpp"
 
 #include <memory>
 

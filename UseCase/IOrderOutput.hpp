@@ -1,7 +1,7 @@
 #ifndef IORDEROUTPUT_H
 #define IORDEROUTPUT_H
 
-#include "../Model/Beverages/IBeverage.hpp"
+#include "Domain/Beverages/IBeverage.hpp"
 
 #include <list>
 #include <memory>

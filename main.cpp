@@ -1,17 +1,17 @@
-#include "Model/Beverages/BeverageVariety.hpp"
-#include "Model/Beverages/Coffee.hpp"
-#include "Model/Beverages/IBeverage.hpp"
+#include "Domain/Beverages/BeverageVariety.hpp"
+#include "Domain/Beverages/Coffee.hpp"
+#include "Domain/Beverages/IBeverage.hpp"
 
-#include "Model/Ingredient/Ingredients.hpp"
+#include "Domain/Ingredients/Ingredients.hpp"
 
 #include "Adapter/OrderRepository.hpp"
 #include "Adapter/PrinterPresenter.hpp"
 #include "Adapter/ScreenPresenter.hpp"
 
-#include "Model/BeverageFactories/BeverageFactory.hpp"
-#include "Model/BeverageFactories/IngredientFactory.hpp"
+#include "Domain/BeverageFactories/BeverageFactory.hpp"
+#include "Domain/BeverageFactories/IngredientFactory.hpp"
 
-#include "Model/BeverageBuilder/BeverageBuilder.hpp"
+#include "Domain/BeverageBuilder/BeverageBuilder.hpp"
 
 #include "UseCase/AddNewOrderUC.hpp"
 #include "UseCase/NewOrderReq.hpp"

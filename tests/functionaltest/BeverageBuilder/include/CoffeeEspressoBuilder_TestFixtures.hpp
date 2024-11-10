@@ -2,12 +2,12 @@
 #define COFFEE_ESPRESSO_BUILDER_TESTFIXTURES_HPP
 
 // #include "InputCommand_TestDoubles.h"
-#include "Model/BeverageBuilder/BeverageBuildDirector.hpp"
-#include "Model/BeverageBuilder/CoffeeEspressoBuilder.hpp"
+#include "Domain/BeverageBuilder/BeverageBuildDirector.hpp"
+#include "Domain/BeverageBuilder/CoffeeEspressoBuilder.hpp"
 //#include "Model/Beverages/Coffee.hpp"
 
-#include "Model/BeverageFactories/BeverageFactory.hpp"
-#include "Model/BeverageFactories/IngredientFactory.hpp"
+#include "Domain/BeverageFactories/BeverageFactory.hpp"
+#include "Domain/BeverageFactories/IngredientFactory.hpp"
 
 #include <gtest/gtest.h>
 #include <memory>

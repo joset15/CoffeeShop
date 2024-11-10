@@ -23,39 +23,40 @@
     <ClInclude Include="Adapter\OrderRepository.hpp" />
     <ClInclude Include="Adapter\PrinterPresenter.hpp" />
     <ClInclude Include="Data\OrderDiskDataSource.hpp" />
-    <ClInclude Include="Model\BeverageBuilder\BeverageBuildDirector.hpp" />
-    <ClInclude Include="Model\BeverageBuilder\BeverageBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuildDirector.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\CocoaBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\CoffeeBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\CoffeeEspressoBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\IBeverageBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\TeaBlackBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\TeaBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageFactories\BeverageBuilderSimpleFactory.hpp" />
+    <ClInclude Include="include\Domain\BeverageFactories\BeverageFactory.hpp" />
+    <ClInclude Include="include\Domain\BeverageFactories\IBeverageBuilderFactory.hpp" />
+    <ClInclude Include="include\Domain\BeverageFactories\IBeverageFactory.hpp" />
+    <ClInclude Include="include\Domain\BeverageFactories\IIngredientFactory.hpp" />
+    <ClInclude Include="include\Domain\BeverageFactories\IngredientFactory.hpp" />
+    <ClInclude Include="include\Domain\Beverages\BeverageVariety.hpp" />
+    <ClInclude Include="include\Domain\Beverages\Cocoa.hpp" />
+    <ClInclude Include="include\Domain\Beverages\Coffee.hpp" />
+    <ClInclude Include="include\Domain\Beverages\CoffeeDecaf.hpp" />
+    <ClInclude Include="include\Domain\Beverages\CoffeeEspresso.hpp" />
+    <ClInclude Include="include\Domain\Beverages\CoffeeLatte.hpp" />
+    <ClInclude Include="include\Domain\Beverages\IBeverage.hpp" />
+    <ClInclude Include="include\Domain\Beverages\Tea.hpp" />
+    <ClInclude Include="include\Domain\Beverages\TeaBlack.hpp" />
+    <ClInclude Include="include\Domain\Beverages\TeaGreen.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\Cream.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\Honey.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\IngredientDecorator.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\Ingredients.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\Lemon.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\Milk.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\SoyMilk.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\Sugar.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\Water.hpp" />
     <ClInclude Include="Model\BeverageBuilder\BeverageDirector.hpp" />
-    <ClInclude Include="Model\BeverageBuilder\CocoaBuilder.hpp" />
-    <ClInclude Include="Model\BeverageBuilder\CoffeeBuilder.hpp" />
-    <ClInclude Include="Model\BeverageBuilder\CoffeeEspressoBuilder.hpp" />
-    <ClInclude Include="Model\BeverageBuilder\IBeverageBuilder.hpp" />
-    <ClInclude Include="Model\BeverageBuilder\TeaBlackBuilder.hpp" />
-    <ClInclude Include="Model\BeverageBuilder\TeaBuilder.hpp" />
-    <ClInclude Include="Model\BeverageFactories\BeverageBuilderSimpleFactory.hpp" />
-    <ClInclude Include="Model\BeverageFactories\BeverageFactory.hpp" />
-    <ClInclude Include="Model\BeverageFactories\IBeverageBuilderFactory.hpp" />
-    <ClInclude Include="Model\BeverageFactories\IBeverageFactory.hpp" />
-    <ClInclude Include="Model\BeverageFactories\IIngredientFactory.hpp" />
-    <ClInclude Include="Model\BeverageFactories\IngredientFactory.hpp" />
-    <ClInclude Include="Model\Beverages\BeverageVariety.hpp" />
-    <ClInclude Include="Model\Beverages\Cocoa.hpp" />
-    <ClInclude Include="Model\Beverages\Coffee.hpp" />
-    <ClInclude Include="Model\Beverages\CoffeeDecaf.hpp" />
-    <ClInclude Include="Model\Beverages\CoffeeEspresso.hpp" />
-    <ClInclude Include="Model\Beverages\CoffeeLatte.hpp" />
-    <ClInclude Include="Model\Beverages\IBeverage.hpp" />
-    <ClInclude Include="Model\Beverages\Tea.hpp" />
-    <ClInclude Include="Model\Beverages\TeaBlack.hpp" />
-    <ClInclude Include="Model\Beverages\TeaGreen.hpp" />
-    <ClInclude Include="Model\Ingredient\Cream.hpp" />
-    <ClInclude Include="Model\Ingredient\Honey.hpp" />
-    <ClInclude Include="Model\Ingredient\IngredientDecorator.hpp" />
-    <ClInclude Include="Model\Ingredient\Lemon.hpp" />
-    <ClInclude Include="Model\Ingredient\Milk.hpp" />
-    <ClInclude Include="Model\Ingredient\SoyMilk.hpp" />
-    <ClInclude Include="Model\Ingredient\Sugar.hpp" />
-    <ClInclude Include="Model\Ingredient\Water.hpp" />
     <ClInclude Include="UseCase\AddNewOrderUC.hpp" />
     <ClInclude Include="UseCase\IOrderOutput.hpp" />
     <ClInclude Include="UseCase\IOrderRepository.hpp" />
@@ -218,7 +219,7 @@
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ForcedIncludeFiles>StdAfx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories);.\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

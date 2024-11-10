@@ -2,7 +2,7 @@
 #define BEVERAGE_BUILD_DIRECTOR_HPP
 #pragma once
 
-#include "../Ingredient/Ingredients.hpp"
+#include "Domain/Ingredients/Ingredients.hpp"
 #include "IBeverageBuilder.hpp"
 
 #include <list>

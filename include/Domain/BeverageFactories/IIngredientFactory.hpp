@@ -1,7 +1,7 @@
 #ifndef IINGREDIENT_FACTORY_HPP
 #define IINGREDIENT_FACTORY_HPP
 
-#include "../Ingredient/Ingredients.hpp"
+#include "Domain/Ingredients/Ingredients.hpp"
 #include <memory>
 
 // TODO Complete doxygen comments.

@@ -17,11 +17,11 @@
 
 #include "OrderRepository.hpp"
 
-#include "../Model/BeverageFactories/BeverageFactory.hpp"
-#include "../Model/BeverageFactories/IngredientFactory.hpp"
+#include "Domain/BeverageFactories/BeverageFactory.hpp"
+#include "Domain/BeverageFactories/IngredientFactory.hpp"
 
-#include "../Model/BeverageBuilder/BeverageBuilder.hpp"
 #include "../UseCase/AddNewOrderResponseMessage.hpp"
+#include "Domain/BeverageBuilder/BeverageBuilder.hpp"
 
 class BeverageController
 {

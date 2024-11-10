@@ -2,10 +2,10 @@
 
 #include "NewOrderReq.hpp"
 
-#include "../Model/BeverageBuilder/BeverageBuilder.hpp"
-#include "../Model/BeverageFactories/BeverageBuilderSimpleFactory.hpp"
-#include "../Model/BeverageFactories/BeverageFactory.hpp"
-#include "../Model/BeverageFactories/IngredientFactory.hpp"
+#include "Domain/BeverageBuilder/BeverageBuilder.hpp"
+#include "Domain/BeverageFactories/BeverageBuilderSimpleFactory.hpp"
+#include "Domain/BeverageFactories/BeverageFactory.hpp"
+#include "Domain/BeverageFactories/IngredientFactory.hpp"
 
 #include <iostream>
 #include <memory>

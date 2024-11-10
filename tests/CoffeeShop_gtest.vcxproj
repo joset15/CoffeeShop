@@ -39,18 +39,17 @@
     <SourcePath>$(VC_SourcePath);</SourcePath>
   </PropertyGroup>
   <ItemGroup>
-    <ClInclude Include="..\Model\BeverageBuilder\BeverageBuildDirector.hpp" />
-    <ClInclude Include="..\Model\BeverageBuilder\CoffeeBuilder.hpp" />
-    <ClInclude Include="..\Model\BeverageBuilder\CoffeeEspressoBuilder.hpp" />
-    <ClInclude Include="..\Model\BeverageBuilder\IBeverageBuilder.hpp" />
-    <ClInclude Include="..\Model\BeverageBuilder\TeaBlackBuilder.hpp" />
-    <ClInclude Include="..\Model\BeverageBuilder\TeaBuilder.hpp" />
-    <ClInclude Include="..\Model\BeverageFactories\BeverageFactory.hpp" />
-    <ClInclude Include="..\Model\BeverageFactories\IBeverageFactory.hpp" />
-    <ClInclude Include="..\Model\BeverageFactories\IIngredientFactory.hpp" />
-    <ClInclude Include="..\Model\BeverageFactories\IngredientFactory.hpp" />
-    <ClInclude Include="..\Model\Beverages\Coffee.hpp" />
-    <ClInclude Include="..\Model\Beverages\IBeverage.hpp" />
+    <ClInclude Include="..\include\Domain\BeverageBuilder\BeverageBuildDirector.hpp" />
+    <ClInclude Include="..\include\Domain\BeverageBuilder\CoffeeEspressoBuilder.hpp" />
+    <ClInclude Include="..\include\Domain\BeverageBuilder\IBeverageBuilder.hpp" />
+    <ClInclude Include="..\include\Domain\BeverageBuilder\TeaBlackBuilder.hpp" />
+    <ClInclude Include="..\include\Domain\BeverageBuilder\TeaBuilder.hpp" />
+    <ClInclude Include="..\include\Domain\BeverageFactories\BeverageFactory.hpp" />
+    <ClInclude Include="..\include\Domain\BeverageFactories\IBeverageBuilderFactory.hpp" />
+    <ClInclude Include="..\include\Domain\BeverageFactories\IBeverageFactory.hpp" />
+    <ClInclude Include="..\include\Domain\BeverageFactories\IIngredientFactory.hpp" />
+    <ClInclude Include="..\include\Domain\BeverageFactories\IngredientFactory.hpp" />
+    <ClInclude Include="..\include\Domain\Beverages\Coffee.hpp" />
     <ClInclude Include="functionaltest\BeverageBuilder\include\CoffeeEspressoBuilderParameterized_TestFixtures.hpp" />
     <ClInclude Include="functionaltest\BeverageBuilder\include\CoffeeEspressoBuilder_TestFixtures.hpp" />
     <ClInclude Include="functionaltest\BeverageBuilder\include\TeaBlackBuilderParameterized_TestFixtures.hpp" />
@@ -134,6 +133,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories);..\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

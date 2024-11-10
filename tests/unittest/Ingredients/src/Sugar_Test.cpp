@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include "../include/Sugar_TestFixtures.hpp"
-#include "Model/Ingredient/Sugar.hpp"
+#include "Domain/Ingredients/Sugar.hpp"
 
 #include <string>
 

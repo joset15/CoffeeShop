@@ -7,9 +7,9 @@
 #include "NewOrderReq.hpp"
 
 //*
-#include "../Model/Beverages/BeverageVariety.hpp"
-#include "../Model/Beverages/IBeverage.hpp"
-#include "../Model/Ingredient/Ingredients.hpp"
+#include "Domain/Beverages/BeverageVariety.hpp"
+#include "Domain/Beverages/IBeverage.hpp"
+#include "Domain/Ingredients/Ingredients.hpp"
 
 #include "IOrderOutput.hpp"
 #include "IOrderRepository.hpp"

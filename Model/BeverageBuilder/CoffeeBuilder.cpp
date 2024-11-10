@@ -1,4 +1,4 @@
-#include "CoffeeBuilder.hpp"
+#include "Domain/BeverageBuilder/CoffeeBuilder.hpp"
 #include <cassert>
 
 void CoffeeBuilder::resetImpl() { m_HasMilk = false; }

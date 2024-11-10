@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "Model/Beverages/IBeverage.hpp"
+#include "Domain/Beverages/IBeverage.hpp"
 #include "UseCase/IUseCaseOutputPort.hpp"
 
 #include <iostream>

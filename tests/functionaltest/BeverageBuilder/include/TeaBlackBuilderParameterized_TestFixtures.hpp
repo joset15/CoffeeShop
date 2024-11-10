@@ -1,11 +1,11 @@
 #ifndef TEA_BLACK_BUILDER_TESTFIXTURES_HPP
 #define TEA_BLACK_BUILDER_TESTFIXTURES_HPP
 
-#include "Model/BeverageBuilder/BeverageBuildDirector.hpp"
-#include "Model/BeverageBuilder/TeaBlackBuilder.hpp"
+#include "Domain/BeverageBuilder/BeverageBuildDirector.hpp"
+#include "Domain/BeverageBuilder/TeaBlackBuilder.hpp"
 
-#include "Model/BeverageFactories/BeverageFactory.hpp"
-#include "Model/BeverageFactories/IngredientFactory.hpp"
+#include "Domain/BeverageFactories/BeverageFactory.hpp"
+#include "Domain/BeverageFactories/IngredientFactory.hpp"
 
 #include <gtest/gtest.h>
 #include <memory>

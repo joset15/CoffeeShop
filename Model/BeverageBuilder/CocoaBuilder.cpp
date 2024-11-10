@@ -1,4 +1,4 @@
-#include "CocoaBuilder.hpp"
+#include "Domain/BeverageBuilder/CocoaBuilder.hpp"
 
 void CocoaBuilder::resetImpl()
 {
