@@ -18,19 +18,10 @@
     <ClInclude Include="Adapter\IOrderDataSource.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Adapter\OrderRepository.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Adapter\PrinterPresenter.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Data\OrderDiskDataSource.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UseCase\IOrderOutput.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UseCase\IOrderRepository.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Model\BeverageBuilder\BeverageDirector.hpp">
@@ -143,9 +134,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Adapter\OrderRepository.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Data\OrderDiskDataSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -153,9 +141,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UseCase\AddNewOrderUC.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Adapter\BeverageController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StdAfx.cpp">
@@ -195,6 +180,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Domain\Beverages\Tea.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InterfaceAdapters\BeverageController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InterfaceAdapters\OrderRepository.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

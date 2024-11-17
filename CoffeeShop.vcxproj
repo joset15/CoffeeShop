@@ -20,8 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Adapter\IOrderDataSource.hpp" />
-    <ClInclude Include="Adapter\OrderRepository.hpp" />
-    <ClInclude Include="Adapter\PrinterPresenter.hpp" />
     <ClInclude Include="Data\OrderDiskDataSource.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuildDirector.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuilder.hpp" />
@@ -59,16 +57,9 @@
     <ClInclude Include="Model\BeverageBuilder\BeverageDirector.hpp" />
     <ClInclude Include="UseCase\AddNewOrderUC.hpp" />
     <ClInclude Include="UseCase\IOrderOutput.hpp" />
-    <ClInclude Include="UseCase\IOrderRepository.hpp" />
     <ClInclude Include="UseCase\UseCase.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Adapter\BeverageController.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Adapter\OrderRepository.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="Data\OrderDiskDataSource.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
@@ -87,6 +78,8 @@
     <ClCompile Include="src\Domain\Beverages\Cocoa.cpp" />
     <ClCompile Include="src\Domain\Beverages\Coffee.cpp" />
     <ClCompile Include="src\Domain\Beverages\Tea.cpp" />
+    <ClCompile Include="src\InterfaceAdapters\BeverageController.cpp" />
+    <ClCompile Include="src\InterfaceAdapters\OrderRepository.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>

@@ -4,9 +4,9 @@
 
 #include "Domain/Ingredients/Ingredients.hpp"
 
-#include "Adapter/OrderRepository.hpp"
-#include "Adapter/PrinterPresenter.hpp"
-#include "Adapter/ScreenPresenter.hpp"
+#include "InterfaceAdapters/OrderRepository.hpp"
+#include "InterfaceAdapters/PrinterPresenter.hpp"
+#include "InterfaceAdapters/ScreenPresenter.hpp"
 
 #include "Domain/BeverageFactories/BeverageFactory.hpp"
 #include "Domain/BeverageFactories/IngredientFactory.hpp"
@@ -16,7 +16,7 @@
 #include "UseCase/AddNewOrderUC.hpp"
 #include "UseCase/NewOrderReq.hpp"
 
-#include "Adapter/BeverageController.hpp"
+#include "InterfaceAdapters/BeverageController.hpp"
 
 //#include <conio.h> //clrscr(), getch()
 #include <iostream>
