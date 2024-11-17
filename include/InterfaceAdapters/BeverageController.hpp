@@ -5,7 +5,7 @@
 
 //#include "UseCase/IUseCaseOutputPort.hpp"
 
-#include "../UseCase/NewOrderReq.hpp"
+#include "Application/UseCases/NewOrderReq.hpp"
 
 /*
 #include "Model/Beverages/BeverageVariety.hpp"
@@ -20,7 +20,7 @@
 #include "Domain/BeverageFactories/BeverageFactory.hpp"
 #include "Domain/BeverageFactories/IngredientFactory.hpp"
 
-#include "../UseCase/AddNewOrderResponseMessage.hpp"
+#include "Application/UseCases/AddNewOrderResponseMessage.hpp"
 #include "Domain/BeverageBuilder/BeverageBuilder.hpp"
 
 class BeverageController

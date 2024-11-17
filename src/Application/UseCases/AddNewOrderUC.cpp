@@ -1,6 +1,6 @@
-#include "AddNewOrderUC.hpp"
+#include "Application/UseCases/AddNewOrderUC.hpp"
 
-#include "NewOrderReq.hpp"
+#include "Application/UseCases/NewOrderReq.hpp"
 
 #include "Domain/BeverageBuilder/BeverageBuilder.hpp"
 #include "Domain/BeverageFactories/BeverageBuilderSimpleFactory.hpp"

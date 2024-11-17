@@ -13,8 +13,8 @@
 
 #include "Domain/BeverageBuilder/BeverageBuilder.hpp"
 
-#include "UseCase/AddNewOrderUC.hpp"
-#include "UseCase/NewOrderReq.hpp"
+#include "Application/UseCases/AddNewOrderUC.hpp"
+#include "Application/UseCases/NewOrderReq.hpp"
 
 #include "InterfaceAdapters/BeverageController.hpp"
 

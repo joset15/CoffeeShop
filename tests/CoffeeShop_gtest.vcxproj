@@ -67,8 +67,12 @@
     <ClCompile Include="..\src\Domain\BeverageBuilder\CoffeeEspressoBuilder.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\src\Domain\BeverageBuilder\TeaBlackBuilder.cpp" />
-    <ClCompile Include="..\src\Domain\BeverageBuilder\TeaBuilder.cpp" />
+    <ClCompile Include="..\src\Domain\BeverageBuilder\TeaBlackBuilder.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\src\Domain\BeverageBuilder\TeaBuilder.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\src\Domain\BeverageFactories\BeverageFactory.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>

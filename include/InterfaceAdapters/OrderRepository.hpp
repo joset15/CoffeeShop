@@ -1,7 +1,7 @@
 #ifndef ORDER_REPOSITORY_HPP
 #define ORDER_REPOSITORY_HPP
 
-#include "../UseCase/IOrderRepository.hpp"
+#include "Application/UseCases/IOrderRepository.hpp"
 #include "Domain/Beverages/IBeverage.hpp"
 #include "IOrderDataSource.hpp"
 

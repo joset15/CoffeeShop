@@ -1,7 +1,7 @@
 #include "InterfaceAdapters/BeverageController.hpp"
 
-#include "../UseCase/AddNewOrderResponseMessage.hpp"
-#include "../UseCase/AddNewOrderUC.hpp"
+#include "Application/UseCases/AddNewOrderResponseMessage.hpp"
+#include "Application/UseCases/AddNewOrderUC.hpp"
 
 AddNewOrderResponseMessage
 BeverageController::execAddOrderUC(const NewOrderReq &newOrderReq) const
