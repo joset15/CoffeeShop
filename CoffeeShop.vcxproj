@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Adapter\IOrderDataSource.hpp" />
-    <ClInclude Include="Data\OrderDiskDataSource.hpp" />
     <ClInclude Include="include\Application\UseCases\AddNewOrderResponseMessage.hpp" />
     <ClInclude Include="include\Application\UseCases\AddNewOrderUC.hpp" />
     <ClInclude Include="include\Application\UseCases\NewOrderReq.hpp" />
@@ -58,13 +57,11 @@
     <ClInclude Include="include\Domain\Ingredients\SoyMilk.hpp" />
     <ClInclude Include="include\Domain\Ingredients\Sugar.hpp" />
     <ClInclude Include="include\Domain\Ingredients\Water.hpp" />
+    <ClInclude Include="include\InterfaceAdapters\Gateways\OrderDiskDataSource.hpp" />
     <ClInclude Include="Model\BeverageBuilder\BeverageDirector.hpp" />
     <ClInclude Include="UseCase\IOrderOutput.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Data\OrderDiskDataSource.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
@@ -82,6 +79,7 @@
     <ClCompile Include="src\Domain\Beverages\Coffee.cpp" />
     <ClCompile Include="src\Domain\Beverages\Tea.cpp" />
     <ClCompile Include="src\InterfaceAdapters\BeverageController.cpp" />
+    <ClCompile Include="src\InterfaceAdapters\Gateways\OrderDiskDataSource.cpp" />
     <ClCompile Include="src\InterfaceAdapters\OrderRepository.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
