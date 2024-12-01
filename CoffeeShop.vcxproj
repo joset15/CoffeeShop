@@ -58,15 +58,12 @@
     <ClInclude Include="include\Domain\Ingredients\Sugar.hpp" />
     <ClInclude Include="include\Domain\Ingredients\Water.hpp" />
     <ClInclude Include="include\InterfaceAdapters\Gateways\OrderDiskDataSource.hpp" />
+    <ClInclude Include="include\pch.h" />
     <ClInclude Include="Model\BeverageBuilder\BeverageDirector.hpp" />
-    <ClInclude Include="pch.h" />
     <ClInclude Include="UseCase\IOrderOutput.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="apps\Console\main.cpp" />
-    <ClCompile Include="pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="src\Application\UseCases\AddNewOrderUC.cpp" />
     <ClCompile Include="src\Domain\BeverageBuilder\BeverageBuildDirector.cpp" />
     <ClCompile Include="src\Domain\BeverageBuilder\CocoaBuilder.cpp" />
@@ -83,6 +80,9 @@
     <ClCompile Include="src\InterfaceAdapters\BeverageController.cpp" />
     <ClCompile Include="src\InterfaceAdapters\Gateways\OrderDiskDataSource.cpp" />
     <ClCompile Include="src\InterfaceAdapters\OrderRepository.cpp" />
+    <ClCompile Include="src\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -187,9 +187,9 @@
       <ConformanceMode>true</ConformanceMode>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <ForcedIncludeFiles>pch.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles>include\pch.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories);.\include</AdditionalIncludeDirectories>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>include\pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
