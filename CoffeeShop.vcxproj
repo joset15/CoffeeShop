@@ -63,7 +63,7 @@
     <ClInclude Include="UseCase\IOrderOutput.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="apps\Console\main.cpp" />
+    <ClCompile Include="apps\ConsoleApp\main.cpp" />
     <ClCompile Include="src\Application\UseCases\AddNewOrderUC.cpp" />
     <ClCompile Include="src\Domain\BeverageBuilder\BeverageBuildDirector.cpp" />
     <ClCompile Include="src\Domain\BeverageBuilder\CocoaBuilder.cpp" />

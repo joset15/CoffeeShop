@@ -191,10 +191,10 @@
     <ClCompile Include="src\InterfaceAdapters\Gateways\OrderDiskDataSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="apps\Console\main.cpp">
+    <ClCompile Include="src\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\pch.cpp">
+    <ClCompile Include="apps\ConsoleApp\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
