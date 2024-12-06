@@ -1,7 +1,5 @@
-﻿# CoffeeShop
-Management of drink orders.
-
-## Folder structure
+﻿
+# Folder structure
 
 ```
 /
@@ -78,3 +76,8 @@ Management of drink orders.
 └── CMakeUserPresets.json
 
 ```
+
+# System architecture
+
+![Main Class Diagram](./images/MainClassDiagram.png)
+
