@@ -14,23 +14,46 @@
 # See https://pre-commit.com/hooks.html for more hooks
 # See https://github.com/pre-commit/pre-commit
 
+# Don't run pre-commit on files under third-party/ tests/packages.config
+exclude: "^\
+  (third-party/.*)\
+  tests/packages.config$"
+
 repos:
   # Standard hooks
-  - repo: 'https://github.com/pre-commit/pre-commit-hooks'
-    rev: v3.2.0
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
     hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
-      - id: check-yaml
-      - id: check-added-large-files
-      - id: check-merge-conflict
-      - id: mixed-line-ending
+      - id: trailing-whitespace # Trims trailing whitespace.
+      # - id: end-of-file-fixer # ensures that a file is either empty, or ends with one newline.
+      #   exclude_types: [vcxproj, filters]
+      - id: check-yaml # Checks yaml files for parseable syntax.
+      - id: check-json # Checks json files for parseable syntax.
+      - id: pretty-format-json # Checks that json files are sorted and indented.
+        args: ['--no-sort-keys']
+      - id: check-added-large-files # Prevents giant files from being committed.
+      - id: check-merge-conflict # Checks for files that contain merge conflict strings.
+      - id: mixed-line-ending # Replaces or checks mixed line ending.
+      - id: check-case-conflict # Checks for files that would conflict in case-insensitive filesystems.
+      - id: no-commit-to-branch # Protect specific branches from direct checkins.
+        args: ['--branch', 'main', '--branch', 'staging']
+      - id: requirements-txt-fixer # sorts entries in requirements.txt and constraints.txt and removes incorrect entries.
+
   - repo: https://github.com/cheshirekow/cmake-format-precommit
     rev: v0.6.10
     hooks:
-    # - id: cmake-format
-    - id: cmake-lint
-  - repo: 'https://github.com/BlankSpruce/gersemi'
+      # - id: cmake-format
+      - id: cmake-lint
+        types: [cmake]
+        entry: cmake-lint --linelength=100 --config=.cmakelintrc
+
+  - repo: https://github.com/BlankSpruce/gersemi
     rev: 0.17.1
     hooks:
       - id: gersemi
+        types: [cmake]
+
+  # - repo: https://github.com/pre-commit/mirrors-clang-format
+  #   rev: v19.1.5
+  #   hooks:
+  #     - id: clang-format
