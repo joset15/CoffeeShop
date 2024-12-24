@@ -38,10 +38,8 @@ elseif("$ENV{ARCH}" STREQUAL "ppc64")
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCC)
-  set(CMAKE_CXX_FLAGS
-      "${CMAKE_CXX_FLAGS} -Wall -fno-rtti -Wno-psabi -fexceptions")
-  set(CMAKE_CXX_FLAGS_RELEASE
-      "${CMAKE_CXX_FLAGS_RELEASE} -O3 -fno-strict-aliasing -Werror")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fno-rtti -Wno-psabi -fexceptions")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -fno-strict-aliasing -Werror")
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
   # set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -fsanitize=address
   # -static-libasan -g") # -fpermissive")
@@ -69,7 +67,7 @@ include_directories(${CONAN_INCLUDE_DIRS_GTEST})
 # add_custom_target(
 #   threadlib_inc ALL
 #   COMMAND ${CMAKE_COMMAND} -E create_symlink ${THREADLIB_SOURCE_DIR}/include
-          # ${CMAKE_BINARY_DIR}/external_includes/ThreadLib)
+# ${CMAKE_BINARY_DIR}/external_includes/ThreadLib)
 
 # add_subdirectory(${SUPPORT_SOURCE_DIR})
 # add_subdirectory(${NETWORK_SOURCE_DIR})
@@ -83,8 +81,7 @@ if(TESTS)
   include_directories(include src)
   enable_testing()
 
-  set(CMAKE_CXX_FLAGS_DEBUG
-      "${CMAKE_CXX_FLAGS_DEBUG} -fprofile-arcs -ftest-coverage")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fprofile-arcs -ftest-coverage")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
 

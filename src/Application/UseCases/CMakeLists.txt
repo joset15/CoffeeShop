@@ -2,9 +2,7 @@
 
 # find_package(Threads)
 
-set(SOURCES
-    AddNewOrderUC.cpp
-    CancelExistingOrderUC.cpp)
+set(SOURCES AddNewOrderUC.cpp CancelExistingOrderUC.cpp)
 
 # add_executable(CoffeeShopApp ${SOURCES})
 # target_sources(Application PRIVATE ${SOURCES})
@@ -12,10 +10,9 @@ add_library(UseCases ${SOURCES})
 
 # PCH support (support for PCH in CMake was added in 3.16)
 if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.16 AND BUILD_USING_PCH)
-  message(
-    STATUS "Reusing pre-compiled header support (UseCases)")
+  message(STATUS "Reusing pre-compiled header support (UseCases)")
 
-    target_precompile_headers(UseCases REUSE_FROM AllLayers)
+  target_precompile_headers(UseCases REUSE_FROM AllLayers)
 else()
   message(STATUS "Disabled pre-compiled header support")
 endif()

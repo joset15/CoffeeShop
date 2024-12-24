@@ -2,23 +2,24 @@
 
 # find_package(Threads)
 
-set(SOURCES
-    BeverageBuildDirector.cpp
-    CocoaBuilder.cpp
-    CoffeeBuilder.cpp
-    CoffeeEspressoBuilder.cpp
-    TeaBlackBuilder.cpp
-    TeaBuilder.cpp)
+set(
+  SOURCES
+  BeverageBuildDirector.cpp
+  CocoaBuilder.cpp
+  CoffeeBuilder.cpp
+  CoffeeEspressoBuilder.cpp
+  TeaBlackBuilder.cpp
+  TeaBuilder.cpp
+)
 
 #add_executable(CoffeeShopApp ${SOURCES})
 add_executable(BeverageBuilder ${SOURCES})
 
 # PCH support (support for PCH in CMake was added in 3.16)
 if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.16 AND BUILD_USING_PCH)
-  message(
-    STATUS "Compiling using pre-compiled header support (CoffeeShopApp)")
+  message(STATUS "Compiling using pre-compiled header support (CoffeeShopApp)")
 
-    target_precompile_headers(BeverageBuilder REUSE_FROM AllLayers)
+  target_precompile_headers(BeverageBuilder REUSE_FROM AllLayers)
 else()
   message(STATUS "Disabled pre-compiled header support")
 endif()
