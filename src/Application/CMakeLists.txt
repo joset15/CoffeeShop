@@ -1,5 +1,5 @@
-add_library(Application "")
-target_link_libraries(Application UseCases)
+add_library(Application INTERFACE)
+target_link_libraries(Application INTERFACE UseCases)
 
 # PCH support (support for PCH in CMake was added in 3.16)
 if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.16 AND BUILD_USING_PCH)

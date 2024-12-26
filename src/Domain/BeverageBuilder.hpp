@@ -1,9 +1,9 @@
 #ifndef BEVERAGE_BUILDER_HPP
 #define BEVERAGE_BUILDER_HPP
 
-#include "Beverages/BeverageVariety.hpp"
-#include "Beverages/IBeverage.hpp"
-#include "Ingredient/IngredientDecorator.hpp"
+#include "Domain/Beverages/BeverageVariety.hpp"
+#include "Domain/Beverages/IBeverage.hpp"
+#include "Domain/Ingredients/IngredientDecorator.hpp"
 
 #include <memory>
 

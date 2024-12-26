@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.9)
 
 project(CoffeeShop VERSION 0.1.0 LANGUAGES CXX)
 
-set(CXX_STANDARD 14)
+set(CXX_STANDARD 17)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -37,16 +37,31 @@ elseif("$ENV{ARCH}" STREQUAL "ppc64")
   include(profiles/architecture.ppc64.cmake)
 endif()
 
-if(CMAKE_COMPILER_IS_GNUCC)
+# if (("${CMAKE_C_COMPILER_ID}" STREQUAL "MSVC"))
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  message(STATUS "Setting MSVC flags")
+
+  # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHc /std:c++latest")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHc /std:c++17")
+
+  #set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -fno-strict-aliasing -Werror")
+  #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
+
+  # elseif (("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") OR ("${CMAKE_C_COMPILER_ID}" STREQUAL "Clang"))
+elseif((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+  message(STATUS "Setting GCC/GNU flags")
+
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fno-rtti -Wno-psabi -fexceptions")
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -fno-strict-aliasing -Werror")
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
   # set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -fsanitize=address
   # -static-libasan -g") # -fpermissive")
+else()
+  message("Unknown compiler: ${CMAKE_CXX_COMPILER_ID}")
 endif()
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
+#jt include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+#jt conan_basic_setup(TARGETS)
 
 # file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/external_includes)
 
@@ -57,7 +72,7 @@ conan_basic_setup(TARGETS)
 
 # include_directories(${CMAKE_BINARY_DIR}/external_includes
 #                     ${CONAN_INCLUDE_DIRS_GTEST})
-include_directories(${CONAN_INCLUDE_DIRS_GTEST})
+#jt include_directories(${CONAN_INCLUDE_DIRS_GTEST})
 
 # add_custom_target(
 #   network_inc ALL
@@ -98,3 +113,8 @@ endif()
 
 add_subdirectory(src)
 add_subdirectory(apps)
+
+add_dependencies(CoffeeShopApp AllLayers)
+
+# Sets the startup project in a Visual Studio solution.
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT apps)
