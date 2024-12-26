@@ -62,13 +62,17 @@
 ├── docs
 │   ├── doxygen
 │   │   └── doxyfile.in
-│   ├── CMakeLists.txt
-│   ├── OtherFile.md
+│   ├── images
+│   │   └── MainClassDiagram.png
+│   ├── README_development.txt
 │   └── CMakeLists.txt
-├── .gitignore
-├── .gitattributes
 ├── .clang-format
 ├── .clang-tidy
+├── .cmakelintrc
+├── .gersemirc
+├── .gitattributes
+├── .gitignore
+├── .pre-commit-config.yaml
 ├── README.md
 ├── LICENSE.md
 ├── conanfile.txt
