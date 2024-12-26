@@ -13,6 +13,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # PCH support (support for PCH in CMake was added in 3.16)
 option(BUILD_USING_PCH "Build using pre-compile header support" ON)
 
+# Enabled folders for VS projects.
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

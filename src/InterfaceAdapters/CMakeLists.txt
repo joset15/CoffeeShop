@@ -1,6 +1,7 @@
 set(SOURCES BeverageController.cpp OrderRepository.cpp)
 add_library(InterfaceAdapters ${SOURCES})
-target_link_libraries(InterfaceAdapters Gateways)
+
+set_target_properties(InterfaceAdapters PROPERTIES FOLDER "InterfaceAdapters")
 
 # PCH support (support for PCH in CMake was added in 3.16)
 if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.16 AND BUILD_USING_PCH)
@@ -11,3 +12,5 @@ else()
 endif()
 
 add_subdirectory(Gateways)
+
+target_link_libraries(InterfaceAdapters Gateways)

@@ -2,6 +2,8 @@ set(SOURCES main.cpp)
 add_executable(CoffeeShopApp ${SOURCES})
 target_link_libraries(CoffeeShopApp Application Domain InterfaceAdapters)
 
+set_target_properties(CoffeeShopApp PROPERTIES FOLDER "apps/ConsoleApp")
+
 # PCH support (support for PCH in CMake was added in 3.16)
 if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.16 AND BUILD_USING_PCH)
   message(STATUS "Reusing pre-compiled header support (CoffeeShopApp)")

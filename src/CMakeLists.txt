@@ -10,6 +10,8 @@ else()
   message(STATUS "Disabled pre-compiled header support")
 endif()
 
+set_target_properties(AllLayers PROPERTIES FOLDER "src")
+
 add_subdirectory(Application)
 add_subdirectory(Domain)
 add_subdirectory(InterfaceAdapters)
