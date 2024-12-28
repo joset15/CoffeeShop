@@ -72,7 +72,11 @@ endif()
 # set(CMAKE_MODULE_PATH "D:/users/2023_12_31_CoffeeShop/repos/CoffeeShop/build/generators")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/build/generators")
-find_package(GTest REQUIRED)
+
+if(TESTS OR ITESTS)
+  find_package(GTest REQUIRED)
+  enable_testing()
+endif()
 
 # file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/external_includes)
 
@@ -113,27 +117,21 @@ add_dependencies(CoffeeShopApp AllLayers)
 if(TESTS)
   message(STATUS "Compiling Unit Tests")
 
-  # include_directories(include src)
-  enable_testing()
-
   if((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fprofile-arcs -ftest-coverage")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
   endif()
 
-  add_subdirectory(tests/unittest)
+  add_subdirectory(tests/UnitTests)
   add_dependencies(UnitTests AllLayers)
 endif()
 
 if(ITESTS)
   message(STATUS "Compiling Integration Tests")
 
-  # include_directories(include src)
-  enable_testing()
-
-  add_subdirectory(tests/functionaltest)
-  add_dependencies(FunctionalTests AllLayers)
+  add_subdirectory(tests/IntegrationTests)
+  add_dependencies(IntegrationTests AllLayers)
 endif()
 
 # Sets the startup project in a Visual Studio solution.
