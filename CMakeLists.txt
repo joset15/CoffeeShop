@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.9)
 
 project(CoffeeShop VERSION 0.1.0 LANGUAGES CXX)
 
+if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+  message(FATAL_ERROR "Prevented in-tree build. ")
+endif()
+
 set(CXX_STANDARD 17)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -16,9 +20,9 @@ option(BUILD_USING_PCH "Build using pre-compile header support" ON)
 # Enabled folders for VS projects.
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<CONFIG>/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<CONFIG>/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<CONFIG>/lib)
 
 # Submodules directories
 # set(SUPPORT_SOURCE_DIR "${CMAKE_SOURCE_DIR}/Modules/Support")
@@ -65,6 +69,10 @@ endif()
 
 #jt include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 #jt conan_basic_setup(TARGETS)
+# set(CMAKE_MODULE_PATH "D:/users/2023_12_31_CoffeeShop/repos/CoffeeShop/build/generators")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/build/generators")
+find_package(GTest REQUIRED)
 
 # file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/external_includes)
 
@@ -95,29 +103,38 @@ endif()
 #   ${SUPPORT_SOURCE_DIR}/dependencies/SWExternalDependencies/01_NLOHMANN_JSON_PARSER/include
 # )
 
+include_directories(include)
+
+add_subdirectory(src) # AllLayers
+add_subdirectory(apps) # CoffeeShopApp
+
+add_dependencies(CoffeeShopApp AllLayers)
+
 if(TESTS)
-  include_directories(include src)
+  message(STATUS "Compiling Unit Tests")
+
+  # include_directories(include src)
   enable_testing()
 
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fprofile-arcs -ftest-coverage")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+  if((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fprofile-arcs -ftest-coverage")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+  endif()
 
-  add_subdirectory(tests)
-elseif(ITESTS)
-  include_directories(include src)
-else()
-  include_directories(include)
+  add_subdirectory(tests/unittest)
+  add_dependencies(UnitTests AllLayers)
 endif()
 
 if(ITESTS)
-  add_subdirectory(integrationtests)
+  message(STATUS "Compiling Integration Tests")
+
+  # include_directories(include src)
+  enable_testing()
+
+  add_subdirectory(tests/functionaltest)
+  add_dependencies(FunctionalTests AllLayers)
 endif()
-
-add_subdirectory(src)
-add_subdirectory(apps)
-
-add_dependencies(CoffeeShopApp AllLayers)
 
 # Sets the startup project in a Visual Studio solution.
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT apps)
