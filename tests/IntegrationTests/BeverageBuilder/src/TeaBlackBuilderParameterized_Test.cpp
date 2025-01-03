@@ -1,5 +1,3 @@
-#include "pch.h"
-
 #include "../include/TeaBlackBuilderParameterized_TestFixtures.hpp"
 #include <string>
 

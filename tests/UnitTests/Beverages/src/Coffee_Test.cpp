@@ -1,5 +1,3 @@
-#include "pch.h"
-
 #include "../include/Coffee_TestFixtures.hpp"
 #include <string>
 

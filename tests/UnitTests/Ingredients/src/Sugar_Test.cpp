@@ -1,5 +1,3 @@
-#include "pch.h"
-
 #include "../include/Sugar_TestFixtures.hpp"
 #include "Domain/Ingredients/Sugar.hpp"
 
