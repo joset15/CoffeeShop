@@ -1,13 +1,23 @@
 include(GoogleTest)
+include(files_helper)
 
-set(SOURCES
-    main.cpp
-    BeverageBuilder/src/CoffeeEspressoBuilder_Test.cpp
-    BeverageBuilder/src/CoffeeEspressoBuilderParameterized_Test.cpp
-    BeverageBuilder/src/TeaBlackBuilderParameterized_Test.cpp)
+resolve_project_paths(
+  SOURCE_ROOT_PATH
+  TOOLS_ROOT_PATH
+  PUBLIC_INCLUDE_PATH
+  PRIVATE_INCLUDE_PATH
+)
 
-#TODO: CHANGE TO IntegrationTests
+set(
+  SOURCES
+  BeverageBuilder/src/CoffeeEspressoBuilder_Test.cpp
+  BeverageBuilder/src/CoffeeEspressoBuilderParameterized_Test.cpp
+  BeverageBuilder/src/TeaBlackBuilderParameterized_Test.cpp
+)
+
 add_executable(IntegrationTests ${SOURCES})
+# target_include_directories(IntegrationTests PRIVATE ../../include)
+target_include_directories(IntegrationTests PRIVATE ${PUBLIC_INCLUDE_PATH})
 
 set_target_properties(IntegrationTests PROPERTIES FOLDER "tests/IntegrationTests")
 
@@ -19,11 +29,6 @@ else()
   message(STATUS "Disabled pre-compiled header support")
 endif()
 
-target_link_libraries(
-  IntegrationTests
-  PRIVATE
-  GTest::GTest
-  BeverageBuilder
-  BeverageFactories)
+target_link_libraries(IntegrationTests PRIVATE GTest::gtest_main BeverageBuilder BeverageFactories)
 
 gtest_discover_tests(IntegrationTests)

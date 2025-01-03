@@ -1,3 +1,2 @@
-add_subdirectory(unittest)
-# change to integration
-add_subdirectory(functionaltest)
+add_subdirectory(UnitTests)
+add_subdirectory(IntegrationTests)

@@ -1,11 +1,18 @@
 include(GoogleTest)
+include(files_helper)
 
-set(SOURCES
-    main.cpp
-    Beverages/src/Coffee_Test.cpp
-	Ingredients/src/Sugar_Test.cpp)
+resolve_project_paths(
+  SOURCE_ROOT_PATH
+  TOOLS_ROOT_PATH
+  PUBLIC_INCLUDE_PATH
+  PRIVATE_INCLUDE_PATH
+)
+
+set(SOURCES Beverages/src/Coffee_Test.cpp Ingredients/src/Sugar_Test.cpp)
 
 add_executable(UnitTests ${SOURCES})
+# target_include_directories(UnitTests PRIVATE ../../include)
+target_include_directories(UnitTests PRIVATE ${PUBLIC_INCLUDE_PATH})
 
 set_target_properties(UnitTests PROPERTIES FOLDER "tests/UnitTests")
 
@@ -17,10 +24,6 @@ else()
   message(STATUS "Disabled pre-compiled header support")
 endif()
 
-target_link_libraries(
-  UnitTests
-  PRIVATE
-  GTest::GTest
-  Beverages)
+target_link_libraries(UnitTests PRIVATE GTest::gtest_main Beverages)
 
 gtest_discover_tests(UnitTests)
