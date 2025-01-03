@@ -1,3 +1,12 @@
+include(files_helper)
+
+resolve_project_paths(
+  SOURCE_ROOT_PATH
+  TOOLS_ROOT_PATH
+  PUBLIC_INCLUDE_PATH
+  PRIVATE_INCLUDE_PATH
+)
+
 set(
   SOURCES
   BeverageBuildDirector.cpp
@@ -9,6 +18,8 @@ set(
 )
 
 add_library(BeverageBuilder ${SOURCES})
+# target_include_directories(BeverageBuilder PRIVATE ../../../include)
+target_include_directories(BeverageBuilder PRIVATE ${PUBLIC_INCLUDE_PATH})
 
 set_target_properties(BeverageBuilder PROPERTIES FOLDER "Domain/BeverageBuilder")
 

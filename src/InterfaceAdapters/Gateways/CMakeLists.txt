@@ -1,5 +1,17 @@
+include(files_helper)
+
+resolve_project_paths(
+  SOURCE_ROOT_PATH
+  TOOLS_ROOT_PATH
+  PUBLIC_INCLUDE_PATH
+  PRIVATE_INCLUDE_PATH
+)
+
 set(SOURCES OrderDiskDataSource.cpp)
 add_library(Gateways ${SOURCES})
+
+# target_include_directories(Gateways PRIVATE ../../../include)
+target_include_directories(Gateways PRIVATE ${PUBLIC_INCLUDE_PATH})
 
 set_target_properties(Gateways PROPERTIES FOLDER "InterfaceAdapters/Gateways")
 

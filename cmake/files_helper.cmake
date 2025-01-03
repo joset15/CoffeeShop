@@ -1,0 +1,40 @@
+# Resolves internal repository paths
+function(resolve_project_paths
+  SOURCE_ROOT_PATH
+  PUBLIC_INCLUDE_PATH
+  PRIVATE_INCLUDE_PATH
+  )
+
+  set(PROJECT_ROOT ${CMAKE_CURRENT_LIST_DIR}/)
+
+  set(${SOURCE_ROOT_PATH} ${PROJECT_ROOT}/src PARENT_SCOPE)
+
+  set(${PUBLIC_INCLUDE_PATH} ${PROJECT_ROOT}/include PARENT_SCOPE) # /include/public
+  set(${PRIVATE_INCLUDE_PATH} ${PROJECT_ROOT}/include/private PARENT_SCOPE)
+endfunction()
+
+# Resolves tests repository paths
+function(resolve_test_paths
+  TESTS_ROOT_PATH
+  UNITTESTS_PATH
+  FUNCTIONALTESTS_PATH
+  TESTS_COMMON_PATH
+  TESTS_ASSETS_PATH
+  SOURCE_ROOT_PATH
+  PUBLIC_INCLUDE_PATH
+  PRIVATE_INCLUDE_PATH
+)
+
+  set(PROJECT_ROOT ${CMAKE_CURRENT_LIST_DIR}/../../)
+
+  set(${TESTS_ROOT_PATH} ${LIBRARY_ROOT}/tests PARENT_SCOPE)
+  set(${UNITTESTS_PATH} ${LIBRARY_ROOT}/tests/unit PARENT_SCOPE)
+  set(${FUNCTIONALTESTS_PATH} ${LIBRARY_ROOT}/tests/functional PARENT_SCOPE)
+  set(${TESTS_COMMON_PATH} ${LIBRARY_ROOT}/tests/common PARENT_SCOPE)
+  set(${TESTS_ASSETS_PATH} ${LIBRARY_ROOT}/tests/assets PARENT_SCOPE)
+
+  set(${SOURCE_ROOT_PATH} ${LIBRARY_ROOT}/src PARENT_SCOPE)
+
+  set(${PUBLIC_INCLUDE_PATH} ${LIBRARY_ROOT}/include/public PARENT_SCOPE)
+  set(${PRIVATE_INCLUDE_PATH} ${LIBRARY_ROOT}/include/private PARENT_SCOPE)
+endfunction()
