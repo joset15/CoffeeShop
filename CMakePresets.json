@@ -18,10 +18,11 @@
         "value": "x64",
         "strategy": "external"
       },
-      "environment": {
-        "$comment": "ASAN Libraries.",
-        "PATH": "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/Hostx64/x64;$penv{PATH}"
-      },
+      //"environment": {
+      //  "comment": "That causes a problem and stops building",
+      //  "$comment": "ASAN Libraries.",
+      //  "PATH": "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/Hostx64/x64;$penv{PATH}"
+      //},
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         //"CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
