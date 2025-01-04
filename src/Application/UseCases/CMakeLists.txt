@@ -2,7 +2,6 @@ include(files_helper)
 
 resolve_project_paths(
   SOURCE_ROOT_PATH
-  TOOLS_ROOT_PATH
   PUBLIC_INCLUDE_PATH
   PRIVATE_INCLUDE_PATH
 )
