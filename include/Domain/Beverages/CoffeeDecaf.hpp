@@ -9,7 +9,10 @@ class CoffeeDecaf : public IBeverage
 public:
   CoffeeDecaf() = default;
 
-  std::string getDescription() const override { return "CoffeeDecaf"; }
+  [[nodiscard]] std::string getDescription() const override
+  {
+    return "CoffeeDecaf";
+  }
 };
 
 #endif // COFFEE_DECAF_HPP

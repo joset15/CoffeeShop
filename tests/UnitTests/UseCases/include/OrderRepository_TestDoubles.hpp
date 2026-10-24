@@ -22,7 +22,8 @@ public:
     return true;
   }
 
-  const std::vector<std::unique_ptr<IBeverage>> &getSavedOrders() const
+  [[nodiscard]] const std::vector<std::unique_ptr<IBeverage>> &
+  getSavedOrders() const
   {
     return m_SavedOrders;
   }

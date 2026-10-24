@@ -8,8 +8,8 @@
 class ResponseMessage
 {
 public:
-  bool getSuccess() const { return m_Success; };
-  std::string getMessage() const { return m_Message; };
+  [[nodiscard]] bool getSuccess() const { return m_Success; };
+  [[nodiscard]] std::string getMessage() const { return m_Message; };
 
 protected:
   ResponseMessage(bool success, const std::string &message = "")

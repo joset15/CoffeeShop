@@ -11,7 +11,7 @@ public:
 
   /// @brief
   /// @return
-  std::string getDescription() const override { return "Tea"; }
+  [[nodiscard]] std::string getDescription() const override { return "Tea"; }
 };
 
 #endif // TEA_HPP

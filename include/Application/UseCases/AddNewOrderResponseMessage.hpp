@@ -18,7 +18,7 @@ public:
   AddNewOrderResponseMessage() : ResponseMessage(false, "") {}
 
   void setErrors(const std::vector<std::string> &errors) { m_Errors = errors; }
-  std::vector<std::string> getErrors() const { return m_Errors; }
+  [[nodiscard]] std::vector<std::string> getErrors() const { return m_Errors; }
 
 private:
   std::vector<std::string> m_Errors;

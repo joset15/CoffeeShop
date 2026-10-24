@@ -26,7 +26,7 @@ public:
 
   static bool storeOrders();
 
-  const std::list<std::unique_ptr<IBeverage>> &getOrders() const
+  [[nodiscard]] const std::list<std::unique_ptr<IBeverage>> &getOrders() const
   {
     return m_CurrentOrders;
   }

@@ -11,7 +11,10 @@ class CoffeeEspresso : public Coffee
 public:
   CoffeeEspresso() = default;
 
-  std::string getDescription() const override { return CoffeEspressoName; }
+  [[nodiscard]] std::string getDescription() const override
+  {
+    return CoffeEspressoName;
+  }
 };
 
 #endif // COFFEE_EXPRESSO_HPP

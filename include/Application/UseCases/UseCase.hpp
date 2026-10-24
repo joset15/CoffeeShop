@@ -17,7 +17,7 @@ public:
 
   /// @brief Get the name of the UseCase.
   /// @return UseCaseName
-  const std::string &getName() const { return m_UseCaseName; }
+  [[nodiscard]] const std::string &getName() const { return m_UseCaseName; }
 
   /// @brief Get the success execution status of the UseCase. This method should
   /// be overwritten in derived classes.Default implementation always indicates
