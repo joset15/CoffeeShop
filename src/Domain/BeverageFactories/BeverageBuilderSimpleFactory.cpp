@@ -38,7 +38,5 @@ BeverageBuilderSimpleFactory::createBeverageBuilder(
     break;
   }
 
-  assert(newBeverageBuilder && "Beverage Builder not created.");
-
   return newBeverageBuilder;
 }

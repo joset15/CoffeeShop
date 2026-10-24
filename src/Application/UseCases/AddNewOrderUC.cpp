@@ -7,7 +7,6 @@
 #include "Domain/BeverageFactories/BeverageFactory.hpp"
 #include "Domain/BeverageFactories/IngredientFactory.hpp"
 
-#include <iostream>
 #include <memory>
 
 bool AddNewOrderUC::execute()
@@ -18,13 +17,17 @@ bool AddNewOrderUC::execute()
 
 bool AddNewOrderUC::addNewOrder( // TODO: IBeverage::BeverageType beverageType,
     BeverageVariety beverageVariety,
-    const std::list<Ingredient> &ingredients) const
+    const std::list<Ingredient> &ingredients)
 {
   auto director = std::make_unique<BeverageBuildDirector>();
 
   std::shared_ptr<IBeverageBuilder> beverageBuilder =
       BeverageBuilderSimpleFactory::getInstance()->createBeverageBuilder(
           beverageVariety);
+  if (!beverageBuilder)
+  {
+    return false; // No builder for this variety yet.
+  }
 
   director->setBuilder(beverageBuilder);
 
@@ -33,10 +36,5 @@ bool AddNewOrderUC::addNewOrder( // TODO: IBeverage::BeverageType beverageType,
     return false;
   }
 
-  std::unique_ptr<IBeverage> newBeverage = beverageBuilder->takeBeverage();
-  std::cout << newBeverage->getDescription() << std::endl;
-
-  // TODO add to the OrderRepository
-
-  return true;
+  return m_OrderRepository.save(beverageBuilder->takeBeverage());
 };

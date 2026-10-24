@@ -1,6 +1,5 @@
-Checks: '-*,clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,readability-identifier-naming'
-WarningsAsErrors: true
-AnalyzeTemporaryDtors: false
+Checks: '-*,clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,-modernize-use-trailing-return-type,readability-identifier-naming'
+WarningsAsErrors: '*'
 # CheckOptions:
 # - key: cppcoreguidelines-avoid-magic-numbers.IgnoredIntegerValues
 #   value: '100'

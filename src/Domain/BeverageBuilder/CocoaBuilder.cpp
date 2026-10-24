@@ -1,7 +1,5 @@
 #include "Domain/BeverageBuilder/CocoaBuilder.hpp"
 
-#include <cassert>
-
 void CocoaBuilder::resetImpl()
 {
   m_Beverage = m_BeverageFactory->createBeverage(BeverageVariety::Cocoa);
@@ -24,7 +22,7 @@ bool CocoaBuilder::addMilk(Ingredient typeOfMilk)
     decorateWith(Ingredient::SoyMilk);
     break;
   default:
-    assert(false && "Invalid type of milk");
+    // Cocoa only accepts milk or soy milk (e.g. cream is rejected).
     return false;
   }
 

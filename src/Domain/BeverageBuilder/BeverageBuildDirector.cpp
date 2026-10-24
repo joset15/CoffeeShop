@@ -36,6 +36,11 @@ bool BeverageBuildDirector::buildBeverage(
 bool BeverageBuildDirector::buildCoffee(
     const std::list<Ingredient> &ingredients)
 {
+  if (!m_BeverageBuilder)
+  {
+    return false;
+  }
+
   if (!addSugar(ingredients))
   {
     return false;
@@ -67,6 +72,11 @@ bool BeverageBuildDirector::buildCoffeeEspresso(
 
 bool BeverageBuildDirector::buildTea(const std::list<Ingredient> &ingredients)
 {
+  if (!m_BeverageBuilder)
+  {
+    return false;
+  }
+
   if (!addSugar(ingredients))
   {
     return false;

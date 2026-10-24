@@ -9,21 +9,9 @@ BeverageController::execAddOrderUC(const NewOrderReq &newOrderReq) const
   AddNewOrderUC addNewOrderUC(std::string("AddNewOrderUC"), newOrderReq,
                               m_OrderRepository);
 
-  bool response = addNewOrderUC.execute();
+  const bool success = addNewOrderUC.execute();
+  const std::string_view message =
+      success ? OrderAddedMessage : OrderNotAddedMessage;
 
-  std::string stringResponse;
-  if (response)
-  {
-    stringResponse = "Info: Coffee Espresso with Sugar ordered";
-  }
-  else
-  {
-    stringResponse = "Error: Couldn't order an Espresso with sugar";
-  }
-
-  bool success = true;
-  // TODO: std::vector<std::string> errors;
-  AddNewOrderResponseMessage responseMessage(success, stringResponse);
-
-  return responseMessage;
+  return {success, std::string(message)};
 }
