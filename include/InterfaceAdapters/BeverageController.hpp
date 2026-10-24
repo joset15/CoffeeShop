@@ -23,13 +23,25 @@
 #include "Application/UseCases/AddNewOrderResponseMessage.hpp"
 #include "Domain/BeverageBuilder/BeverageBuilder.hpp"
 
+#include <string_view>
+
 class BeverageController
 {
 public:
+  /// @brief Message returned when an order is added.
+  static constexpr std::string_view OrderAddedMessage = "Info: Order added.";
+
+  /// @brief Message returned when an order cannot be added.
+  static constexpr std::string_view OrderNotAddedMessage =
+      "Error: Order could not be added.";
+
   explicit BeverageController(IOrderRepository &orderRepository)
       : m_OrderRepository(orderRepository) {};
 
-  AddNewOrderResponseMessage
+  /// @brief Runs the "add new order" use case.
+  /// @param newOrderReq The requested beverage and ingredients.
+  /// @return Whether the order was added, and a message for the user.
+  [[nodiscard]] AddNewOrderResponseMessage
   execAddOrderUC(const NewOrderReq &newOrderReq) const;
 
   // void execListOrderUC(const ListOrderReq &listOrderReq) {}

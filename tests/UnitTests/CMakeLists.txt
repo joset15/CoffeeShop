@@ -12,6 +12,7 @@ set(
   Beverages/src/Coffee_Test.cpp
   Ingredients/src/IngredientDecorator_Test.cpp
   Ingredients/src/Sugar_Test.cpp
+  InterfaceAdapters/src/BeverageController_Test.cpp
   UseCases/src/AddNewOrderUC_Test.cpp
 )
 
@@ -31,7 +32,7 @@ endif()
 
 target_link_libraries(
   UnitTests
-  PRIVATE GTest::gtest_main UseCases BeverageBuilder BeverageFactories Beverages
+  PRIVATE GTest::gtest_main InterfaceAdapters UseCases BeverageBuilder BeverageFactories Beverages
 )
 
 gtest_discover_tests(UnitTests)
