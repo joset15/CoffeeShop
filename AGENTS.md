@@ -56,7 +56,7 @@ CMake options (top-level `CMakeLists.txt`):
 | Option | Default | Effect |
 |---|---|---|
 | `TESTS` / `ITESTS` | ON | Build unit / integration test executables |
-| `CLANG_TIDY_ENABLED` | ON | Runs clang-tidy on every `.cpp` during the build. `.clang-tidy` has `WarningsAsErrors: '*'`, so tidy findings **break the build**. Headers are not analyzed (no `HeaderFilterRegex`) |
+| `CLANG_TIDY_ENABLED` | ON | Runs clang-tidy on every `.cpp` during the build. `.clang-tidy` has `WarningsAsErrors: '*'`, so tidy findings **break the build**. Headers are not analyzed yet (no `HeaderFilterRegex`); see Gotchas |
 | `BUILD_USING_PCH` | OFF | Precompiled headers. Can't be combined with `CLANG_TIDY_ENABLED` (configure stops with an error) |
 | `ASAN_ENABLED` | OFF | MSVC `/fsanitize=address` in Debug |
 | `CPPCHECK_ENABLED` | OFF | Runs cppcheck during the build |
@@ -142,6 +142,11 @@ and clang-tidy. `no-commit-to-branch` blocks direct commits to `main` and `stagi
 
 ## Gotchas
 
+- clang-tidy only checks `.cpp` files. Enabling `HeaderFilterRegex` (for `include/` and `tests/`)
+  is planned as a separate PR (`chore/clang-tidy-headers`). As of 2026-10-24 it reports about 101
+  findings in 45 headers. Some need design decisions: `namespace CoffeeShop` vs the `lower_case`
+  naming rule, `protected` data members in the decorator and builders, and reference data members.
+  New headers should already follow the active checks (`override`, `[[nodiscard]]`, rule of five, ...).
 - `apps/ConsoleApp/main.cpp` uses MSVC-specific `_CrtSetDbgFlag` (CRT leak checking).
 - `CancelExistingOrderUC.cpp` exists but is commented out of the `UseCases` build.
 - `cmake_minimum_required(VERSION 3.9)` produces a deprecation warning on CMake 3.31. This is expected.
