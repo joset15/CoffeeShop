@@ -36,7 +36,7 @@ public:
       "Error: Order could not be added.";
 
   explicit BeverageController(IOrderRepository &orderRepository)
-      : m_OrderRepository(orderRepository) {};
+      : m_OrderRepository(&orderRepository) {};
 
   /// @brief Runs the "add new order" use case.
   /// @param newOrderReq The requested beverage and ingredients.
@@ -48,7 +48,9 @@ public:
   void execListOrderUC(const IRequest &listOrderReq) { (void)listOrderReq; }
 
 private:
-  IOrderRepository &m_OrderRepository;
+  /// @brief Where new orders are saved (not owned, never null: set from a
+  /// reference).
+  IOrderRepository *m_OrderRepository;
 };
 
 #endif // BEVERAGE_CONTROLLER_HPP

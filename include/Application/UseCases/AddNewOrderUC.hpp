@@ -15,13 +15,16 @@
 #include "IOrderRepository.hpp"
 //*/
 
+#include <string>
+#include <utility>
+
 class AddNewOrderUC : public UseCase
 {
 public:
-  AddNewOrderUC(const std::string &name, const NewOrderReq &request,
+  AddNewOrderUC(std::string name, NewOrderReq request,
                 IOrderRepository &orderRepository)
-      : UseCase(name), m_OrderRepository(orderRepository),
-        m_NewOrderReq(request) {};
+      : UseCase(std::move(name)), m_OrderRepository(&orderRepository),
+        m_NewOrderReq(std::move(request)) {};
 
   // TODO bool execute() or execute(Args<T>) ver servidor y virtual execute() en
   // base, no parece que una lista genérica sea lo mejor
@@ -35,7 +38,9 @@ private:
                    const std::list<Ingredient> &ingredients);
 
   // TODO: IUseCaseOutputPort &m_Presenter;
-  IOrderRepository &m_OrderRepository;
+  /// @brief Where new orders are saved (not owned, never null: set from a
+  /// reference).
+  IOrderRepository *m_OrderRepository;
 
   NewOrderReq m_NewOrderReq;
 };

@@ -3,6 +3,7 @@
 
 //#include "IRequest.hpp"
 #include <string>
+#include <utility>
 
 class UseCase
 {
@@ -24,28 +25,30 @@ public:
   /// success.
   /// @return bool indicating the success (true) or not (false) of the UseCase
   /// execution.
-  virtual const bool isSucceed() { return true; }
+  virtual bool isSucceed() { return true; }
 
   /// @brief Get the execution state of the UseCase. This method should be
   /// overwritten in derived classes.Default implementation always indicates
   /// finished.
   /// @return bool indicating the ending (true) or not (false) of the UseCase
   /// execution.
-  virtual const bool isFinished() { return true; }
+  virtual bool isFinished() { return true; }
 
   // TODO return ErrorCode
   // virtual bool execute(const IRequest &request) = 0;
   virtual bool execute() = 0;
 
 protected:
-  /// @brief Protected constructor for an UseCase given its UseCaseName.
-  /// @param UseCaseName
-  explicit UseCase(const std::string &UseCaseName) : m_UseCaseName(UseCaseName)
+  /// @brief Protected constructor for an UseCase given its name.
+  /// @param useCaseName The name of the use case.
+  explicit UseCase(std::string useCaseName)
+      : m_UseCaseName(std::move(useCaseName))
   {
   }
 
 private:
-  const std::string m_UseCaseName;
+  /// @brief Set once at construction (private, no setter).
+  std::string m_UseCaseName;
 };
 
 #endif // USECASE_HPP

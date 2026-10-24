@@ -7,7 +7,7 @@ AddNewOrderResponseMessage
 BeverageController::execAddOrderUC(const NewOrderReq &newOrderReq) const
 {
   AddNewOrderUC addNewOrderUC(std::string("AddNewOrderUC"), newOrderReq,
-                              m_OrderRepository);
+                              *m_OrderRepository);
 
   const bool success = addNewOrderUC.execute();
   const std::string_view message =
