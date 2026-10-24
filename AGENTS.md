@@ -7,7 +7,7 @@ as Clean Architecture and uses classic GoF patterns:
 
 | Layer | Headers | Sources | Notes |
 |---|---|---|---|
-| Domain | `include/Domain/` | `src/Domain/` | `Beverages` (`IBeverage`, `Coffee`, `Tea`, ...), `Ingredients` (decorators over `IBeverage`: `Sugar`, `Milk`, ...), `BeverageFactories` (singleton factories), `BeverageBuilder` (builder + `BeverageBuildDirector`) |
+| Domain | `include/Domain/` | `src/Domain/` | `Beverages` (`IBeverage`, `Coffee`, `Tea`, ...), `Ingredients` (decorators over `IBeverage`: `Sugar`, `Milk`, ...), `BeverageFactories` (singleton factories), `BeverageBuilder` (`IBeverageBuilder` interface, `BeverageBuilderBase` with the shared state, concrete builders, `BeverageBuildDirector`) |
 | Application | `include/Application/UseCases/` | `src/Application/UseCases/` | Use cases and their ports (`IOrderRepository`, `IUseCaseInputPort`, ...) |
 | InterfaceAdapters | `include/InterfaceAdapters/` | `src/InterfaceAdapters/` | Controller, presenters, `OrderRepository`, `Gateways/OrderDiskDataSource` |
 | App | n/a | `apps/ConsoleApp/main.cpp` | `CoffeeShopApp` executable |
@@ -56,7 +56,7 @@ CMake options (top-level `CMakeLists.txt`):
 | Option | Default | Effect |
 |---|---|---|
 | `TESTS` / `ITESTS` | ON | Build unit / integration test executables |
-| `CLANG_TIDY_ENABLED` | ON | Runs clang-tidy on every `.cpp` during the build. `.clang-tidy` has `WarningsAsErrors: '*'`, so tidy findings **break the build**. Headers are not analyzed yet (no `HeaderFilterRegex`); see Gotchas |
+| `CLANG_TIDY_ENABLED` | ON | Runs clang-tidy on every `.cpp` during the build, including the project headers under `include/` and `tests/` (`HeaderFilterRegex`). `.clang-tidy` has `WarningsAsErrors: '*'`, so tidy findings **break the build** |
 | `BUILD_USING_PCH` | OFF | Precompiled headers. Can't be combined with `CLANG_TIDY_ENABLED` (configure stops with an error) |
 | `ASAN_ENABLED` | OFF | MSVC `/fsanitize=address` in Debug |
 | `CPPCHECK_ENABLED` | OFF | Runs cppcheck during the build |
@@ -91,9 +91,16 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
   (`const std::shared_ptr<IBeverage> &beverage`), sorted includes.
 - clang-tidy checks (`.clang-tidy`): `clang-diagnostic-*`, `clang-analyzer-*`, `cppcoreguidelines-*`,
   `modernize-*` (except `modernize-use-trailing-return-type`), and `readability-identifier-naming`.
+  Project choices: interfaces may declare only `virtual ~X() = default;` (`AllowSoleDefaultDtor`);
+  `tests/.clang-tidy` inherits everything but allows `protected` members in GoogleTest fixtures.
+  In practice: `override` (not `virtual`) on overrides, `[[nodiscard]]` on `const` getters,
+  `= default`/`= delete` instead of empty bodies, and no `protected`, `const` or reference data
+  members (store an injected dependency as a private pointer set from a reference).
   To see findings without building: `clang-tidy -p "build/Windows x64 Debug" <file.cpp>`.
 - clang-tidy naming (`.clang-tidy`). It is enforced at build time:
-  - Classes/structs: `CamelCase`. Interfaces are prefixed `I` (`IBeverage`, `IIngredientFactory`).
+  - Classes/structs: `CamelCase`. Interfaces are prefixed `I` (`IBeverage`, `IIngredientFactory`)
+    and contain only pure virtual functions. Shared implementation goes in a `...Base` class
+    (e.g. `BeverageBuilderBase`).
   - Functions/methods and local variables: `camelBack` (`getDescription`, `coffeeWithSugar`).
   - Data members: `m_` + `CamelCase` (`m_Beverage`, `m_Coffee`). Static variables are also `m_`.
   - Constants, constexpr, and enum constants: `CamelCase` (`SugarName`, `BeverageType::Coffee`).
@@ -142,11 +149,8 @@ and clang-tidy. `no-commit-to-branch` blocks direct commits to `main` and `stagi
 
 ## Gotchas
 
-- clang-tidy only checks `.cpp` files. Enabling `HeaderFilterRegex` (for `include/` and `tests/`)
-  is planned as a separate PR (`chore/clang-tidy-headers`). As of 2026-10-24 it reports about 101
-  findings in 45 headers. Some need design decisions: `namespace CoffeeShop` vs the `lower_case`
-  naming rule, `protected` data members in the decorator and builders, and reference data members.
-  New headers should already follow the active checks (`override`, `[[nodiscard]]`, rule of five, ...).
+- Ninja only rebuilds changed `.cpp` files, so a new finding in a header shows up when a `.cpp`
+  that includes it is recompiled. Use `--clean-first` to re-check everything.
 - `apps/ConsoleApp/main.cpp` uses MSVC-specific `_CrtSetDbgFlag` (CRT leak checking).
 - `CancelExistingOrderUC.cpp` exists but is commented out of the `UseCases` build.
 - `cmake_minimum_required(VERSION 3.9)` produces a deprecation warning on CMake 3.31. This is expected.

@@ -1,5 +1,8 @@
 Checks: '-*,clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,-modernize-use-trailing-return-type,readability-identifier-naming'
 WarningsAsErrors: '*'
+# Also report findings in the project's own headers (include/ and tests/).
+# GoogleTest and the standard library are system headers, so they stay silent.
+HeaderFilterRegex: '[\/](include|tests)[\/]'
 # CheckOptions:
 # - key: cppcoreguidelines-avoid-magic-numbers.IgnoredIntegerValues
 #   value: '100'
