@@ -1,0 +1,5 @@
+# Settings for test code. Everything else comes from the top-level .clang-tidy.
+InheritParentConfig: true
+
+# GoogleTest fixtures share state with TEST_F bodies through protected members.
+Checks: '-cppcoreguidelines-non-private-member-variables-in-classes'
