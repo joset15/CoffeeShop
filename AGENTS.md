@@ -78,7 +78,7 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
   `// Arrange`, `// Act`, `// Assert` comments.
 - `tests/CoffeeShop_gtest.vcxproj`, `tests/test.cpp`, `tests/pch.*` belong to the legacy VS
   solution and are not part of the CMake build.
-- All 8 tests should pass. Add or update tests for any behavior you change.
+- All tests should pass. Add or update tests for any behavior you change.
 
 ## Code style
 
@@ -121,7 +121,8 @@ and clang-tidy. `no-commit-to-branch` blocks direct commits to `main` and `stagi
 
 ## Git / PR guidelines
 
-- Work on `develop` or a feature branch. PRs target `main`.
+- Work on a feature branch created from `develop` (e.g. `feature/unique-ptr-decorator`).
+  PRs target `develop`. `main` only receives merges from `develop`.
 - Commit messages are one short sentence in past tense, ending with a period. Prefixes like
   `Improvement:` are optional, e.g. `Fixed "resolve_project_paths" cmake function.`
 - Before committing, make sure the Debug preset builds (this also runs clang-tidy), `ctest` passes,
