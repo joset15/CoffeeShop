@@ -1,0 +1,35 @@
+#ifndef ORDER_REPOSITORY_TESTDOUBLES_HPP
+#define ORDER_REPOSITORY_TESTDOUBLES_HPP
+
+#include "Application/UseCases/IOrderRepository.hpp"
+#include "Domain/Beverages/IBeverage.hpp"
+
+#include <memory>
+#include <utility>
+#include <vector>
+
+namespace CoffeeShop
+{
+///
+/// \brief An in-memory repository that keeps the saved orders for inspection.
+///
+class FakeOrderRepository : public IOrderRepository
+{
+public:
+  bool save(std::unique_ptr<IBeverage> beverage) override
+  {
+    m_SavedOrders.push_back(std::move(beverage));
+    return true;
+  }
+
+  const std::vector<std::unique_ptr<IBeverage>> &getSavedOrders() const
+  {
+    return m_SavedOrders;
+  }
+
+private:
+  std::vector<std::unique_ptr<IBeverage>> m_SavedOrders;
+};
+} // namespace CoffeeShop
+
+#endif // ORDER_REPOSITORY_TESTDOUBLES_HPP

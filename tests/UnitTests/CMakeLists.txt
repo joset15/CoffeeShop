@@ -12,6 +12,7 @@ set(
   Beverages/src/Coffee_Test.cpp
   Ingredients/src/IngredientDecorator_Test.cpp
   Ingredients/src/Sugar_Test.cpp
+  UseCases/src/AddNewOrderUC_Test.cpp
 )
 
 add_executable(UnitTests ${SOURCES})
@@ -28,6 +29,9 @@ else()
   message(STATUS "Disabled pre-compiled header support")
 endif()
 
-target_link_libraries(UnitTests PRIVATE GTest::gtest_main Beverages)
+target_link_libraries(
+  UnitTests
+  PRIVATE GTest::gtest_main UseCases BeverageBuilder BeverageFactories Beverages
+)
 
 gtest_discover_tests(UnitTests)

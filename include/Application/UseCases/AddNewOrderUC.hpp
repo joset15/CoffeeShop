@@ -19,7 +19,7 @@ class AddNewOrderUC : public UseCase
 {
 public:
   AddNewOrderUC(const std::string &name, const NewOrderReq &request,
-                const IOrderRepository &orderRepository)
+                IOrderRepository &orderRepository)
       : UseCase(name), m_OrderRepository(orderRepository),
         m_NewOrderReq(request) {};
 
@@ -32,10 +32,10 @@ public:
 
 private:
   bool addNewOrder(BeverageVariety beverageVariety,
-                   const std::list<Ingredient> &ingredients) const;
+                   const std::list<Ingredient> &ingredients);
 
   // TODO: IUseCaseOutputPort &m_Presenter;
-  const IOrderRepository &m_OrderRepository;
+  IOrderRepository &m_OrderRepository;
 
   NewOrderReq m_NewOrderReq;
 };

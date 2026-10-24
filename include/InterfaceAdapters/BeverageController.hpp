@@ -15,7 +15,7 @@
 #include "Model/Ingredient/Ingredients.hpp"
 */
 
-#include "OrderRepository.hpp"
+#include "Application/UseCases/IOrderRepository.hpp"
 
 #include "Domain/BeverageFactories/BeverageFactory.hpp"
 #include "Domain/BeverageFactories/IngredientFactory.hpp"
@@ -26,7 +26,7 @@
 class BeverageController
 {
 public:
-  BeverageController(const OrderRepository &orderRepository)
+  explicit BeverageController(IOrderRepository &orderRepository)
       : m_OrderRepository(orderRepository) {};
 
   AddNewOrderResponseMessage
@@ -36,7 +36,7 @@ public:
   void execListOrderUC(const IRequest &listOrderReq) { (void)listOrderReq; }
 
 private:
-  const OrderRepository &m_OrderRepository;
+  IOrderRepository &m_OrderRepository;
 };
 
 #endif // BEVERAGE_CONTROLLER_HPP
