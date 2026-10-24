@@ -7,7 +7,12 @@ resolve_project_paths(
   PRIVATE_INCLUDE_PATH
 )
 
-set(SOURCES Beverages/src/Coffee_Test.cpp Ingredients/src/Sugar_Test.cpp)
+set(
+  SOURCES
+  Beverages/src/Coffee_Test.cpp
+  Ingredients/src/IngredientDecorator_Test.cpp
+  Ingredients/src/Sugar_Test.cpp
+)
 
 add_executable(UnitTests ${SOURCES})
 # target_include_directories(UnitTests PRIVATE ../../include)
