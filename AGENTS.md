@@ -26,7 +26,12 @@ layout. Several folders it lists (`Infrastructure`, `libs`, `scripts`, ...) don'
   `vcvars64.bat`). The presets use `architecture.strategy: external`, so CMake picks up whatever
   `cl` is on `PATH`. With the x86 `cl` the build fails at link time with
   `LNK4272: library machine type 'x64' conflicts with target machine type 'x86'` against the
-  Conan gtest libs.
+  Conan gtest libs. In PowerShell, use
+  `& "<VS>\Common7\Tools\Launch-VsDevShell.ps1" -Arch amd64 -HostArch amd64 -SkipAutomaticLocation`
+  (the VS "Developer PowerShell" defaults to x86).
+- The x86 environment also puts the **32-bit clang-tidy** (`VC\Tools\Llvm\bin`) first on `PATH`.
+  It crashes (`0xC0000005`) on this project. The 64-bit one (`VC\Tools\Llvm\x64\bin`) works.
+  Check with `where.exe clang-tidy`.
 - GoogleTest comes from Conan. CMake finds it through `build/generators/` (added to
   `CMAKE_MODULE_PATH`), so that folder must exist. To regenerate it (Conan 1.x, `cmake_layout`):
   `conan install . -s build_type=Debug --build=missing`
@@ -51,7 +56,7 @@ CMake options (top-level `CMakeLists.txt`):
 | Option | Default | Effect |
 |---|---|---|
 | `TESTS` / `ITESTS` | ON | Build unit / integration test executables |
-| `CLANG_TIDY_ENABLED` | ON | Runs clang-tidy on every TU during the build. `.clang-tidy` has `WarningsAsErrors: true`, so tidy findings **break the build** |
+| `CLANG_TIDY_ENABLED` | ON | Runs clang-tidy on every `.cpp` during the build. `.clang-tidy` has `WarningsAsErrors: '*'`, so tidy findings **break the build**. Headers are not analyzed (no `HeaderFilterRegex`) |
 | `BUILD_USING_PCH` | OFF | Precompiled headers. Can't be combined with `CLANG_TIDY_ENABLED` (configure stops with an error) |
 | `ASAN_ENABLED` | OFF | MSVC `/fsanitize=address` in Debug |
 | `CPPCHECK_ENABLED` | OFF | Runs cppcheck during the build |
@@ -84,6 +89,9 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 
 - clang-format (`.clang-format`): 2-space indent, **Allman braces**, 80 columns, `PointerAlignment: Right`
   (`const std::shared_ptr<IBeverage> &beverage`), sorted includes.
+- clang-tidy checks (`.clang-tidy`): `clang-diagnostic-*`, `clang-analyzer-*`, `cppcoreguidelines-*`,
+  `modernize-*` (except `modernize-use-trailing-return-type`), and `readability-identifier-naming`.
+  To see findings without building: `clang-tidy -p "build/Windows x64 Debug" <file.cpp>`.
 - clang-tidy naming (`.clang-tidy`). It is enforced at build time:
   - Classes/structs: `CamelCase`. Interfaces are prefixed `I` (`IBeverage`, `IIngredientFactory`).
   - Functions/methods and local variables: `camelBack` (`getDescription`, `coffeeWithSugar`).

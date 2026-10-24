@@ -21,7 +21,7 @@
 //#include <conio.h> //clrscr(), getch()
 #include <iostream>
 #include <memory>
-#include <stdlib.h> // system("cls"); system("pause")
+#include <cstdlib> // system("cls"); system("pause")
 
 int consoleMenu();
 
@@ -120,8 +120,9 @@ int consoleMenu()
 
   OrderRepository orderRepository;
   int userInput = 0;
+  bool quit = false;
 
-  do
+  while (!quit)
   {
     system("cls");
 
@@ -174,12 +175,12 @@ int consoleMenu()
       printerPresenter.printOutOrders(orderList);
     }
 
-    if (userInput != QuitCommand)
+    quit = (userInput == QuitCommand);
+    if (!quit)
     {
       system("pause");
     }
-
-  } while (userInput != QuitCommand);
+  }
 
   return 0;
 }
