@@ -21,7 +21,7 @@ public:
   /// @brief
   /// @param beverageVariety
   /// @return
-  std::shared_ptr<IBeverage>
+  std::unique_ptr<IBeverage>
   createBeverage(BeverageVariety beverageVariety) override;
 
 private:
