@@ -26,14 +26,14 @@ TEST_P(GivenSomeIngredientsForTeaBlackBuilder,
   std::string beverageName = std::get<2>(GetParam());
 
   // Act
-  bool buildSuccess = m_BeverageBuildDirector->buildCoffeeEspresso(ingredients);
+  bool buildSuccess = m_BeverageBuildDirector->buildTeaBlack(ingredients);
   EXPECT_EQ(buildSuccess, isValidMix);
 
-  std::string coffeeWithSomeIngredients =
+  std::string teaWithSomeIngredients =
       m_TeaBlackBuilder->takeBeverage()->getDescription();
 
   // Assert
-  ASSERT_EQ(coffeeWithSomeIngredients.compare(beverageName), 0);
+  ASSERT_EQ(teaWithSomeIngredients.compare(beverageName), 0);
 }
 
 } // namespace CoffeeShop

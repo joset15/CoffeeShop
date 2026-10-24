@@ -13,7 +13,7 @@
 
 namespace CoffeeShop
 {
-/// @brief A fixture for testing a CoffeeEspressoBuilder.
+/// @brief A fixture for testing a TeaBlackBuilder.
 class GivenSomeIngredientsForTeaBlackBuilder
     : public ::testing::TestWithParam<
           std::tuple<std::list<Ingredient>, bool, std::string>>
