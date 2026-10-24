@@ -1,11 +1,6 @@
 # Resolves internal repository paths
-function(resolve_project_paths
-  SOURCE_ROOT_PATH
-  PUBLIC_INCLUDE_PATH
-  PRIVATE_INCLUDE_PATH
-  )
-
-  set(PROJECT_ROOT ${PROJECT_SOURCE_DIR}/)  # ${CMAKE_CURRENT_SOURCE_DIR} CMAKE_CURRENT_LIST_DIR
+function(resolve_project_paths SOURCE_ROOT_PATH PUBLIC_INCLUDE_PATH PRIVATE_INCLUDE_PATH)
+  set(PROJECT_ROOT ${PROJECT_SOURCE_DIR}/) # ${CMAKE_CURRENT_SOURCE_DIR} CMAKE_CURRENT_LIST_DIR
 
   set(${SOURCE_ROOT_PATH} ${PROJECT_ROOT}/src PARENT_SCOPE)
 
@@ -14,7 +9,8 @@ function(resolve_project_paths
 endfunction()
 
 # Resolves tests repository paths
-function(resolve_test_paths
+function(
+  resolve_test_paths
   TESTS_ROOT_PATH
   UNITTESTS_PATH
   FUNCTIONALTESTS_PATH
@@ -24,7 +20,6 @@ function(resolve_test_paths
   PUBLIC_INCLUDE_PATH
   PRIVATE_INCLUDE_PATH
 )
-
   set(PROJECT_ROOT ${CMAKE_CURRENT_LIST_DIR}/../../)
 
   set(${TESTS_ROOT_PATH} ${LIBRARY_ROOT}/tests PARENT_SCOPE)
