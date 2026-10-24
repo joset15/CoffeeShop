@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AddNewOrderResponseMessage" Collapsed="true">
+    <Position X="31.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAEAAAAAAAAAAAAAAAAAAAAAIIAAAAAAAAA=</HashCode>
+      <FileName>include\Application\UseCases\AddNewOrderResponseMessage.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AddNewOrderUC">
+    <Position X="6.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAABAEIAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Application\UseCases\AddNewOrderUC.hpp</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_NewOrderReq" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UseCase" Collapsed="true">
+    <Position X="6.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAQAAAAAAAAAAAAAAAEAAAAAAAAQAAAAAAEAAQCAAA=</HashCode>
+      <FileName>include\Application\UseCases\UseCase.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BeverageBuildDirector" Collapsed="true">
+    <Position X="33" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABQAAAAAAAAAAAAEgAAAAAIAAAQAAAAiACYAQAAAAA=</HashCode>
+      <FileName>include\Domain\BeverageBuilder\BeverageBuildDirector.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CocoaBuilder" Collapsed="true">
+    <Position X="3" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAEAAAgAAgAkAAAAAAAAQAAAAAAgAAQAAAAAAA=</HashCode>
+      <FileName>include\Domain\BeverageBuilder\CocoaBuilder.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoffeeBuilder" Collapsed="true">
+    <Position X="5.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEBAAAAEAAAAAAgAkAAAAAAAAQAAAAAAgAAQAAAAAAA=</HashCode>
+      <FileName>include\Domain\BeverageBuilder\CoffeeBuilder.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoffeeEspressoBuilder" Collapsed="true">
+    <Position X="5.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAgAAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>include\Domain\BeverageBuilder\CoffeeEspressoBuilder.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IBeverageBuilder" Collapsed="true">
+    <Position X="3" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAEAAAABAABEAAAAAAAgQAAAAAIgAgQAAAAAAA=</HashCode>
+      <FileName>include\Domain\BeverageBuilder\IBeverageBuilder.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TeaBlackBuilder" Collapsed="true">
+    <Position X="0.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAgAAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\BeverageBuilder\TeaBlackBuilder.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TeaBuilder" Collapsed="true">
+    <Position X="0.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAEAAAAAAgAkAAAAAAAAQAAAAAAgAAQQAAAAAA=</HashCode>
+      <FileName>include\Domain\BeverageBuilder\TeaBuilder.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BeverageBuilderSimpleFactory" Collapsed="true">
+    <Position X="8.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAgAAAAAAAAAAAAAQAABAgAAAAAAA=</HashCode>
+      <FileName>include\Domain\BeverageFactories\BeverageBuilderSimpleFactory.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BeverageFactory" Collapsed="true">
+    <Position X="3.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAgAAAAAQABAAgAAAAAAA=</HashCode>
+      <FileName>include\Domain\BeverageFactories\BeverageFactory.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IBeverageBuilderFactory" Collapsed="true">
+    <Position X="8.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAIAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\BeverageFactories\IBeverageBuilderFactory.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IBeverageFactory" Collapsed="true">
+    <Position X="3.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAQAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\BeverageFactories\IBeverageFactory.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IIngredientFactory" Collapsed="true">
+    <Position X="0.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAQAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\BeverageFactories\IIngredientFactory.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IngredientFactory" Collapsed="true">
+    <Position X="0.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAQAAAAAAAQAAAAAAAQAAAAgAAAAAAA=</HashCode>
+      <FileName>include\Domain\BeverageFactories\IngredientFactory.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cocoa" Collapsed="true">
+    <Position X="22" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\Beverages\Cocoa.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coffee" Collapsed="true">
+    <Position X="24.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\Beverages\Coffee.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoffeeDecaf" Collapsed="true">
+    <Position X="28.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\Beverages\CoffeeDecaf.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoffeeEspresso" Collapsed="true">
+    <Position X="24.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\Beverages\CoffeeEspresso.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoffeeLatte">
+    <Position X="1.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAggAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\Beverages\CoffeeLatte.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IBeverage" Collapsed="true">
+    <Position X="15.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\Beverages\IBeverage.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tea" Collapsed="true">
+    <Position X="19.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAggAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\Beverages\Tea.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TeaBlack" Collapsed="true">
+    <Position X="19.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\Beverages\TeaBlack.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TeaGreen" Collapsed="true">
+    <Position X="26.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\Beverages\TeaGreen.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cream" Collapsed="true">
+    <Position X="15.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\Ingredients\Cream.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Honey">
+    <Position X="4" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\Ingredients\Honey.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IngredientDecorator" Collapsed="true">
+    <Position X="10.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAIAACAAAAAAAA=</HashCode>
+      <FileName>include\Domain\Ingredients\IngredientDecorator.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lemon" Collapsed="true">
+    <Position X="8.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>include\Domain\Ingredients\Lemon.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Milk" Collapsed="true">
+    <Position X="10.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>include\Domain\Ingredients\Milk.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SoyMilk" Collapsed="true">
+    <Position X="13" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\Ingredients\SoyMilk.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sugar" Collapsed="true">
+    <Position X="17.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\Ingredients\Sugar.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Water" Collapsed="true">
+    <Position X="6.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\Ingredients\Water.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OrderDiskDataSource" Collapsed="true">
+    <Position X="31.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>include\InterfaceAdapters\Gateways\OrderDiskDataSource.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="NewOrderReq" Collapsed="true">
+    <Position X="31.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAIAAAAEAgAgAFAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>include\Application\UseCases\NewOrderReq.hpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="BeverageVariety" Collapsed="true">
+    <Position X="31.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AwAAAAIgAAAAgAAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Domain\Beverages\BeverageVariety.hpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Ingredient" Collapsed="true">
+    <Position X="33" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgIAAAAAAAAAAAAAAAAAgAAACAgAAAEAAEIA=</HashCode>
+      <FileName>include\Domain\Ingredients\Ingredients.hpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
