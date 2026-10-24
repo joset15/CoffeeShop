@@ -18,7 +18,7 @@ option(ASAN_ENABLED "Build this target with AddressSanitizer" OFF)
 
 # Including Files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/build/generators")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/build/generators") # Conan
 
 include(cpp_warnings)
 
@@ -39,6 +39,35 @@ endif()
 
 # Use Unity builds
 set(CMAKE_UNITY_BUILD OFF) #TODO disable units with problems and enable globally here
+
+# Doxygen docs.
+if(BUILD_DOC) # AND CMAKE_BUILD_TYPE STREQUAL "Release")
+  # check if Doxygen is installed
+  find_package(Doxygen)
+  if(DOXYGEN_FOUND)
+    message(STATUS "DOXYGEN is found")
+
+    # set input and output files
+    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/docs/doxygen/Doxyfile.in)
+    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.out)
+
+    # request to configure the file
+    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+    message(STATUS "Doxygen build started")
+
+    # note the option ALL which allows to build the docs together with the application
+    add_custom_target(
+      doc_doxygen
+      ALL
+      COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+      COMMENT "Generating API documentation with Doxygen"
+      VERBATIM
+    )
+  else()
+    message(STATUS "Doxygen need to be installed to generate the doxygen documentation")
+  endif(DOXYGEN_FOUND)
+endif(BUILD_DOC)
 
 # Compiler options
 set(CXX_STANDARD 17)
