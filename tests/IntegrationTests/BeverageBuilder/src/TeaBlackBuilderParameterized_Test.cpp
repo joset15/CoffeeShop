@@ -1,7 +1,7 @@
 #include "../include/TeaBlackBuilderParameterized_TestFixtures.hpp"
 #include <string>
 
-namespace CoffeeShop
+namespace coffee_shop
 {
 
 INSTANTIATE_TEST_CASE_P(
@@ -36,4 +36,4 @@ TEST_P(GivenSomeIngredientsForTeaBlackBuilder,
   ASSERT_EQ(teaWithSomeIngredients.compare(beverageName), 0);
 }
 
-} // namespace CoffeeShop
+} // namespace coffee_shop

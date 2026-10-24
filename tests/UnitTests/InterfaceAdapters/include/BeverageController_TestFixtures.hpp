@@ -8,7 +8,7 @@
 
 #include <gtest/gtest.h>
 
-namespace CoffeeShop
+namespace coffee_shop
 {
 ///
 /// \brief A fixture for a controller backed by an in-memory repository.
@@ -26,6 +26,6 @@ protected:
                                BeverageVariety::CoffeeEspresso,
                                {Ingredient::Lemon}};
 };
-} // namespace CoffeeShop
+} // namespace coffee_shop
 
 #endif // BEVERAGE_CONTROLLER_TESTFIXTURES_HPP

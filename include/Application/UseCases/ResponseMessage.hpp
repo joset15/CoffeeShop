@@ -8,8 +8,8 @@
 class ResponseMessage
 {
 public:
-  bool getSuccess() const { return Success; };
-  std::string getMessage() const { return Message; };
+  bool getSuccess() const { return m_Success; };
+  std::string getMessage() const { return m_Message; };
 
 protected:
   ResponseMessage(bool success, const std::string &message = "")
@@ -19,11 +19,11 @@ protected:
   }
 
 private:
-  void setSuccess(bool value) { Success = value; };
-  void setMessage(const std::string &value) { Message = value; };
+  void setSuccess(bool value) { m_Success = value; };
+  void setMessage(const std::string &value) { m_Message = value; };
 
-  bool Success = false;
-  std::string Message;
+  bool m_Success = false;
+  std::string m_Message;
 };
 
 #endif // RESPONSE_MESSAGE_HPP

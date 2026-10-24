@@ -2,8 +2,8 @@
 // specific include files that are used frequently, but   are changed
 // infrequently
 
-#if !defined(AFX_STDAFX_H__3D598B26_5A48_11D3_A394_0020188167B7__INCLUDED_)
-#define AFX_STDAFX_H__3D598B26_5A48_11D3_A394_0020188167B7__INCLUDED_
+#ifndef PCH_H
+#define PCH_H
 
 #if _MSC_VER > 1000
 #pragma once
@@ -37,4 +37,4 @@ Controls #endif // _AFX_NO_AFXCMN_SUPPORT
 // Microsoft Visual C++ will insert additional declarations immediately before
 // the previous line.
 
-#endif // !defined(AFX_STDAFX_H__3D598B26_5A48_11D3_A394_0020188167B7__INCLUDED_)
+#endif // PCH_H

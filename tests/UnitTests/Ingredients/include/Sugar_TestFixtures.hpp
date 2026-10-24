@@ -7,7 +7,7 @@
 #include <gtest/gtest.h>
 #include <memory>
 
-namespace CoffeeShop
+namespace coffee_shop
 {
 ///
 /// \brief A fixture for testing the ingredient Sugar.
@@ -19,6 +19,6 @@ protected:
 
   std::unique_ptr<Coffee> m_Coffee;
 };
-} // namespace CoffeeShop
+} // namespace coffee_shop
 
 #endif // SUGAR_TESTFIXTURES_HPP

@@ -11,7 +11,7 @@
 #include <memory>
 #include <tuple>
 
-namespace CoffeeShop
+namespace coffee_shop
 {
 ///
 /// \brief A fixture for testing a CoffeeEspressoBuilder.
@@ -36,6 +36,6 @@ protected:
   std::shared_ptr<CoffeeEspressoBuilder> m_CoffeeEspressoBuilder;
 };
 
-} // namespace CoffeeShop
+} // namespace coffee_shop
 
 #endif // COFFEE_ESPRESSO_BUILDER_PARAMETERIZED_TESTFIXTURES_HPP

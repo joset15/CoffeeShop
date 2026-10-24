@@ -8,7 +8,7 @@
 
 #include <gtest/gtest.h>
 
-namespace CoffeeShop
+namespace coffee_shop
 {
 ///
 /// \brief A fixture for ordering an espresso with sugar (a valid mix).
@@ -45,6 +45,6 @@ protected:
                         BeverageVariety::CoffeeLatte,
                         {Ingredient::Sugar}};
 };
-} // namespace CoffeeShop
+} // namespace coffee_shop
 
 #endif // ADD_NEW_ORDER_UC_TESTFIXTURES_HPP

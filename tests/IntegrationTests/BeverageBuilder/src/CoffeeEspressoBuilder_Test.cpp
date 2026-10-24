@@ -1,7 +1,7 @@
 #include "../include/CoffeeEspressoBuilder_TestFixtures.hpp"
 #include <string>
 
-namespace CoffeeShop
+namespace coffee_shop
 {
 TEST_F(GivenACoffeeEspressoBuilder,
        WhenSugarIsAddedToCoffeeThenDescriptionHasRightFormat)
@@ -39,4 +39,4 @@ TEST_F(GivenACoffeeEspressoBuilder, WhenBeverageIsTakenThenBuilderIsReset)
   ASSERT_EQ(secondBeverage->getDescription(), CoffeEspressoName);
 }
 
-} // namespace CoffeeShop
+} // namespace coffee_shop

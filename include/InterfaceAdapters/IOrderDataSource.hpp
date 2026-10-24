@@ -8,7 +8,7 @@ class IOrderDataSource
 public:
   virtual ~IOrderDataSource() = default;
 
-  virtual bool Save(const IBeverage &newBeverage) = 0;
+  virtual bool save(const IBeverage &newBeverage) = 0;
 };
 
 #endif // IORDERDATASOURCE_HPP

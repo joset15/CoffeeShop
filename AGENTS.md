@@ -79,7 +79,7 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
   `tests/IntegrationTests/CMakeLists.txt`. There is no globbing. If the test needs another library,
   add it to `target_link_libraries`.
 - Conventions: fixtures are named `Given...` (e.g. `GivenSomeSugar`), test names are
-  `When...Then...`, test code lives in `namespace CoffeeShop`, and test bodies use
+  `When...Then...`, test code lives in `namespace coffee_shop`, and test bodies use
   `// Arrange`, `// Act`, `// Assert` comments.
 - `tests/CoffeeShop_gtest.vcxproj`, `tests/test.cpp`, `tests/pch.*` belong to the legacy VS
   solution and are not part of the CMake build.

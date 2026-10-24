@@ -6,7 +6,7 @@
 #include <string>
 #include <utility>
 
-namespace CoffeeShop
+namespace coffee_shop
 {
 TEST_F(GivenANullBeverage, WhenDecoratedThenThrowsInvalidArgument)
 {
@@ -29,4 +29,4 @@ TEST_F(GivenSugarAndMilk, WhenChainedThenDescriptionContainsBoth)
   ASSERT_EQ(beverage->getDescription(),
             CoffeName + ", " + SugarName + ", " + MilkName);
 }
-} // namespace CoffeeShop
+} // namespace coffee_shop

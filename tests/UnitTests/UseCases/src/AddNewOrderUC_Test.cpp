@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace CoffeeShop
+namespace coffee_shop
 {
 TEST_F(GivenAnEspressoWithSugarOrder, WhenExecutedThenOrderIsSaved)
 {
@@ -47,4 +47,4 @@ TEST_F(GivenALatteOrder, WhenExecutedThenNothingIsSaved)
   ASSERT_FALSE(success);
   ASSERT_TRUE(m_OrderRepository.getSavedOrders().empty());
 }
-} // namespace CoffeeShop
+} // namespace coffee_shop
