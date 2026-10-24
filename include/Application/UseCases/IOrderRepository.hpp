@@ -8,6 +8,12 @@
 class IOrderRepository
 {
 public:
+  /// @brief The default destructor.
+  virtual ~IOrderRepository() = default;
+
+  /// @brief
+  /// @param
+  /// @return
   virtual bool save(std::shared_ptr<IBeverage>) = 0;
 };
 

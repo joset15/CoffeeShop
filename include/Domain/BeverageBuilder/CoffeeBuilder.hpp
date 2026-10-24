@@ -32,14 +32,6 @@ public:
   /// @brief Adds water to the beverage.
   bool addWater() override { return false; }
 
-  /// @brief Returns if Milk has been added to the beverage.
-  /// @return True if milk was added.
-  // bool getHasMilk() const { return m_HasMilk; }
-
-  /// @brief Sets if milk has been added to the beverage.
-  /// @param hasMilk True if milk has been added, False otherwise.
-  // void setHasMilk(bool hasMilk) { m_HasMilk = hasMilk; }
-
 protected:
   CoffeeBuilder(IBeverageFactory *beverageFactory,
                 IIngredientFactory *ingredientFactory)

@@ -21,21 +21,20 @@ public:
   AddNewOrderUC(const std::string &name, const NewOrderReq &request,
                 const IOrderRepository &orderRepository)
       : UseCase(name), m_OrderRepository(orderRepository),
-        m_NewOrderReq(request){};
+        m_NewOrderReq(request) {};
 
   // TODO bool execute() or execute(Args<T>) ver servidor y virtual execute() en
-  // base, no parece que una lista genérica sea lo mejor
+  // base, no parece que una lista genÃ©rica sea lo mejor
   // sino una estructura de datos para request y otra para response
   // https://bocato.medium.com/encapsulating-business-logic-using-the-command-pattern-dee6460cbf20
 
   bool execute() override;
 
 private:
-  bool addNewOrder(IBeverage::BeverageType beverageType,
-                   BeverageVariety beverageVariety,
+  bool addNewOrder(BeverageVariety beverageVariety,
                    const std::list<Ingredient> &ingredients) const;
 
-  // IUseCaseOutputPort &m_Presenter;
+  // TODO: IUseCaseOutputPort &m_Presenter;
   const IOrderRepository &m_OrderRepository;
 
   NewOrderReq m_NewOrderReq;

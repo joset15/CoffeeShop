@@ -1,5 +1,5 @@
 #include "Domain/BeverageFactories/BeverageFactory.hpp"
-#include <assert.h>
+#include <cassert>
 
 std::shared_ptr<IBeverage>
 BeverageFactory::createBeverage(BeverageVariety beverageVariety)

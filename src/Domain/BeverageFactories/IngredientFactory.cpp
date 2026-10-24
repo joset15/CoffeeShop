@@ -1,5 +1,5 @@
 #include "Domain/BeverageFactories/IngredientFactory.hpp"
-#include <assert.h>
+#include <cassert>
 
 std::shared_ptr<IBeverage>
 IngredientFactory::createIngredient(Ingredient ingredient,

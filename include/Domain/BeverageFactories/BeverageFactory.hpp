@@ -29,7 +29,7 @@ private:
   BeverageFactory() = default;
 
   /// @brief
-  ~BeverageFactory() = default;
+  ~BeverageFactory() override = default;
 
   BeverageFactory(const BeverageFactory &) = delete;
   BeverageFactory &operator=(const BeverageFactory &) = delete;

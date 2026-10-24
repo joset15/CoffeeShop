@@ -18,7 +18,8 @@ public:
   }
 
   /// @brief
-  /// @param beverageVariety
+  /// @param ingredient
+  /// @param beverage
   /// @return
   std::shared_ptr<IBeverage>
   createIngredient(Ingredient ingredient,

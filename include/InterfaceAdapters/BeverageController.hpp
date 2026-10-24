@@ -3,7 +3,7 @@
 
 #pragma once
 
-//#include "UseCase/IUseCaseOutputPort.hpp"
+// #include "UseCase/IUseCaseOutputPort.hpp"
 
 #include "Application/UseCases/NewOrderReq.hpp"
 
@@ -27,13 +27,13 @@ class BeverageController
 {
 public:
   BeverageController(const OrderRepository &orderRepository)
-      : m_OrderRepository(orderRepository){};
+      : m_OrderRepository(orderRepository) {};
 
   AddNewOrderResponseMessage
   execAddOrderUC(const NewOrderReq &newOrderReq) const;
 
   // void execListOrderUC(const ListOrderReq &listOrderReq) {}
-  void execListOrderUC(const IRequest &listOrderReq) {}
+  void execListOrderUC(const IRequest &listOrderReq) { (void)listOrderReq; }
 
 private:
   const OrderRepository &m_OrderRepository;

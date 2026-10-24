@@ -119,11 +119,13 @@ bool BeverageBuildDirector::addMilk(const std::list<Ingredient> &ingredients)
   {
     return m_BeverageBuilder->addMilk(Ingredient::Milk);
   }
-  else if (find(ingredients, Ingredient::SoyMilk))
+
+  if (find(ingredients, Ingredient::SoyMilk))
   {
     return m_BeverageBuilder->addMilk(Ingredient::SoyMilk);
   }
-  else if (find(ingredients, Ingredient::Cream))
+
+  if (find(ingredients, Ingredient::Cream))
   {
     return m_BeverageBuilder->addMilk(Ingredient::Cream);
   }

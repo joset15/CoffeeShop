@@ -16,12 +16,15 @@ public:
   // OrderRepository(IOrderDataSource &dataSource)
   //    : m_OrderDataSource(dataSource){};
 
-  /// \brief
+  /// @brief The default destructor.
+  ~OrderRepository() override = default;
+
+  /// @brief
   bool save(std::shared_ptr<IBeverage> newBeverage) override;
 
-  bool cancelExistingOrders();
+  static bool cancelExistingOrders();
 
-  bool storeOrders();
+  static bool storeOrders();
 
   const std::list<std::shared_ptr<IBeverage>> &getOrders() const
   {

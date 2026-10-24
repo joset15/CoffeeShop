@@ -18,6 +18,7 @@ public:
 
   /// @brief
   /// @param ingredient
+  /// @param beverage
   /// @return
   virtual std::shared_ptr<IBeverage>
   createIngredient(Ingredient ingredient,

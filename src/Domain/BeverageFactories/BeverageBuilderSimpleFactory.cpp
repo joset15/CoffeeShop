@@ -2,7 +2,7 @@
 #include "Domain/BeverageFactories/BeverageFactory.hpp"
 #include "Domain/BeverageFactories/IngredientFactory.hpp"
 
-#include <assert.h>
+#include <cassert>
 
 std::shared_ptr<IBeverageBuilder>
 BeverageBuilderSimpleFactory::createBeverageBuilder(

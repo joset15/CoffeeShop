@@ -15,6 +15,7 @@ class IBeverageBuilder
 public:
   /// @brief
   /// @param beverageFactory
+  /// @param ingredientFactory
   IBeverageBuilder(IBeverageFactory *beverageFactory,
                    IIngredientFactory *ingredientFactory)
       : m_BeverageFactory(beverageFactory),

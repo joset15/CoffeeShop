@@ -37,15 +37,8 @@ public:
   /// @brief Adds water to the beverage.
   bool addWater() override { return false; }
 
-  /// @brief
-  /// @param hasMilk
-  // void setHasMilk(bool hasMilk) { m_HasMilk = hasMilk; }
-
-  /// @brief
-  /// @param hasLemon
-  // void setHasLemon(bool hasLemon) { m_HasLemon = hasLemon; }
-
 protected:
+  /// @brief Reset the internal variable status (Milk, Lemon).
   void resetImpl();
 
 private:

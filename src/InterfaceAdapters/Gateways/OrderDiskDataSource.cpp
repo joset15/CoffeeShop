@@ -1,3 +1,3 @@
 #include "InterfaceAdapters/Gateways/OrderDiskDataSource.hpp"
 
-OrderDiskDataSource::OrderDiskDataSource() {}
+OrderDiskDataSource::OrderDiskDataSource() = default;

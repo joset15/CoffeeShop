@@ -22,7 +22,7 @@ BeverageController::execAddOrderUC(const NewOrderReq &newOrderReq) const
   }
 
   bool success = true;
-  // std::vector<std::string> errors;
+  // TODO: std::vector<std::string> errors;
   AddNewOrderResponseMessage responseMessage(success, stringResponse);
 
   return responseMessage;
