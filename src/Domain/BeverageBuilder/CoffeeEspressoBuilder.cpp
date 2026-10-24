@@ -2,8 +2,7 @@
 
 void CoffeeEspressoBuilder::resetImpl()
 {
-  m_Beverage =
-      m_BeverageFactory->createBeverage(BeverageVariety::CoffeeEspresso);
+  setBaseBeverage(BeverageVariety::CoffeeEspresso);
 
   CoffeeBuilder::resetImpl();
 }

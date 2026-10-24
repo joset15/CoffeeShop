@@ -31,7 +31,7 @@ public:
     return m_CurrentOrders;
   }
 
-protected:
+private:
   /// @brief The repository owns the stored orders.
   std::list<std::unique_ptr<IBeverage>> m_CurrentOrders;
 

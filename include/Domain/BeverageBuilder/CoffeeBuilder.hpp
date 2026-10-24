@@ -2,20 +2,11 @@
 #define COFFEE_BUILDER_HPP
 #pragma once
 
-#include "IBeverageBuilder.hpp"
+#include "BeverageBuilderBase.hpp"
 
-class CoffeeBuilder : public IBeverageBuilder
+class CoffeeBuilder : public BeverageBuilderBase
 {
 public:
-  /// @brief Takes the built beverage and resets the builder.
-  /// @return The beverage. The caller becomes its owner.
-  std::unique_ptr<IBeverage> takeBeverage() override
-  {
-    auto beverage = std::move(m_Beverage);
-    reset();
-    return beverage;
-  }
-
   /// @brief
   void reset() override { resetImpl(); };
 
@@ -40,7 +31,7 @@ public:
 protected:
   CoffeeBuilder(IBeverageFactory *beverageFactory,
                 IIngredientFactory *ingredientFactory)
-      : IBeverageBuilder(beverageFactory, ingredientFactory)
+      : BeverageBuilderBase(beverageFactory, ingredientFactory)
   {
     resetImpl();
   }

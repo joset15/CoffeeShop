@@ -2,20 +2,11 @@
 #define TEA_BUILDER_HPP
 #pragma once
 
-#include "IBeverageBuilder.hpp"
+#include "BeverageBuilderBase.hpp"
 
-class TeaBuilder : public IBeverageBuilder
+class TeaBuilder : public BeverageBuilderBase
 {
 public:
-  /// @brief Takes the built beverage and resets the builder.
-  /// @return The beverage. The caller becomes its owner.
-  std::unique_ptr<IBeverage> takeBeverage() override
-  {
-    auto beverage = std::move(m_Beverage);
-    reset();
-    return beverage;
-  }
-
   /// @brief
   void reset() override { resetImpl(); }
 
@@ -39,7 +30,7 @@ protected:
   /// @brief Only concrete teas (e.g. TeaBlackBuilder) create the base beverage.
   TeaBuilder(IBeverageFactory *beverageFactory,
              IIngredientFactory *ingredientFactory)
-      : IBeverageBuilder(beverageFactory, ingredientFactory)
+      : BeverageBuilderBase(beverageFactory, ingredientFactory)
   {
     resetImpl();
   }

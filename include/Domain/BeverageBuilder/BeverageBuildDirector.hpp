@@ -2,6 +2,7 @@
 #define BEVERAGE_BUILD_DIRECTOR_HPP
 #pragma once
 
+#include "Domain/Beverages/BeverageVariety.hpp"
 #include "Domain/Ingredients/Ingredients.hpp"
 #include "IBeverageBuilder.hpp"
 

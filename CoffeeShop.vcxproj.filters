@@ -39,6 +39,9 @@
     <ClInclude Include="include\Domain\BeverageBuilder\CoffeeEspressoBuilder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuilderBase.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\Domain\BeverageBuilder\IBeverageBuilder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

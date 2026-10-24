@@ -14,7 +14,7 @@ public:
   /// @return The description.
   std::string getDescription() const override
   {
-    return m_Beverage->getDescription() + ", SoyMilk";
+    return getDecoratedBeverage().getDescription() + ", SoyMilk";
   }
 };
 

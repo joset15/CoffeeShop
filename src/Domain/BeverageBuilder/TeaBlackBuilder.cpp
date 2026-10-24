@@ -2,7 +2,7 @@
 
 void TeaBlackBuilder::resetImpl()
 {
-  m_Beverage = m_BeverageFactory->createBeverage(BeverageVariety::TeaBlack);
+  setBaseBeverage(BeverageVariety::TeaBlack);
 
   TeaBuilder::reset();
 }
