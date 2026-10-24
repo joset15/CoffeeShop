@@ -1,0 +1,26 @@
+root = true
+
+[*]
+charset = utf-8
+# end_of_line = lf
+end_of_line = native
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.hpp,*.cpp]
+# indent_style = tab
+# indent_size = tab
+# tab_width = 4
+
+[*.cake,*.py]
+# indent_style = space
+# indent_size = 2
+
+# [*.h,*.hpp,*.cpp]
+[*.{h,hpp,cpp}]                                             # specify which files the spelling options apply to
+# spelling_languages = en-us,es-es                          # specifies the en-us and fr-fr dictionaries for use in spell checking
+spelling_languages = en-us                                  # specifies the en-us and fr-fr dictionaries for use in spell checking
+spelling_checkable_types = strings,identifiers,comments     # specifies that identifiers and comments are the only checked elements
+spelling_error_severity = error                             # sets severity assigned to spelling errors to error in the error list
+spelling_exclusion_path = .\exclusion.dic                   # defines a custom exclusion dictionary location and file
+spelling_use_default_exclusion_dictionary = false           # ignores the language-specific default exclusion dictionary
