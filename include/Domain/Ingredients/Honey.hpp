@@ -7,12 +7,8 @@
 class Honey : public IngredientDecorator
 {
 public:
-  /// \brief
-  explicit Honey(const std::shared_ptr<IBeverage> &beverage)
-      : IngredientDecorator(beverage)
-  {
-  }
-  // Sugar(IBeverage* beverage) : IngredientDecorator(beverage) { }
+  /// @brief Takes ownership of the beverage to decorate.
+  using IngredientDecorator::IngredientDecorator;
 
   /// @brief Gets the description of the ingredient.
   /// @return The description.

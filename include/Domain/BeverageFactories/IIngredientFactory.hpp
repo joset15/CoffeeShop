@@ -20,9 +20,9 @@ public:
   /// @param ingredient
   /// @param beverage
   /// @return
-  virtual std::shared_ptr<IBeverage>
+  virtual std::unique_ptr<IBeverage>
   createIngredient(Ingredient ingredient,
-                   std::shared_ptr<IBeverage> beverage) = 0;
+                   std::unique_ptr<IBeverage> beverage) = 0;
 };
 
 #endif // IINGREDIENT_FACTORY_HPP

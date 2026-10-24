@@ -15,11 +15,11 @@ namespace CoffeeShop
 class GivenSomeSugar : public ::testing::Test
 {
 protected:
-  virtual void SetUp() { m_Coffee = std::make_shared<Coffee>(); }
+  virtual void SetUp() { m_Coffee = std::make_unique<Coffee>(); }
 
   virtual void TearDown() {}
 
-  std::shared_ptr<Coffee> m_Coffee;
+  std::unique_ptr<Coffee> m_Coffee;
 };
 } // namespace CoffeeShop
 

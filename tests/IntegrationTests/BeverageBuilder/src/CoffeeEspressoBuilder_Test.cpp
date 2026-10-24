@@ -17,7 +17,7 @@ TEST_F(GivenACoffeeEspressoBuilder,
   // TODO: EXPECT_TRUE(buildSuccess);
 
   std::string coffeeWithSugar =
-      m_CoffeeEspressoBuilder->getBeverage()->getDescription();
+      m_CoffeeEspressoBuilder->takeBeverage()->getDescription();
 
   // Assert
   ASSERT_EQ(coffeeWithSugar.compare(CoffeEspressoName + ", " + SugarName), 0);

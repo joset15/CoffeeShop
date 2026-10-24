@@ -30,7 +30,7 @@ TEST_P(GivenSomeIngredientsForTeaBlackBuilder,
   EXPECT_EQ(buildSuccess, isValidMix);
 
   std::string coffeeWithSomeIngredients =
-      m_TeaBlackBuilder->getBeverage()->getDescription();
+      m_TeaBlackBuilder->takeBeverage()->getDescription();
 
   // Assert
   ASSERT_EQ(coffeeWithSomeIngredients.compare(beverageName), 0);

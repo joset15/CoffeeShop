@@ -29,13 +29,13 @@ int main(int argc, char *argv[])
 {
   _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-  std::shared_ptr<IBeverage> beverage = std::make_shared<Coffee>();
-  beverage = std::make_shared<Sugar>(beverage);
-  beverage = std::make_shared<Cream>(beverage);
+  std::unique_ptr<IBeverage> beverage = std::make_unique<Coffee>();
+  beverage = std::make_unique<Sugar>(std::move(beverage));
+  beverage = std::make_unique<Cream>(std::move(beverage));
 
   std::cout << beverage->getDescription() << std::endl;
 
-  std::shared_ptr<IBeverage> newBeverage =
+  std::unique_ptr<IBeverage> newBeverage =
       BeverageFactory::getInstance()->createBeverage(
           BeverageVariety::CoffeeEspresso);
 
@@ -53,8 +53,8 @@ int main(int argc, char *argv[])
 
   director->buildCoffeeEspresso(ingredients);
 
-  std::shared_ptr<IBeverage> newBeverage4 =
-      coffeeEspressoBuilder->getBeverage();
+  std::unique_ptr<IBeverage> newBeverage4 =
+      coffeeEspressoBuilder->takeBeverage();
   std::cout << newBeverage4->getDescription() << std::endl;
 
   //------------------
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
   director->buildTeaBlack(ingredients);
 
-  std::shared_ptr<IBeverage> newBeverage5 = teaBlackBuilder->getBeverage();
+  std::unique_ptr<IBeverage> newBeverage5 = teaBlackBuilder->takeBeverage();
   std::cout << newBeverage5->getDescription() << std::endl;
 
   //------------------
