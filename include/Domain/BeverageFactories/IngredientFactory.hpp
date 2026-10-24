@@ -21,9 +21,9 @@ public:
   /// @param ingredient
   /// @param beverage
   /// @return
-  std::shared_ptr<IBeverage>
+  std::unique_ptr<IBeverage>
   createIngredient(Ingredient ingredient,
-                   std::shared_ptr<IBeverage> beverage) override;
+                   std::unique_ptr<IBeverage> beverage) override;
 
 private:
   /// @brief

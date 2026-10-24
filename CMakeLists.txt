@@ -121,6 +121,10 @@ add_compile_options(${PROJECT_WARNING_FLAGS})
 # clang-tidy no compatible con PCH (MSVC)
 if (CLANG_TIDY_ENABLED)
   set(CMAKE_CXX_CLANG_TIDY "clang-tidy")   # v3.6, will search for file .clang-tidy
+  if(MSVC)
+    # CMake adds --extra-arg-before=--driver-mode=cl, which makes clang-tidy ignore /EHsc.
+    list(APPEND CMAKE_CXX_CLANG_TIDY "--extra-arg=/EHsc")
+  endif()
 endif()
 
 if (CPPCHECK_ENABLED)
@@ -131,7 +135,8 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") # MATCHES
   message(STATUS "Setting MSVC flags")
 
   # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHc /std:c++latest")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHc /std:c++17")
+  # CMake already adds /EHsc, so an extra /EHc is not needed.
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
 
   if(ASAN_ENABLED)
     message(STATUS "ASAN ENABLED")

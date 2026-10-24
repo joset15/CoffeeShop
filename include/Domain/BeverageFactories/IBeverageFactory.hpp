@@ -20,7 +20,7 @@ public:
   /// @brief
   /// @param beverageVariety
   /// @return
-  virtual std::shared_ptr<IBeverage>
+  virtual std::unique_ptr<IBeverage>
   createBeverage(BeverageVariety beverageVariety) = 0;
 };
 

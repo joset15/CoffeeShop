@@ -14,9 +14,14 @@ public:
     resetImpl();
   }
 
-  /// @brief Gets the beverage.
-  /// @return A pointer to the beverage.
-  std::shared_ptr<IBeverage> getBeverage() override { return m_Beverage; }
+  /// @brief Takes the built beverage and resets the builder.
+  /// @return The beverage. The caller becomes its owner.
+  std::unique_ptr<IBeverage> takeBeverage() override
+  {
+    auto beverage = std::move(m_Beverage);
+    reset();
+    return beverage;
+  }
 
   /// @brief
   void reset() override { resetImpl(); }

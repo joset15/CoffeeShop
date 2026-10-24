@@ -9,8 +9,7 @@ void TeaBuilder::resetImpl()
 
 bool TeaBuilder::addSugar()
 {
-  m_Beverage =
-      m_IngredientFactory->createIngredient(Ingredient::Sugar, m_Beverage);
+  decorateWith(Ingredient::Sugar);
   return true;
 };
 
@@ -26,16 +25,13 @@ bool TeaBuilder::addMilk(Ingredient typeOfMilk)
   switch (typeOfMilk)
   {
   case Ingredient::Milk:
-    m_Beverage =
-        m_IngredientFactory->createIngredient(Ingredient::Milk, m_Beverage);
+    decorateWith(Ingredient::Milk);
     break;
   case Ingredient::Cream:
-    m_Beverage =
-        m_IngredientFactory->createIngredient(Ingredient::Cream, m_Beverage);
+    decorateWith(Ingredient::Cream);
     break;
   case Ingredient::SoyMilk:
-    m_Beverage =
-        m_IngredientFactory->createIngredient(Ingredient::SoyMilk, m_Beverage);
+    decorateWith(Ingredient::SoyMilk);
     break;
   default:
     assert(false && "Invalid type of milk");
@@ -48,8 +44,7 @@ bool TeaBuilder::addMilk(Ingredient typeOfMilk)
 
 bool TeaBuilder::addHoney()
 {
-  m_Beverage =
-      m_IngredientFactory->createIngredient(Ingredient::Honey, m_Beverage);
+  decorateWith(Ingredient::Honey);
   return true;
 };
 
@@ -60,8 +55,7 @@ bool TeaBuilder::addLemon()
     return false;
   }
 
-  m_Beverage =
-      m_IngredientFactory->createIngredient(Ingredient::Lemon, m_Beverage);
+  decorateWith(Ingredient::Lemon);
 
   m_HasLemon = true;
   return true;

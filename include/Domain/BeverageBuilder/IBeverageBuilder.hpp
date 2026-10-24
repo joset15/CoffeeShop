@@ -9,6 +9,7 @@
 #include "Domain/BeverageFactories/IIngredientFactory.hpp"
 
 #include <memory>
+#include <utility>
 
 class IBeverageBuilder
 {
@@ -24,9 +25,9 @@ public:
   /// @brief
   virtual ~IBeverageBuilder() = default;
 
-  /// @brief Gets the beverage.
-  /// @return A pointer to the beverage.
-  virtual std::shared_ptr<IBeverage> getBeverage() = 0;
+  /// @brief Takes the built beverage and resets the builder.
+  /// @return The beverage. The caller becomes its owner.
+  virtual std::unique_ptr<IBeverage> takeBeverage() = 0;
 
   /// @brief
   virtual void reset() = 0;
@@ -48,8 +49,16 @@ public:
   virtual bool addWater() = 0;
 
 protected:
+  /// @brief Wraps the beverage being built with an ingredient decorator.
+  /// @param ingredient The ingredient to add.
+  void decorateWith(Ingredient ingredient)
+  {
+    m_Beverage =
+        m_IngredientFactory->createIngredient(ingredient, std::move(m_Beverage));
+  }
+
   /// @brief The beverage that will be built.
-  std::shared_ptr<IBeverage> m_Beverage;
+  std::unique_ptr<IBeverage> m_Beverage;
 
   /// @brief A reference to the beverage factory.
   IBeverageFactory *m_BeverageFactory = nullptr;

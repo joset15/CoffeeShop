@@ -7,6 +7,7 @@
 #include "Domain/Beverages/IBeverage.hpp"
 
 #include <iostream>
+#include <list>
 #include <memory>
 
 class ScreenPresenter : public IUseCaseOutputPort
@@ -19,9 +20,9 @@ public:
 
   /// @brief
   /// @param orderList
-  void print(const std::list<std::shared_ptr<IBeverage>> &orderList) // override
+  void print(const std::list<std::unique_ptr<IBeverage>> &orderList) // override
   {
-    for (auto &&beverage : orderList)
+    for (const auto &beverage : orderList)
     {
       std::cout << beverage->getDescription() << std::endl;
     }

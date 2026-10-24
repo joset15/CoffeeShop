@@ -33,7 +33,7 @@ bool AddNewOrderUC::addNewOrder( // TODO: IBeverage::BeverageType beverageType,
     return false;
   }
 
-  std::shared_ptr<IBeverage> newBeverage = beverageBuilder->getBeverage();
+  std::unique_ptr<IBeverage> newBeverage = beverageBuilder->takeBeverage();
   std::cout << newBeverage->getDescription() << std::endl;
 
   // TODO add to the OrderRepository

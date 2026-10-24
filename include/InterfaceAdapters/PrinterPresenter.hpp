@@ -12,9 +12,9 @@ class PrinterPresenter : public IOrderOutput
 public:
   /// \brief
   bool printOutOrders(
-      const std::list<std::shared_ptr<IBeverage>> &orderList) override
+      const std::list<std::unique_ptr<IBeverage>> &orderList) override
   {
-    for (auto &&beverage : orderList)
+    for (const auto &beverage : orderList)
     {
       // JT qDebug() << QString::fromStdString(beverage->description());
       std::cout << beverage->getDescription() << std::endl;

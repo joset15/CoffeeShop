@@ -1,6 +1,8 @@
 #include "InterfaceAdapters/OrderRepository.hpp"
 
-bool OrderRepository::save(std::shared_ptr<IBeverage> newBeverage)
+#include <utility>
+
+bool OrderRepository::save(std::unique_ptr<IBeverage> newBeverage)
 {
   m_CurrentOrders.push_back(std::move(newBeverage));
 

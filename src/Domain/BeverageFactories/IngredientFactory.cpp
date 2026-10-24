@@ -1,34 +1,35 @@
 #include "Domain/BeverageFactories/IngredientFactory.hpp"
 #include <cassert>
+#include <utility>
 
-std::shared_ptr<IBeverage>
+std::unique_ptr<IBeverage>
 IngredientFactory::createIngredient(Ingredient ingredient,
-                                    std::shared_ptr<IBeverage> beverage)
+                                    std::unique_ptr<IBeverage> beverage)
 {
-  std::shared_ptr<IBeverage> newIngredient = nullptr;
+  std::unique_ptr<IBeverage> newIngredient = nullptr;
 
   switch (ingredient)
   {
   case Ingredient::Sugar:
-    newIngredient = std::make_shared<Sugar>(beverage);
+    newIngredient = std::make_unique<Sugar>(std::move(beverage));
     break;
   case Ingredient::Milk:
-    newIngredient = std::make_shared<Milk>(beverage);
+    newIngredient = std::make_unique<Milk>(std::move(beverage));
     break;
   case Ingredient::Cream:
-    newIngredient = std::make_shared<Cream>(beverage);
+    newIngredient = std::make_unique<Cream>(std::move(beverage));
     break;
   case Ingredient::Honey:
-    newIngredient = std::make_shared<Honey>(beverage);
+    newIngredient = std::make_unique<Honey>(std::move(beverage));
     break;
   case Ingredient::Lemon:
-    newIngredient = std::make_shared<Lemon>(beverage);
+    newIngredient = std::make_unique<Lemon>(std::move(beverage));
     break;
   case Ingredient::SoyMilk:
-    newIngredient = std::make_shared<SoyMilk>(beverage);
+    newIngredient = std::make_unique<SoyMilk>(std::move(beverage));
     break;
   case Ingredient::Water:
-    newIngredient = std::make_shared<Water>(beverage);
+    newIngredient = std::make_unique<Water>(std::move(beverage));
     break;
   default:
     assert(false && "Unexpected beverageType");

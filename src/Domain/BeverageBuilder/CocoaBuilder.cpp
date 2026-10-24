@@ -1,8 +1,10 @@
 #include "Domain/BeverageBuilder/CocoaBuilder.hpp"
 
+#include <cassert>
+
 void CocoaBuilder::resetImpl()
 {
-  m_Beverage = std::make_shared<Cocoa>();
+  m_Beverage = m_BeverageFactory->createBeverage(BeverageVariety::Cocoa);
   m_HasMilk = false;
 }
 
@@ -16,10 +18,10 @@ bool CocoaBuilder::addMilk(Ingredient typeOfMilk)
   switch (typeOfMilk)
   {
   case Ingredient::Milk:
-    m_Beverage = std::make_shared<Milk>(m_Beverage);
+    decorateWith(Ingredient::Milk);
     break;
   case Ingredient::SoyMilk:
-    m_Beverage = std::make_shared<SoyMilk>(m_Beverage);
+    decorateWith(Ingredient::SoyMilk);
     break;
   default:
     assert(false && "Invalid type of milk");
