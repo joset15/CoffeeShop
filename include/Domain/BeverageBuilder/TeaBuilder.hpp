@@ -7,13 +7,6 @@
 class TeaBuilder : public IBeverageBuilder
 {
 public:
-  TeaBuilder(IBeverageFactory *beverageFactory,
-             IIngredientFactory *ingredientFactory)
-      : IBeverageBuilder(beverageFactory, ingredientFactory)
-  {
-    resetImpl();
-  }
-
   /// @brief Takes the built beverage and resets the builder.
   /// @return The beverage. The caller becomes its owner.
   std::unique_ptr<IBeverage> takeBeverage() override
@@ -43,6 +36,14 @@ public:
   bool addWater() override { return false; }
 
 protected:
+  /// @brief Only concrete teas (e.g. TeaBlackBuilder) create the base beverage.
+  TeaBuilder(IBeverageFactory *beverageFactory,
+             IIngredientFactory *ingredientFactory)
+      : IBeverageBuilder(beverageFactory, ingredientFactory)
+  {
+    resetImpl();
+  }
+
   /// @brief Reset the internal variable status (Milk, Lemon).
   void resetImpl();
 

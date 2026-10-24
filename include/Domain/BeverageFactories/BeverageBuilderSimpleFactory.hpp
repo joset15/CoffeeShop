@@ -18,9 +18,10 @@ public:
     return &m_BeverageBuilderFactoryInstance;
   }
 
-  /// @brief
-  /// @param beverageVariety
-  /// @return
+  /// @brief Creates the builder for a beverage variety.
+  /// @param beverageVariety The variety to build.
+  /// @return The builder, or nullptr if the variety has no builder yet
+  /// (CoffeeLatte, CoffeeDecaf, TeaGreen).
   std::shared_ptr<IBeverageBuilder>
   createBeverageBuilder(BeverageVariety beverageVariety) override;
 

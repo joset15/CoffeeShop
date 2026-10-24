@@ -24,6 +24,10 @@ bool AddNewOrderUC::addNewOrder( // TODO: IBeverage::BeverageType beverageType,
   std::shared_ptr<IBeverageBuilder> beverageBuilder =
       BeverageBuilderSimpleFactory::getInstance()->createBeverageBuilder(
           beverageVariety);
+  if (!beverageBuilder)
+  {
+    return false; // No builder for this variety yet.
+  }
 
   director->setBuilder(beverageBuilder);
 

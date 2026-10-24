@@ -9,6 +9,7 @@ resolve_project_paths(
 
 set(
   SOURCES
+  BeverageBuilder/src/BeverageBuildDirector_Test.cpp
   Beverages/src/Coffee_Test.cpp
   Ingredients/src/IngredientDecorator_Test.cpp
   Ingredients/src/Sugar_Test.cpp

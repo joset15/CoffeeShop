@@ -33,6 +33,18 @@ protected:
                         BeverageVariety::CoffeeEspresso,
                         {Ingredient::Lemon}};
 };
+
+///
+/// \brief A fixture for ordering a latte, a variety without a builder yet.
+///
+class GivenALatteOrder : public ::testing::Test
+{
+protected:
+  FakeOrderRepository m_OrderRepository;
+  NewOrderReq m_Request{IBeverage::BeverageType::Coffee,
+                        BeverageVariety::CoffeeLatte,
+                        {Ingredient::Sugar}};
+};
 } // namespace CoffeeShop
 
 #endif // ADD_NEW_ORDER_UC_TESTFIXTURES_HPP
