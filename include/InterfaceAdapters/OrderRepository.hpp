@@ -20,20 +20,20 @@ public:
   ~OrderRepository() override = default;
 
   /// @brief
-  bool save(std::shared_ptr<IBeverage> newBeverage) override;
+  bool save(std::unique_ptr<IBeverage> newBeverage) override;
 
   static bool cancelExistingOrders();
 
   static bool storeOrders();
 
-  const std::list<std::shared_ptr<IBeverage>> &getOrders() const
+  const std::list<std::unique_ptr<IBeverage>> &getOrders() const
   {
     return m_CurrentOrders;
   }
 
 protected:
-  /// \brief
-  std::list<std::shared_ptr<IBeverage>> m_CurrentOrders;
+  /// @brief The repository owns the stored orders.
+  std::list<std::unique_ptr<IBeverage>> m_CurrentOrders;
 
   /// \brief
   // TODO Refactor datasource

@@ -9,8 +9,11 @@
 class IOrderOutput
 {
 public:
+  /// @brief The default destructor.
+  virtual ~IOrderOutput() = default;
+
   virtual bool
-  printOutOrders(const std::list<std::shared_ptr<IBeverage>> &orderList) = 0;
+  printOutOrders(const std::list<std::unique_ptr<IBeverage>> &orderList) = 0;
 };
 
 #endif // IORDEROUTPUT_H

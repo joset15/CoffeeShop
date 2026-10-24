@@ -11,10 +11,10 @@ public:
   /// @brief The default destructor.
   virtual ~IOrderRepository() = default;
 
-  /// @brief
-  /// @param
-  /// @return
-  virtual bool save(std::shared_ptr<IBeverage>) = 0;
+  /// @brief Stores a new order, taking ownership of it.
+  /// @param beverage The ordered beverage.
+  /// @return True if the order was stored.
+  virtual bool save(std::unique_ptr<IBeverage> beverage) = 0;
 };
 
 #endif // IORDER_REPOSITORY_HPP
