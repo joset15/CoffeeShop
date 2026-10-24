@@ -7,7 +7,7 @@
 #include <gtest/gtest.h>
 #include <memory>
 
-namespace CoffeeShop
+namespace coffee_shop
 {
 ///
 /// \brief A fixture for decorating a beverage that does not exist.
@@ -28,6 +28,6 @@ protected:
 
   std::unique_ptr<IBeverage> m_Coffee;
 };
-} // namespace CoffeeShop
+} // namespace coffee_shop
 
 #endif // INGREDIENT_DECORATOR_TESTFIXTURES_HPP

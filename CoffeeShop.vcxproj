@@ -29,6 +29,7 @@
     <ClInclude Include="include\Domain\BeverageBuilder\CocoaBuilder.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\CoffeeBuilder.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\CoffeeEspressoBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuilderBase.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\IBeverageBuilder.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\TeaBlackBuilder.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\TeaBuilder.hpp" />

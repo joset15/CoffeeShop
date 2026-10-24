@@ -2,7 +2,7 @@
 
 void CocoaBuilder::resetImpl()
 {
-  m_Beverage = m_BeverageFactory->createBeverage(BeverageVariety::Cocoa);
+  setBaseBeverage(BeverageVariety::Cocoa);
   m_HasMilk = false;
 }
 

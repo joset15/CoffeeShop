@@ -14,7 +14,10 @@ public:
 
   /// @brief
   /// @return
-  std::string getDescription() const override { return TeaBlackName; }
+  [[nodiscard]] std::string getDescription() const override
+  {
+    return TeaBlackName;
+  }
 };
 
 #endif // TEA_BLACK_HPP

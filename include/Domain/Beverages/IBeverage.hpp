@@ -22,7 +22,7 @@ public:
   virtual ~IBeverage() = default;
 
   /// \brief
-  virtual std::string getDescription() const = 0;
+  [[nodiscard]] virtual std::string getDescription() const = 0;
 };
 
 #endif // IBEVERAGE_HPP

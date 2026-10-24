@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace CoffeeShop
+namespace coffee_shop
 {
 TEST_F(GivenSomeSugar, WhenSugarIsAddedToCoffeeThenDescriptionHasRightFormat)
 {
@@ -18,4 +18,4 @@ TEST_F(GivenSomeSugar, WhenSugarIsAddedToCoffeeThenDescriptionHasRightFormat)
   // Assert
   ASSERT_EQ(coffeeWithSugar.compare(CoffeName + ", " + SugarName), 0);
 }
-} // namespace CoffeeShop
+} // namespace coffee_shop

@@ -1,27 +1,15 @@
 #ifndef IBEVERAGE_BUILDER_HPP
 #define IBEVERAGE_BUILDER_HPP
-//#pragma once
 
 #include "Domain/Beverages/IBeverage.hpp"
 #include "Domain/Ingredients/Ingredients.hpp"
 
-#include "Domain/BeverageFactories/IBeverageFactory.hpp"
-#include "Domain/BeverageFactories/IIngredientFactory.hpp"
-
 #include <memory>
-#include <utility>
 
+/// @brief Builds a beverage step by step (Builder pattern).
 class IBeverageBuilder
 {
 public:
-  /// @brief
-  /// @param beverageFactory
-  /// @param ingredientFactory
-  IBeverageBuilder(IBeverageFactory *beverageFactory,
-                   IIngredientFactory *ingredientFactory)
-      : m_BeverageFactory(beverageFactory),
-        m_IngredientFactory(ingredientFactory){};
-
   /// @brief
   virtual ~IBeverageBuilder() = default;
 
@@ -29,7 +17,7 @@ public:
   /// @return The beverage. The caller becomes its owner.
   virtual std::unique_ptr<IBeverage> takeBeverage() = 0;
 
-  /// @brief
+  /// @brief Starts a new beverage, discarding the one being built.
   virtual void reset() = 0;
 
   /// @brief Adds sugar to the beverage.
@@ -47,24 +35,6 @@ public:
 
   /// @brief Adds Water to the beverage.
   virtual bool addWater() = 0;
-
-protected:
-  /// @brief Wraps the beverage being built with an ingredient decorator.
-  /// @param ingredient The ingredient to add.
-  void decorateWith(Ingredient ingredient)
-  {
-    m_Beverage =
-        m_IngredientFactory->createIngredient(ingredient, std::move(m_Beverage));
-  }
-
-  /// @brief The beverage that will be built.
-  std::unique_ptr<IBeverage> m_Beverage;
-
-  /// @brief A reference to the beverage factory.
-  IBeverageFactory *m_BeverageFactory = nullptr;
-
-  /// @brief
-  IIngredientFactory *m_IngredientFactory = nullptr;
 };
 
 #endif // IBEVERAGE_BUILDER_HPP

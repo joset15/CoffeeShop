@@ -36,5 +36,5 @@ bool AddNewOrderUC::addNewOrder( // TODO: IBeverage::BeverageType beverageType,
     return false;
   }
 
-  return m_OrderRepository.save(beverageBuilder->takeBeverage());
+  return m_OrderRepository->save(beverageBuilder->takeBeverage());
 };

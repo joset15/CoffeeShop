@@ -11,7 +11,7 @@
 #include <memory>
 #include <tuple>
 
-namespace CoffeeShop
+namespace coffee_shop
 {
 ///
 /// \brief A fixture for testing a CoffeeEspressoBuilder.
@@ -24,7 +24,7 @@ class GivenSomeIngredientsForCoffeeEspressoBuilder
   // To access the test parameter, call GetParam() from class
   // TestWithParam<T>.
 protected:
-  virtual void SetUp()
+  void SetUp() override
   {
     m_BeverageBuildDirector = std::make_unique<BeverageBuildDirector>();
     m_CoffeeEspressoBuilder = std::make_shared<CoffeeEspressoBuilder>(
@@ -32,12 +32,10 @@ protected:
     m_BeverageBuildDirector->setBuilder(m_CoffeeEspressoBuilder);
   }
 
-  virtual void TearDown() {}
-
   std::unique_ptr<BeverageBuildDirector> m_BeverageBuildDirector;
   std::shared_ptr<CoffeeEspressoBuilder> m_CoffeeEspressoBuilder;
 };
 
-} // namespace CoffeeShop
+} // namespace coffee_shop
 
 #endif // COFFEE_ESPRESSO_BUILDER_PARAMETERIZED_TESTFIXTURES_HPP

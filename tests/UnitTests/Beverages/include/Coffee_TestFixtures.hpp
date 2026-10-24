@@ -7,7 +7,7 @@
 #include <gtest/gtest.h>
 #include <memory>
 
-namespace CoffeeShop
+namespace coffee_shop
 {
 ///
 /// \brief A fixture for testing a Coffee.
@@ -15,12 +15,10 @@ namespace CoffeeShop
 class GivenACoffee : public ::testing::Test
 {
 protected:
-  virtual void SetUp() { m_Coffee = std::make_unique<Coffee>(); }
-
-  virtual void TearDown() {}
+  void SetUp() override { m_Coffee = std::make_unique<Coffee>(); }
 
   std::unique_ptr<Coffee> m_Coffee;
 };
-} // namespace CoffeeShop
+} // namespace coffee_shop
 
 #endif // COFFEE_TESTFIXTURES_HPP

@@ -26,12 +26,12 @@ public:
 
   static bool storeOrders();
 
-  const std::list<std::unique_ptr<IBeverage>> &getOrders() const
+  [[nodiscard]] const std::list<std::unique_ptr<IBeverage>> &getOrders() const
   {
     return m_CurrentOrders;
   }
 
-protected:
+private:
   /// @brief The repository owns the stored orders.
   std::list<std::unique_ptr<IBeverage>> m_CurrentOrders;
 

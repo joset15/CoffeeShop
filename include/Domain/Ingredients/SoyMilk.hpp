@@ -12,9 +12,9 @@ public:
 
   /// @brief Gets the description of the ingredient.
   /// @return The description.
-  std::string getDescription() const override
+  [[nodiscard]] std::string getDescription() const override
   {
-    return m_Beverage->getDescription() + ", SoyMilk";
+    return getDecoratedBeverage().getDescription() + ", SoyMilk";
   }
 };
 

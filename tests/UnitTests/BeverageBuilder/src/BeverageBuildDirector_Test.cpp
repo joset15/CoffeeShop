@@ -1,6 +1,6 @@
 #include "../include/BeverageBuildDirector_TestFixtures.hpp"
 
-namespace CoffeeShop
+namespace coffee_shop
 {
 TEST_F(GivenADirectorWithoutBuilder, WhenBuildingThenReturnsFalse)
 {
@@ -13,4 +13,4 @@ TEST_F(GivenADirectorWithoutBuilder, WhenBuildingThenReturnsFalse)
   ASSERT_FALSE(espressoBuilt);
   ASSERT_FALSE(teaBuilt);
 }
-} // namespace CoffeeShop
+} // namespace coffee_shop

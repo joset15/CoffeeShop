@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-namespace CoffeeShop
+namespace coffee_shop
 {
 ///
 /// \brief An in-memory repository that keeps the saved orders for inspection.
@@ -22,7 +22,8 @@ public:
     return true;
   }
 
-  const std::vector<std::unique_ptr<IBeverage>> &getSavedOrders() const
+  [[nodiscard]] const std::vector<std::unique_ptr<IBeverage>> &
+  getSavedOrders() const
   {
     return m_SavedOrders;
   }
@@ -30,6 +31,6 @@ public:
 private:
   std::vector<std::unique_ptr<IBeverage>> m_SavedOrders;
 };
-} // namespace CoffeeShop
+} // namespace coffee_shop
 
 #endif // ORDER_REPOSITORY_TESTDOUBLES_HPP

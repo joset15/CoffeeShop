@@ -24,6 +24,13 @@ public:
   }
 
 protected:
+  /// @brief The beverage this decorator wraps.
+  [[nodiscard]] const IBeverage &getDecoratedBeverage() const
+  {
+    return *m_Beverage;
+  }
+
+private:
   /// @brief The decorator owns the decorated object.
   std::unique_ptr<IBeverage> m_Beverage;
 };

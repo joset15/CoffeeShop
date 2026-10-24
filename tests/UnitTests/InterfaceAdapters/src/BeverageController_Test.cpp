@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace CoffeeShop
+namespace coffee_shop
 {
 TEST_F(GivenABeverageController, WhenOrderIsValidThenResponseIsSuccess)
 {
@@ -29,4 +29,4 @@ TEST_F(GivenABeverageController, WhenOrderIsInvalidThenResponseIsFailure)
   ASSERT_EQ(response.getMessage(),
             std::string(BeverageController::OrderNotAddedMessage));
 }
-} // namespace CoffeeShop
+} // namespace coffee_shop

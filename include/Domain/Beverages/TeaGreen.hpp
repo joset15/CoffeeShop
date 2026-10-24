@@ -7,12 +7,15 @@ class TeaGreen : public IBeverage
 {
 public:
   /// \brief
-  TeaGreen(){};
+  TeaGreen() = default;
 
   /// \brief
   // bool addExtraIngredient(Ingredient extraIngredient) override;
 
-  std::string getDescription() const override { return "TeaGreen"; }
+  [[nodiscard]] std::string getDescription() const override
+  {
+    return "TeaGreen";
+  }
 };
 
 #endif // TEA_GREEN_HPP

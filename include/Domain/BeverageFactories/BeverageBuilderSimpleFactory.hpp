@@ -25,12 +25,6 @@ public:
   std::shared_ptr<IBeverageBuilder>
   createBeverageBuilder(BeverageVariety beverageVariety) override;
 
-private:
-  /// @brief Protected constructor
-  BeverageBuilderSimpleFactory() = default;
-  /// @brief
-  ~BeverageBuilderSimpleFactory() = default;
-
   BeverageBuilderSimpleFactory(const BeverageBuilderSimpleFactory &) = delete;
   BeverageBuilderSimpleFactory &
   operator=(const BeverageBuilderSimpleFactory &) = delete;
@@ -38,6 +32,12 @@ private:
   BeverageBuilderSimpleFactory(BeverageBuilderSimpleFactory &&) = delete;
   BeverageBuilderSimpleFactory &
   operator=(BeverageBuilderSimpleFactory &&) = delete;
+
+private:
+  /// @brief Private constructor: use getInstance().
+  BeverageBuilderSimpleFactory() = default;
+  /// @brief
+  ~BeverageBuilderSimpleFactory() override = default;
 };
 
 #endif // BEVERAGE_BUILDER_SIMPLE_FACTORY_HPP

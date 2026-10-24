@@ -11,7 +11,10 @@ class Cocoa : public IBeverage
 public:
   Cocoa() = default;
 
-  std::string getDescription() const override { return CocoaName; }
+  [[nodiscard]] std::string getDescription() const override
+  {
+    return CocoaName;
+  }
 };
 
 #endif // COCOA_HPP

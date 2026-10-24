@@ -24,18 +24,18 @@ public:
   std::unique_ptr<IBeverage>
   createBeverage(BeverageVariety beverageVariety) override;
 
-private:
-  /// @brief
-  BeverageFactory() = default;
-
-  /// @brief
-  ~BeverageFactory() override = default;
-
   BeverageFactory(const BeverageFactory &) = delete;
   BeverageFactory &operator=(const BeverageFactory &) = delete;
 
   BeverageFactory(BeverageFactory &&) = delete;
   BeverageFactory &operator=(BeverageFactory &&) = delete;
+
+private:
+  /// @brief Private constructor: use getInstance().
+  BeverageFactory() = default;
+
+  /// @brief
+  ~BeverageFactory() override = default;
 };
 
 #endif // BEVERAGE_FACTORY_HPP
