@@ -7,7 +7,7 @@
 class CoffeeDecaf : public IBeverage
 {
 public:
-  CoffeeDecaf(){};
+  CoffeeDecaf() = default;
 
   std::string getDescription() const override { return "CoffeeDecaf"; }
 };

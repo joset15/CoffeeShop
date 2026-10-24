@@ -22,15 +22,13 @@ class GivenSomeIngredientsForTeaBlackBuilder
   // To access the test parameter, call GetParam() from class
   // TestWithParam<T>.
 protected:
-  virtual void SetUp()
+  void SetUp() override
   {
     m_BeverageBuildDirector = std::make_unique<BeverageBuildDirector>();
     m_TeaBlackBuilder = std::make_shared<TeaBlackBuilder>(
         BeverageFactory::getInstance(), IngredientFactory::getInstance());
     m_BeverageBuildDirector->setBuilder(m_TeaBlackBuilder);
   }
-
-  virtual void TearDown() {}
 
   std::unique_ptr<BeverageBuildDirector> m_BeverageBuildDirector;
   std::shared_ptr<TeaBlackBuilder> m_TeaBlackBuilder;

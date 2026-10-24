@@ -18,7 +18,6 @@ struct NewOrderReq : IRequest
 {
 public:
   NewOrderReq() = delete;
-  ~NewOrderReq(){};
 
   NewOrderReq(IBeverage::BeverageType beverageType,
               BeverageVariety beverageVariety,

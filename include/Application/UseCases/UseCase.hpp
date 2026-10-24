@@ -13,7 +13,7 @@ class UseCase
 
 public:
   /// @brief Destructor for an UseCase.
-  virtual ~UseCase(){};
+  virtual ~UseCase() = default;
 
   /// @brief Get the name of the UseCase.
   /// @return UseCaseName

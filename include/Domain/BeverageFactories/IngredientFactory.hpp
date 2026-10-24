@@ -25,18 +25,18 @@ public:
   createIngredient(Ingredient ingredient,
                    std::unique_ptr<IBeverage> beverage) override;
 
-private:
-  /// @brief
-  IngredientFactory() = default;
-
-  /// @brief
-  ~IngredientFactory() = default;
-
   IngredientFactory(const IngredientFactory &) = delete;
   IngredientFactory &operator=(const IngredientFactory &) = delete;
 
   IngredientFactory(IngredientFactory &&) = delete;
   IngredientFactory &operator=(IngredientFactory &&) = delete;
+
+private:
+  /// @brief Private constructor: use getInstance().
+  IngredientFactory() = default;
+
+  /// @brief
+  ~IngredientFactory() override = default;
 };
 
 #endif // INGREDIENT_FACTORY_HPP

@@ -7,7 +7,7 @@ class TeaGreen : public IBeverage
 {
 public:
   /// \brief
-  TeaGreen(){};
+  TeaGreen() = default;
 
   /// \brief
   // bool addExtraIngredient(Ingredient extraIngredient) override;

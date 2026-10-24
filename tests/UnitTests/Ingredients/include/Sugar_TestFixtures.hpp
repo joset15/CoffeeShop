@@ -15,9 +15,7 @@ namespace CoffeeShop
 class GivenSomeSugar : public ::testing::Test
 {
 protected:
-  virtual void SetUp() { m_Coffee = std::make_unique<Coffee>(); }
-
-  virtual void TearDown() {}
+  void SetUp() override { m_Coffee = std::make_unique<Coffee>(); }
 
   std::unique_ptr<Coffee> m_Coffee;
 };

@@ -20,15 +20,13 @@ namespace CoffeeShop
 class GivenACoffeeEspressoBuilder : public ::testing::Test
 {
 protected:
-  virtual void SetUp()
+  void SetUp() override
   {
     m_BeverageBuildDirector = std::make_unique<BeverageBuildDirector>();
     m_CoffeeEspressoBuilder = std::make_shared<CoffeeEspressoBuilder>(
         BeverageFactory::getInstance(), IngredientFactory::getInstance());
     m_BeverageBuildDirector->setBuilder(m_CoffeeEspressoBuilder);
   }
-
-  virtual void TearDown() {}
 
   std::unique_ptr<BeverageBuildDirector> m_BeverageBuildDirector;
   std::shared_ptr<CoffeeEspressoBuilder> m_CoffeeEspressoBuilder;
