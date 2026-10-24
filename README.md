@@ -5,7 +5,7 @@ Management of drink orders.
 
 ## Developer documents
 
-Documents for the [developers](./doc/README_development.md).
+Documents for the [developers](./docs/README_development.md).
 
 ## Pending
 - code coverage percentage: ![coverage](https://img.shields.io/badge/coverage-80%25-yellowgreen)

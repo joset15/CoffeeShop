@@ -77,7 +77,7 @@
 ├── LICENSE.md
 ├── conanfile.txt
 ├── CMakeLists.txt
-└── CMakeUserPresets.json
+└── CMakePresets.json
 
 ```
 
