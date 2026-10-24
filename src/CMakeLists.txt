@@ -15,7 +15,7 @@ target_include_directories(AllLayers PRIVATE ${PUBLIC_INCLUDE_PATH})
 # PCH support (support for PCH in CMake was added in 3.16)
 if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.16 AND BUILD_USING_PCH)
   message(STATUS "Compiling using pre-compiled header support (CoffeeShopApp)")
-  target_precompile_headers(AllLayers PUBLIC ../include/pch.h) # With PUBLIC they will be used by targets using this target
+  target_precompile_headers(AllLayers PUBLIC ${PUBLIC_INCLUDE_PATH}/pch.h) # With PUBLIC they will be used by targets using this target
   set(CMAKE_PCH_INSTANTIATE_TEMPLATES ON)
 else()
   message(STATUS "Disabled pre-compiled header support")

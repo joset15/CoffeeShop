@@ -10,11 +10,18 @@ project(
 )
 
 # Options and Settings
-option(BUILD_USING_PCH "Build using pre-compile header support" ON) # PCH support (support for PCH in CMake was added in 3.16)
+option(BUILD_USING_PCH "Build using pre-compile header support" OFF) # PCH support (support for PCH in CMake was added in 3.16)
 option(TESTS "Build GTest Unit Tests" ON)
 option(ITESTS "Build GTest Integration Tests" ON)
-option(BUILD_DOC "Build Doxygen documentation" ON)
+option(BUILD_DOC "Build Doxygen documentation" OFF)
 option(ASAN_ENABLED "Build this target with AddressSanitizer" OFF)
+# option(STATIC_ANALISYS_ENABLED "Build this target with Static Analysis" OFF)
+option(CLANG_TIDY_ENABLED "Build this target with Static Analysis" ON)  # STATIC_ANALISYS
+option(CPPCHECK_ENABLED "Run CppCheck static code analysis" OFF)  # STATIC_ANALISYS
+
+if(BUILD_USING_PCH AND CLANG_TIDY_ENABLED)
+  message(FATAL_ERROR "Using PCH incompatible with clang-tidy (MSVC). ")
+endif()
 
 # Including Files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -110,6 +117,16 @@ set(CMAKE_COMPILE_WARNING_AS_ERROR OFF)
 add_compile_options(${PROJECT_WARNING_FLAGS})
 # add_link_options()
 
+# Static analysis
+# clang-tidy no compatible con PCH (MSVC)
+if (CLANG_TIDY_ENABLED)
+  set(CMAKE_CXX_CLANG_TIDY "clang-tidy")   # v3.6, will search for file .clang-tidy
+endif()
+
+if (CPPCHECK_ENABLED)
+  set(CMAKE_CXX_CPPCHECK "cppcheck")   # v3.10
+endif()
+
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") # MATCHES
   message(STATUS "Setting MSVC flags")
 
@@ -161,6 +178,10 @@ endif()
 #jt include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 #jt conan_basic_setup(TARGETS)
 # set(CMAKE_MODULE_PATH "D:/users/2023_12_31_CoffeeShop/repos/CoffeeShop/build/generators")
+
+# Static analysis
+# set(CMAKE_CXX_CLANG_TIDY "clang-tidy")   # v3.6, will search for file .clang-tidy
+
 
 if(TESTS OR ITESTS)
   find_package(GTest REQUIRED)

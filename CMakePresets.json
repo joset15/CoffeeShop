@@ -1,19 +1,17 @@
 {
-  "version": 10,
+  "version": 9,
   "cmakeMinimumRequired": {
     "major": 3,
     "minor": 9,
     "patch": 0
   },
-  "$comment": "CMakePresets.json file for CoffeeShop project.",
   "configurePresets": [
     {
       "name": "Windows x64 Debug",
       "displayName": "Windows x64 Debug",
       "description": "Sets Ninja generator, compilers, x64 architecture, build and install directory, debug build type",
       "generator": "Ninja",
-      //"binaryDir": "${sourceDir}/out/build/${presetName}",
-      "binaryDir": "${sourceDir}/build/${presetName}",
+      "binaryDir": "${sourceDir}/build/${presetName}", //"binaryDir": "${sourceDir}/out/build/${presetName}",
       "architecture": {
         "value": "x64",
         "strategy": "external"
@@ -23,6 +21,10 @@
       //  "$comment": "ASAN Libraries.",
       //  "PATH": "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/Hostx64/x64;$penv{PATH}"
       //},
+      "environment": {
+        "$comment": "Doxygen path."
+        // "PATH": "D:\\utiles\\2024_02 Doxygen\\doxygen.bin;$penv{PATH}"
+      },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         //"CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
@@ -77,7 +79,11 @@
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
-          "hostOS": [ "Linux" ]
+          "hostOS": [ "Linux" ],
+          "clangTidyChecks": "clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,readability-identifier-naming", // jta added
+          "enableMicrosoftCodeAnalysis": true, // jta added
+          "enableClangTidyCodeAnalysis": true // jta added
+
         },
         "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
           "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"

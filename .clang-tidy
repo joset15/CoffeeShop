@@ -1,4 +1,4 @@
-Checks: 'clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,readability-identifier-naming'
+Checks: '-*,clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,readability-identifier-naming'
 WarningsAsErrors: true
 AnalyzeTemporaryDtors: false
 # CheckOptions:

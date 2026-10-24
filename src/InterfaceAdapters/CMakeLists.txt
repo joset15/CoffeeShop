@@ -24,4 +24,7 @@ endif()
 
 add_subdirectory(Gateways)
 
+# Static analysis
+# set(CMAKE_CXX_CLANG_TIDY "clang-tidy")   # v3.6, will search for file .clang-tidy
+
 target_link_libraries(InterfaceAdapters Gateways)
