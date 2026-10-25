@@ -6,7 +6,7 @@ resolve_project_paths(
   PRIVATE_INCLUDE_PATH
 )
 
-set(SOURCES BeverageController.cpp OrderRepository.cpp)
+set(SOURCES BeverageController.cpp OrderRepository.cpp TextPresenter.cpp)
 
 add_library(InterfaceAdapters ${SOURCES})
 target_include_directories(InterfaceAdapters PRIVATE ${PUBLIC_INCLUDE_PATH})

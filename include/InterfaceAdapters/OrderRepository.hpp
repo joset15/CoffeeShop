@@ -7,6 +7,8 @@
 
 #include <list>
 #include <memory>
+#include <string>
+#include <vector>
 
 /// @brief Keeps the orders in memory.
 class OrderRepository : public IOrderRepository
@@ -19,6 +21,10 @@ public:
   /// @param newBeverage The ordered beverage.
   /// @return Always true.
   bool save(std::unique_ptr<IBeverage> newBeverage) override;
+
+  /// @brief Describes the stored orders.
+  /// @return One description per order, in the order they were saved.
+  [[nodiscard]] std::vector<std::string> describeOrders() const override;
 
   /// @brief Not implemented yet: always returns true.
   static bool cancelExistingOrders();
