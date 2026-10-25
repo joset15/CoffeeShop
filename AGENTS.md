@@ -143,16 +143,23 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
     (`m_Beverage`, `m_Coffee`). Static variables are also `m_`.
   - Constants, constexpr, and enum constants: `CamelCase` (`SugarName`, `BeverageVariety::Cocoa`).
   - Macros: `UPPER_CASE`. Namespaces: `lower_case`.
-- Headers are `.hpp`, sources `.cpp`. Use `#ifndef NAME_HPP` include guards. Include project
-  headers relative to `include/`, e.g. `#include "Domain/Ingredients/Sugar.hpp"`.
-- Use Doxygen comments (`/// @brief`, `/// @param`, `/// @return`) on public APIs.
+- Headers are `.hpp`, sources `.cpp`. Use only `#ifndef NAME_HPP` / `#define NAME_HPP` include
+  guards (no `#pragma once`, see C++ Core Guidelines SF.8), with a unique name and
+  `#endif // NAME_HPP` at the end. Include project headers relative to `include/`, e.g.
+  `#include "Domain/Ingredients/Sugar.hpp"`.
+- Use Doxygen comments (`/// @brief`, `/// @param`, `/// @return`) on public APIs. Don't leave
+  them empty: say what the function does, what it returns and when it fails.
+- Don't keep commented-out code (git history has it). A `TODO:` comment says, in English, what is
+  missing and why.
 - Use smart pointers (`std::shared_ptr`/`std::make_shared`, `std::unique_ptr`). Don't use raw `new`/`delete`.
 - `.editorconfig`: UTF-8, final newline, trim trailing whitespace, native line endings.
 - CMake files: 2-space indent, 100 columns, formatted by **gersemi** (`.gersemirc`) and linted by
   **cmake-lint** (`.cmakelintrc`). New targets follow the existing pattern: call
   `resolve_project_paths(...)` from `cmake/files_helper.cmake`, list `SOURCES` explicitly,
   `target_include_directories(<tgt> PRIVATE ${PUBLIC_INCLUDE_PATH})`, set the VS `FOLDER` property,
-  and add the `BUILD_USING_PCH` `REUSE_FROM AllLayers` block.
+  and add the `BUILD_USING_PCH` `REUSE_FROM AllLayers` block. The C++ standard is set only once,
+  with `CMAKE_CXX_STANDARD` in the top-level `CMakeLists.txt`: don't add `/std:c++17` or
+  `cxx_std_17` to targets.
 
 ### Adding a source file
 
