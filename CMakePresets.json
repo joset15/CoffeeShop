@@ -11,34 +11,29 @@
       "displayName": "Windows x64 Debug",
       "description": "Sets Ninja generator, compilers, x64 architecture, build and install directory, debug build type",
       "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/${presetName}", //"binaryDir": "${sourceDir}/out/build/${presetName}",
+      "binaryDir": "${sourceDir}/build/${presetName}",
       "architecture": {
         "value": "x64",
         "strategy": "external"
       },
-      //"environment": {
-      //  "comment": "That causes a problem and stops building",
-      //  "$comment": "ASAN Libraries.",
-      //  "PATH": "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.29.30133/bin/Hostx64/x64;$penv{PATH}"
-      //},
       "environment": {
-        "$comment": "Doxygen path."
-        // "PATH": "D:\\utiles\\2024_02 Doxygen\\doxygen.bin;$penv{PATH}"
+        "$comment": "To use a Doxygen that is not on PATH, add \"PATH\": \"<doxygen bin folder>;$penv{PATH}\"."
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        //"CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
         "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}",
         "TESTS": {
           "type": "BOOL",
           "value": "ON"
-        }, // JTA
-        "ITESTS": "ON", // JTA
-        "ASAN_ENABLED": "OFF" // JTA
+        },
+        "ITESTS": "ON",
+        "ASAN_ENABLED": "OFF"
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
-          "hostOS": [ "Windows" ]
+          "hostOS": [
+            "Windows"
+          ]
         }
       }
     },
@@ -58,12 +53,14 @@
         "TESTS": {
           "type": "BOOL",
           "value": "ON"
-        }, // JTA
-        "ITESTS": "ON" // JTA
+        },
+        "ITESTS": "ON"
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
-          "hostOS": [ "Windows" ]
+          "hostOS": [
+            "Windows"
+          ]
         }
       }
     },
@@ -79,11 +76,12 @@
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
-          "hostOS": [ "Linux" ],
-          "clangTidyChecks": "clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,readability-identifier-naming", // jta added
-          "enableMicrosoftCodeAnalysis": true, // jta added
-          "enableClangTidyCodeAnalysis": true // jta added
-
+          "hostOS": [
+            "Linux"
+          ],
+          "clangTidyChecks": "clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,readability-identifier-naming",
+          "enableMicrosoftCodeAnalysis": true,
+          "enableClangTidyCodeAnalysis": true
         },
         "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
           "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"

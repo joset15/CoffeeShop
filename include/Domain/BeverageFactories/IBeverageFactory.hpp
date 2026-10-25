@@ -15,9 +15,6 @@ public:
   virtual ~IBeverageFactory() = default;
 
   /// @brief
-  static IBeverageFactory *getInstance() { return nullptr; }
-
-  /// @brief
   /// @param beverageVariety
   /// @return
   virtual std::unique_ptr<IBeverage>

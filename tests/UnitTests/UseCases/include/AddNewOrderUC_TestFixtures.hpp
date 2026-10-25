@@ -17,9 +17,7 @@ class GivenAnEspressoWithSugarOrder : public ::testing::Test
 {
 protected:
   FakeOrderRepository m_OrderRepository;
-  NewOrderReq m_Request{IBeverage::BeverageType::Coffee,
-                        BeverageVariety::CoffeeEspresso,
-                        {Ingredient::Sugar}};
+  NewOrderReq m_Request{BeverageVariety::CoffeeEspresso, {Ingredient::Sugar}};
 };
 
 ///
@@ -29,9 +27,7 @@ class GivenAnEspressoWithLemonOrder : public ::testing::Test
 {
 protected:
   FakeOrderRepository m_OrderRepository;
-  NewOrderReq m_Request{IBeverage::BeverageType::Coffee,
-                        BeverageVariety::CoffeeEspresso,
-                        {Ingredient::Lemon}};
+  NewOrderReq m_Request{BeverageVariety::CoffeeEspresso, {Ingredient::Lemon}};
 };
 
 ///
@@ -41,9 +37,7 @@ class GivenALatteOrder : public ::testing::Test
 {
 protected:
   FakeOrderRepository m_OrderRepository;
-  NewOrderReq m_Request{IBeverage::BeverageType::Coffee,
-                        BeverageVariety::CoffeeLatte,
-                        {Ingredient::Sugar}};
+  NewOrderReq m_Request{BeverageVariety::CoffeeLatte, {Ingredient::Sugar}};
 };
 } // namespace coffee_shop
 

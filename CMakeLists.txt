@@ -16,8 +16,8 @@ option(ITESTS "Build GTest Integration Tests" ON)
 option(BUILD_DOC "Build Doxygen documentation" OFF)
 option(ASAN_ENABLED "Build this target with AddressSanitizer" OFF)
 # option(STATIC_ANALISYS_ENABLED "Build this target with Static Analysis" OFF)
-option(CLANG_TIDY_ENABLED "Build this target with Static Analysis" ON)  # STATIC_ANALISYS
-option(CPPCHECK_ENABLED "Run CppCheck static code analysis" OFF)  # STATIC_ANALISYS
+option(CLANG_TIDY_ENABLED "Build this target with Static Analysis" ON) # STATIC_ANALISYS
+option(CPPCHECK_ENABLED "Run CppCheck static code analysis" OFF) # STATIC_ANALISYS
 
 if(BUILD_USING_PCH AND CLANG_TIDY_ENABLED)
   message(FATAL_ERROR "Using PCH incompatible with clang-tidy (MSVC). ")
@@ -119,16 +119,16 @@ add_compile_options(${PROJECT_WARNING_FLAGS})
 
 # Static analysis
 # clang-tidy no compatible con PCH (MSVC)
-if (CLANG_TIDY_ENABLED)
-  set(CMAKE_CXX_CLANG_TIDY "clang-tidy")   # v3.6, will search for file .clang-tidy
+if(CLANG_TIDY_ENABLED)
+  set(CMAKE_CXX_CLANG_TIDY "clang-tidy") # v3.6, will search for file .clang-tidy
   if(MSVC)
     # CMake adds --extra-arg-before=--driver-mode=cl, which makes clang-tidy ignore /EHsc.
     list(APPEND CMAKE_CXX_CLANG_TIDY "--extra-arg=/EHsc")
   endif()
 endif()
 
-if (CPPCHECK_ENABLED)
-  set(CMAKE_CXX_CPPCHECK "cppcheck")   # v3.10
+if(CPPCHECK_ENABLED)
+  set(CMAKE_CXX_CPPCHECK "cppcheck") # v3.10
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") # MATCHES
@@ -189,7 +189,6 @@ endif()
 
 # Static analysis
 # set(CMAKE_CXX_CLANG_TIDY "clang-tidy")   # v3.6, will search for file .clang-tidy
-
 
 if(TESTS OR ITESTS)
   find_package(GTest REQUIRED)

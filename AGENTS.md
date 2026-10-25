@@ -132,12 +132,20 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 ## Lint / pre-commit
 
 ```bat
-pre-commit run --all-files     :: or: pre-commit install
+pre-commit run --all-files
 ```
 
-The hooks are standard hygiene checks (trailing whitespace, YAML/JSON validity, `pretty-format-json --no-sort-keys`,
-large files, merge conflicts, mixed line endings, Windows-illegal names), cmake-lint, gersemi,
-and clang-tidy. `no-commit-to-branch` blocks direct commits to `main` and `staging`.
+- pre-commit is **run by hand** before committing. It is not installed as a git hook (don't run
+  `pre-commit install`). The first run downloads the hook environments.
+- The hooks are standard hygiene checks (trailing whitespace, YAML/JSON validity,
+  `pretty-format-json --no-sort-keys`, large files, merge conflicts, mixed line endings,
+  Windows-illegal names), cmake-lint, and gersemi. Some hooks (trailing whitespace, gersemi)
+  fix files in place: review and stage those changes.
+- `no-commit-to-branch` fails when the current branch is `main` or `staging`. Since the hooks are
+  not installed, it only warns when you run them; it doesn't block the commit.
+- There is no clang-tidy hook on purpose: the build already runs clang-tidy with
+  `compile_commands.json` and fails on any finding.
+- `CMakePresets.json` must be strict JSON (no `//` comments). Put notes in `"$comment"` fields.
 
 ## Git / PR guidelines
 
@@ -157,7 +165,8 @@ and clang-tidy. `no-commit-to-branch` blocks direct commits to `main` and `stagi
 - Ninja only rebuilds changed `.cpp` files, so a new finding in a header shows up when a `.cpp`
   that includes it is recompiled. Use `--clean-first` to re-check everything.
 - `apps/ConsoleApp/main.cpp` uses MSVC-specific `_CrtSetDbgFlag` (CRT leak checking).
-- `CancelExistingOrderUC.cpp` exists but is commented out of the `UseCases` build.
+- `CancelExistingOrderUC` is a compiled skeleton: `execute()` always returns `false` until
+  `IOrderRepository` gets a way to cancel orders.
 - An existing build folder keeps old compiler flags in `CMakeCache.txt` after changes to CMake
   policies or debug-info settings. Reconfigure with `cmake --preset "Windows x64 Debug" --fresh`,
   or in Visual Studio use **Project > Delete Cache and Reconfigure**.
