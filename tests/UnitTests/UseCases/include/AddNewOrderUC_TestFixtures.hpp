@@ -39,6 +39,15 @@ protected:
   FakeOrderRepository m_OrderRepository;
   NewOrderReq m_Request{BeverageVariety::CoffeeLatte, {Ingredient::Sugar}};
 };
+///
+/// \brief A fixture for ordering a cocoa with milk.
+///
+class GivenACocoaWithMilkOrder : public ::testing::Test
+{
+protected:
+  FakeOrderRepository m_OrderRepository;
+  NewOrderReq m_Request{BeverageVariety::Cocoa, {Ingredient::Milk}};
+};
 } // namespace coffee_shop
 
 #endif // ADD_NEW_ORDER_UC_TESTFIXTURES_HPP

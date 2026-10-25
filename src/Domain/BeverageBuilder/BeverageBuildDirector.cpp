@@ -1,5 +1,7 @@
 #include "Domain/BeverageBuilder/BeverageBuildDirector.hpp"
 
+#include <algorithm>
+
 bool BeverageBuildDirector::buildBeverage(
     BeverageVariety beverageVariety, const std::list<Ingredient> &ingredients)
 {
@@ -23,7 +25,7 @@ bool BeverageBuildDirector::buildBeverage(
     // TODO add build.
     break;
   case BeverageVariety::Cocoa:
-    // TODO add build.
+    isValidBeverage = buildCocoa(ingredients);
     break;
   default:
     isValidBeverage = false;
@@ -33,77 +35,45 @@ bool BeverageBuildDirector::buildBeverage(
   return isValidBeverage;
 }
 
-bool BeverageBuildDirector::buildCoffee(
-    const std::list<Ingredient> &ingredients)
-{
-  if (!m_BeverageBuilder)
-  {
-    return false;
-  }
-
-  if (!addSugar(ingredients))
-  {
-    return false;
-  }
-
-  if (!addMilk(ingredients))
-  {
-    return false;
-  }
-
-  if (!addHoney(ingredients))
-  {
-    return false;
-  }
-
-  if (!addLemon(ingredients))
-  {
-    return false;
-  }
-
-  return true;
-}
-
 bool BeverageBuildDirector::buildCoffeeEspresso(
     const std::list<Ingredient> &ingredients)
 {
-  return buildCoffee(ingredients);
-}
-
-bool BeverageBuildDirector::buildTea(const std::list<Ingredient> &ingredients)
-{
-  if (!m_BeverageBuilder)
-  {
-    return false;
-  }
-
-  if (!addSugar(ingredients))
-  {
-    return false;
-  }
-
-  if (!addMilk(ingredients))
-  {
-    return false;
-  }
-
-  if (!addHoney(ingredients))
-  {
-    return false;
-  }
-
-  if (!addLemon(ingredients))
-  {
-    return false;
-  }
-
-  return true;
+  return buildWithIngredients(ingredients);
 }
 
 bool BeverageBuildDirector::buildTeaBlack(
     const std::list<Ingredient> &ingredients)
 {
-  return buildTea(ingredients);
+  return buildWithIngredients(ingredients);
+}
+
+bool BeverageBuildDirector::buildCocoa(const std::list<Ingredient> &ingredients)
+{
+  return buildWithIngredients(ingredients);
+}
+
+bool BeverageBuildDirector::buildWithIngredients(
+    const std::list<Ingredient> &ingredients)
+{
+  if (!m_BeverageBuilder || hasSeveralMilks(ingredients))
+  {
+    return false;
+  }
+
+  // Each step returns false if the builder rejects that ingredient.
+  return addSugar(ingredients) && addMilk(ingredients) &&
+         addHoney(ingredients) && addLemon(ingredients) &&
+         addWater(ingredients);
+}
+
+bool BeverageBuildDirector::hasSeveralMilks(
+    const std::list<Ingredient> &ingredients)
+{
+  const int kindsOfMilk =
+      static_cast<int>(find(ingredients, Ingredient::Milk)) +
+      static_cast<int>(find(ingredients, Ingredient::SoyMilk)) +
+      static_cast<int>(find(ingredients, Ingredient::Cream));
+  return kindsOfMilk > 1;
 }
 
 bool BeverageBuildDirector::find(const std::list<Ingredient> &ingredients,
@@ -158,6 +128,16 @@ bool BeverageBuildDirector::addLemon(const std::list<Ingredient> &ingredients)
   if (find(ingredients, Ingredient::Lemon))
   {
     return m_BeverageBuilder->addLemon();
+  }
+
+  return true;
+}
+
+bool BeverageBuildDirector::addWater(const std::list<Ingredient> &ingredients)
+{
+  if (find(ingredients, Ingredient::Water))
+  {
+    return m_BeverageBuilder->addWater();
   }
 
   return true;
