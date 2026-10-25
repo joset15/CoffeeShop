@@ -16,6 +16,24 @@ as Clean Architecture and uses classic GoF patterns:
 Dependencies point inward: Domain must not include Application, InterfaceAdapters or Infrastructure
 headers. Infrastructure (UI) is the outermost layer; menu texts belong there, not in the Domain.
 
+### Beverages and ingredient rules
+
+Each `BeverageVariety` has a builder, created by `BeverageBuilderSimpleFactory`.
+`BeverageBuildDirector::buildBeverage(ingredients)` adds the requested ingredients in a fixed order
+(sugar, milk, honey, lemon, water) and returns `false` as soon as the builder refuses one, or if two
+kinds of milk (milk, soy milk, cream) are requested together. A refused ingredient rejects the order.
+
+| Family | Varieties (builder) | Sugar | Milk / soy milk / cream | Honey | Lemon | Water |
+|---|---|---|---|---|---|---|
+| Coffee | espresso, decaf (`CoffeeBuilder`) | yes | one kind | no | no | no |
+| Coffee | latte (`CoffeeLatteBuilder`) | yes | no (it already has milk) | no | no | no |
+| Tea | black, green (`TeaBuilder`) | yes | one kind, not with lemon | yes | not with milk | no |
+| Cocoa | cocoa (`CocoaBuilder`) | yes | milk or soy milk (no cream) | yes | no | no |
+
+Names in descriptions come from `inline constexpr std::string_view` constants next to each class
+(`CoffeeEspressoName`, `SugarName`, ...). Ingredients build their part with
+`IngredientDecorator::describeWith(XName)`, e.g. `"CoffeeEspresso, Sugar"`.
+
 The tools are CMake (≥3.25; the presets file uses format v9, which needs ≥3.30), Ninja, MSVC (Visual Studio 2022), Conan **1.x**
 (GoogleTest 1.8.1), clang-tidy, and pre-commit. `docs/README_development.md` shows the target folder
 layout. Of its `Infrastructure` folders only `UI` exists; others it lists (`Infrastructure/DB`,
@@ -92,6 +110,9 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 - `tests/CoffeeShop_gtest.vcxproj`, `tests/test.cpp`, `tests/pch.*` belong to the legacy VS
   solution and are not part of the CMake build.
 - All tests should pass. Add or update tests for any behavior you change.
+- Expected descriptions use `describe({CoffeeLatteName, SugarName})` from
+  `tests/Common/include/BeverageDescription_TestHelpers.hpp` (both test targets have that folder
+  on their include path), because C++17 can't concatenate `std::string_view`s with `+`.
 - `ConsoleMenu` takes a `std::istream`/`std::ostream`, so menu tests feed it a
   `std::istringstream` (see `tests/UnitTests/Infrastructure/`).
 - To try the whole app without typing, redirect its input. Each line is one answer, `Enter`
@@ -180,10 +201,9 @@ pre-commit run --all-files
 - `apps/ConsoleApp/main.cpp` uses MSVC-specific `_CrtSetDbgFlag` (CRT leak checking).
 - `CancelExistingOrderUC` is a compiled skeleton: `execute()` always returns `false` until
   `IOrderRepository` gets a way to cancel orders.
-- Only espresso, black tea and cocoa can be built. Latte, decaf and green tea have no builder yet,
-  so ordering them from the menu returns "Error: Order could not be added.".
-- `BeverageBuildDirector` rejects an order it can't fulfil completely: an ingredient the builder
-  refuses (e.g. water, lemon in cocoa) or two kinds of milk at once.
+- An order the director can't fulfil completely is rejected, not partly served: see the rules
+  table in "Beverages and ingredient rules". The menu then shows
+  "Error: Order could not be added.".
 - An existing build folder keeps old compiler flags in `CMakeCache.txt` after changes to CMake
   policies or debug-info settings. Reconfigure with `cmake --preset "Windows x64 Debug" --fresh`,
   or in Visual Studio use **Project > Delete Cache and Reconfigure**.

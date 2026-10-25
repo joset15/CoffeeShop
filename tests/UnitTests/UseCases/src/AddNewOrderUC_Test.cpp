@@ -1,4 +1,5 @@
 #include "../include/AddNewOrderUC_TestFixtures.hpp"
+#include "BeverageDescription_TestHelpers.hpp"
 
 #include <string>
 
@@ -17,7 +18,7 @@ TEST_F(GivenAnEspressoWithSugarOrder, WhenExecutedThenOrderIsSaved)
   ASSERT_TRUE(success);
   ASSERT_EQ(m_OrderRepository.getSavedOrders().size(), 1U);
   ASSERT_EQ(m_OrderRepository.getSavedOrders().front()->getDescription(),
-            CoffeEspressoName + ", " + SugarName);
+            describe({CoffeeEspressoName, SugarName}));
 }
 
 TEST_F(GivenAnEspressoWithLemonOrder, WhenExecutedThenNothingIsSaved)
@@ -34,7 +35,7 @@ TEST_F(GivenAnEspressoWithLemonOrder, WhenExecutedThenNothingIsSaved)
   ASSERT_TRUE(m_OrderRepository.getSavedOrders().empty());
 }
 
-TEST_F(GivenALatteOrder, WhenExecutedThenNothingIsSaved)
+TEST_F(GivenALatteOrder, WhenExecutedThenOrderIsSaved)
 {
   // AAA: Arrange, Act, Assert
   // Arrange
@@ -44,8 +45,10 @@ TEST_F(GivenALatteOrder, WhenExecutedThenNothingIsSaved)
   bool success = addNewOrderUC.execute();
 
   // Assert
-  ASSERT_FALSE(success);
-  ASSERT_TRUE(m_OrderRepository.getSavedOrders().empty());
+  ASSERT_TRUE(success);
+  ASSERT_EQ(m_OrderRepository.getSavedOrders().size(), 1U);
+  ASSERT_EQ(m_OrderRepository.getSavedOrders().front()->getDescription(),
+            describe({CoffeeLatteName, SugarName}));
 }
 
 TEST_F(GivenACocoaWithMilkOrder, WhenExecutedThenOrderIsSaved)
@@ -61,6 +64,6 @@ TEST_F(GivenACocoaWithMilkOrder, WhenExecutedThenOrderIsSaved)
   ASSERT_TRUE(success);
   ASSERT_EQ(m_OrderRepository.getSavedOrders().size(), 1U);
   ASSERT_EQ(m_OrderRepository.getSavedOrders().front()->getDescription(),
-            CocoaName + ", " + MilkName);
+            describe({CocoaName, MilkName}));
 }
 } // namespace coffee_shop

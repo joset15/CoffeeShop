@@ -4,7 +4,11 @@
 
 #include "IngredientDecorator.hpp"
 
-static const std::string LemonName = "Lemon";
+#include <string>
+#include <string_view>
+
+/// @brief The name of this ingredient in descriptions.
+inline constexpr std::string_view LemonName = "Lemon";
 
 class Lemon : public IngredientDecorator
 {
@@ -16,7 +20,7 @@ public:
   /// @return The description.
   [[nodiscard]] std::string getDescription() const override
   {
-    return getDecoratedBeverage().getDescription() + ", " + LemonName;
+    return describeWith(LemonName);
   }
 };
 

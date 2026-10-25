@@ -25,12 +25,12 @@ bool AddNewOrderUC::addNewOrder(BeverageVariety beverageVariety,
           beverageVariety);
   if (!beverageBuilder)
   {
-    return false; // No builder for this variety yet.
+    return false; // Not a valid BeverageVariety value.
   }
 
   director->setBuilder(beverageBuilder);
 
-  if (!director->buildBeverage(beverageVariety, ingredients))
+  if (!director->buildBeverage(ingredients))
   {
     return false;
   }

@@ -4,5 +4,5 @@ void TeaBlackBuilder::resetImpl()
 {
   setBaseBeverage(BeverageVariety::TeaBlack);
 
-  TeaBuilder::reset();
+  TeaBuilder::resetImpl();
 }

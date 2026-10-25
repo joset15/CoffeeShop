@@ -3,8 +3,10 @@
 
 #include "Tea.hpp"
 #include <string>
+#include <string_view>
 
-static const std::string TeaBlackName = "TeaBlack";
+/// @brief The name of this beverage in descriptions.
+inline constexpr std::string_view TeaBlackName = "TeaBlack";
 
 class TeaBlack : public Tea
 {
@@ -16,7 +18,7 @@ public:
   /// @return
   [[nodiscard]] std::string getDescription() const override
   {
-    return TeaBlackName;
+    return std::string(TeaBlackName);
   }
 };
 

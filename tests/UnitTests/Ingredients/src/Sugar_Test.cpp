@@ -1,4 +1,5 @@
 #include "../include/Sugar_TestFixtures.hpp"
+#include "BeverageDescription_TestHelpers.hpp"
 #include "Domain/Ingredients/Sugar.hpp"
 
 #include <string>
@@ -16,6 +17,6 @@ TEST_F(GivenSomeSugar, WhenSugarIsAddedToCoffeeThenDescriptionHasRightFormat)
   std::string coffeeWithSugar(beverage->getDescription());
 
   // Assert
-  ASSERT_EQ(coffeeWithSugar.compare(CoffeName + ", " + SugarName), 0);
+  ASSERT_EQ(coffeeWithSugar.compare(describe({CoffeeName, SugarName})), 0);
 }
 } // namespace coffee_shop

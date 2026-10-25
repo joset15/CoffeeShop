@@ -17,17 +17,20 @@ BeverageBuilderSimpleFactory::createBeverageBuilder(
         BeverageFactory::getInstance(), IngredientFactory::getInstance());
     break;
   case BeverageVariety::CoffeeLatte:
-    // TODO Add builder.
+    newBeverageBuilder = std::make_shared<CoffeeLatteBuilder>(
+        BeverageFactory::getInstance(), IngredientFactory::getInstance());
     break;
   case BeverageVariety::CoffeeDecaf:
-    // TODO Add builder.
+    newBeverageBuilder = std::make_shared<CoffeeDecafBuilder>(
+        BeverageFactory::getInstance(), IngredientFactory::getInstance());
     break;
   case BeverageVariety::TeaBlack:
     newBeverageBuilder = std::make_shared<TeaBlackBuilder>(
         BeverageFactory::getInstance(), IngredientFactory::getInstance());
     break;
   case BeverageVariety::TeaGreen:
-    // TODO Add builder.
+    newBeverageBuilder = std::make_shared<TeaGreenBuilder>(
+        BeverageFactory::getInstance(), IngredientFactory::getInstance());
     break;
   case BeverageVariety::Cocoa:
     newBeverageBuilder = std::make_shared<CocoaBuilder>(

@@ -1,17 +1,21 @@
 #ifndef COFFEE_LATTE_HPP
 #define COFFEE_LATTE_HPP
 
-#include "IBeverage.hpp"
+#include "Coffee.hpp"
 #include <string>
+#include <string_view>
 
-class CoffeeLatte : public IBeverage
+/// @brief The name of this beverage in descriptions.
+inline constexpr std::string_view CoffeeLatteName = "CoffeeLatte";
+
+class CoffeeLatte : public Coffee
 {
 public:
   CoffeeLatte() = default;
 
   [[nodiscard]] std::string getDescription() const override
   {
-    return "CoffeeLatte";
+    return std::string(CoffeeLatteName);
   }
 };
 

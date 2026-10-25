@@ -18,7 +18,10 @@ set(
 
 add_executable(IntegrationTests ${SOURCES})
 # target_include_directories(IntegrationTests PRIVATE ../../include)
-target_include_directories(IntegrationTests PRIVATE ${PUBLIC_INCLUDE_PATH})
+target_include_directories(
+  IntegrationTests
+  PRIVATE ${PUBLIC_INCLUDE_PATH} ${PROJECT_SOURCE_DIR}/tests/Common/include
+)
 
 set_target_properties(IntegrationTests PROPERTIES FOLDER "tests/IntegrationTests")
 

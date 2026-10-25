@@ -24,7 +24,7 @@ protected:
         BeverageBuilderSimpleFactory::getInstance()->createBeverageBuilder(
             beverageVariety);
     m_Director.setBuilder(m_Builder);
-    return m_Director.buildBeverage(beverageVariety, ingredients);
+    return m_Director.buildBeverage(ingredients);
   }
 
   BeverageBuildDirector m_Director;

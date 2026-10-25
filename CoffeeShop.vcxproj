@@ -29,11 +29,14 @@
     <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuilder.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\CocoaBuilder.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\CoffeeBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\CoffeeDecafBuilder.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\CoffeeEspressoBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\CoffeeLatteBuilder.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuilderBase.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\IBeverageBuilder.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\TeaBlackBuilder.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\TeaBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\TeaGreenBuilder.hpp" />
     <ClInclude Include="include\Domain\BeverageFactories\BeverageBuilderSimpleFactory.hpp" />
     <ClInclude Include="include\Domain\BeverageFactories\BeverageFactory.hpp" />
     <ClInclude Include="include\Domain\BeverageFactories\IBeverageBuilderFactory.hpp" />
@@ -72,9 +75,12 @@
     <ClCompile Include="src\Domain\BeverageBuilder\BeverageBuildDirector.cpp" />
     <ClCompile Include="src\Domain\BeverageBuilder\CocoaBuilder.cpp" />
     <ClCompile Include="src\Domain\BeverageBuilder\CoffeeBuilder.cpp" />
+    <ClCompile Include="src\Domain\BeverageBuilder\CoffeeDecafBuilder.cpp" />
     <ClCompile Include="src\Domain\BeverageBuilder\CoffeeEspressoBuilder.cpp" />
+    <ClCompile Include="src\Domain\BeverageBuilder\CoffeeLatteBuilder.cpp" />
     <ClCompile Include="src\Domain\BeverageBuilder\TeaBlackBuilder.cpp" />
     <ClCompile Include="src\Domain\BeverageBuilder\TeaBuilder.cpp" />
+    <ClCompile Include="src\Domain\BeverageBuilder\TeaGreenBuilder.cpp" />
     <ClCompile Include="src\Domain\BeverageFactories\BeverageBuilderSimpleFactory.cpp" />
     <ClCompile Include="src\Domain\BeverageFactories\BeverageFactory.cpp" />
     <ClCompile Include="src\Domain\BeverageFactories\IngredientFactory.cpp" />

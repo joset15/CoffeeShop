@@ -1,20 +1,23 @@
 #ifndef TEA_GREEN_HPP
 #define TEA_GREEN_HPP
 
-#include "IBeverage.hpp"
+#include "Tea.hpp"
 
-class TeaGreen : public IBeverage
+#include <string>
+#include <string_view>
+
+/// @brief The name of this beverage in descriptions.
+inline constexpr std::string_view TeaGreenName = "TeaGreen";
+
+class TeaGreen : public Tea
 {
 public:
   /// \brief
   TeaGreen() = default;
 
-  /// \brief
-  // bool addExtraIngredient(Ingredient extraIngredient) override;
-
   [[nodiscard]] std::string getDescription() const override
   {
-    return "TeaGreen";
+    return std::string(TeaGreenName);
   }
 };
 
