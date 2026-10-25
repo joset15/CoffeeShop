@@ -74,7 +74,6 @@ int main()
   AddNewOrderUC addNewOrderUC(std::string("AddNewOrderUC"), printerPresenter,
   orderRepository);
 
-  IBeverage::BeverageType beverageType(IBeverage::BeverageType::Coffee);
   BeverageVariety beverageVariety(BeverageVariety::CoffeeEspresso);
 
   bool res =
@@ -83,9 +82,8 @@ int main()
   //------------------
   PrinterPresenter printerPresenter; // IOutput & output
   OrderRepository orderRepository;
-  IBeverage::BeverageType beverageType(IBeverage::BeverageType::Coffee);
   BeverageVariety beverageVariety(BeverageVariety::CoffeeEspresso);
-  NewOrderReq newOrderReq(beverageType, beverageVariety, ingredients);
+  NewOrderReq newOrderReq(beverageVariety, ingredients);
   //                          printerPresenter, orderRepository);
 
   AddNewOrderUC addNewOrderUC(std::string("AddNewOrderUC"), newOrderReq,
@@ -145,8 +143,7 @@ int consoleMenu()
       // 1. instantiate "Add Beverage Order" Use Case injecting Gateways
       // implemented in this layer
 
-      NewOrderReq newOrderReq(IBeverage::BeverageType::Coffee,
-                              BeverageVariety::CoffeeEspresso,
+      NewOrderReq newOrderReq(BeverageVariety::CoffeeEspresso,
                               {Ingredient::Sugar});
       AddNewOrderResponseMessage response;
 

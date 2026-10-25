@@ -19,11 +19,9 @@ protected:
   FakeOrderRepository m_OrderRepository;
   BeverageController m_BeverageController{m_OrderRepository};
 
-  NewOrderReq m_ValidRequest{IBeverage::BeverageType::Coffee,
-                             BeverageVariety::CoffeeEspresso,
+  NewOrderReq m_ValidRequest{BeverageVariety::CoffeeEspresso,
                              {Ingredient::Sugar}};
-  NewOrderReq m_InvalidRequest{IBeverage::BeverageType::Coffee,
-                               BeverageVariety::CoffeeEspresso,
+  NewOrderReq m_InvalidRequest{BeverageVariety::CoffeeEspresso,
                                {Ingredient::Lemon}};
 };
 } // namespace coffee_shop

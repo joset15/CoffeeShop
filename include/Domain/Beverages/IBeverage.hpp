@@ -9,15 +9,6 @@
 class IBeverage
 {
 public:
-  // TODO Remove BeverageType
-  /// @brief The BeverageType enum
-  enum class BeverageType
-  {
-    Coffee,
-    Tea,
-    Cocoa
-  };
-
   /// \brief ~IBeverage
   virtual ~IBeverage() = default;
 

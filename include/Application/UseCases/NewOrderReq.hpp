@@ -19,19 +19,13 @@ struct NewOrderReq : IRequest
 public:
   NewOrderReq() = delete;
 
-  NewOrderReq(IBeverage::BeverageType beverageType,
-              BeverageVariety beverageVariety,
+  NewOrderReq(BeverageVariety beverageVariety,
               const std::list<Ingredient> &ingredients /*,
               IOrderOutput &output*/)
       // IOrderRepository &orderRepository)
-      : m_BeverageType(beverageType), m_BeverageVariety(beverageVariety),
-        m_Ingredients(ingredients) /*, m_Output(output)*/{};
+      : m_BeverageVariety(beverageVariety), m_Ingredients(ingredients) /*, m_Output(output)*/{};
   // m_OrderRepository(orderRepository){};
 
-  [[nodiscard]] IBeverage::BeverageType getBeverageType() const
-  {
-    return m_BeverageType;
-  }
   [[nodiscard]] BeverageVariety getBeverageVariety() const
   {
     return m_BeverageVariety;
@@ -46,7 +40,6 @@ public:
   // IOrderRepository &getOrderRepository() const { return m_OrderRepository; };
 
 private:
-  IBeverage::BeverageType m_BeverageType;
   BeverageVariety m_BeverageVariety;
   std::list<Ingredient> m_Ingredients;
 

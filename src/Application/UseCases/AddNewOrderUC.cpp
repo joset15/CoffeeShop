@@ -11,13 +11,12 @@
 
 bool AddNewOrderUC::execute()
 {
-  return addNewOrder( // TODO: m_NewOrderReq.getBeverageType(),
-      m_NewOrderReq.getBeverageVariety(), m_NewOrderReq.getIngredients());
+  return addNewOrder(m_NewOrderReq.getBeverageVariety(),
+                     m_NewOrderReq.getIngredients());
 };
 
-bool AddNewOrderUC::addNewOrder( // TODO: IBeverage::BeverageType beverageType,
-    BeverageVariety beverageVariety,
-    const std::list<Ingredient> &ingredients)
+bool AddNewOrderUC::addNewOrder(BeverageVariety beverageVariety,
+                                const std::list<Ingredient> &ingredients)
 {
   auto director = std::make_unique<BeverageBuildDirector>();
 
