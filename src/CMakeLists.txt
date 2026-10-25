@@ -35,6 +35,7 @@ set_target_properties(AllLayers PROPERTIES FOLDER "src")
 
 add_subdirectory(Application)
 add_subdirectory(Domain)
+add_subdirectory(Infrastructure)
 add_subdirectory(InterfaceAdapters)
 
 if(MSVC)

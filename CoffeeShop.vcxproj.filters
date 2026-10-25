@@ -129,6 +129,12 @@
     <ClInclude Include="include\Application\UseCases\AddNewOrderUC.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Application\UseCases\CancelExistingOrderUC.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Infrastructure\UI\ConsoleMenu.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\Application\UseCases\UseCase.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -189,6 +195,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Application\UseCases\AddNewOrderUC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application\UseCases\CancelExistingOrderUC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Infrastructure\UI\ConsoleMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\InterfaceAdapters\Gateways\OrderDiskDataSource.cpp">
