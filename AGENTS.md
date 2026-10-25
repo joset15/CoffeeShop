@@ -10,13 +10,16 @@ as Clean Architecture and uses classic GoF patterns:
 | Domain | `include/Domain/` | `src/Domain/` | `Beverages` (`IBeverage`, `Coffee`, `Tea`, ...), `Ingredients` (decorators over `IBeverage`: `Sugar`, `Milk`, ...), `BeverageFactories` (singleton factories), `BeverageBuilder` (`IBeverageBuilder` interface, `BeverageBuilderBase` with the shared state, concrete builders, `BeverageBuildDirector`) |
 | Application | `include/Application/UseCases/` | `src/Application/UseCases/` | Use cases and their ports (`IOrderRepository`, `IUseCaseInputPort`, ...) |
 | InterfaceAdapters | `include/InterfaceAdapters/` | `src/InterfaceAdapters/` | Controller, presenters, `OrderRepository`, `Gateways/OrderDiskDataSource` |
-| App | n/a | `apps/ConsoleApp/main.cpp` | `CoffeeShopApp` executable |
+| Infrastructure | `include/Infrastructure/UI/` | `src/Infrastructure/UI/` | `ConsoleMenu`: console menus that read the user's choices from a stream (library `ConsoleUi`, grouped in the `Infrastructure` interface target) |
+| App | n/a | `apps/ConsoleApp/main.cpp` | `CoffeeShopApp` executable: wires `ConsoleMenu`, `BeverageController` and `OrderRepository` |
 
-Dependencies point inward: Domain must not include Application or InterfaceAdapters headers.
+Dependencies point inward: Domain must not include Application, InterfaceAdapters or Infrastructure
+headers. Infrastructure (UI) is the outermost layer; menu texts belong there, not in the Domain.
 
 The tools are CMake (≥3.25; the presets file uses format v9, which needs ≥3.30), Ninja, MSVC (Visual Studio 2022), Conan **1.x**
 (GoogleTest 1.8.1), clang-tidy, and pre-commit. `docs/README_development.md` shows the target folder
-layout. Several folders it lists (`Infrastructure`, `libs`, `scripts`, ...) don't exist yet.
+layout. Of its `Infrastructure` folders only `UI` exists; others it lists (`Infrastructure/DB`,
+`libs`, `scripts`, ...) don't exist yet.
 
 ## Setup
 
@@ -89,6 +92,14 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 - `tests/CoffeeShop_gtest.vcxproj`, `tests/test.cpp`, `tests/pch.*` belong to the legacy VS
   solution and are not part of the CMake build.
 - All tests should pass. Add or update tests for any behavior you change.
+- `ConsoleMenu` takes a `std::istream`/`std::ostream`, so menu tests feed it a
+  `std::istringstream` (see `tests/UnitTests/Infrastructure/`).
+- To try the whole app without typing, redirect its input. Each line is one answer, `Enter`
+  lines answer "Press Enter to continue", and the app exits on `0` or at the end of the input:
+  ```bat
+  :: menu_input.txt: 1, 6, "1 2", (empty), 2, (empty), 0  ->  order a cocoa with sugar and milk, list, exit
+  "build\Windows x64 Debug\Debug\bin\CoffeeShopApp.exe" < menu_input.txt
+  ```
 
 ## Code style
 
@@ -107,8 +118,10 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
     and contain only pure virtual functions. Shared implementation goes in a `...Base` class
     (e.g. `BeverageBuilderBase`).
   - Functions/methods and local variables: `camelBack` (`getDescription`, `coffeeWithSugar`).
-  - Data members: `m_` + `CamelCase` (`m_Beverage`, `m_Coffee`). Static variables are also `m_`.
-  - Constants, constexpr, and enum constants: `CamelCase` (`SugarName`, `BeverageType::Coffee`).
+  - Private/protected data members: `m_` + `CamelCase` (`m_Beverage`, `m_Coffee`). Static
+    variables are also `m_`. Public members (plain `struct`s) are `CamelCase` without prefix:
+    the `MemberCasePrefix` key in `.clang-tidy` is not a real option, so no prefix is enforced.
+  - Constants, constexpr, and enum constants: `CamelCase` (`SugarName`, `BeverageVariety::Cocoa`).
   - Macros: `UPPER_CASE`. Namespaces: `lower_case`.
 - Headers are `.hpp`, sources `.cpp`. Use `#ifndef NAME_HPP` include guards. Include project
   headers relative to `include/`, e.g. `#include "Domain/Ingredients/Sugar.hpp"`.
@@ -167,6 +180,10 @@ pre-commit run --all-files
 - `apps/ConsoleApp/main.cpp` uses MSVC-specific `_CrtSetDbgFlag` (CRT leak checking).
 - `CancelExistingOrderUC` is a compiled skeleton: `execute()` always returns `false` until
   `IOrderRepository` gets a way to cancel orders.
+- Only espresso, black tea and cocoa can be built. Latte, decaf and green tea have no builder yet,
+  so ordering them from the menu returns "Error: Order could not be added.".
+- `BeverageBuildDirector` rejects an order it can't fulfil completely: an ingredient the builder
+  refuses (e.g. water, lemon in cocoa) or two kinds of milk at once.
 - An existing build folder keeps old compiler flags in `CMakeCache.txt` after changes to CMake
   policies or debug-info settings. Reconfigure with `cmake --preset "Windows x64 Debug" --fresh`,
   or in Visual Studio use **Project > Delete Cache and Reconfigure**.

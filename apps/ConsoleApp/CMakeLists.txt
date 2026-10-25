@@ -17,7 +17,7 @@ add_executable(CoffeeShopApp ${SOURCES})
 # target_include_directories(CoffeeShopApp PRIVATE ../../include)
 target_include_directories(CoffeeShopApp PRIVATE ${PUBLIC_INCLUDE_PATH})
 
-target_link_libraries(CoffeeShopApp Application Domain InterfaceAdapters)
+target_link_libraries(CoffeeShopApp Application Domain Infrastructure InterfaceAdapters)
 
 set_target_properties(CoffeeShopApp PROPERTIES FOLDER "apps/ConsoleApp")
 

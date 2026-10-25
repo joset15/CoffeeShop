@@ -47,4 +47,20 @@ TEST_F(GivenALatteOrder, WhenExecutedThenNothingIsSaved)
   ASSERT_FALSE(success);
   ASSERT_TRUE(m_OrderRepository.getSavedOrders().empty());
 }
+
+TEST_F(GivenACocoaWithMilkOrder, WhenExecutedThenOrderIsSaved)
+{
+  // AAA: Arrange, Act, Assert
+  // Arrange
+  AddNewOrderUC addNewOrderUC("AddNewOrderUC", m_Request, m_OrderRepository);
+
+  // Act
+  bool success = addNewOrderUC.execute();
+
+  // Assert
+  ASSERT_TRUE(success);
+  ASSERT_EQ(m_OrderRepository.getSavedOrders().size(), 1U);
+  ASSERT_EQ(m_OrderRepository.getSavedOrders().front()->getDescription(),
+            CocoaName + ", " + MilkName);
+}
 } // namespace coffee_shop
