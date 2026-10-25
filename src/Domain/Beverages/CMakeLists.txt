@@ -9,7 +9,6 @@ resolve_project_paths(
 set(SOURCES Cocoa.cpp Coffee.cpp Tea.cpp)
 add_library(Beverages ${SOURCES})
 
-# target_include_directories(Beverages PRIVATE ../../../include)
 target_include_directories(Beverages PRIVATE ${PUBLIC_INCLUDE_PATH})
 
 set_target_properties(Beverages PROPERTIES FOLDER "Domain/Beverages")

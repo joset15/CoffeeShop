@@ -9,7 +9,6 @@ resolve_project_paths(
 set(SOURCES AddNewOrderUC.cpp CancelExistingOrderUC.cpp)
 add_library(UseCases ${SOURCES})
 
-# target_include_directories(UseCases PRIVATE ../../../include)
 target_include_directories(UseCases PRIVATE ${PUBLIC_INCLUDE_PATH})
 
 set_target_properties(UseCases PROPERTIES FOLDER "Application/UseCases")

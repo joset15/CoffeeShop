@@ -1,6 +1,5 @@
 #ifndef LEMON_HPP
 #define LEMON_HPP
-#pragma once
 
 #include "IngredientDecorator.hpp"
 

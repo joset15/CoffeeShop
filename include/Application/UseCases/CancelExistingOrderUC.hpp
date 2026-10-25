@@ -13,7 +13,7 @@
 class CancelExistingOrderUC : public UseCase
 {
 public:
-  /// @brief
+  /// @brief Creates the use case.
   /// @param name The name of the use case.
   /// @param orderRepository Where the orders are stored.
   CancelExistingOrderUC(std::string name, IOrderRepository &orderRepository);

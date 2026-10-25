@@ -9,7 +9,6 @@ resolve_project_paths(
 set(SOURCES BeverageBuilderSimpleFactory.cpp BeverageFactory.cpp IngredientFactory.cpp)
 
 add_library(BeverageFactories ${SOURCES})
-# target_include_directories(BeverageFactories PRIVATE ../../../include)
 target_include_directories(BeverageFactories PRIVATE ${PUBLIC_INCLUDE_PATH})
 
 set_target_properties(BeverageFactories PROPERTIES FOLDER "Domain/BeverageFactories")

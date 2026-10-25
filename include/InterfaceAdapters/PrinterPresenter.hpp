@@ -7,16 +7,18 @@
 #include <iostream>
 #include <memory>
 
+/// @brief Sends the orders to the printer.
 class PrinterPresenter : public IOrderOutput
 {
 public:
-  /// \brief
+  /// @brief Prints the orders, one per line (on the console for now).
+  /// @param orderList The orders to print.
+  /// @return Always true.
   bool printOutOrders(
       const std::list<std::unique_ptr<IBeverage>> &orderList) override
   {
     for (const auto &beverage : orderList)
     {
-      // JT qDebug() << QString::fromStdString(beverage->description());
       std::cout << beverage->getDescription() << std::endl;
     }
 

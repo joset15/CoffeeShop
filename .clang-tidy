@@ -18,7 +18,7 @@ CheckOptions:
   # - { key: readability-identifier-naming.VariableCase,           value: lower_case }
   - { key: readability-identifier-naming.VariableCase,           value: camelBack }
   - { key: readability-identifier-naming.MemberCase,                value: CamelCase }
-  - { key: readability-identifier-naming.MemberCasePrefix,          value: m_         }
+  - { key: readability-identifier-naming.MemberPrefix,              value: m_         }
   #- { key: readability-identifier-naming.PrivateMemberSuffix,    value: m_         }
   - { key: readability-identifier-naming.ProtectedMemberCase,     value: CamelCase }
   - { key: readability-identifier-naming.ProtectedMemberPrefix,  value: m_         }

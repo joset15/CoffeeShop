@@ -1,19 +1,7 @@
 #ifndef BEVERAGE_CONTROLLER_HPP
 #define BEVERAGE_CONTROLLER_HPP
 
-#pragma once
-
-// #include "UseCase/IUseCaseOutputPort.hpp"
-
 #include "Application/UseCases/NewOrderReq.hpp"
-
-/*
-#include "Model/Beverages/BeverageVariety.hpp"
-#include "Model/Beverages/Coffee.hpp"
-#include "Model/Beverages/IBeverage.hpp"
-
-#include "Model/Ingredient/Ingredients.hpp"
-*/
 
 #include "Application/UseCases/IOrderRepository.hpp"
 
@@ -25,6 +13,8 @@
 
 #include <string_view>
 
+/// @brief Entry point from the UI to the use cases (Clean Architecture
+/// controller).
 class BeverageController
 {
 public:
@@ -35,6 +25,8 @@ public:
   static constexpr std::string_view OrderNotAddedMessage =
       "Error: Order could not be added.";
 
+  /// @brief Creates a controller that works on the given repository.
+  /// @param orderRepository Where the use cases store the orders.
   explicit BeverageController(IOrderRepository &orderRepository)
       : m_OrderRepository(&orderRepository) {};
 
@@ -44,7 +36,7 @@ public:
   [[nodiscard]] AddNewOrderResponseMessage
   execAddOrderUC(const NewOrderReq &newOrderReq) const;
 
-  // void execListOrderUC(const ListOrderReq &listOrderReq) {}
+  /// @brief Runs the "list orders" use case. Not implemented yet.
   void execListOrderUC(const IRequest &listOrderReq) { (void)listOrderReq; }
 
 private:

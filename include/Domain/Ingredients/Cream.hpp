@@ -1,6 +1,5 @@
 #ifndef CREAM_HPP
 #define CREAM_HPP
-#pragma once
 
 #include "IngredientDecorator.hpp"
 

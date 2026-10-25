@@ -11,11 +11,11 @@ inline constexpr std::string_view TeaBlackName = "TeaBlack";
 class TeaBlack : public Tea
 {
 public:
-  /// @brief
+  /// @brief Creates a black tea.
   TeaBlack() = default;
 
-  /// @brief
-  /// @return
+  /// @brief Describes the beverage.
+  /// @return The name of the beverage.
   [[nodiscard]] std::string getDescription() const override
   {
     return std::string(TeaBlackName);

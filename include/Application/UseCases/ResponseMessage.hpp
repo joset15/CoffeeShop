@@ -1,8 +1,6 @@
 #ifndef RESPONSE_MESSAGE_HPP
 #define RESPONSE_MESSAGE_HPP
 
-#pragma once
-
 #include <string>
 
 class ResponseMessage

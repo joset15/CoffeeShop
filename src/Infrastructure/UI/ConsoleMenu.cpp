@@ -10,8 +10,8 @@ namespace
 /// @brief A menu entry: what the user sees and what it selects.
 template <typename ValueType> struct MenuEntry
 {
-  ValueType Value;
-  std::string_view Label;
+  ValueType m_Value;
+  std::string_view m_Label;
 };
 
 /// @brief The beverages, in menu order (entry N is option N + 1).
@@ -56,7 +56,7 @@ void printEntries(std::ostream &output, const Entries &entries)
   int number = 1;
   for (const auto &entry : entries)
   {
-    output << "  " << number << ". " << entry.Label << '\n';
+    output << "  " << number << ". " << entry.m_Label << '\n';
     ++number;
   }
 }
@@ -94,7 +94,7 @@ std::optional<BeverageVariety> ConsoleMenu::askBeverageVariety()
   {
     return std::nullopt;
   }
-  return BeverageEntries.at(static_cast<std::size_t>(*number - 1)).Value;
+  return BeverageEntries.at(static_cast<std::size_t>(*number - 1)).m_Value;
 }
 
 std::list<Ingredient> ConsoleMenu::askIngredients()
@@ -120,7 +120,7 @@ std::list<Ingredient> ConsoleMenu::askIngredients()
         break;
       }
       ingredients.push_back(
-          IngredientEntries.at(static_cast<std::size_t>(*number - 1)).Value);
+          IngredientEntries.at(static_cast<std::size_t>(*number - 1)).m_Value);
     }
 
     if (valid)

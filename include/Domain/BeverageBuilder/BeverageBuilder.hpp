@@ -1,6 +1,5 @@
 #ifndef BEVERAGE_BUILDER_HPP
 #define BEVERAGE_BUILDER_HPP
-#pragma once
 
 #include "BeverageBuildDirector.hpp"
 #include "BeverageBuilder.hpp"

@@ -1,6 +1,5 @@
 #ifndef MILK_HPP
 #define MILK_HPP
-#pragma once
 
 #include "IngredientDecorator.hpp"
 

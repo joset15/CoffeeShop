@@ -1,6 +1,5 @@
 #ifndef SUGAR_HPP
 #define SUGAR_HPP
-#pragma once
 
 #include "IngredientDecorator.hpp"
 
@@ -24,4 +23,4 @@ public:
   }
 };
 
-#endif // INGREDIENT_DECORATOR_HPP
+#endif // SUGAR_HPP

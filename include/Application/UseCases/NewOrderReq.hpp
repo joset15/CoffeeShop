@@ -1,51 +1,42 @@
 #ifndef NEW_ORDER_REQ_HPP
 #define NEW_ORDER_REQ_HPP
 
-#pragma once
-
 #include "IRequest.hpp"
 
 #include "Domain/Beverages/BeverageVariety.hpp"
-#include "Domain/Beverages/IBeverage.hpp"
 #include "Domain/Ingredients/Ingredients.hpp"
-
-#include "IOrderOutput.hpp"
-#include "IOrderRepository.hpp"
 
 #include <list>
 
+/// @brief The data of a "new order" request: one beverage and its ingredients.
 struct NewOrderReq : IRequest
 {
 public:
   NewOrderReq() = delete;
 
+  /// @brief Creates the request.
+  /// @param beverageVariety The beverage to order.
+  /// @param ingredients The ingredients to add to it.
   NewOrderReq(BeverageVariety beverageVariety,
-              const std::list<Ingredient> &ingredients /*,
-              IOrderOutput &output*/)
-      // IOrderRepository &orderRepository)
-      : m_BeverageVariety(beverageVariety), m_Ingredients(ingredients) /*, m_Output(output)*/{};
-  // m_OrderRepository(orderRepository){};
+              const std::list<Ingredient> &ingredients)
+      : m_BeverageVariety(beverageVariety), m_Ingredients(ingredients)
+  {
+  }
 
+  /// @return The beverage to order.
   [[nodiscard]] BeverageVariety getBeverageVariety() const
   {
     return m_BeverageVariety;
   }
+  /// @return The ingredients to add.
   [[nodiscard]] const std::list<Ingredient> &getIngredients() const
   {
     return m_Ingredients;
   }
 
-  // const std::string &name;
-  // IOrderOutput &getOutput() const { return m_Output; }
-  // IOrderRepository &getOrderRepository() const { return m_OrderRepository; };
-
 private:
   BeverageVariety m_BeverageVariety;
   std::list<Ingredient> m_Ingredients;
-
-  // const std::string &name;
-  // IOrderOutput &m_Output;
-  // IOrderRepository &m_OrderRepository;
 };
 
 #endif // NEW_ORDER_REQ_HPP

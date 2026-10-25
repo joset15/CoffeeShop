@@ -19,11 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Adapter\IOrderDataSource.hpp" />
     <ClInclude Include="include\Application\UseCases\AddNewOrderResponseMessage.hpp" />
     <ClInclude Include="include\Application\UseCases\AddNewOrderUC.hpp" />
     <ClInclude Include="include\Application\UseCases\CancelExistingOrderUC.hpp" />
+    <ClInclude Include="include\Application\UseCases\IOrderOutput.hpp" />
+    <ClInclude Include="include\Application\UseCases\IOrderRepository.hpp" />
+    <ClInclude Include="include\Application\UseCases\IRequest.hpp" />
+    <ClInclude Include="include\Application\UseCases\IUseCaseInputPort.hpp" />
+    <ClInclude Include="include\Application\UseCases\IUseCaseOutputPort.hpp" />
     <ClInclude Include="include\Application\UseCases\NewOrderReq.hpp" />
+    <ClInclude Include="include\Application\UseCases\ResponseMessage.hpp" />
     <ClInclude Include="include\Application\UseCases\UseCase.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuildDirector.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuilder.hpp" />
@@ -63,10 +68,13 @@
     <ClInclude Include="include\Domain\Ingredients\Sugar.hpp" />
     <ClInclude Include="include\Domain\Ingredients\Water.hpp" />
     <ClInclude Include="include\Infrastructure\UI\ConsoleMenu.hpp" />
+    <ClInclude Include="include\InterfaceAdapters\BeverageController.hpp" />
     <ClInclude Include="include\InterfaceAdapters\Gateways\OrderDiskDataSource.hpp" />
+    <ClInclude Include="include\InterfaceAdapters\IOrderDataSource.hpp" />
+    <ClInclude Include="include\InterfaceAdapters\OrderRepository.hpp" />
+    <ClInclude Include="include\InterfaceAdapters\PrinterPresenter.hpp" />
+    <ClInclude Include="include\InterfaceAdapters\ScreenPresenter.hpp" />
     <ClInclude Include="include\pch.h" />
-    <ClInclude Include="Model\BeverageBuilder\BeverageDirector.hpp" />
-    <ClInclude Include="UseCase\IOrderOutput.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="apps\ConsoleApp\main.cpp" />

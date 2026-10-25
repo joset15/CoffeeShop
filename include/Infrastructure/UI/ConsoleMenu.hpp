@@ -24,7 +24,7 @@ public:
     PrintListOrders = 3
   };
 
-  /// @brief
+  /// @brief Creates a menu that reads from and writes to the given streams.
   /// @param input Where the user's answers are read from.
   /// @param output Where the menus and messages are written to.
   ConsoleMenu(std::istream &input, std::ostream &output);

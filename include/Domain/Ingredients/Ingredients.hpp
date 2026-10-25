@@ -1,6 +1,5 @@
 #ifndef INGREDIENTS_HPP
 #define INGREDIENTS_HPP
-#pragma once
 
 #include "Cream.hpp"
 #include "Honey.hpp"

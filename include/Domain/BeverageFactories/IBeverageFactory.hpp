@@ -5,18 +5,16 @@
 #include "../Beverages/IBeverage.hpp"
 #include <memory>
 
-// TODO Complete doxygen comments.
-
-/// @brief The IBeverageFactory class
+/// @brief Creates base beverages (Abstract Factory).
 class IBeverageFactory
 {
 public:
-  /// @brief
+  /// @brief Allows deleting an implementation through this interface.
   virtual ~IBeverageFactory() = default;
 
-  /// @brief
-  /// @param beverageVariety
-  /// @return
+  /// @brief Creates the base beverage of a variety, without ingredients.
+  /// @param beverageVariety The variety to create.
+  /// @return The beverage (nullptr only for an invalid BeverageVariety value).
   virtual std::unique_ptr<IBeverage>
   createBeverage(BeverageVariety beverageVariety) = 0;
 };

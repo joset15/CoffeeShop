@@ -8,13 +8,8 @@ resolve_project_paths(
 
 set(SOURCES main.cpp)
 
-# Static analysis
-# set(CMAKE_CXX_CLANG_TIDY "clang-tidy")   # v3.6, will search for file .clang-tidy
-
-# add_executable(CoffeeShopApp WIN32 ${SOURCES})
 add_executable(CoffeeShopApp ${SOURCES})
 
-# target_include_directories(CoffeeShopApp PRIVATE ../../include)
 target_include_directories(CoffeeShopApp PRIVATE ${PUBLIC_INCLUDE_PATH})
 
 target_link_libraries(CoffeeShopApp Application Domain Infrastructure InterfaceAdapters)
@@ -27,10 +22,4 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.16 AND BUILD_USING_PCH)
   target_precompile_headers(CoffeeShopApp REUSE_FROM AllLayers)
 else()
   message(STATUS "Disabled pre-compiled header support")
-endif()
-
-if(MSVC)
-  target_compile_options(CoffeeShopApp PRIVATE "/std:c++17")
-else()
-  target_compile_features(CoffeeShopApp PRIVATE cxx_std_17)
 endif()

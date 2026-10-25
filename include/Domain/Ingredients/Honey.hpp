@@ -1,6 +1,5 @@
 #ifndef HONEY_HPP
 #define HONEY_HPP
-#pragma once
 
 #include "IngredientDecorator.hpp"
 

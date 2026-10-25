@@ -1,8 +1,6 @@
 #ifndef COCOA_BUILDER_HPP
 #define COCOA_BUILDER_HPP
-#pragma once
 
-//#include "../Beverages/Cocoa.hpp"
 #include "BeverageBuilderBase.hpp"
 
 class CocoaBuilder : public BeverageBuilderBase
@@ -15,7 +13,7 @@ public:
     resetImpl();
   }
 
-  /// @brief
+  /// @brief Starts a new beverage, discarding the one being built.
   void reset() override { resetImpl(); }
 
   /// @brief Adds sugar to the beverage.
@@ -43,10 +41,10 @@ public:
   bool addWater() override { return false; }
 
 private:
-  /// @brief
+  /// @brief Creates the base beverage and resets the builder state.
   void resetImpl();
 
-  /// @brief
+  /// @brief True once milk or soy milk has been added.
   bool m_HasMilk = false;
 };
 
