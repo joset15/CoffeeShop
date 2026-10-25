@@ -1,6 +1,5 @@
 #ifndef COCOA_BUILDER_HPP
 #define COCOA_BUILDER_HPP
-#pragma once
 
 //#include "../Beverages/Cocoa.hpp"
 #include "BeverageBuilderBase.hpp"

@@ -1,6 +1,5 @@
 #ifndef ADD_NEW_ORDER_RESPONSE_MESSAGE_HPP
 #define ADD_NEW_ORDER_RESPONSE_MESSAGE_HPP
-#pragma once
 
 #include "ResponseMessage.hpp"
 

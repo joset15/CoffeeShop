@@ -1,6 +1,5 @@
 #ifndef BEVERAGE_BUILD_DIRECTOR_HPP
 #define BEVERAGE_BUILD_DIRECTOR_HPP
-#pragma once
 
 #include "Domain/Ingredients/Ingredients.hpp"
 #include "IBeverageBuilder.hpp"

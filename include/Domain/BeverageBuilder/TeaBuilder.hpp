@@ -1,6 +1,5 @@
 #ifndef TEA_BUILDER_HPP
 #define TEA_BUILDER_HPP
-#pragma once
 
 #include "BeverageBuilderBase.hpp"
 

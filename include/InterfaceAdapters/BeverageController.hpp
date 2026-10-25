@@ -1,8 +1,6 @@
 #ifndef BEVERAGE_CONTROLLER_HPP
 #define BEVERAGE_CONTROLLER_HPP
 
-#pragma once
-
 // #include "UseCase/IUseCaseOutputPort.hpp"
 
 #include "Application/UseCases/NewOrderReq.hpp"

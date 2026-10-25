@@ -1,6 +1,5 @@
 #ifndef WATER_HPP
 #define WATER_HPP
-#pragma once
 
 #include "IngredientDecorator.hpp"
 

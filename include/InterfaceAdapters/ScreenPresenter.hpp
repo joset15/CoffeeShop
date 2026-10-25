@@ -1,8 +1,6 @@
 #ifndef SCREEN_PRESENTER_HPP
 #define SCREEN_PRESENTER_HPP
 
-#pragma once
-
 #include "Application/UseCases/IUseCaseOutputPort.hpp"
 #include "Domain/Beverages/IBeverage.hpp"
 

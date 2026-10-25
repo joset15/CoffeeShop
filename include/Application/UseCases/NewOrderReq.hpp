@@ -1,8 +1,6 @@
 #ifndef NEW_ORDER_REQ_HPP
 #define NEW_ORDER_REQ_HPP
 
-#pragma once
-
 #include "IRequest.hpp"
 
 #include "Domain/Beverages/BeverageVariety.hpp"

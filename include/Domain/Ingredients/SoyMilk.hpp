@@ -1,6 +1,5 @@
 #ifndef SOYMILK_HPP
 #define SOYMILK_HPP
-#pragma once
 
 #include "IngredientDecorator.hpp"
 

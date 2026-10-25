@@ -1,6 +1,5 @@
 #ifndef TEA_BLACK_BUILDER_HPP
 #define TEA_BLACK_BUILDER_HPP
-#pragma once
 
 #include "TeaBuilder.hpp"
 

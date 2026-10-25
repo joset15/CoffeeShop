@@ -1,6 +1,5 @@
 #ifndef COFFEE_ESPRESSO_BUILDER_HPP
 #define COFFEE_ESPRESSO_BUILDER_HPP
-#pragma once
 
 #include "CoffeeBuilder.hpp"
 #include "IBeverageBuilder.hpp"

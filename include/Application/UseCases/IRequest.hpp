@@ -1,6 +1,5 @@
 #ifndef IREQUEST_HPP
 #define IREQUEST_HPP
-#pragma once
 
 struct IRequest
 {

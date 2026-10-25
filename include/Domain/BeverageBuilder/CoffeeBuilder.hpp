@@ -1,6 +1,5 @@
 #ifndef COFFEE_BUILDER_HPP
 #define COFFEE_BUILDER_HPP
-#pragma once
 
 #include "BeverageBuilderBase.hpp"
 
@@ -43,4 +42,4 @@ private:
   bool m_HasMilk = false;
 };
 
-#endif // COFFEEBUILDER_HPP
+#endif // COFFEE_BUILDER_HPP

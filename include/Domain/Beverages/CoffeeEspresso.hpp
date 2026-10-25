@@ -19,4 +19,4 @@ public:
   }
 };
 
-#endif // COFFEE_EXPRESSO_HPP
+#endif // COFFEE_ESPRESSO_HPP

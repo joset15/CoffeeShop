@@ -1,8 +1,6 @@
 #ifndef IUSE_CASE_OUTPUT_PORT_HPP
 #define IUSE_CASE_OUTPUT_PORT_HPP
 
-#pragma once
-
 class IUseCaseOutputPort
 {
 public:

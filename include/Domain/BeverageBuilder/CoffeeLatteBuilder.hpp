@@ -1,6 +1,5 @@
 #ifndef COFFEE_LATTE_BUILDER_HPP
 #define COFFEE_LATTE_BUILDER_HPP
-#pragma once
 
 #include "CoffeeBuilder.hpp"
 
