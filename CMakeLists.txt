@@ -1,5 +1,5 @@
 # CoffeeShop Project (console app and others pending to build: qt, fxtui, sciter)
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.25)
 
 project(
   CoffeeShop
@@ -141,18 +141,21 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") # MATCHES
   if(ASAN_ENABLED)
     message(STATUS "ASAN ENABLED")
     set(ENV{ASAN_SAVE_DUMPS} "AsanDumpInfo.dmp") # ASAN_SAVE_DUMPS=MyFileName.dmp
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od /Zi /D_DEBUG /fsanitize=address")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od /D_DEBUG /fsanitize=address")
 
     unset(ASAN_ENABLED)
   else()
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od /Zi /D_DEBUG") # /MTd
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od /D_DEBUG") # /MTd
   endif()
 
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /DNDEBUG") # /MT
 
   #set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -fno-strict-aliasing -Werror")
   #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
-  # set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>")
+  # Embedded debug info (/Z7) instead of a shared PDB (/Zi): ccache can only cache /Z7, and
+  # parallel compilations no longer write to the same PDB. The linker still produces .pdb files.
+  # The Visual Studio solution (CoffeeShop.sln) is not affected and keeps /Zi.
+  set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<$<CONFIG:Debug,RelWithDebInfo>:Embedded>")
   # CMAKE_<LANG>_FLAGS_MINSIZEREL:
   # CMAKE_<LANG>_FLAGS_RELWITHDEBINFO
   # CMAKE_${lang}_LINK_EXECUTABLE

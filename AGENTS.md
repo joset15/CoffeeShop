@@ -14,7 +14,7 @@ as Clean Architecture and uses classic GoF patterns:
 
 Dependencies point inward: Domain must not include Application or InterfaceAdapters headers.
 
-The tools are CMake (≥3.9, presets v9), Ninja, MSVC (Visual Studio 2022), Conan **1.x**
+The tools are CMake (≥3.25; the presets file uses format v9, which needs ≥3.30), Ninja, MSVC (Visual Studio 2022), Conan **1.x**
 (GoogleTest 1.8.1), clang-tidy, and pre-commit. `docs/README_development.md` shows the target folder
 layout. Several folders it lists (`Infrastructure`, `libs`, `scripts`, ...) don't exist yet.
 
@@ -35,7 +35,12 @@ layout. Several folders it lists (`Infrastructure`, `libs`, `scripts`, ...) don'
 - GoogleTest comes from Conan. CMake finds it through `build/generators/` (added to
   `CMAKE_MODULE_PATH`), so that folder must exist. To regenerate it (Conan 1.x, `cmake_layout`):
   `conan install . -s build_type=Debug --build=missing`
-- `ccache` is used automatically if it is on `PATH`. Doxygen is needed only when `BUILD_DOC=ON`.
+- `ccache` is used automatically if it is on `PATH`. It can only cache MSVC builds with embedded
+  debug info, so the CMake build uses `/Z7` (`CMAKE_MSVC_DEBUG_INFORMATION_FORMAT`) instead of
+  `/Zi`; the linker still produces `.pdb` files. Check it with `ccache -s` (a second clean build
+  should be all hits). clang-tidy still runs on every compile and is not cached. The VS solution
+  (`CoffeeShop.sln`) is separate and keeps `/Zi`.
+- Doxygen is needed only when `BUILD_DOC=ON`.
 
 ## Build
 
@@ -153,6 +158,11 @@ and clang-tidy. `no-commit-to-branch` blocks direct commits to `main` and `stagi
   that includes it is recompiled. Use `--clean-first` to re-check everything.
 - `apps/ConsoleApp/main.cpp` uses MSVC-specific `_CrtSetDbgFlag` (CRT leak checking).
 - `CancelExistingOrderUC.cpp` exists but is commented out of the `UseCases` build.
-- `cmake_minimum_required(VERSION 3.9)` produces a deprecation warning on CMake 3.31. This is expected.
+- An existing build folder keeps old compiler flags in `CMakeCache.txt` after changes to CMake
+  policies or debug-info settings. Reconfigure with `cmake --preset "Windows x64 Debug" --fresh`,
+  or in Visual Studio use **Project > Delete Cache and Reconfigure**.
+- Corrupt object files at link time (`LNK1163`, `LNK1236`) have appeared after incremental builds.
+  A clean rebuild fixes them. Don't build the same folder from Visual Studio and the command line
+  at the same time (both use `build/Windows x64 Debug`).
 - On GCC/Clang the top-level file adds coverage flags when `TESTS=ON`. On Windows, coverage is
   collected with OpenCppCoverage (`.opencppcov/`).
