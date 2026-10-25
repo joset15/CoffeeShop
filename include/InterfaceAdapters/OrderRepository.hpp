@@ -32,12 +32,6 @@ public:
   /// @brief Not implemented yet: always returns true.
   static bool storeOrders();
 
-  /// @return The orders, in the order they were saved.
-  [[nodiscard]] const std::list<std::unique_ptr<IBeverage>> &getOrders() const
-  {
-    return m_CurrentOrders;
-  }
-
 private:
   /// @brief The repository owns the stored orders.
   std::list<std::unique_ptr<IBeverage>> m_CurrentOrders;

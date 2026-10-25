@@ -2,6 +2,7 @@
 #define ADD_NEW_ORDER_UC_TESTFIXTURES_HPP
 
 #include "OrderRepository_TestDoubles.hpp"
+#include "OutputPort_TestDoubles.hpp"
 
 #include "Application/UseCases/AddNewOrderUC.hpp"
 #include "Application/UseCases/NewOrderReq.hpp"
@@ -17,6 +18,7 @@ class GivenAnEspressoWithSugarOrder : public ::testing::Test
 {
 protected:
   FakeOrderRepository m_OrderRepository;
+  FakeAddNewOrderOutputPort m_OutputPort;
   NewOrderReq m_Request{BeverageVariety::CoffeeEspresso, {Ingredient::Sugar}};
 };
 
@@ -27,6 +29,7 @@ class GivenAnEspressoWithLemonOrder : public ::testing::Test
 {
 protected:
   FakeOrderRepository m_OrderRepository;
+  FakeAddNewOrderOutputPort m_OutputPort;
   NewOrderReq m_Request{BeverageVariety::CoffeeEspresso, {Ingredient::Lemon}};
 };
 
@@ -37,6 +40,7 @@ class GivenALatteOrder : public ::testing::Test
 {
 protected:
   FakeOrderRepository m_OrderRepository;
+  FakeAddNewOrderOutputPort m_OutputPort;
   NewOrderReq m_Request{BeverageVariety::CoffeeLatte, {Ingredient::Sugar}};
 };
 ///
@@ -46,6 +50,7 @@ class GivenACocoaWithMilkOrder : public ::testing::Test
 {
 protected:
   FakeOrderRepository m_OrderRepository;
+  FakeAddNewOrderOutputPort m_OutputPort;
   NewOrderReq m_Request{BeverageVariety::Cocoa, {Ingredient::Milk}};
 };
 } // namespace coffee_shop

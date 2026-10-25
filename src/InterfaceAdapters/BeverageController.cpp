@@ -1,17 +1,18 @@
 #include "InterfaceAdapters/BeverageController.hpp"
 
-#include "Application/UseCases/AddNewOrderResponseMessage.hpp"
 #include "Application/UseCases/AddNewOrderUC.hpp"
+#include "Application/UseCases/ListOrdersUC.hpp"
 
-AddNewOrderResponseMessage
-BeverageController::execAddOrderUC(const NewOrderReq &newOrderReq) const
+void BeverageController::addOrder(const NewOrderReq &newOrderReq,
+                                  IAddNewOrderOutputPort &outputPort) const
 {
-  AddNewOrderUC addNewOrderUC(std::string("AddNewOrderUC"), newOrderReq,
-                              *m_OrderRepository);
+  AddNewOrderUC addNewOrderUC("AddNewOrderUC", newOrderReq, *m_OrderRepository,
+                              outputPort);
+  addNewOrderUC.execute();
+}
 
-  const bool success = addNewOrderUC.execute();
-  const std::string_view message =
-      success ? OrderAddedMessage : OrderNotAddedMessage;
-
-  return {success, std::string(message)};
+void BeverageController::listOrders(IListOrdersOutputPort &outputPort) const
+{
+  ListOrdersUC listOrdersUC("ListOrdersUC", *m_OrderRepository, outputPort);
+  listOrdersUC.execute();
 }

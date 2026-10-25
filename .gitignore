@@ -425,3 +425,8 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+##
+## Console app output ("Print list beverage orders")
+##
+orders.txt

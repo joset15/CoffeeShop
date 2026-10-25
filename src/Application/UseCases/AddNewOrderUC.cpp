@@ -8,12 +8,19 @@
 #include "Domain/BeverageFactories/IngredientFactory.hpp"
 
 #include <memory>
+#include <string>
+#include <utility>
 
 bool AddNewOrderUC::execute()
 {
-  return addNewOrder(m_NewOrderReq.getBeverageVariety(),
-                     m_NewOrderReq.getIngredients());
-};
+  const bool added = addNewOrder(m_NewOrderReq.getBeverageVariety(),
+                                 m_NewOrderReq.getIngredients());
+  if (!added)
+  {
+    m_OutputPort->orderRejected();
+  }
+  return added;
+}
 
 bool AddNewOrderUC::addNewOrder(BeverageVariety beverageVariety,
                                 const std::list<Ingredient> &ingredients)
@@ -35,5 +42,13 @@ bool AddNewOrderUC::addNewOrder(BeverageVariety beverageVariety,
     return false;
   }
 
-  return m_OrderRepository->save(beverageBuilder->takeBeverage());
-};
+  std::unique_ptr<IBeverage> beverage = beverageBuilder->takeBeverage();
+  const std::string description = beverage->getDescription();
+  if (!m_OrderRepository->save(std::move(beverage)))
+  {
+    return false;
+  }
+
+  m_OutputPort->orderAdded(description);
+  return true;
+}
