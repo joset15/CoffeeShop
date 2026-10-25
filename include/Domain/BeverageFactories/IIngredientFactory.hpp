@@ -14,9 +14,6 @@ public:
   virtual ~IIngredientFactory() = default;
 
   /// @brief
-  static IIngredientFactory *getInstance() { return nullptr; }
-
-  /// @brief
   /// @param ingredient
   /// @param beverage
   /// @return

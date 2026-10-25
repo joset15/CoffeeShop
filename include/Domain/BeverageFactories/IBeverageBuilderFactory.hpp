@@ -18,9 +18,6 @@ public:
   virtual ~IBeverageBuilderFactory() = default;
 
   /// @brief
-  static IBeverageBuilderFactory *getInstance() { return nullptr; }
-
-  /// @brief
   /// @param beverageVariety
   /// @return
   virtual std::shared_ptr<IBeverageBuilder>
