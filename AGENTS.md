@@ -139,9 +139,8 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
     and contain only pure virtual functions. Shared implementation goes in a `...Base` class
     (e.g. `BeverageBuilderBase`).
   - Functions/methods and local variables: `camelBack` (`getDescription`, `coffeeWithSugar`).
-  - Private/protected data members: `m_` + `CamelCase` (`m_Beverage`, `m_Coffee`). Static
-    variables are also `m_`. Public members (plain `struct`s) are `CamelCase` without prefix:
-    the `MemberCasePrefix` key in `.clang-tidy` is not a real option, so no prefix is enforced.
+  - Data members (private, protected and public, also in plain `struct`s): `m_` + `CamelCase`
+    (`m_Beverage`, `m_Coffee`). Static variables are also `m_`.
   - Constants, constexpr, and enum constants: `CamelCase` (`SugarName`, `BeverageVariety::Cocoa`).
   - Macros: `UPPER_CASE`. Namespaces: `lower_case`.
 - Headers are `.hpp`, sources `.cpp`. Use `#ifndef NAME_HPP` include guards. Include project
