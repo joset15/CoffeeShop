@@ -132,12 +132,20 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 ## Lint / pre-commit
 
 ```bat
-pre-commit run --all-files     :: or: pre-commit install
+pre-commit run --all-files
 ```
 
-The hooks are standard hygiene checks (trailing whitespace, YAML/JSON validity, `pretty-format-json --no-sort-keys`,
-large files, merge conflicts, mixed line endings, Windows-illegal names), cmake-lint, gersemi,
-and clang-tidy. `no-commit-to-branch` blocks direct commits to `main` and `staging`.
+- pre-commit is **run by hand** before committing. It is not installed as a git hook (don't run
+  `pre-commit install`). The first run downloads the hook environments.
+- The hooks are standard hygiene checks (trailing whitespace, YAML/JSON validity,
+  `pretty-format-json --no-sort-keys`, large files, merge conflicts, mixed line endings,
+  Windows-illegal names), cmake-lint, and gersemi. Some hooks (trailing whitespace, gersemi)
+  fix files in place: review and stage those changes.
+- `no-commit-to-branch` fails when the current branch is `main` or `staging`. Since the hooks are
+  not installed, it only warns when you run them; it doesn't block the commit.
+- There is no clang-tidy hook on purpose: the build already runs clang-tidy with
+  `compile_commands.json` and fails on any finding.
+- `CMakePresets.json` must be strict JSON (no `//` comments). Put notes in `"$comment"` fields.
 
 ## Git / PR guidelines
 
