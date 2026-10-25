@@ -8,13 +8,32 @@ as Clean Architecture and uses classic GoF patterns:
 | Layer | Headers | Sources | Notes |
 |---|---|---|---|
 | Domain | `include/Domain/` | `src/Domain/` | `Beverages` (`IBeverage`, `Coffee`, `Tea`, ...), `Ingredients` (decorators over `IBeverage`: `Sugar`, `Milk`, ...), `BeverageFactories` (singleton factories), `BeverageBuilder` (`IBeverageBuilder` interface, `BeverageBuilderBase` with the shared state, concrete builders, `BeverageBuildDirector`) |
-| Application | `include/Application/UseCases/` | `src/Application/UseCases/` | Use cases and their ports (`IOrderRepository`, `IUseCaseInputPort`, ...) |
-| InterfaceAdapters | `include/InterfaceAdapters/` | `src/InterfaceAdapters/` | Controller, presenters, `OrderRepository`, `Gateways/OrderDiskDataSource` |
+| Application | `include/Application/UseCases/` | `src/Application/UseCases/` | Use cases (`AddNewOrderUC`, `ListOrdersUC`, `CancelExistingOrderUC` skeleton), their output ports (`IAddNewOrderOutputPort`, `IListOrdersOutputPort`) and `IOrderRepository` |
+| InterfaceAdapters | `include/InterfaceAdapters/` | `src/InterfaceAdapters/` | `BeverageController`, `TextPresenter` (implements the output ports, writes text to a `std::ostream`), `OrderRepository`, `Gateways/OrderDiskDataSource` |
 | Infrastructure | `include/Infrastructure/UI/` | `src/Infrastructure/UI/` | `ConsoleMenu`: console menus that read the user's choices from a stream (library `ConsoleUi`, grouped in the `Infrastructure` interface target) |
-| App | n/a | `apps/ConsoleApp/main.cpp` | `CoffeeShopApp` executable: wires `ConsoleMenu`, `BeverageController` and `OrderRepository` |
+| App | n/a | `apps/ConsoleApp/main.cpp` | `CoffeeShopApp` executable: wires `ConsoleMenu`, `BeverageController`, `OrderRepository` and two `TextPresenter`s (screen and `orders.txt`) |
 
 Dependencies point inward: Domain must not include Application, InterfaceAdapters or Infrastructure
 headers. Infrastructure (UI) is the outermost layer; menu texts belong there, not in the Domain.
+
+### Flow of a request
+
+```
+ConsoleMenu ──► BeverageController ──► use case ──► output port (interface, Application)
+   (UI)            (adapter)          (Application)        │ implemented by
+                                                           ▼
+                                      TextPresenter (InterfaceAdapters) ──► std::ostream
+```
+
+- Use cases never print. They report the result through **their own output port**, one per use
+  case (`IAddNewOrderOutputPort::orderAdded/orderRejected`,
+  `IListOrdersOutputPort::ordersListed`), and pass plain data (descriptions as `std::string`), not
+  Domain objects.
+- `BeverageController::addOrder(request, outputPort)` / `listOrders(outputPort)` create and run the
+  use case; the caller chooses the output port (the screen or a file).
+- There are no input ports on purpose: the controller calls the use cases directly. That still
+  follows the dependency rule (outer layer → inner layer); add input ports only if a use case
+  needs to be replaced or faked behind the controller.
 
 ### Beverages and ingredient rules
 
@@ -113,6 +132,9 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 - Expected descriptions use `describe({CoffeeLatteName, SugarName})` from
   `tests/Common/include/BeverageDescription_TestHelpers.hpp` (both test targets have that folder
   on their include path), because C++17 can't concatenate `std::string_view`s with `+`.
+- Output ports are faked with `FakeAddNewOrderOutputPort` / `FakeListOrdersOutputPort`
+  (`tests/UnitTests/UseCases/include/OutputPort_TestDoubles.hpp`), and the repository with
+  `FakeOrderRepository`. `TextPresenter` tests write to a `std::ostringstream`.
 - `ConsoleMenu` takes a `std::istream`/`std::ostream`, so menu tests feed it a
   `std::istringstream` (see `tests/UnitTests/Infrastructure/`).
 - To try the whole app without typing, redirect its input. Each line is one answer, `Enter`
@@ -205,6 +227,8 @@ pre-commit run --all-files
 - Ninja only rebuilds changed `.cpp` files, so a new finding in a header shows up when a `.cpp`
   that includes it is recompiled. Use `--clean-first` to re-check everything.
 - `apps/ConsoleApp/main.cpp` uses MSVC-specific `_CrtSetDbgFlag` (CRT leak checking).
+- "Print list beverage orders" writes `orders.txt` in the **current working directory** (it
+  replaces the previous file and shows the full path). The file is gitignored.
 - `CancelExistingOrderUC` is a compiled skeleton: `execute()` always returns `false` until
   `IOrderRepository` gets a way to cancel orders.
 - An order the director can't fulfil completely is rejected, not partly served: see the rules

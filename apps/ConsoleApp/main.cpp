@@ -1,52 +1,51 @@
-#include "Application/UseCases/AddNewOrderResponseMessage.hpp"
 #include "Application/UseCases/NewOrderReq.hpp"
 #include "Infrastructure/UI/ConsoleMenu.hpp"
 #include "InterfaceAdapters/BeverageController.hpp"
 #include "InterfaceAdapters/OrderRepository.hpp"
-#include "InterfaceAdapters/PrinterPresenter.hpp"
-#include "InterfaceAdapters/ScreenPresenter.hpp"
+#include "InterfaceAdapters/TextPresenter.hpp"
 
 #include <crtdbg.h>
+#include <filesystem>
+#include <fstream>
 #include <iostream>
 
 namespace
 {
+/// @brief The file where "Print list beverage orders" writes the orders.
+constexpr const char *PrintFileName = "orders.txt";
+
 /// @brief Asks for a beverage and its ingredients, and orders it.
-void addOrder(ConsoleMenu &menu, IOrderRepository &orderRepository)
+void addOrder(ConsoleMenu &menu, const BeverageController &controller,
+              TextPresenter &presenter)
 {
   const auto beverageVariety = menu.askBeverageVariety();
   if (!beverageVariety)
   {
     return; // Cancelled.
   }
-  const NewOrderReq newOrderReq(*beverageVariety, menu.askIngredients());
-
-  const BeverageController beverageController(orderRepository);
-  const AddNewOrderResponseMessage response =
-      beverageController.execAddOrderUC(newOrderReq);
-
-  ScreenPresenter screenPresenter;
-  screenPresenter.print(response.getMessage());
+  controller.addOrder(NewOrderReq(*beverageVariety, menu.askIngredients()),
+                      presenter);
 }
 
-/// @brief Shows the orders on the screen or sends them to the printer.
-void listOrders(const OrderRepository &orderRepository, bool toPrinter)
+/// @brief "Prints" the orders: writes them to PrintFileName in the current
+/// folder, replacing its previous content.
+void printOrders(const BeverageController &controller)
 {
-  const auto &orders = orderRepository.getOrders();
-  ScreenPresenter screenPresenter;
-  if (orders.empty())
+  const std::filesystem::path path = std::filesystem::absolute(PrintFileName);
+  std::ofstream file(path);
+  if (file)
   {
-    screenPresenter.print("No orders yet.");
+    TextPresenter filePresenter(file);
+    controller.listOrders(filePresenter);
+    file.close();
   }
-  else if (toPrinter)
+
+  if (!file)
   {
-    PrinterPresenter printerPresenter;
-    printerPresenter.printOutOrders(orders);
+    std::cout << "Error: Could not write " << path.string() << ".\n";
+    return;
   }
-  else
-  {
-    screenPresenter.print(orders);
-  }
+  std::cout << "Info: Orders printed to " << path.string() << ".\n";
 }
 } // namespace
 
@@ -57,6 +56,8 @@ int main()
 
   ConsoleMenu menu(std::cin, std::cout);
   OrderRepository orderRepository;
+  const BeverageController controller(orderRepository);
+  TextPresenter screenPresenter(std::cout);
 
   while (true)
   {
@@ -69,13 +70,13 @@ int main()
     switch (*option)
     {
     case ConsoleMenu::MainOption::AddOrder:
-      addOrder(menu, orderRepository);
+      addOrder(menu, controller, screenPresenter);
       break;
     case ConsoleMenu::MainOption::ScreenListOrders:
-      listOrders(orderRepository, false);
+      controller.listOrders(screenPresenter);
       break;
     case ConsoleMenu::MainOption::PrintListOrders:
-      listOrders(orderRepository, true);
+      printOrders(controller);
       break;
     case ConsoleMenu::MainOption::Quit:
       break;

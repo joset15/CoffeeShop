@@ -9,6 +9,17 @@ bool OrderRepository::save(std::unique_ptr<IBeverage> newBeverage)
   return true;
 }
 
+std::vector<std::string> OrderRepository::describeOrders() const
+{
+  std::vector<std::string> descriptions;
+  descriptions.reserve(m_CurrentOrders.size());
+  for (const auto &order : m_CurrentOrders)
+  {
+    descriptions.push_back(order->getDescription());
+  }
+  return descriptions;
+}
+
 bool OrderRepository::cancelExistingOrders() { return true; }
 
 bool OrderRepository::storeOrders() { return true; }

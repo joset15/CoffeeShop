@@ -18,7 +18,16 @@
     <ClInclude Include="include\InterfaceAdapters\IOrderDataSource.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Application\UseCases\IOrderOutput.hpp">
+    <ClInclude Include="include\Application\UseCases\IAddNewOrderOutputPort.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Application\UseCases\IListOrdersOutputPort.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Application\UseCases\ListOrdersUC.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InterfaceAdapters\TextPresenter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Application\UseCases\IOrderRepository.hpp">
@@ -27,25 +36,10 @@
     <ClInclude Include="include\Application\UseCases\IRequest.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Application\UseCases\IUseCaseInputPort.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Application\UseCases\IUseCaseOutputPort.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Application\UseCases\ResponseMessage.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\InterfaceAdapters\BeverageController.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\InterfaceAdapters\OrderRepository.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\InterfaceAdapters\PrinterPresenter.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\InterfaceAdapters\ScreenPresenter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuildDirector.hpp">
@@ -174,9 +168,6 @@
     <ClInclude Include="include\Application\UseCases\NewOrderReq.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Application\UseCases\AddNewOrderResponseMessage.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\InterfaceAdapters\Gateways\OrderDiskDataSource.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -240,6 +231,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Application\UseCases\CancelExistingOrderUC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application\UseCases\ListOrdersUC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InterfaceAdapters\TextPresenter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Infrastructure\UI\ConsoleMenu.cpp">

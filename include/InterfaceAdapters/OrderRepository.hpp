@@ -7,6 +7,8 @@
 
 #include <list>
 #include <memory>
+#include <string>
+#include <vector>
 
 /// @brief Keeps the orders in memory.
 class OrderRepository : public IOrderRepository
@@ -20,17 +22,15 @@ public:
   /// @return Always true.
   bool save(std::unique_ptr<IBeverage> newBeverage) override;
 
+  /// @brief Describes the stored orders.
+  /// @return One description per order, in the order they were saved.
+  [[nodiscard]] std::vector<std::string> describeOrders() const override;
+
   /// @brief Not implemented yet: always returns true.
   static bool cancelExistingOrders();
 
   /// @brief Not implemented yet: always returns true.
   static bool storeOrders();
-
-  /// @return The orders, in the order they were saved.
-  [[nodiscard]] const std::list<std::unique_ptr<IBeverage>> &getOrders() const
-  {
-    return m_CurrentOrders;
-  }
 
 private:
   /// @brief The repository owns the stored orders.
