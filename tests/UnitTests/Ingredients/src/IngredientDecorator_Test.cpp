@@ -1,4 +1,5 @@
 #include "../include/IngredientDecorator_TestFixtures.hpp"
+#include "BeverageDescription_TestHelpers.hpp"
 #include "Domain/Ingredients/Milk.hpp"
 #include "Domain/Ingredients/Sugar.hpp"
 
@@ -27,6 +28,6 @@ TEST_F(GivenSugarAndMilk, WhenChainedThenDescriptionContainsBoth)
 
   // Assert
   ASSERT_EQ(beverage->getDescription(),
-            CoffeName + ", " + SugarName + ", " + MilkName);
+            describe({CoffeeName, SugarName, MilkName}));
 }
 } // namespace coffee_shop

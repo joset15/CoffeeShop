@@ -1,4 +1,5 @@
 #include "../include/AddNewOrderUC_TestFixtures.hpp"
+#include "BeverageDescription_TestHelpers.hpp"
 
 #include <string>
 
@@ -17,7 +18,7 @@ TEST_F(GivenAnEspressoWithSugarOrder, WhenExecutedThenOrderIsSaved)
   ASSERT_TRUE(success);
   ASSERT_EQ(m_OrderRepository.getSavedOrders().size(), 1U);
   ASSERT_EQ(m_OrderRepository.getSavedOrders().front()->getDescription(),
-            CoffeEspressoName + ", " + SugarName);
+            describe({CoffeeEspressoName, SugarName}));
 }
 
 TEST_F(GivenAnEspressoWithLemonOrder, WhenExecutedThenNothingIsSaved)
@@ -61,6 +62,6 @@ TEST_F(GivenACocoaWithMilkOrder, WhenExecutedThenOrderIsSaved)
   ASSERT_TRUE(success);
   ASSERT_EQ(m_OrderRepository.getSavedOrders().size(), 1U);
   ASSERT_EQ(m_OrderRepository.getSavedOrders().front()->getDescription(),
-            CocoaName + ", " + MilkName);
+            describe({CocoaName, MilkName}));
 }
 } // namespace coffee_shop

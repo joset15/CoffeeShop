@@ -3,6 +3,12 @@
 
 #include "IBeverage.hpp"
 
+#include <string>
+#include <string_view>
+
+/// @brief The name of this beverage in descriptions.
+inline constexpr std::string_view TeaGreenName = "TeaGreen";
+
 class TeaGreen : public IBeverage
 {
 public:
@@ -14,7 +20,7 @@ public:
 
   [[nodiscard]] std::string getDescription() const override
   {
-    return "TeaGreen";
+    return std::string(TeaGreenName);
   }
 };
 

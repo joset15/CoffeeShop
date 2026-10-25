@@ -1,4 +1,5 @@
 #include "../include/BeverageBuildDirector_TestFixtures.hpp"
+#include "BeverageDescription_TestHelpers.hpp"
 
 #include <string>
 
@@ -13,7 +14,7 @@ TEST_F(GivenADirector, WhenCocoaWithMilkIsBuiltThenDescriptionHasMilk)
   // Assert
   ASSERT_TRUE(built);
   ASSERT_EQ(m_Builder->takeBeverage()->getDescription(),
-            CocoaName + ", " + MilkName);
+            describe({CocoaName, MilkName}));
 }
 
 TEST_F(GivenADirector, WhenCocoaWithLemonIsBuiltThenItIsRejected)

@@ -6,6 +6,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <utility>
 
 class IngredientDecorator : public IBeverage
@@ -28,6 +29,15 @@ protected:
   [[nodiscard]] const IBeverage &getDecoratedBeverage() const
   {
     return *m_Beverage;
+  }
+
+  /// @brief Describes the decorated beverage followed by this ingredient.
+  /// @param ingredientName The name of this ingredient.
+  /// @return For example "Coffee, Sugar".
+  [[nodiscard]] std::string describeWith(std::string_view ingredientName) const
+  {
+    return getDecoratedBeverage().getDescription().append(", ").append(
+        ingredientName);
   }
 
 private:

@@ -1,4 +1,5 @@
 #include "../include/TeaBlackBuilderParameterized_TestFixtures.hpp"
+#include "BeverageDescription_TestHelpers.hpp"
 #include <string>
 
 namespace coffee_shop
@@ -9,9 +10,9 @@ INSTANTIATE_TEST_CASE_P(
     ::testing::Values(
         // clang-format off
 // Don't touch this!
-   std::make_tuple(std::list<Ingredient>{Ingredient::Sugar}, true, TeaBlackName + ", " + SugarName),
-   std::make_tuple(std::list<Ingredient>{Ingredient::Lemon}, true, TeaBlackName + ", " + LemonName),
-   std::make_tuple(std::list<Ingredient>{Ingredient::Milk, Ingredient::Lemon}, false, TeaBlackName + ", " + MilkName)
+   std::make_tuple(std::list<Ingredient>{Ingredient::Sugar}, true, describe({TeaBlackName, SugarName})),
+   std::make_tuple(std::list<Ingredient>{Ingredient::Lemon}, true, describe({TeaBlackName, LemonName})),
+   std::make_tuple(std::list<Ingredient>{Ingredient::Milk, Ingredient::Lemon}, false, describe({TeaBlackName, MilkName}))
    ));
 // clang-format on
 // Carry on formatting
