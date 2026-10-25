@@ -20,7 +20,6 @@ set(
 )
 
 add_library(BeverageBuilder ${SOURCES})
-# target_include_directories(BeverageBuilder PRIVATE ../../../include)
 target_include_directories(BeverageBuilder PRIVATE ${PUBLIC_INCLUDE_PATH})
 
 set_target_properties(BeverageBuilder PROPERTIES FOLDER "Domain/BeverageBuilder")

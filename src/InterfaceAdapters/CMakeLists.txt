@@ -9,7 +9,6 @@ resolve_project_paths(
 set(SOURCES BeverageController.cpp OrderRepository.cpp)
 
 add_library(InterfaceAdapters ${SOURCES})
-# target_include_directories(InterfaceAdapters PRIVATE ../../include)
 target_include_directories(InterfaceAdapters PRIVATE ${PUBLIC_INCLUDE_PATH})
 
 set_target_properties(InterfaceAdapters PROPERTIES FOLDER "InterfaceAdapters")
@@ -23,8 +22,5 @@ else()
 endif()
 
 add_subdirectory(Gateways)
-
-# Static analysis
-# set(CMAKE_CXX_CLANG_TIDY "clang-tidy")   # v3.6, will search for file .clang-tidy
 
 target_link_libraries(InterfaceAdapters Gateways)

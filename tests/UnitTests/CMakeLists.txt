@@ -20,7 +20,6 @@ set(
 )
 
 add_executable(UnitTests ${SOURCES})
-# target_include_directories(UnitTests PRIVATE ../../include)
 target_include_directories(
   UnitTests
   PRIVATE ${PUBLIC_INCLUDE_PATH} ${PROJECT_SOURCE_DIR}/tests/Common/include

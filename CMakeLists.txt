@@ -15,7 +15,6 @@ option(TESTS "Build GTest Unit Tests" ON)
 option(ITESTS "Build GTest Integration Tests" ON)
 option(BUILD_DOC "Build Doxygen documentation" OFF)
 option(ASAN_ENABLED "Build this target with AddressSanitizer" OFF)
-# option(STATIC_ANALISYS_ENABLED "Build this target with Static Analysis" OFF)
 option(CLANG_TIDY_ENABLED "Build this target with Static Analysis" ON) # STATIC_ANALISYS
 option(CPPCHECK_ENABLED "Run CppCheck static code analysis" OFF) # STATIC_ANALISYS
 
@@ -43,9 +42,6 @@ if(CCACHE_PROGRAM)
 else()
   message(STATUS "CCACHE is NOT found")
 endif()
-
-# Use Unity builds
-set(CMAKE_UNITY_BUILD OFF) #TODO disable units with problems and enable globally here
 
 # Doxygen docs.
 if(BUILD_DOC) # AND CMAKE_BUILD_TYPE STREQUAL "Release")
@@ -76,9 +72,7 @@ if(BUILD_DOC) # AND CMAKE_BUILD_TYPE STREQUAL "Release")
   endif(DOXYGEN_FOUND)
 endif(BUILD_DOC)
 
-# Compiler options
-set(CXX_STANDARD 17)
-
+# C++ standard (the only place where it is set)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -92,33 +86,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<CONFIG>/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<CONFIG>/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<CONFIG>/lib)
 
-# Submodules directories
-# set(SUPPORT_SOURCE_DIR "${CMAKE_SOURCE_DIR}/Modules/Support")
-# set(NETWORK_SOURCE_DIR "${CMAKE_SOURCE_DIR}/Modules/Network")
-# set(THREADLIB_SOURCE_DIR "${CMAKE_SOURCE_DIR}/Modules/ThreadLib")
-
-# Add a definition for the version.
-# add_definitions(-DVERSION_SWE_NAME="${VERSION_SWE_NAME}")
-# add_definitions(-DVERSION_PU_NAME="${VERSION_PU_NAME}")
-# add_definitions(-DVERSION_HASH="${VERSION_HASH}")
-# add_definitions(-DVERSION_CONFIG="${VERSION_CONFIG}")
-# add_definitions(-DVERSION_BRANCH="${VERSION_BRANCH}")
-
-# if("$ENV{ARCH}" STREQUAL "armv8")
-#   include(profiles/architecture.armv8.cmake)
-# elseif("$ENV{ARCH}" STREQUAL "armv7hf")
-#   include(profiles/architecture.armv7hf.cmake)
-# elseif("$ENV{ARCH}" STREQUAL "ppc64")
-#   include(profiles/architecture.ppc64.cmake)
-# endif()
-
 # Compiler options
 set(CMAKE_COMPILE_WARNING_AS_ERROR OFF)
 add_compile_options(${PROJECT_WARNING_FLAGS})
-# add_link_options()
 
 # Static analysis
-# clang-tidy no compatible con PCH (MSVC)
+# clang-tidy can't be combined with precompiled headers (BUILD_USING_PCH).
 if(CLANG_TIDY_ENABLED)
   set(CMAKE_CXX_CLANG_TIDY "clang-tidy") # v3.6, will search for file .clang-tidy
   if(MSVC)
@@ -134,10 +107,6 @@ endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") # MATCHES
   message(STATUS "Setting MSVC flags")
 
-  # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHc /std:c++latest")
-  # CMake already adds /EHsc, so an extra /EHc is not needed.
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
-
   if(ASAN_ENABLED)
     message(STATUS "ASAN ENABLED")
     set(ENV{ASAN_SAVE_DUMPS} "AsanDumpInfo.dmp") # ASAN_SAVE_DUMPS=MyFileName.dmp
@@ -150,18 +119,10 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") # MATCHES
 
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /DNDEBUG") # /MT
 
-  #set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -fno-strict-aliasing -Werror")
-  #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
   # Embedded debug info (/Z7) instead of a shared PDB (/Zi): ccache can only cache /Z7, and
   # parallel compilations no longer write to the same PDB. The linker still produces .pdb files.
   # The Visual Studio solution (CoffeeShop.sln) is not affected and keeps /Zi.
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<$<CONFIG:Debug,RelWithDebInfo>:Embedded>")
-  # CMAKE_<LANG>_FLAGS_MINSIZEREL:
-  # CMAKE_<LANG>_FLAGS_RELWITHDEBINFO
-  # CMAKE_${lang}_LINK_EXECUTABLE
-  # CMAKE_EXE_LINKER_FLAGS
-
-  # elseif (("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") OR ("${CMAKE_C_COMPILER_ID}" STREQUAL "Clang"))
 elseif((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
   message(STATUS "Setting GCC/GNU flags")
 
@@ -176,56 +137,14 @@ elseif((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL
   endif()
 
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -fno-strict-aliasing -Werror")
-
-  # set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -fsanitize=address
-  # -static-libasan -g") # -fpermissive")
 else()
   message(FATAL_ERROR "Unknown compiler: ${CMAKE_CXX_COMPILER_ID}")
 endif()
-
-#jt include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-#jt conan_basic_setup(TARGETS)
-# set(CMAKE_MODULE_PATH "D:/users/2023_12_31_CoffeeShop/repos/CoffeeShop/build/generators")
-
-# Static analysis
-# set(CMAKE_CXX_CLANG_TIDY "clang-tidy")   # v3.6, will search for file .clang-tidy
 
 if(TESTS OR ITESTS)
   find_package(GTest REQUIRED)
   enable_testing()
 endif()
-
-# file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/external_includes)
-
-# add_custom_target(
-#   support_inc ALL
-#   COMMAND ${CMAKE_COMMAND} -E create_symlink ${SUPPORT_SOURCE_DIR}/include
-#           ${CMAKE_BINARY_DIR}/external_includes/Support)
-
-# include_directories(${CMAKE_BINARY_DIR}/external_includes
-#                     ${CONAN_INCLUDE_DIRS_GTEST})
-#jt include_directories(${CONAN_INCLUDE_DIRS_GTEST})
-
-# add_custom_target(
-#   network_inc ALL
-#   COMMAND ${CMAKE_COMMAND} -E create_symlink ${NETWORK_SOURCE_DIR}/include
-#           ${CMAKE_BINARY_DIR}/external_includes/Network)
-
-# add_custom_target(
-#   threadlib_inc ALL
-#   COMMAND ${CMAKE_COMMAND} -E create_symlink ${THREADLIB_SOURCE_DIR}/include
-# ${CMAKE_BINARY_DIR}/external_includes/ThreadLib)
-
-# add_subdirectory(${SUPPORT_SOURCE_DIR})
-# add_subdirectory(${NETWORK_SOURCE_DIR})
-# add_subdirectory(${THREADLIB_SOURCE_DIR})
-
-# include_directories(
-#   ${SUPPORT_SOURCE_DIR}/dependencies/SWExternalDependencies/01_NLOHMANN_JSON_PARSER/include
-# )
-
-# Substituted by target_include_directories
-# include_directories(include)
 
 add_subdirectory(src) # AllLayers
 add_subdirectory(apps) # CoffeeShopApp

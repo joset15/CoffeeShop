@@ -1,10 +1,3 @@
-# cmake_minimum_required(VERSION 3.9)
-
-# find_package(Threads)
-
-#set(SOURCES BeverageBuilder.cpp)
-#add_library(Domain ${SOURCES})
-
 add_library(Domain INTERFACE)
 target_link_libraries(Domain INTERFACE BeverageBuilder BeverageFactories Beverages)
 

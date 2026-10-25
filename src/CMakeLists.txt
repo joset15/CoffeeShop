@@ -9,7 +9,6 @@ resolve_project_paths(
 set(SOURCES pch.cpp)
 add_library(AllLayers ${SOURCES})
 
-# target_include_directories(AllLayers PRIVATE ../include)
 target_include_directories(AllLayers PRIVATE ${PUBLIC_INCLUDE_PATH})
 
 # PCH support (support for PCH in CMake was added in 3.16)
@@ -21,13 +20,8 @@ else()
   message(STATUS "Disabled pre-compiled header support")
 endif()
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  message(STATUS "Setting MSVC flags (AllLayers)")
-
-  target_compile_features(AllLayers PRIVATE cxx_std_17)
-  # target_compile_definitions(AllLayers PRIVATE _CRT_SECURE_NO_WARNINGS)
-  # target_compile_options(AllLayers PRIVATE /W4) #WX
-else()
+# The project only builds with MSVC for now.
+if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   message(FATAL_ERROR "Unknown compiler: ${CMAKE_CXX_COMPILER_ID}")
 endif()
 
@@ -37,9 +31,3 @@ add_subdirectory(Application)
 add_subdirectory(Domain)
 add_subdirectory(Infrastructure)
 add_subdirectory(InterfaceAdapters)
-
-if(MSVC)
-  target_compile_options(AllLayers PRIVATE "/std:c++17")
-else()
-  target_compile_features(AllLayers PRIVATE cxx_std_17)
-endif()
