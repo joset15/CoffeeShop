@@ -15,13 +15,37 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Adapter\IOrderDataSource.hpp">
+    <ClInclude Include="include\InterfaceAdapters\IOrderDataSource.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UseCase\IOrderOutput.hpp">
+    <ClInclude Include="include\Application\UseCases\IOrderOutput.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\BeverageBuilder\BeverageDirector.hpp">
+    <ClInclude Include="include\Application\UseCases\IOrderRepository.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Application\UseCases\IRequest.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Application\UseCases\IUseCaseInputPort.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Application\UseCases\IUseCaseOutputPort.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Application\UseCases\ResponseMessage.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InterfaceAdapters\BeverageController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InterfaceAdapters\OrderRepository.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InterfaceAdapters\PrinterPresenter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InterfaceAdapters\ScreenPresenter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuildDirector.hpp">
