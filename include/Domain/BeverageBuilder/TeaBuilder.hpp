@@ -6,7 +6,7 @@
 class TeaBuilder : public BeverageBuilderBase
 {
 public:
-  /// @brief
+  /// @brief Starts a new beverage, discarding the one being built.
   void reset() override { resetImpl(); }
 
   /// @brief Adds sugar to the beverage.
@@ -38,10 +38,10 @@ protected:
   void resetImpl();
 
 private:
-  /// @brief
+  /// @brief True once a kind of milk has been added.
   bool m_HasMilk = false;
 
-  /// @brief
+  /// @brief True once lemon has been added.
   bool m_HasLemon = false;
 };
 

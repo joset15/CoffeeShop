@@ -4,23 +4,23 @@
 #include "IIngredientFactory.hpp"
 #include <memory>
 
-// TODO Complete doxygen comments.
-
+/// @brief Creates the ingredient decorators (singleton).
 class IngredientFactory final : public IIngredientFactory
 {
 public:
-  /// @brief
-  /// @return
+  /// @brief Gets the only instance (singleton).
+  /// @return The instance; it lives until the program ends.
   static IngredientFactory *getInstance()
   {
     static IngredientFactory m_IngredientFactoryInstance;
     return &m_IngredientFactoryInstance;
   }
 
-  /// @brief
-  /// @param ingredient
-  /// @param beverage
-  /// @return
+  /// @brief Wraps a beverage with the decorator of an ingredient.
+  /// @param ingredient The ingredient to add.
+  /// @param beverage The beverage to decorate; the decorator takes ownership.
+  /// @return The decorated beverage (nullptr only for an invalid Ingredient
+  /// value).
   std::unique_ptr<IBeverage>
   createIngredient(Ingredient ingredient,
                    std::unique_ptr<IBeverage> beverage) override;
@@ -35,7 +35,7 @@ private:
   /// @brief Private constructor: use getInstance().
   IngredientFactory() = default;
 
-  /// @brief
+  /// @brief Private: the singleton is never deleted from outside.
   ~IngredientFactory() override = default;
 };
 

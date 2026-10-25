@@ -1,17 +1,12 @@
 #ifndef USECASE_HPP
 #define USECASE_HPP
 
-//#include "IRequest.hpp"
 #include <string>
 #include <utility>
 
+/// @brief Base class of the application use cases.
 class UseCase
 {
-  //    // Disallow copy constructor.
-  //    UseCase(const UseCase &);
-  //    // Disallow assignment operator.
-  //    void operator=(const UseCase &);
-
 public:
   /// @brief Destructor for an UseCase.
   virtual ~UseCase() = default;
@@ -34,8 +29,9 @@ public:
   /// execution.
   virtual bool isFinished() { return true; }
 
-  // TODO return ErrorCode
-  // virtual bool execute(const IRequest &request) = 0;
+  /// @brief Runs the use case.
+  /// @return True if it succeeded.
+  // TODO: Return an error code instead of a bool.
   virtual bool execute() = 0;
 
 protected:

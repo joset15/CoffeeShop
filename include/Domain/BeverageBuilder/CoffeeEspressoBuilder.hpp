@@ -19,7 +19,7 @@ public:
   void reset() override { resetImpl(); }
 
 private:
-  /// @brief
+  /// @brief Creates the base beverage and resets the builder state.
   void resetImpl();
 };
 

@@ -8,8 +8,6 @@
 #include "TeaBlack.hpp"
 #include "TeaGreen.hpp"
 
-// TODO Complete doxygen comments.
-
 /// @brief The varieties of beverages.
 enum class BeverageVariety
 {

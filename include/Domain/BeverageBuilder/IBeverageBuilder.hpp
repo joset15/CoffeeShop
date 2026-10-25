@@ -10,7 +10,7 @@
 class IBeverageBuilder
 {
 public:
-  /// @brief
+  /// @brief Allows deleting an implementation through this interface.
   virtual ~IBeverageBuilder() = default;
 
   /// @brief Takes the built beverage and resets the builder.

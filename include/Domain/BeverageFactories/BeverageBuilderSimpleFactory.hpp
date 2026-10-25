@@ -5,13 +5,12 @@
 #include "IBeverageBuilderFactory.hpp"
 #include <memory>
 
-// TODO Complete doxygen comments.
-
+/// @brief Creates the builder for each beverage variety (singleton).
 class BeverageBuilderSimpleFactory final : public IBeverageBuilderFactory
 {
 public:
-  /// @brief
-  /// @return
+  /// @brief Gets the only instance (singleton).
+  /// @return The instance; it lives until the program ends.
   static BeverageBuilderSimpleFactory *getInstance()
   {
     static BeverageBuilderSimpleFactory m_BeverageBuilderFactoryInstance;
@@ -35,7 +34,7 @@ public:
 private:
   /// @brief Private constructor: use getInstance().
   BeverageBuilderSimpleFactory() = default;
-  /// @brief
+  /// @brief Private: the singleton is never deleted from outside.
   ~BeverageBuilderSimpleFactory() override = default;
 };
 

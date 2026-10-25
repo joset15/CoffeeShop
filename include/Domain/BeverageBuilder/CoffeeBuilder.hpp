@@ -6,16 +6,16 @@
 class CoffeeBuilder : public BeverageBuilderBase
 {
 public:
-  /// @brief
+  /// @brief Starts a new beverage, discarding the one being built.
   void reset() override { resetImpl(); };
 
   /// @brief Adds sugar to the beverage.
-  /// @return
+  /// @return Always true.
   bool addSugar() override;
 
   /// @brief Adds milk to the beverage.
   /// @param typeOfMilk The type of milk we are adding.
-  /// @return
+  /// @return False if a kind of milk was already added.
   bool addMilk(Ingredient typeOfMilk) override;
 
   /// @brief Adds honey to the beverage.

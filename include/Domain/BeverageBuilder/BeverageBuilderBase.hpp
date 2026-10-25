@@ -24,7 +24,7 @@ public:
   }
 
 protected:
-  /// @brief
+  /// @brief Stores the factories used to build the beverage.
   /// @param beverageFactory Creates the base beverages (not owned).
   /// @param ingredientFactory Creates the ingredient decorators (not owned).
   BeverageBuilderBase(IBeverageFactory *beverageFactory,

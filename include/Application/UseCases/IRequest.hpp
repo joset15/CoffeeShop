@@ -1,13 +1,9 @@
 #ifndef IREQUEST_HPP
 #define IREQUEST_HPP
 
+/// @brief Base type of the data sent to a use case.
 struct IRequest
 {
-  //    // Disallow copy constructor.
-  //    UseCase(const UseCase &);
-  //    // Disallow assignment operator.
-  //    void operator=(const UseCase &);
-
 public:
   /// @brief Destructor for an IRequest.
   virtual ~IRequest() = default;

@@ -4,19 +4,18 @@
 #include "Domain/Ingredients/Ingredients.hpp"
 #include <memory>
 
-// TODO Complete doxygen comments.
-
-/// @brief The IIngredientFactory class
+/// @brief Wraps beverages with ingredient decorators (Abstract Factory).
 class IIngredientFactory
 {
 public:
-  /// @brief
+  /// @brief Allows deleting an implementation through this interface.
   virtual ~IIngredientFactory() = default;
 
-  /// @brief
-  /// @param ingredient
-  /// @param beverage
-  /// @return
+  /// @brief Wraps a beverage with the decorator of an ingredient.
+  /// @param ingredient The ingredient to add.
+  /// @param beverage The beverage to decorate; the decorator takes ownership.
+  /// @return The decorated beverage (nullptr only for an invalid Ingredient
+  /// value).
   virtual std::unique_ptr<IBeverage>
   createIngredient(Ingredient ingredient,
                    std::unique_ptr<IBeverage> beverage) = 0;

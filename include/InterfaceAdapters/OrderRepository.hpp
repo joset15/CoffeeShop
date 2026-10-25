@@ -8,24 +8,25 @@
 #include <list>
 #include <memory>
 
+/// @brief Keeps the orders in memory.
 class OrderRepository : public IOrderRepository
 {
 public:
-  /// \brief
-  // TODO Refactor datasource
-  // OrderRepository(IOrderDataSource &dataSource)
-  //    : m_OrderDataSource(dataSource){};
-
   /// @brief The default destructor.
   ~OrderRepository() override = default;
 
-  /// @brief
+  /// @brief Stores a new order, taking ownership of it.
+  /// @param newBeverage The ordered beverage.
+  /// @return Always true.
   bool save(std::unique_ptr<IBeverage> newBeverage) override;
 
+  /// @brief Not implemented yet: always returns true.
   static bool cancelExistingOrders();
 
+  /// @brief Not implemented yet: always returns true.
   static bool storeOrders();
 
+  /// @return The orders, in the order they were saved.
   [[nodiscard]] const std::list<std::unique_ptr<IBeverage>> &getOrders() const
   {
     return m_CurrentOrders;
@@ -35,9 +36,7 @@ private:
   /// @brief The repository owns the stored orders.
   std::list<std::unique_ptr<IBeverage>> m_CurrentOrders;
 
-  /// \brief
-  // TODO Refactor datasource
-  // IOrderDataSource &m_OrderDataSource;
+  // TODO: Persist the orders through an injected IOrderDataSource.
 };
 
 #endif // ORDER_REPOSITORY_HPP

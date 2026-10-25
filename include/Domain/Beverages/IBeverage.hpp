@@ -3,16 +3,15 @@
 
 #include <string>
 
-// TODO Complete doxygen comments.
-
-/// @brief The IBeverage class
+/// @brief A beverage, possibly wrapped by ingredient decorators.
 class IBeverage
 {
 public:
-  /// \brief ~IBeverage
+  /// @brief Allows deleting an implementation through this interface.
   virtual ~IBeverage() = default;
 
-  /// \brief
+  /// @brief Describes the beverage and its ingredients.
+  /// @return For example "CoffeeEspresso, Sugar, Milk".
   [[nodiscard]] virtual std::string getDescription() const = 0;
 };
 
