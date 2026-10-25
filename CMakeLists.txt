@@ -1,5 +1,5 @@
 # CoffeeShop Project (console app and others pending to build: qt, fxtui, sciter)
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.25)
 
 project(
   CoffeeShop
