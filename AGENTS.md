@@ -157,7 +157,8 @@ and clang-tidy. `no-commit-to-branch` blocks direct commits to `main` and `stagi
 - Ninja only rebuilds changed `.cpp` files, so a new finding in a header shows up when a `.cpp`
   that includes it is recompiled. Use `--clean-first` to re-check everything.
 - `apps/ConsoleApp/main.cpp` uses MSVC-specific `_CrtSetDbgFlag` (CRT leak checking).
-- `CancelExistingOrderUC.cpp` exists but is commented out of the `UseCases` build.
+- `CancelExistingOrderUC` is a compiled skeleton: `execute()` always returns `false` until
+  `IOrderRepository` gets a way to cancel orders.
 - An existing build folder keeps old compiler flags in `CMakeCache.txt` after changes to CMake
   policies or debug-info settings. Reconfigure with `cmake --preset "Windows x64 Debug" --fresh`,
   or in Visual Studio use **Project > Delete Cache and Reconfigure**.

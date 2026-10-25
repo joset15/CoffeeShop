@@ -1,39 +1,31 @@
-#ifndef ADD_NEW_ORDER_UC_HPP
-#define ADD_NEW_ORDER_UC_HPP
+#ifndef CANCEL_EXISTING_ORDER_UC_HPP
+#define CANCEL_EXISTING_ORDER_UC_HPP
 
-#include "../Model/Beverages/BeverageVariety.hpp"
-#include "../Model/Beverages/IBeverage.hpp"
-
-//#include "../Model/Ingredient/IngredientDecorator.hpp"
-#include "../Model/Ingredient/Ingredients.hpp"
-
-#include "IOrderOutput.hpp"
 #include "IOrderRepository.hpp"
+#include "UseCase.hpp"
 
-class AddNewOrderUC
+#include <string>
+
+/// @brief Cancels the orders that have not been served yet.
+///
+/// Skeleton for a future use case: IOrderRepository has no way to cancel
+/// orders yet, so execute() always fails.
+class CancelExistingOrderUC : public UseCase
 {
 public:
-  AddNewOrderUC(IOrderOutput &output, IOrderRepository &orderRepository)
-      : m_Output(output), m_OrderRepository(orderRepository){};
+  /// @brief
+  /// @param name The name of the use case.
+  /// @param orderRepository Where the orders are stored.
+  CancelExistingOrderUC(std::string name, IOrderRepository &orderRepository);
 
-  bool addNewOrder(IBeverage::BeverageType beverageType,
-                   BeverageVariety beverageVariety,
-                   IngredientDecorator *extraIngredient);
-
-  bool addNewOrder(IBeverage::BeverageType beverageType,
-                   BeverageVariety beverageVariety,
-                   const std::list<Ingredient> &ingredients);
-
-  bool cancelExistingOrders();
-
-  bool printOutOrders();
-
-  bool storeOrders();
+  /// @brief Cancels the existing orders.
+  /// @return False: not implemented yet.
+  bool execute() override;
 
 private:
-  IOrderOutput &m_Output;
-
-  IOrderRepository &m_OrderRepository;
+  /// @brief Where the orders are stored (not owned, never null: set from a
+  /// reference).
+  IOrderRepository *m_OrderRepository;
 };
 
-#endif // ADD_NEW_ORDER_UC_HPP
+#endif // CANCEL_EXISTING_ORDER_UC_HPP

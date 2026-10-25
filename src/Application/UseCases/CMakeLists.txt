@@ -6,7 +6,7 @@ resolve_project_paths(
   PRIVATE_INCLUDE_PATH
 )
 
-set(SOURCES AddNewOrderUC.cpp) # CancelExistingOrderUC.cpp)
+set(SOURCES AddNewOrderUC.cpp CancelExistingOrderUC.cpp)
 add_library(UseCases ${SOURCES})
 
 # target_include_directories(UseCases PRIVATE ../../../include)
