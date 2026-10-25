@@ -2,7 +2,6 @@
 #define BEVERAGE_BUILD_DIRECTOR_HPP
 #pragma once
 
-#include "Domain/Beverages/BeverageVariety.hpp"
 #include "Domain/Ingredients/Ingredients.hpp"
 #include "IBeverageBuilder.hpp"
 
@@ -20,26 +19,14 @@ public:
     m_BeverageBuilder = beverageBuilder;
   }
 
-  /// @brief Builds a beverage of the given variety.
-  /// @param beverageVariety The variety; it must match the builder.
+  /// @brief Builds a beverage with the builder set by setBuilder(). The
+  /// builder decides which beverage it is.
   /// @param ingredients The requested ingredients.
-  /// @return False if there is no builder, the variety can't be built yet, or
-  /// an ingredient can't be added (e.g. water, or two kinds of milk).
-  bool buildBeverage(BeverageVariety beverageVariety,
-                     const std::list<Ingredient> &ingredients);
-
-  /// @brief Builds an espresso. See buildBeverage().
-  bool buildCoffeeEspresso(const std::list<Ingredient> &ingredients);
-
-  /// @brief Builds a black tea. See buildBeverage().
-  bool buildTeaBlack(const std::list<Ingredient> &ingredients);
-
-  /// @brief Builds a cocoa. See buildBeverage().
-  bool buildCocoa(const std::list<Ingredient> &ingredients);
+  /// @return False if there is no builder or an ingredient can't be added
+  /// (e.g. water, lemon in cocoa, milk in a latte, or two kinds of milk).
+  bool buildBeverage(const std::list<Ingredient> &ingredients);
 
 private:
-  bool buildWithIngredients(const std::list<Ingredient> &ingredients);
-
   bool addSugar(const std::list<Ingredient> &ingredients);
 
   bool addMilk(const std::list<Ingredient> &ingredients);

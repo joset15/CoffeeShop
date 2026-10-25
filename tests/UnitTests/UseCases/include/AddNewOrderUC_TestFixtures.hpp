@@ -31,7 +31,7 @@ protected:
 };
 
 ///
-/// \brief A fixture for ordering a latte, a variety without a builder yet.
+/// \brief A fixture for ordering a latte with sugar.
 ///
 class GivenALatteOrder : public ::testing::Test
 {

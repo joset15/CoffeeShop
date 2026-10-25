@@ -42,6 +42,15 @@
     <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuilderBase.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Domain\BeverageBuilder\CoffeeDecafBuilder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Domain\BeverageBuilder\CoffeeLatteBuilder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Domain\BeverageBuilder\TeaGreenBuilder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\Domain\BeverageBuilder\IBeverageBuilder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -195,6 +204,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Application\UseCases\AddNewOrderUC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Domain\BeverageBuilder\CoffeeDecafBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Domain\BeverageBuilder\CoffeeLatteBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Domain\BeverageBuilder\TeaGreenBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Application\UseCases\CancelExistingOrderUC.cpp">

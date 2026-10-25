@@ -47,4 +47,73 @@ TEST_F(GivenADirector, WhenTwoKindsOfMilkAreRequestedThenItIsRejected)
   // Assert
   ASSERT_FALSE(built);
 }
+
+TEST_F(GivenADirector, WhenLatteWithSugarIsBuiltThenDescriptionHasSugar)
+{
+  // AAA: Arrange, Act, Assert
+  // Act
+  bool built = build(BeverageVariety::CoffeeLatte, {Ingredient::Sugar});
+
+  // Assert
+  ASSERT_TRUE(built);
+  ASSERT_EQ(m_Builder->takeBeverage()->getDescription(),
+            describe({CoffeeLatteName, SugarName}));
+}
+
+TEST_F(GivenADirector, WhenMilkIsAddedToLatteThenItIsRejected)
+{
+  // AAA: Arrange, Act, Assert
+  // Act
+  bool built = build(BeverageVariety::CoffeeLatte, {Ingredient::SoyMilk});
+
+  // Assert
+  ASSERT_FALSE(built);
+}
+
+TEST_F(GivenADirector, WhenDecafWithSoyMilkIsBuiltThenDescriptionHasSoyMilk)
+{
+  // AAA: Arrange, Act, Assert
+  // Act
+  bool built = build(BeverageVariety::CoffeeDecaf, {Ingredient::SoyMilk});
+
+  // Assert
+  ASSERT_TRUE(built);
+  ASSERT_EQ(m_Builder->takeBeverage()->getDescription(),
+            describe({CoffeeDecafName, SoyMilkName}));
+}
+
+TEST_F(GivenADirector, WhenDecafWithHoneyIsBuiltThenItIsRejected)
+{
+  // AAA: Arrange, Act, Assert
+  // Act
+  bool built = build(BeverageVariety::CoffeeDecaf, {Ingredient::Honey});
+
+  // Assert
+  ASSERT_FALSE(built);
+}
+
+TEST_F(GivenADirector,
+       WhenGreenTeaWithHoneyAndLemonIsBuiltThenDescriptionHasBoth)
+{
+  // AAA: Arrange, Act, Assert
+  // Act
+  bool built =
+      build(BeverageVariety::TeaGreen, {Ingredient::Lemon, Ingredient::Honey});
+
+  // Assert
+  ASSERT_TRUE(built);
+  ASSERT_EQ(m_Builder->takeBeverage()->getDescription(),
+            describe({TeaGreenName, HoneyName, LemonName}));
+}
+
+TEST_F(GivenADirector, WhenGreenTeaWithMilkAndLemonIsBuiltThenItIsRejected)
+{
+  // AAA: Arrange, Act, Assert
+  // Act
+  bool built =
+      build(BeverageVariety::TeaGreen, {Ingredient::Milk, Ingredient::Lemon});
+
+  // Assert
+  ASSERT_FALSE(built);
+}
 } // namespace coffee_shop

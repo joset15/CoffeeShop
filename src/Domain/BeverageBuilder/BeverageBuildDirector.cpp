@@ -3,56 +3,6 @@
 #include <algorithm>
 
 bool BeverageBuildDirector::buildBeverage(
-    BeverageVariety beverageVariety, const std::list<Ingredient> &ingredients)
-{
-  bool isValidBeverage = false;
-
-  switch (beverageVariety)
-  {
-  case BeverageVariety::CoffeeEspresso:
-    isValidBeverage = buildCoffeeEspresso(ingredients);
-    break;
-  case BeverageVariety::CoffeeLatte:
-    // TODO add build.
-    break;
-  case BeverageVariety::CoffeeDecaf:
-    // TODO add build.
-    break;
-  case BeverageVariety::TeaBlack:
-    isValidBeverage = buildTeaBlack(ingredients);
-    break;
-  case BeverageVariety::TeaGreen:
-    // TODO add build.
-    break;
-  case BeverageVariety::Cocoa:
-    isValidBeverage = buildCocoa(ingredients);
-    break;
-  default:
-    isValidBeverage = false;
-    break;
-  }
-
-  return isValidBeverage;
-}
-
-bool BeverageBuildDirector::buildCoffeeEspresso(
-    const std::list<Ingredient> &ingredients)
-{
-  return buildWithIngredients(ingredients);
-}
-
-bool BeverageBuildDirector::buildTeaBlack(
-    const std::list<Ingredient> &ingredients)
-{
-  return buildWithIngredients(ingredients);
-}
-
-bool BeverageBuildDirector::buildCocoa(const std::list<Ingredient> &ingredients)
-{
-  return buildWithIngredients(ingredients);
-}
-
-bool BeverageBuildDirector::buildWithIngredients(
     const std::list<Ingredient> &ingredients)
 {
   if (!m_BeverageBuilder || hasSeveralMilks(ingredients))

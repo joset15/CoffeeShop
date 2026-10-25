@@ -35,7 +35,7 @@ TEST_F(GivenAnEspressoWithLemonOrder, WhenExecutedThenNothingIsSaved)
   ASSERT_TRUE(m_OrderRepository.getSavedOrders().empty());
 }
 
-TEST_F(GivenALatteOrder, WhenExecutedThenNothingIsSaved)
+TEST_F(GivenALatteOrder, WhenExecutedThenOrderIsSaved)
 {
   // AAA: Arrange, Act, Assert
   // Arrange
@@ -45,8 +45,10 @@ TEST_F(GivenALatteOrder, WhenExecutedThenNothingIsSaved)
   bool success = addNewOrderUC.execute();
 
   // Assert
-  ASSERT_FALSE(success);
-  ASSERT_TRUE(m_OrderRepository.getSavedOrders().empty());
+  ASSERT_TRUE(success);
+  ASSERT_EQ(m_OrderRepository.getSavedOrders().size(), 1U);
+  ASSERT_EQ(m_OrderRepository.getSavedOrders().front()->getDescription(),
+            describe({CoffeeLatteName, SugarName}));
 }
 
 TEST_F(GivenACocoaWithMilkOrder, WhenExecutedThenOrderIsSaved)

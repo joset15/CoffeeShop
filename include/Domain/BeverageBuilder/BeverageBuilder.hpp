@@ -8,10 +8,13 @@
 #include "IBeverageBuilder.hpp"
 
 #include "CoffeeBuilder.hpp"
+#include "CoffeeDecafBuilder.hpp"
 #include "CoffeeEspressoBuilder.hpp"
+#include "CoffeeLatteBuilder.hpp"
 
 #include "TeaBlackBuilder.hpp"
 #include "TeaBuilder.hpp"
+#include "TeaGreenBuilder.hpp"
 
 #include "CocoaBuilder.hpp"
 
