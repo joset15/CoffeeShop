@@ -1,4 +1,6 @@
 #include "Domain/BeverageBuilder/CocoaBuilder.hpp"
+#include "Domain/Beverages/BeverageVariety.hpp"
+#include "Domain/Ingredients/Ingredient.hpp"
 
 namespace coffee_shop::domain
 {

@@ -1,9 +1,18 @@
 #include "Infrastructure/UI/ConsoleMenu.hpp"
+#include "Domain/Beverages/BeverageVariety.hpp"
+#include "Domain/Ingredients/Ingredient.hpp"
 
 #include <array>
 #include <charconv>
+#include <cstddef>
+#include <istream>
+#include <optional>
+#include <ostream>
 #include <sstream>
+#include <string>
 #include <string_view>
+#include <system_error>
+#include <vector>
 
 namespace coffee_shop::infrastructure::ui
 {

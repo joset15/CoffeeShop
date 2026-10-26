@@ -3,8 +3,11 @@
 #include "Domain/BeverageBuilder/CoffeeDecafBuilder.hpp"
 #include "Domain/BeverageBuilder/CoffeeEspressoBuilder.hpp"
 #include "Domain/BeverageBuilder/CoffeeLatteBuilder.hpp"
+#include "Domain/BeverageBuilder/IBeverageBuilder.hpp"
 #include "Domain/BeverageBuilder/TeaBlackBuilder.hpp"
 #include "Domain/BeverageBuilder/TeaGreenBuilder.hpp"
+#include "Domain/Beverages/BeverageVariety.hpp"
+#include <memory>
 
 namespace coffee_shop::domain
 {

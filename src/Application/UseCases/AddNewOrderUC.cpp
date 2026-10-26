@@ -3,10 +3,15 @@
 #include "Application/UseCases/NewOrderReq.hpp"
 
 #include "Domain/BeverageBuilder/BeverageBuildDirector.hpp"
+#include "Domain/BeverageBuilder/IBeverageBuilder.hpp"
+#include "Domain/Beverages/BeverageVariety.hpp"
+#include "Domain/Beverages/IBeverage.hpp"
+#include "Domain/Ingredients/Ingredient.hpp"
 
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 namespace coffee_shop::application
 {

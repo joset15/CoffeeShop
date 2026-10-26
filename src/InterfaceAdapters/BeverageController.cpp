@@ -1,7 +1,10 @@
 #include "InterfaceAdapters/BeverageController.hpp"
 
 #include "Application/UseCases/AddNewOrderUC.hpp"
+#include "Application/UseCases/IAddNewOrderOutputPort.hpp"
+#include "Application/UseCases/IListOrdersOutputPort.hpp"
 #include "Application/UseCases/ListOrdersUC.hpp"
+#include "Application/UseCases/NewOrderReq.hpp"
 
 namespace coffee_shop::interface_adapters
 {
