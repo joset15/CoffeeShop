@@ -1,8 +1,6 @@
 #ifndef COFFEE_TESTFIXTURES_HPP
 #define COFFEE_TESTFIXTURES_HPP
 
-// #include "InputCommand_TestDoubles.h"
-//#include "../../../../Model/Beverages/Coffee.hpp"
 #include "Domain/Beverages/Coffee.hpp"
 #include <gtest/gtest.h>
 #include <memory>

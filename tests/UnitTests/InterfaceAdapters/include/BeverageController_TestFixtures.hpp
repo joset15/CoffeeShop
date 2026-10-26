@@ -1,8 +1,8 @@
 #ifndef BEVERAGE_CONTROLLER_TESTFIXTURES_HPP
 #define BEVERAGE_CONTROLLER_TESTFIXTURES_HPP
 
-#include "../../UseCases/include/OrderRepository_TestDoubles.hpp"
-#include "../../UseCases/include/OutputPort_TestDoubles.hpp"
+#include "OrderRepository_TestDoubles.hpp"
+#include "OutputPort_TestDoubles.hpp"
 
 #include "Application/UseCases/NewOrderReq.hpp"
 #include "InterfaceAdapters/BeverageController.hpp"

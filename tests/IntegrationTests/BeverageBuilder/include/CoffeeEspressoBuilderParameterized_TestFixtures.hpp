@@ -20,9 +20,6 @@ class GivenSomeIngredientsForCoffeeEspressoBuilder
     : public ::testing::TestWithParam<
           std::tuple<std::list<Ingredient>, bool, std::string>>
 {
-  // You can implement all the usual fixture class members here.
-  // To access the test parameter, call GetParam() from class
-  // TestWithParam<T>.
 protected:
   void SetUp() override
   {

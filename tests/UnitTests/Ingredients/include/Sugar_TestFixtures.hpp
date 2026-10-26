@@ -1,7 +1,6 @@
 #ifndef SUGAR_TESTFIXTURES_HPP
 #define SUGAR_TESTFIXTURES_HPP
 
-// #include "InputCommand_TestDoubles.h"
 #include "Domain/Beverages/Coffee.hpp"
 
 #include <gtest/gtest.h>

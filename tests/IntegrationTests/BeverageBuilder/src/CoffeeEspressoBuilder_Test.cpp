@@ -14,13 +14,12 @@ TEST_F(GivenACoffeeEspressoBuilder,
   ingredients.push_back(Ingredient::Sugar);
 
   // Act
-  m_BeverageBuildDirector->buildBeverage(ingredients);
-  // TODO: EXPECT_TRUE(buildSuccess);
-
+  bool built = m_BeverageBuildDirector->buildBeverage(ingredients);
   std::string coffeeWithSugar =
       m_CoffeeEspressoBuilder->takeBeverage()->getDescription();
 
   // Assert
+  ASSERT_TRUE(built);
   ASSERT_EQ(coffeeWithSugar.compare(
                 test_support::describe({CoffeeEspressoName, SugarName})),
             0);
