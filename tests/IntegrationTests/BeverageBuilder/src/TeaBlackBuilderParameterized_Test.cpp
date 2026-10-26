@@ -8,7 +8,6 @@
 
 #include "BeverageDescription_TestHelpers.hpp"
 
-#include <gtest/gtest-param-test.h>
 #include <gtest/gtest.h>
 
 #include <string>
@@ -17,7 +16,7 @@
 
 namespace coffee_shop::domain
 {
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     GiveSomeValidIngredients, GivenSomeIngredientsForTeaBlackBuilder,
     ::testing::Values(
         // clang-format off
