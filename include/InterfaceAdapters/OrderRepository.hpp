@@ -5,7 +5,6 @@
 #include "Domain/Beverages/IBeverage.hpp"
 #include "IOrderDataSource.hpp"
 
-#include <list>
 #include <memory>
 #include <string>
 #include <vector>
@@ -36,7 +35,7 @@ public:
 
 private:
   /// @brief The repository owns the stored orders.
-  std::list<std::unique_ptr<domain::IBeverage>> m_CurrentOrders;
+  std::vector<std::unique_ptr<domain::IBeverage>> m_CurrentOrders;
 
   // TODO: Persist the orders through an injected IOrderDataSource.
 };

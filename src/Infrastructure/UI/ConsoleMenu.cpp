@@ -42,9 +42,9 @@ constexpr std::array<MenuEntry<domain::Ingredient>, 7> IngredientEntries{{
 std::optional<int> parseNumber(std::string_view word)
 {
   int number = 0;
-  const char *end = word.data() + word.size();
-  const auto result = std::from_chars(word.data(), end, number);
-  if (result.ec != std::errc{} || result.ptr != end)
+  const auto result =
+      std::from_chars(word.data(), word.data() + word.size(), number);
+  if (result.ec != std::errc{} || result.ptr != word.data() + word.size())
   {
     return std::nullopt;
   }
@@ -99,7 +99,7 @@ std::optional<domain::BeverageVariety> ConsoleMenu::askBeverageVariety()
   return BeverageEntries.at(static_cast<std::size_t>(*number - 1)).m_Value;
 }
 
-std::list<domain::Ingredient> ConsoleMenu::askIngredients()
+std::vector<domain::Ingredient> ConsoleMenu::askIngredients()
 {
   *m_Output << "Choose ingredients (numbers separated by spaces, Enter for "
                "none):\n";
@@ -109,7 +109,7 @@ std::list<domain::Ingredient> ConsoleMenu::askIngredients()
   std::string line;
   while (readLine(line))
   {
-    std::list<domain::Ingredient> ingredients;
+    std::vector<domain::Ingredient> ingredients;
     bool valid = true;
     std::istringstream words(line);
     std::string word;

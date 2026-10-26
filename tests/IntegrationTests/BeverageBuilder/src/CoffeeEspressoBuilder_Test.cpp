@@ -10,7 +10,7 @@ TEST_F(GivenACoffeeEspressoBuilder,
 {
   // AAA: Arrange, Act, Assert
   // Arrange
-  std::list<Ingredient> ingredients;
+  std::vector<Ingredient> ingredients;
   ingredients.push_back(Ingredient::Sugar);
 
   // Act

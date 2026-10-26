@@ -10,9 +10,11 @@
 #include "Sugar.hpp"
 #include "Water.hpp"
 
+#include <cstdint>
+
 namespace coffee_shop::domain
 {
-enum class Ingredient
+enum class Ingredient : std::uint8_t
 {
   Sugar,
   Milk,

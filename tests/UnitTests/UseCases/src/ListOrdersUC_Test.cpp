@@ -21,8 +21,7 @@ TEST_F(GivenAnOrderRepository, WhenThereAreNoOrdersThenAnEmptyListIsSent)
 
   // Assert
   ASSERT_TRUE(success);
-  ASSERT_TRUE(m_OutputPort.getListedDescriptions().has_value());
-  ASSERT_TRUE(m_OutputPort.getListedDescriptions()->empty());
+  ASSERT_EQ(m_OutputPort.getListedDescriptions(), std::vector<std::string>{});
 }
 
 TEST_F(GivenAnOrderRepository, WhenThereAreOrdersThenTheyAreSentInOrder)

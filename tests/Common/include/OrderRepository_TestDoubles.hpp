@@ -26,6 +26,7 @@ public:
   [[nodiscard]] std::vector<std::string> describeOrders() const override
   {
     std::vector<std::string> descriptions;
+    descriptions.reserve(m_SavedOrders.size());
     for (const auto &order : m_SavedOrders)
     {
       descriptions.push_back(order->getDescription());

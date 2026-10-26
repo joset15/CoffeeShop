@@ -4,8 +4,8 @@
 #include "Domain/Ingredients/Ingredients.hpp"
 #include "IBeverageBuilder.hpp"
 
-#include <list>
 #include <memory>
+#include <vector>
 
 namespace coffee_shop::domain
 {
@@ -25,22 +25,22 @@ public:
   /// @param ingredients The requested ingredients.
   /// @return False if there is no builder or an ingredient can't be added
   /// (e.g. water, lemon in cocoa, milk in a latte, or two kinds of milk).
-  bool buildBeverage(const std::list<Ingredient> &ingredients);
+  bool buildBeverage(const std::vector<Ingredient> &ingredients);
 
 private:
-  bool addSugar(const std::list<Ingredient> &ingredients);
+  bool addSugar(const std::vector<Ingredient> &ingredients);
 
-  bool addMilk(const std::list<Ingredient> &ingredients);
+  bool addMilk(const std::vector<Ingredient> &ingredients);
 
-  bool addHoney(const std::list<Ingredient> &ingredients);
+  bool addHoney(const std::vector<Ingredient> &ingredients);
 
-  bool addLemon(const std::list<Ingredient> &ingredients);
+  bool addLemon(const std::vector<Ingredient> &ingredients);
 
-  bool addWater(const std::list<Ingredient> &ingredients);
+  bool addWater(const std::vector<Ingredient> &ingredients);
 
-  static bool hasSeveralMilks(const std::list<Ingredient> &ingredients);
+  static bool hasSeveralMilks(const std::vector<Ingredient> &ingredients);
 
-  static bool find(const std::list<Ingredient> &ingredients,
+  static bool find(const std::vector<Ingredient> &ingredients,
                    Ingredient ingredient);
 
   std::shared_ptr<IBeverageBuilder> m_BeverageBuilder;

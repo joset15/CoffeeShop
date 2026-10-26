@@ -1,6 +1,6 @@
 #include "../include/ConsoleMenu_TestFixtures.hpp"
 
-#include <list>
+#include <vector>
 
 namespace coffee_shop::infrastructure::ui
 {
@@ -82,8 +82,8 @@ TEST_F(GivenAConsoleMenu, WhenIngredientNumbersAreEnteredThenThoseAreReturned)
 
   // Assert
   ASSERT_EQ(ingredients,
-            (std::list<domain::Ingredient>{domain::Ingredient::Sugar,
-                                           domain::Ingredient::Milk}));
+            (std::vector<domain::Ingredient>{domain::Ingredient::Sugar,
+                                             domain::Ingredient::Milk}));
 }
 
 TEST_F(GivenAConsoleMenu, WhenEmptyLineIsEnteredThenNoIngredientsAreReturned)
@@ -110,6 +110,6 @@ TEST_F(GivenAConsoleMenu, WhenInvalidIngredientIsEnteredThenItAsksAgain)
 
   // Assert
   ASSERT_EQ(ingredients,
-            (std::list<domain::Ingredient>{domain::Ingredient::Lemon}));
+            (std::vector<domain::Ingredient>{domain::Ingredient::Lemon}));
 }
 } // namespace coffee_shop::infrastructure::ui

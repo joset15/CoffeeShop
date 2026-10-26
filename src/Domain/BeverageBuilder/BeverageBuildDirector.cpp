@@ -5,7 +5,7 @@
 namespace coffee_shop::domain
 {
 bool BeverageBuildDirector::buildBeverage(
-    const std::list<Ingredient> &ingredients)
+    const std::vector<Ingredient> &ingredients)
 {
   if (!m_BeverageBuilder || hasSeveralMilks(ingredients))
   {
@@ -19,7 +19,7 @@ bool BeverageBuildDirector::buildBeverage(
 }
 
 bool BeverageBuildDirector::hasSeveralMilks(
-    const std::list<Ingredient> &ingredients)
+    const std::vector<Ingredient> &ingredients)
 {
   const int kindsOfMilk =
       static_cast<int>(find(ingredients, Ingredient::Milk)) +
@@ -28,14 +28,14 @@ bool BeverageBuildDirector::hasSeveralMilks(
   return kindsOfMilk > 1;
 }
 
-bool BeverageBuildDirector::find(const std::list<Ingredient> &ingredients,
+bool BeverageBuildDirector::find(const std::vector<Ingredient> &ingredients,
                                  Ingredient ingredient)
 {
   return (std::find(ingredients.begin(), ingredients.end(), ingredient) !=
           ingredients.end());
 }
 
-bool BeverageBuildDirector::addSugar(const std::list<Ingredient> &ingredients)
+bool BeverageBuildDirector::addSugar(const std::vector<Ingredient> &ingredients)
 {
   if (find(ingredients, Ingredient::Sugar))
   {
@@ -45,7 +45,7 @@ bool BeverageBuildDirector::addSugar(const std::list<Ingredient> &ingredients)
   return true;
 }
 
-bool BeverageBuildDirector::addMilk(const std::list<Ingredient> &ingredients)
+bool BeverageBuildDirector::addMilk(const std::vector<Ingredient> &ingredients)
 {
   if (find(ingredients, Ingredient::Milk))
   {
@@ -65,7 +65,7 @@ bool BeverageBuildDirector::addMilk(const std::list<Ingredient> &ingredients)
   return true;
 }
 
-bool BeverageBuildDirector::addHoney(const std::list<Ingredient> &ingredients)
+bool BeverageBuildDirector::addHoney(const std::vector<Ingredient> &ingredients)
 {
   if (find(ingredients, Ingredient::Honey))
   {
@@ -75,7 +75,7 @@ bool BeverageBuildDirector::addHoney(const std::list<Ingredient> &ingredients)
   return true;
 }
 
-bool BeverageBuildDirector::addLemon(const std::list<Ingredient> &ingredients)
+bool BeverageBuildDirector::addLemon(const std::vector<Ingredient> &ingredients)
 {
   if (find(ingredients, Ingredient::Lemon))
   {
@@ -85,7 +85,7 @@ bool BeverageBuildDirector::addLemon(const std::list<Ingredient> &ingredients)
   return true;
 }
 
-bool BeverageBuildDirector::addWater(const std::list<Ingredient> &ingredients)
+bool BeverageBuildDirector::addWater(const std::vector<Ingredient> &ingredients)
 {
   if (find(ingredients, Ingredient::Water))
   {

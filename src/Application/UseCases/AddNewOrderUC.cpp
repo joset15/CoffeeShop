@@ -26,7 +26,7 @@ bool AddNewOrderUC::execute()
 
 bool AddNewOrderUC::addNewOrder(
     domain::BeverageVariety beverageVariety,
-    const std::list<domain::Ingredient> &ingredients)
+    const std::vector<domain::Ingredient> &ingredients)
 {
   auto director = std::make_unique<domain::BeverageBuildDirector>();
 

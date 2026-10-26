@@ -5,8 +5,8 @@
 #include "Domain/BeverageFactories/BeverageBuilderSimpleFactory.hpp"
 
 #include <gtest/gtest.h>
-#include <list>
 #include <memory>
+#include <vector>
 
 namespace coffee_shop::domain
 {
@@ -18,7 +18,7 @@ class GivenADirector : public ::testing::Test
 protected:
   /// @brief Builds a beverage the same way the "add new order" use case does.
   bool build(BeverageVariety beverageVariety,
-             const std::list<Ingredient> &ingredients)
+             const std::vector<Ingredient> &ingredients)
   {
     m_Builder =
         BeverageBuilderSimpleFactory::getInstance()->createBeverageBuilder(

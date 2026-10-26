@@ -9,8 +9,8 @@ INSTANTIATE_TEST_CASE_P(
     ::testing::Values(
         // clang-format off
 // Don't touch this!
-   std::make_tuple(std::list<Ingredient>{Ingredient::Sugar}, true, test_support::describe({CoffeeEspressoName, SugarName})),
-   std::make_tuple(std::list<Ingredient>{Ingredient::Lemon}, false, test_support::describe({CoffeeEspressoName}))
+   std::make_tuple(std::vector<Ingredient>{Ingredient::Sugar}, true, test_support::describe({CoffeeEspressoName, SugarName})),
+   std::make_tuple(std::vector<Ingredient>{Ingredient::Lemon}, false, test_support::describe({CoffeeEspressoName}))
    ));
 // clang-format on
 // Carry on formatting
@@ -20,7 +20,7 @@ TEST_P(GivenSomeIngredientsForCoffeeEspressoBuilder,
 {
   // AAA: Arrange, Act, Assert
   // Arrange
-  const std::list<Ingredient> ingredients = std::get<0>(GetParam());
+  const std::vector<Ingredient> ingredients = std::get<0>(GetParam());
   const bool isValidMix = std::get<1>(GetParam());
   const std::string beverageName = std::get<2>(GetParam());
 
