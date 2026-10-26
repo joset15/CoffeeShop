@@ -8,7 +8,7 @@ as Clean Architecture and uses classic GoF patterns:
 | Layer | Namespace | Headers | Sources | Notes |
 |---|---|---|---|---|
 | Domain | `coffee_shop::domain` | `include/Domain/` | `src/Domain/` | `Beverages` (`IBeverage`, `Coffee`, `Tea`, ...), `Ingredients` (decorators over `IBeverage`: `Sugar`, `Milk`, ...), `BeverageFactories` (singleton factories), `BeverageBuilder` (`IBeverageBuilder` interface, `BeverageBuilderBase` with the shared state, concrete builders, `BeverageBuildDirector`) |
-| Application | `coffee_shop::application` | `include/Application/UseCases/` | `src/Application/UseCases/` | Use cases (`AddNewOrderUC`, `ListOrdersUC`, `CancelExistingOrderUC` skeleton), their output ports (`IAddNewOrderOutputPort`, `IListOrdersOutputPort`) and `IOrderRepository` |
+| Application | `coffee_shop::application` | `include/Application/UseCases/` | `src/Application/UseCases/` | Use cases (`AddNewOrderUC`, `ListOrdersUC`), their output ports (`IAddNewOrderOutputPort`, `IListOrdersOutputPort`) and `IOrderRepository` |
 | InterfaceAdapters | `coffee_shop::interface_adapters` (`Gateways`: `...::gateways`) | `include/InterfaceAdapters/` | `src/InterfaceAdapters/` | `BeverageController`, `TextPresenter` (implements the output ports, writes text to a `std::ostream`), `OrderRepository`, `Gateways/OrderDiskDataSource` |
 | Infrastructure | `coffee_shop::infrastructure::ui` | `include/Infrastructure/UI/` | `src/Infrastructure/UI/` | `ConsoleMenu`: console menus that read the user's choices from a stream (library `ConsoleUi`, grouped in the `Infrastructure` interface target) |
 | App | global `main()` | n/a | `apps/ConsoleApp/main.cpp` | `CoffeeShopApp` executable: wires `ConsoleMenu`, `BeverageController`, `OrderRepository` and two `TextPresenter`s (screen and `orders.txt`) |
@@ -258,8 +258,6 @@ pre-commit run --all-files
 - `apps/ConsoleApp/main.cpp` uses MSVC-specific `_CrtSetDbgFlag` (CRT leak checking).
 - "Print list beverage orders" writes `orders.txt` in the **current working directory** (it
   replaces the previous file and shows the full path). The file is gitignored.
-- `CancelExistingOrderUC` is a compiled skeleton: `execute()` always returns `false` until
-  `IOrderRepository` gets a way to cancel orders.
 - An order the director can't fulfil completely is rejected, not partly served: see the rules
   table in "Beverages and ingredient rules". The menu then shows
   "Error: Order could not be added.".

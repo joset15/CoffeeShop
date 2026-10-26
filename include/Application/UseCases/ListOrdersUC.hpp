@@ -3,26 +3,22 @@
 
 #include "IListOrdersOutputPort.hpp"
 #include "IOrderRepository.hpp"
-#include "UseCase.hpp"
-
-#include <string>
 
 namespace coffee_shop::application
 {
 /// @brief Sends the current orders to its output port.
-class ListOrdersUC : public UseCase
+class ListOrdersUC
 {
 public:
   /// @brief Creates the use case.
-  /// @param name The name of the use case.
   /// @param orderRepository Where the orders are read from.
   /// @param outputPort Where the list of orders is sent.
-  ListOrdersUC(std::string name, const IOrderRepository &orderRepository,
+  ListOrdersUC(const IOrderRepository &orderRepository,
                IListOrdersOutputPort &outputPort);
 
   /// @brief Sends the descriptions of the orders to the output port.
   /// @return Always true.
-  bool execute() override;
+  bool execute();
 
 private:
   /// @brief Where the orders are read from (not owned, never null).

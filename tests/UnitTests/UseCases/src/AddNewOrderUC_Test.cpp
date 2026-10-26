@@ -10,8 +10,7 @@ TEST_F(GivenAnEspressoWithSugarOrder, WhenExecutedThenOrderIsSaved)
 {
   // AAA: Arrange, Act, Assert
   // Arrange
-  AddNewOrderUC addNewOrderUC("AddNewOrderUC", m_Request, m_OrderRepository,
-                              m_OutputPort);
+  AddNewOrderUC addNewOrderUC(m_Request, m_OrderRepository, m_OutputPort);
 
   // Act
   const bool success = addNewOrderUC.execute();
@@ -28,8 +27,7 @@ TEST_F(GivenAnEspressoWithLemonOrder, WhenExecutedThenNothingIsSaved)
 {
   // AAA: Arrange, Act, Assert
   // Arrange
-  AddNewOrderUC addNewOrderUC("AddNewOrderUC", m_Request, m_OrderRepository,
-                              m_OutputPort);
+  AddNewOrderUC addNewOrderUC(m_Request, m_OrderRepository, m_OutputPort);
 
   // Act
   const bool success = addNewOrderUC.execute();
@@ -43,8 +41,7 @@ TEST_F(GivenALatteOrder, WhenExecutedThenOrderIsSaved)
 {
   // AAA: Arrange, Act, Assert
   // Arrange
-  AddNewOrderUC addNewOrderUC("AddNewOrderUC", m_Request, m_OrderRepository,
-                              m_OutputPort);
+  AddNewOrderUC addNewOrderUC(m_Request, m_OrderRepository, m_OutputPort);
 
   // Act
   const bool success = addNewOrderUC.execute();
@@ -61,8 +58,7 @@ TEST_F(GivenACocoaWithMilkOrder, WhenExecutedThenOrderIsSaved)
 {
   // AAA: Arrange, Act, Assert
   // Arrange
-  AddNewOrderUC addNewOrderUC("AddNewOrderUC", m_Request, m_OrderRepository,
-                              m_OutputPort);
+  AddNewOrderUC addNewOrderUC(m_Request, m_OrderRepository, m_OutputPort);
 
   // Act
   const bool success = addNewOrderUC.execute();
@@ -78,8 +74,7 @@ TEST_F(GivenAnEspressoWithSugarOrder, WhenExecutedThenOrderAddedIsReported)
 {
   // AAA: Arrange, Act, Assert
   // Arrange
-  AddNewOrderUC addNewOrderUC("AddNewOrderUC", m_Request, m_OrderRepository,
-                              m_OutputPort);
+  AddNewOrderUC addNewOrderUC(m_Request, m_OrderRepository, m_OutputPort);
 
   // Act
   addNewOrderUC.execute();
@@ -95,8 +90,7 @@ TEST_F(GivenAnEspressoWithLemonOrder, WhenExecutedThenRejectionIsReported)
 {
   // AAA: Arrange, Act, Assert
   // Arrange
-  AddNewOrderUC addNewOrderUC("AddNewOrderUC", m_Request, m_OrderRepository,
-                              m_OutputPort);
+  AddNewOrderUC addNewOrderUC(m_Request, m_OrderRepository, m_OutputPort);
 
   // Act
   addNewOrderUC.execute();

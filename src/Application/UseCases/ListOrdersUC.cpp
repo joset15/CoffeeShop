@@ -1,14 +1,10 @@
 #include "Application/UseCases/ListOrdersUC.hpp"
 
-#include <utility>
-
 namespace coffee_shop::application
 {
-ListOrdersUC::ListOrdersUC(std::string name,
-                           const IOrderRepository &orderRepository,
+ListOrdersUC::ListOrdersUC(const IOrderRepository &orderRepository,
                            IListOrdersOutputPort &outputPort)
-    : UseCase(std::move(name)), m_OrderRepository(&orderRepository),
-      m_OutputPort(&outputPort)
+    : m_OrderRepository(&orderRepository), m_OutputPort(&outputPort)
 {
 }
 

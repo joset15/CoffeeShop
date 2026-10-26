@@ -1,8 +1,6 @@
 #ifndef NEW_ORDER_REQ_HPP
 #define NEW_ORDER_REQ_HPP
 
-#include "IRequest.hpp"
-
 #include "Domain/Beverages/BeverageVariety.hpp"
 #include "Domain/Ingredients/Ingredients.hpp"
 
@@ -11,7 +9,7 @@
 namespace coffee_shop::application
 {
 /// @brief The data of a "new order" request: one beverage and its ingredients.
-struct NewOrderReq : IRequest
+struct NewOrderReq
 {
 public:
   NewOrderReq() = delete;

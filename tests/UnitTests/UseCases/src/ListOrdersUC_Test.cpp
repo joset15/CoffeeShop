@@ -14,7 +14,7 @@ TEST_F(GivenAnOrderRepository, WhenThereAreNoOrdersThenAnEmptyListIsSent)
 {
   // AAA: Arrange, Act, Assert
   // Arrange
-  ListOrdersUC listOrdersUC("ListOrdersUC", m_OrderRepository, m_OutputPort);
+  ListOrdersUC listOrdersUC(m_OrderRepository, m_OutputPort);
 
   // Act
   const bool success = listOrdersUC.execute();
@@ -31,7 +31,7 @@ TEST_F(GivenAnOrderRepository, WhenThereAreOrdersThenTheyAreSentInOrder)
   m_OrderRepository.save(
       std::make_unique<domain::Sugar>(std::make_unique<domain::CoffeeLatte>()));
   m_OrderRepository.save(std::make_unique<domain::Cocoa>());
-  ListOrdersUC listOrdersUC("ListOrdersUC", m_OrderRepository, m_OutputPort);
+  ListOrdersUC listOrdersUC(m_OrderRepository, m_OutputPort);
 
   // Act
   listOrdersUC.execute();
