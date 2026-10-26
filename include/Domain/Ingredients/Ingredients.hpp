@@ -22,8 +22,7 @@ enum class Ingredient : std::uint8_t
   Honey,
   Lemon,
   SoyMilk,
-  Water,
-  LastIngredient
+  Water
 };
 } // namespace coffee_shop::domain
 

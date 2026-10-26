@@ -1,5 +1,4 @@
 #include "Domain/BeverageFactories/IngredientFactory.hpp"
-#include <cassert>
 #include <utility>
 
 namespace coffee_shop::domain
@@ -32,9 +31,6 @@ IngredientFactory::createIngredient(Ingredient ingredient,
     break;
   case Ingredient::Water:
     newIngredient = std::make_unique<Water>(std::move(beverage));
-    break;
-  default:
-    assert(false && "Unexpected beverageType");
     break;
   }
 

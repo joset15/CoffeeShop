@@ -2,7 +2,6 @@
 #include "Domain/BeverageFactories/BeverageFactory.hpp"
 #include "Domain/BeverageFactories/IngredientFactory.hpp"
 
-#include <cassert>
 
 namespace coffee_shop::domain
 {
@@ -37,9 +36,6 @@ BeverageBuilderSimpleFactory::createBeverageBuilder(
   case BeverageVariety::Cocoa:
     newBeverageBuilder = std::make_shared<CocoaBuilder>(
         BeverageFactory::getInstance(), IngredientFactory::getInstance());
-    break;
-  default:
-    assert(false && "Unexpected beverageType");
     break;
   }
 

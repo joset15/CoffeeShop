@@ -20,8 +20,7 @@ enum class BeverageVariety : std::uint8_t
   CoffeeDecaf,
   TeaBlack,
   TeaGreen,
-  Cocoa,
-  // LastVariety
+  Cocoa
 };
 } // namespace coffee_shop::domain
 
