@@ -1,10 +1,10 @@
 #ifndef BEVERAGE_BUILDER_SIMPLE_FACTORY_HPP
 #define BEVERAGE_BUILDER_SIMPLE_FACTORY_HPP
 
-#include "../Beverages/BeverageVariety.hpp"
-#include "IBeverageBuilderFactory.hpp"
-#include "IBeverageFactory.hpp"
-#include "IIngredientFactory.hpp"
+#include "Domain/BeverageFactories/IBeverageBuilderFactory.hpp"
+#include "Domain/BeverageFactories/IBeverageFactory.hpp"
+#include "Domain/BeverageFactories/IIngredientFactory.hpp"
+#include "Domain/Beverages/BeverageVariety.hpp"
 #include <memory>
 
 namespace coffee_shop::domain

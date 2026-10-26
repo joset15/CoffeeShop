@@ -1,5 +1,7 @@
 #include "../include/IngredientDecorator_TestFixtures.hpp"
+
 #include "BeverageDescription_TestHelpers.hpp"
+#include "Domain/Beverages/Coffee.hpp"
 #include "Domain/Ingredients/Milk.hpp"
 #include "Domain/Ingredients/Sugar.hpp"
 

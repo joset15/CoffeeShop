@@ -1,5 +1,7 @@
 #include "../include/CocoaBuilder_TestFixtures.hpp"
 
+#include "Domain/Beverages/Cocoa.hpp"
+
 #include <string>
 
 namespace coffee_shop::domain

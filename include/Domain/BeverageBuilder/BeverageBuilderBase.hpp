@@ -1,7 +1,7 @@
 #ifndef BEVERAGE_BUILDER_BASE_HPP
 #define BEVERAGE_BUILDER_BASE_HPP
 
-#include "IBeverageBuilder.hpp"
+#include "Domain/BeverageBuilder/IBeverageBuilder.hpp"
 
 #include "Domain/BeverageFactories/IBeverageFactory.hpp"
 #include "Domain/BeverageFactories/IIngredientFactory.hpp"

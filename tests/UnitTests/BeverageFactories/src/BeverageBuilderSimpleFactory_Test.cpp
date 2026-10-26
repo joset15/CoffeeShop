@@ -1,5 +1,12 @@
 #include "../include/BeverageBuilderSimpleFactory_TestFixtures.hpp"
 
+#include "Domain/Beverages/Cocoa.hpp"
+#include "Domain/Beverages/CoffeeDecaf.hpp"
+#include "Domain/Beverages/CoffeeEspresso.hpp"
+#include "Domain/Beverages/CoffeeLatte.hpp"
+#include "Domain/Beverages/TeaBlack.hpp"
+#include "Domain/Beverages/TeaGreen.hpp"
+
 #include <memory>
 
 namespace coffee_shop::domain

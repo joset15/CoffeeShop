@@ -1,4 +1,11 @@
 #include "Domain/BeverageFactories/IngredientFactory.hpp"
+#include "Domain/Ingredients/Cream.hpp"
+#include "Domain/Ingredients/Honey.hpp"
+#include "Domain/Ingredients/Lemon.hpp"
+#include "Domain/Ingredients/Milk.hpp"
+#include "Domain/Ingredients/SoyMilk.hpp"
+#include "Domain/Ingredients/Sugar.hpp"
+#include "Domain/Ingredients/Water.hpp"
 #include <utility>
 
 namespace coffee_shop::domain

@@ -1,8 +1,8 @@
 #ifndef BEVERAGE_BUILD_DIRECTOR_HPP
 #define BEVERAGE_BUILD_DIRECTOR_HPP
 
-#include "Domain/Ingredients/Ingredients.hpp"
-#include "IBeverageBuilder.hpp"
+#include "Domain/BeverageBuilder/IBeverageBuilder.hpp"
+#include "Domain/Ingredients/Ingredient.hpp"
 
 #include <vector>
 

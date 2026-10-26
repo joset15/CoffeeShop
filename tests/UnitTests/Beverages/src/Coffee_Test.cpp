@@ -1,4 +1,6 @@
 #include "../include/Coffee_TestFixtures.hpp"
+
+#include "Domain/Beverages/Coffee.hpp"
 #include <string>
 
 namespace coffee_shop::domain

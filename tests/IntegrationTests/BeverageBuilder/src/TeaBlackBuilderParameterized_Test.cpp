@@ -1,5 +1,10 @@
 #include "../include/TeaBlackBuilderParameterized_TestFixtures.hpp"
+
 #include "BeverageDescription_TestHelpers.hpp"
+#include "Domain/Beverages/TeaBlack.hpp"
+#include "Domain/Ingredients/Lemon.hpp"
+#include "Domain/Ingredients/Milk.hpp"
+#include "Domain/Ingredients/Sugar.hpp"
 #include <string>
 
 namespace coffee_shop::domain

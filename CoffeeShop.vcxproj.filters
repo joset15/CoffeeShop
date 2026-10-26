@@ -42,9 +42,6 @@
     <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuildDirector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuilder.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Domain\BeverageBuilder\CocoaBuilder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -84,7 +81,7 @@
     <ClInclude Include="include\Domain\Ingredients\IngredientDecorator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Domain\Ingredients\Ingredients.hpp">
+    <ClInclude Include="include\Domain\Ingredients\Ingredient.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Domain\Ingredients\Lemon.hpp">

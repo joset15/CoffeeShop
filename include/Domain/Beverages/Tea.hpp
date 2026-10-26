@@ -1,7 +1,7 @@
 #ifndef TEA_HPP
 #define TEA_HPP
 
-#include "IBeverage.hpp"
+#include "Domain/Beverages/IBeverage.hpp"
 
 #include <string>
 #include <string_view>

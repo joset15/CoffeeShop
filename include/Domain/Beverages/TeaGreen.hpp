@@ -1,7 +1,7 @@
 #ifndef TEA_GREEN_HPP
 #define TEA_GREEN_HPP
 
-#include "Tea.hpp"
+#include "Domain/Beverages/Tea.hpp"
 
 #include <string>
 #include <string_view>

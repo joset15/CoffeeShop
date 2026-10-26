@@ -1,7 +1,7 @@
 #ifndef CREAM_HPP
 #define CREAM_HPP
 
-#include "IngredientDecorator.hpp"
+#include "Domain/Ingredients/IngredientDecorator.hpp"
 
 #include <string>
 #include <string_view>

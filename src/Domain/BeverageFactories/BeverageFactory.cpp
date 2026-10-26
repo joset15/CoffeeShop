@@ -1,4 +1,10 @@
 #include "Domain/BeverageFactories/BeverageFactory.hpp"
+#include "Domain/Beverages/Cocoa.hpp"
+#include "Domain/Beverages/CoffeeDecaf.hpp"
+#include "Domain/Beverages/CoffeeEspresso.hpp"
+#include "Domain/Beverages/CoffeeLatte.hpp"
+#include "Domain/Beverages/TeaBlack.hpp"
+#include "Domain/Beverages/TeaGreen.hpp"
 
 namespace coffee_shop::domain
 {
