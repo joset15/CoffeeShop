@@ -151,13 +151,27 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 - clang-format (`.clang-format`): 2-space indent, **Allman braces**, 80 columns, `PointerAlignment: Right`
   (`const std::shared_ptr<IBeverage> &beverage`), sorted includes.
 - clang-tidy checks (`.clang-tidy`): `clang-diagnostic-*`, `clang-analyzer-*`, `cppcoreguidelines-*`,
-  `modernize-*` (except `modernize-use-trailing-return-type`), `readability-identifier-naming`,
-  `llvm-namespace-comment` and `google-build-using-namespace`.
+  `modernize-*` (except `modernize-use-trailing-return-type`), `readability-*` (including
+  `readability-identifier-naming`), `bugprone-*`, `performance-*`, `misc-const-correctness`,
+  `llvm-namespace-comment` and `google-build-using-namespace`. If a check turns out to be noise,
+  disable it in `Checks` with a comment that says why, rather than adding `NOLINT`s.
   Project choices: interfaces may declare only `virtual ~X() = default;` (`AllowSoleDefaultDtor`);
   `tests/.clang-tidy` inherits everything but allows `protected` members in GoogleTest fixtures.
   In practice: `override` (not `virtual`) on overrides, `[[nodiscard]]` on `const` getters,
   `= default`/`= delete` instead of empty bodies, and no `protected`, `const` or reference data
   members (store an injected dependency as a private pointer set from a reference).
+  Also:
+  - Local variables that never change are `const`, written on the left (`const bool built = ...`).
+    `clang-tidy --fix` puts it on the right (`bool const`), so move it after using `--fix`.
+  - Use `std::vector` for sequences (e.g. the ingredient list); `std::list` needs a reason.
+  - Give enums a small underlying type: `enum class Ingredient : std::uint8_t`.
+  - A `switch` that covers every value of an enum has no `default`: then clang-tidy
+    (`clang-diagnostic-switch`, which breaks the build) and MSVC (C4062) report a missing `case`
+    when a value is added. Use `default` only when handling a few values on purpose.
+  - Use `if (init; condition)` when the variable is only needed inside the `if`, and
+    `[[maybe_unused]]` on a parameter an override doesn't need.
+  - No exception may escape `main()` (`bugprone-exception-escape`): it catches everything and
+    reports it with `std::fputs`, which can't throw (unlike `std::cerr`).
   To see findings without building: `clang-tidy -p "build/Windows x64 Debug" <file.cpp>`.
 - clang-tidy naming (`.clang-tidy`). It is enforced at build time:
   - Classes/structs: `CamelCase`. Interfaces are prefixed `I` (`IBeverage`, `IIngredientFactory`)
