@@ -1,8 +1,8 @@
 #ifndef LIST_ORDERS_UC_HPP
 #define LIST_ORDERS_UC_HPP
 
-#include "IListOrdersOutputPort.hpp"
-#include "IOrderRepository.hpp"
+#include "Application/UseCases/IListOrdersOutputPort.hpp"
+#include "Application/UseCases/IOrderRepository.hpp"
 
 namespace coffee_shop::application
 {

@@ -1,5 +1,10 @@
 #include "InterfaceAdapters/TextPresenter.hpp"
 
+#include <ostream>
+#include <string>
+#include <string_view>
+#include <vector>
+
 namespace coffee_shop::interface_adapters
 {
 TextPresenter::TextPresenter(std::ostream &output) : m_Output(&output) {}

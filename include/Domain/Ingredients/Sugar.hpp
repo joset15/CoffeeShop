@@ -1,7 +1,7 @@
 #ifndef SUGAR_HPP
 #define SUGAR_HPP
 
-#include "IngredientDecorator.hpp"
+#include "Domain/Ingredients/IngredientDecorator.hpp"
 
 #include <string>
 #include <string_view>

@@ -2,7 +2,7 @@
 #define NEW_ORDER_REQ_HPP
 
 #include "Domain/Beverages/BeverageVariety.hpp"
-#include "Domain/Ingredients/Ingredients.hpp"
+#include "Domain/Ingredients/Ingredient.hpp"
 
 #include <vector>
 

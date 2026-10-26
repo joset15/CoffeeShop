@@ -1,8 +1,8 @@
 #ifndef COFFEE_ESPRESSO_BUILDER_HPP
 #define COFFEE_ESPRESSO_BUILDER_HPP
 
-#include "CoffeeBuilder.hpp"
-#include "IBeverageBuilder.hpp"
+#include "Domain/BeverageBuilder/CoffeeBuilder.hpp"
+#include "Domain/BeverageBuilder/IBeverageBuilder.hpp"
 
 namespace coffee_shop::domain
 {

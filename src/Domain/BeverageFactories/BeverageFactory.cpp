@@ -1,5 +1,16 @@
 #include "Domain/BeverageFactories/BeverageFactory.hpp"
 
+#include "Domain/Beverages/BeverageVariety.hpp"
+#include "Domain/Beverages/Cocoa.hpp"
+#include "Domain/Beverages/CoffeeDecaf.hpp"
+#include "Domain/Beverages/CoffeeEspresso.hpp"
+#include "Domain/Beverages/CoffeeLatte.hpp"
+#include "Domain/Beverages/IBeverage.hpp"
+#include "Domain/Beverages/TeaBlack.hpp"
+#include "Domain/Beverages/TeaGreen.hpp"
+
+#include <memory>
+
 namespace coffee_shop::domain
 {
 std::unique_ptr<IBeverage>

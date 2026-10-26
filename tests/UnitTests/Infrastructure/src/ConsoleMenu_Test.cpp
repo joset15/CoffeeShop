@@ -1,5 +1,12 @@
 #include "../include/ConsoleMenu_TestFixtures.hpp"
 
+#include "Domain/Beverages/BeverageVariety.hpp"
+#include "Domain/Ingredients/Ingredient.hpp"
+
+#include "Infrastructure/UI/ConsoleMenu.hpp"
+
+#include <gtest/gtest.h>
+
 #include <vector>
 
 namespace coffee_shop::infrastructure::ui

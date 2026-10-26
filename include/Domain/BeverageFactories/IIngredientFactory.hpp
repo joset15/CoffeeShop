@@ -1,7 +1,9 @@
 #ifndef IINGREDIENT_FACTORY_HPP
 #define IINGREDIENT_FACTORY_HPP
 
-#include "Domain/Ingredients/Ingredients.hpp"
+#include "Domain/Beverages/IBeverage.hpp"
+#include "Domain/Ingredients/Ingredient.hpp"
+
 #include <memory>
 
 namespace coffee_shop::domain

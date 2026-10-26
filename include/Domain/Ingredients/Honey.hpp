@@ -1,7 +1,7 @@
 #ifndef HONEY_HPP
 #define HONEY_HPP
 
-#include "IngredientDecorator.hpp"
+#include "Domain/Ingredients/IngredientDecorator.hpp"
 
 #include <string>
 #include <string_view>

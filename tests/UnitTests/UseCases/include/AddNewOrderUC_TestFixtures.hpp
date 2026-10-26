@@ -1,12 +1,12 @@
 #ifndef ADD_NEW_ORDER_UC_TESTFIXTURES_HPP
 #define ADD_NEW_ORDER_UC_TESTFIXTURES_HPP
 
+#include "Application/UseCases/AddNewOrderUC.hpp"
+#include "Application/UseCases/NewOrderReq.hpp"
+
 #include "DomainFactories_TestHelpers.hpp"
 #include "OrderRepository_TestDoubles.hpp"
 #include "OutputPort_TestDoubles.hpp"
-
-#include "Application/UseCases/AddNewOrderUC.hpp"
-#include "Application/UseCases/NewOrderReq.hpp"
 
 #include <gtest/gtest.h>
 

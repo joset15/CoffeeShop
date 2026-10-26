@@ -1,11 +1,12 @@
 #ifndef BEVERAGE_CONTROLLER_HPP
 #define BEVERAGE_CONTROLLER_HPP
 
+#include "Domain/BeverageFactories/IBeverageBuilderFactory.hpp"
+
 #include "Application/UseCases/IAddNewOrderOutputPort.hpp"
 #include "Application/UseCases/IListOrdersOutputPort.hpp"
 #include "Application/UseCases/IOrderRepository.hpp"
 #include "Application/UseCases/NewOrderReq.hpp"
-#include "Domain/BeverageFactories/IBeverageBuilderFactory.hpp"
 
 namespace coffee_shop::interface_adapters
 {

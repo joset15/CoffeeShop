@@ -135,6 +135,11 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 - Layout (mirrors the domain folders):
   - `tests/UnitTests/<Area>/src/<Class>_Test.cpp` and `tests/UnitTests/<Area>/include/<Class>_TestFixtures.hpp`
   - `tests/IntegrationTests/<Area>/src/...` and `.../include/...` (parameterized tests use `*Parameterized_Test.cpp`)
+  - A test includes its fixture with a relative path, `#include "../include/<Class>_TestFixtures.hpp"`:
+    the `<Area>/include` folders are not on the include path. This is the only relative include.
+  - Where test code goes: a fixture, or a double/mock used only by one area's tests, goes in that
+    area's `include/`; a helper or double used by several areas goes in `tests/Common/include`
+    (`test_support`, see below).
 - **New test files must be added by hand** to `SOURCES` in `tests/UnitTests/CMakeLists.txt` or
   `tests/IntegrationTests/CMakeLists.txt`. There is no globbing. If the test needs another library,
   add it to `target_link_libraries`.
@@ -167,11 +172,13 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 ## Code style
 
 - clang-format (`.clang-format`): 2-space indent, **Allman braces**, 80 columns, `PointerAlignment: Right`
-  (`const std::shared_ptr<IBeverage> &beverage`), sorted includes.
+  (`const std::shared_ptr<IBeverage> &beverage`), and includes regrouped into blocks (see
+  "Includes" below). The whole tree is formatted: `clang-format -i` on any file should change
+  only what you changed.
 - clang-tidy checks (`.clang-tidy`): `clang-diagnostic-*`, `clang-analyzer-*`, `cppcoreguidelines-*`,
   `modernize-*` (except `modernize-use-trailing-return-type`), `readability-*` (including
   `readability-identifier-naming`), `bugprone-*`, `performance-*`, `misc-const-correctness`,
-  `llvm-namespace-comment` and `google-build-using-namespace`. If a check turns out to be noise,
+  `misc-include-cleaner`, `llvm-namespace-comment` and `google-build-using-namespace`. If a check turns out to be noise,
   disable it in `Checks` with a comment that says why, rather than adding `NOLINT`s.
   Project choices: interfaces may declare only `virtual ~X() = default;` (`AllowSoleDefaultDtor`);
   `tests/.clang-tidy` inherits everything but allows `protected` members in GoogleTest fixtures.
@@ -214,8 +221,21 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
     (see `main.cpp`) or a namespace alias. Never put either in a header.
 - Headers are `.hpp`, sources `.cpp`. Use only `#ifndef NAME_HPP` / `#define NAME_HPP` include
   guards (no `#pragma once`, see C++ Core Guidelines SF.8), with a unique name and
-  `#endif // NAME_HPP` at the end. Include project headers relative to `include/`, e.g.
-  `#include "Domain/Ingredients/Sugar.hpp"`.
+  `#endif // NAME_HPP` at the end.
+- Includes:
+  - Write project includes from `include/`, e.g. `#include "Domain/Ingredients/Sugar.hpp"`, also
+    between headers of the same folder (exception: test fixtures, see "Testing").
+  - Include what you use (`misc-include-cleaner`, which breaks the build): every `.cpp` includes the
+    header of each symbol it uses, even if its own `.hpp` already includes it. The check only looks
+    at `.cpp` files, so keep headers just as tidy by hand. It ignores `pch.h`.
+  - No umbrella headers that only include others: an enum header holds only the enum
+    (`BeverageVariety.hpp`, `Ingredient.hpp`), and the code that needs a concrete class includes it.
+  - GoogleTest 1.8.1 doesn't mark its internal headers, so parameterized tests include
+    `<gtest/gtest-param-test.h>` next to `<gtest/gtest.h>`. Drop it after upgrading GoogleTest.
+  - clang-format sorts includes into blocks separated by a blank line, from the most specific to
+    the most general: the file's own header, the test fixture, `Domain/`, `Application/`,
+    `InterfaceAdapters/`, `Infrastructure/` (one block per layer, so a dependency on an outer
+    layer stands out), test helpers from `tests/Common`, GoogleTest, then standard/system headers.
 - Use Doxygen comments (`/// @brief`, `/// @param`, `/// @return`) on public APIs. Don't leave
   them empty: say what the function does, what it returns and when it fails.
 - Don't keep commented-out code (git history has it). A `TODO:` comment says, in English, what is

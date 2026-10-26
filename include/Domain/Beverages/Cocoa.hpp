@@ -1,7 +1,8 @@
 #ifndef COCOA_HPP
 #define COCOA_HPP
 
-#include "IBeverage.hpp"
+#include "Domain/Beverages/IBeverage.hpp"
+
 #include <string>
 #include <string_view>
 

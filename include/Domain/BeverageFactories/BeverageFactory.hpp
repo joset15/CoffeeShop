@@ -1,8 +1,9 @@
 #ifndef BEVERAGE_FACTORY_HPP
 #define BEVERAGE_FACTORY_HPP
 
-#include "../Beverages/BeverageVariety.hpp"
-#include "IBeverageFactory.hpp"
+#include "Domain/BeverageFactories/IBeverageFactory.hpp"
+#include "Domain/Beverages/BeverageVariety.hpp"
+
 #include <memory>
 
 namespace coffee_shop::domain

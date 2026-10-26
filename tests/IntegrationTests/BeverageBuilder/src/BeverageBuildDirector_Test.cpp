@@ -1,7 +1,20 @@
 #include "../include/BeverageBuildDirector_TestFixtures.hpp"
+
+#include "Domain/Beverages/BeverageVariety.hpp"
+#include "Domain/Beverages/Cocoa.hpp"
+#include "Domain/Beverages/CoffeeDecaf.hpp"
+#include "Domain/Beverages/CoffeeLatte.hpp"
+#include "Domain/Beverages/TeaGreen.hpp"
+#include "Domain/Ingredients/Honey.hpp"
+#include "Domain/Ingredients/Ingredient.hpp"
+#include "Domain/Ingredients/Lemon.hpp"
+#include "Domain/Ingredients/Milk.hpp"
+#include "Domain/Ingredients/SoyMilk.hpp"
+#include "Domain/Ingredients/Sugar.hpp"
+
 #include "BeverageDescription_TestHelpers.hpp"
 
-#include <string>
+#include <gtest/gtest.h>
 
 namespace coffee_shop::domain
 {

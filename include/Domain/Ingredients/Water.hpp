@@ -1,7 +1,7 @@
 #ifndef WATER_HPP
 #define WATER_HPP
 
-#include "IngredientDecorator.hpp"
+#include "Domain/Ingredients/IngredientDecorator.hpp"
 
 #include <string>
 #include <string_view>

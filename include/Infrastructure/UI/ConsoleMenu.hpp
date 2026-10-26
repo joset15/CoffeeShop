@@ -2,7 +2,7 @@
 #define CONSOLE_MENU_HPP
 
 #include "Domain/Beverages/BeverageVariety.hpp"
-#include "Domain/Ingredients/Ingredients.hpp"
+#include "Domain/Ingredients/Ingredient.hpp"
 
 #include <cstdint>
 #include <istream>

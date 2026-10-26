@@ -1,5 +1,7 @@
 #include "Domain/BeverageBuilder/TeaBuilder.hpp"
 
+#include "Domain/Ingredients/Ingredient.hpp"
+
 namespace coffee_shop::domain
 {
 void TeaBuilder::resetImpl()

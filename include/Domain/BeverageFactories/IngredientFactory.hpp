@@ -1,7 +1,8 @@
 #ifndef INGREDIENT_FACTORY_HPP
 #define INGREDIENT_FACTORY_HPP
 
-#include "IIngredientFactory.hpp"
+#include "Domain/BeverageFactories/IIngredientFactory.hpp"
+
 #include <memory>
 
 namespace coffee_shop::domain

@@ -4,6 +4,7 @@
 #include "DomainFactories_TestHelpers.hpp"
 
 #include <gtest/gtest.h>
+
 #include <string_view>
 #include <tuple>
 

@@ -1,7 +1,8 @@
 #ifndef COFFEE_LATTE_HPP
 #define COFFEE_LATTE_HPP
 
-#include "Coffee.hpp"
+#include "Domain/Beverages/Coffee.hpp"
+
 #include <string>
 #include <string_view>
 

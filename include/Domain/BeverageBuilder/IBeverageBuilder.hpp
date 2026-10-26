@@ -2,7 +2,7 @@
 #define IBEVERAGE_BUILDER_HPP
 
 #include "Domain/Beverages/IBeverage.hpp"
-#include "Domain/Ingredients/Ingredients.hpp"
+#include "Domain/Ingredients/Ingredient.hpp"
 
 #include <memory>
 

@@ -1,6 +1,9 @@
 #include "Domain/BeverageBuilder/BeverageBuildDirector.hpp"
 
+#include "Domain/Ingredients/Ingredient.hpp"
+
 #include <algorithm>
+#include <vector>
 
 namespace coffee_shop::domain
 {

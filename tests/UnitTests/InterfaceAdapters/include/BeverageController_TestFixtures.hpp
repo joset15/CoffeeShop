@@ -1,12 +1,13 @@
 #ifndef BEVERAGE_CONTROLLER_TESTFIXTURES_HPP
 #define BEVERAGE_CONTROLLER_TESTFIXTURES_HPP
 
+#include "Application/UseCases/NewOrderReq.hpp"
+
+#include "InterfaceAdapters/BeverageController.hpp"
+
 #include "DomainFactories_TestHelpers.hpp"
 #include "OrderRepository_TestDoubles.hpp"
 #include "OutputPort_TestDoubles.hpp"
-
-#include "Application/UseCases/NewOrderReq.hpp"
-#include "InterfaceAdapters/BeverageController.hpp"
 
 #include <gtest/gtest.h>
 

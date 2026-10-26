@@ -1,10 +1,10 @@
 #ifndef LIST_ORDERS_UC_TESTFIXTURES_HPP
 #define LIST_ORDERS_UC_TESTFIXTURES_HPP
 
+#include "Application/UseCases/ListOrdersUC.hpp"
+
 #include "OrderRepository_TestDoubles.hpp"
 #include "OutputPort_TestDoubles.hpp"
-
-#include "Application/UseCases/ListOrdersUC.hpp"
 
 #include <gtest/gtest.h>
 

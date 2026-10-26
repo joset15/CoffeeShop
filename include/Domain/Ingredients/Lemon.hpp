@@ -1,7 +1,7 @@
 #ifndef LEMON_HPP
 #define LEMON_HPP
 
-#include "IngredientDecorator.hpp"
+#include "Domain/Ingredients/IngredientDecorator.hpp"
 
 #include <string>
 #include <string_view>

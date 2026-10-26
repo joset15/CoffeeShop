@@ -4,6 +4,7 @@
 #include "Infrastructure/UI/ConsoleMenu.hpp"
 
 #include <gtest/gtest.h>
+
 #include <sstream>
 #include <string>
 

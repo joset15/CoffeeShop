@@ -4,6 +4,7 @@
 #include "InterfaceAdapters/TextPresenter.hpp"
 
 #include <gtest/gtest.h>
+
 #include <sstream>
 
 namespace coffee_shop::interface_adapters

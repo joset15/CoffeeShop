@@ -1,7 +1,7 @@
 #ifndef TEA_BLACK_BUILDER_HPP
 #define TEA_BLACK_BUILDER_HPP
 
-#include "TeaBuilder.hpp"
+#include "Domain/BeverageBuilder/TeaBuilder.hpp"
 
 namespace coffee_shop::domain
 {

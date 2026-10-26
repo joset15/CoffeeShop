@@ -1,7 +1,7 @@
 #ifndef COFFEE_DECAF_BUILDER_HPP
 #define COFFEE_DECAF_BUILDER_HPP
 
-#include "CoffeeBuilder.hpp"
+#include "Domain/BeverageBuilder/CoffeeBuilder.hpp"
 
 namespace coffee_shop::domain
 {

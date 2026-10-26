@@ -4,6 +4,10 @@
 #include "Domain/Beverages/CoffeeLatte.hpp"
 #include "Domain/Ingredients/Sugar.hpp"
 
+#include "Application/UseCases/ListOrdersUC.hpp"
+
+#include <gtest/gtest.h>
+
 #include <memory>
 #include <string>
 #include <vector>

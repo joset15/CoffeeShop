@@ -1,6 +1,11 @@
 #include "InterfaceAdapters/OrderRepository.hpp"
 
+#include "Domain/Beverages/IBeverage.hpp"
+
+#include <memory>
+#include <string>
 #include <utility>
+#include <vector>
 
 namespace coffee_shop::interface_adapters
 {

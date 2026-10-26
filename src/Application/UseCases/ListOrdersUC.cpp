@@ -1,5 +1,8 @@
 #include "Application/UseCases/ListOrdersUC.hpp"
 
+#include "Application/UseCases/IListOrdersOutputPort.hpp"
+#include "Application/UseCases/IOrderRepository.hpp"
+
 namespace coffee_shop::application
 {
 ListOrdersUC::ListOrdersUC(const IOrderRepository &orderRepository,

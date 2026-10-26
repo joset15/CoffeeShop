@@ -2,9 +2,11 @@
 #define BEVERAGE_BUILD_DIRECTOR_INTEGRATION_TESTFIXTURES_HPP
 
 #include "Domain/BeverageBuilder/BeverageBuildDirector.hpp"
+
 #include "DomainFactories_TestHelpers.hpp"
 
 #include <gtest/gtest.h>
+
 #include <memory>
 #include <vector>
 

@@ -1,8 +1,7 @@
 #ifndef BEVERAGE_BUILDER_BASE_HPP
 #define BEVERAGE_BUILDER_BASE_HPP
 
-#include "IBeverageBuilder.hpp"
-
+#include "Domain/BeverageBuilder/IBeverageBuilder.hpp"
 #include "Domain/BeverageFactories/IBeverageFactory.hpp"
 #include "Domain/BeverageFactories/IIngredientFactory.hpp"
 #include "Domain/Beverages/BeverageVariety.hpp"
@@ -49,8 +48,8 @@ protected:
   /// @param ingredient The ingredient to add.
   void decorateWith(Ingredient ingredient)
   {
-    m_Beverage =
-        m_IngredientFactory->createIngredient(ingredient, std::move(m_Beverage));
+    m_Beverage = m_IngredientFactory->createIngredient(ingredient,
+                                                       std::move(m_Beverage));
   }
 
 private:

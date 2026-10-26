@@ -7,6 +7,7 @@
 #include "DomainFactories_TestHelpers.hpp"
 
 #include <gtest/gtest.h>
+
 #include <memory>
 #include <tuple>
 #include <vector>

@@ -1,5 +1,7 @@
 #include "Domain/BeverageBuilder/CoffeeBuilder.hpp"
 
+#include "Domain/Ingredients/Ingredient.hpp"
+
 namespace coffee_shop::domain
 {
 void CoffeeBuilder::resetImpl() { m_HasMilk = false; }

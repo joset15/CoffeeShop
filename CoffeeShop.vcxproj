@@ -26,7 +26,6 @@
     <ClInclude Include="include\Application\UseCases\ListOrdersUC.hpp" />
     <ClInclude Include="include\Application\UseCases\NewOrderReq.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuildDirector.hpp" />
-    <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuilder.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\CocoaBuilder.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\CoffeeBuilder.hpp" />
     <ClInclude Include="include\Domain\BeverageBuilder\CoffeeDecafBuilder.hpp" />
@@ -56,7 +55,7 @@
     <ClInclude Include="include\Domain\Ingredients\Cream.hpp" />
     <ClInclude Include="include\Domain\Ingredients\Honey.hpp" />
     <ClInclude Include="include\Domain\Ingredients\IngredientDecorator.hpp" />
-    <ClInclude Include="include\Domain\Ingredients\Ingredients.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\Ingredient.hpp" />
     <ClInclude Include="include\Domain\Ingredients\Lemon.hpp" />
     <ClInclude Include="include\Domain\Ingredients\Milk.hpp" />
     <ClInclude Include="include\Domain\Ingredients\SoyMilk.hpp" />

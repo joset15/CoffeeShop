@@ -5,6 +5,7 @@
 #include "Domain/Beverages/IBeverage.hpp"
 
 #include <gtest/gtest.h>
+
 #include <memory>
 
 namespace coffee_shop::domain

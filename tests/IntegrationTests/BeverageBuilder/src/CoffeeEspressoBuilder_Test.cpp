@@ -1,6 +1,16 @@
 #include "../include/CoffeeEspressoBuilder_TestFixtures.hpp"
+
+#include "Domain/Beverages/CoffeeEspresso.hpp"
+#include "Domain/Ingredients/Ingredient.hpp"
+#include "Domain/Ingredients/Sugar.hpp"
+
 #include "BeverageDescription_TestHelpers.hpp"
+
+#include <gtest/gtest.h>
+
+#include <memory>
 #include <string>
+#include <vector>
 
 namespace coffee_shop::domain
 {
