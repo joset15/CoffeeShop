@@ -69,7 +69,7 @@ Names in descriptions come from `inline constexpr std::string_view` constants ne
 `IngredientDecorator::describeWith(XName)`, e.g. `"CoffeeEspresso, Sugar"`.
 
 The tools are CMake (≥3.25; the presets file uses format v9, which needs ≥3.30), Ninja, MSVC (Visual Studio 2022), Conan **1.x**
-(GoogleTest 1.8.1), clang-tidy, and pre-commit. `docs/README_development.md` shows the target folder
+(GoogleTest 1.14.0), clang-tidy, and pre-commit. `docs/README_development.md` shows the target folder
 layout. Of its `Infrastructure` folders only `UI` exists; others it lists (`Infrastructure/DB`,
 `libs`, `scripts`, ...) don't exist yet.
 
@@ -90,6 +90,9 @@ layout. Of its `Infrastructure` folders only `UI` exists; others it lists (`Infr
 - GoogleTest comes from Conan. CMake finds it through `build/generators/` (added to
   `CMAKE_MODULE_PATH`), so that folder must exist. To regenerate it (Conan 1.x, `cmake_layout`):
   `conan install . -s build_type=Debug --build=missing`
+  With Conan 1, ConanCenter offers GoogleTest up to 1.15.0; newer versions are only published for
+  Conan 2. The default Conan profile still says Visual Studio 16 (2019): its static gtest library
+  links fine with the VS 2022 build.
 - `ccache` is used automatically if it is on `PATH`. It can only cache MSVC builds with embedded
   debug info, so the CMake build uses `/Z7` (`CMAKE_MSVC_DEBUG_INFORMATION_FORMAT`) instead of
   `/Zi`; the linker still produces `.pdb` files. Check it with `ccache -s` (a second clean build
@@ -109,6 +112,10 @@ cmake --build "build/Windows x64 Debug"
   only Debug gtest packages, so Release needs another `conan install` with `-s build_type=Release`.
 - The `default` preset in `CMakeUserPresets.json` (from `build/generators/CMakePresets.json`)
   is a stale Conan preset (VS 2019 generator). Use the `Windows x64 *` presets instead.
+- Conan 1 rewrites `CMakeUserPresets.json` on every `conan install` while it has
+  `"vendor": { "conan": {} }`, and fails (`JSONDecodeError` in the `CMakeToolchain` generator)
+  if the file isn't strict JSON, e.g. has a `//` comment. Keep it strict JSON, or remove the
+  `vendor` entry if you edit the file by hand.
 - In-source builds are blocked.
 
 CMake options (top-level `CMakeLists.txt`):
@@ -130,8 +137,11 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 "build/Windows x64 Debug/Debug/bin/UnitTests.exe" --gtest_filter=GivenACoffee.*
 ```
 
-- Framework: GoogleTest 1.8.1, linked with `GTest::gtest_main` (no hand-written `main`).
-  Tests are registered with `gtest_discover_tests`.
+- Framework: GoogleTest 1.14.0, linked with `GTest::gtest_main` (no hand-written `main`).
+  Tests are registered with `gtest_discover_tests`. Parameterized tests use
+  `INSTANTIATE_TEST_SUITE_P`: the old `INSTANTIATE_TEST_CASE_P` is deprecated, and clang-tidy turns
+  the deprecation warning into a build error. The Conan package also builds GoogleMock
+  (`<gmock/gmock.h>`), which no test uses yet.
 - Layout (mirrors the domain folders):
   - `tests/UnitTests/<Area>/src/<Class>_Test.cpp` and `tests/UnitTests/<Area>/include/<Class>_TestFixtures.hpp`
   - `tests/IntegrationTests/<Area>/src/...` and `.../include/...` (parameterized tests use `*Parameterized_Test.cpp`)
@@ -230,8 +240,8 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
     at `.cpp` files, so keep headers just as tidy by hand. It ignores `pch.h`.
   - No umbrella headers that only include others: an enum header holds only the enum
     (`BeverageVariety.hpp`, `Ingredient.hpp`), and the code that needs a concrete class includes it.
-  - GoogleTest 1.8.1 doesn't mark its internal headers, so parameterized tests include
-    `<gtest/gtest-param-test.h>` next to `<gtest/gtest.h>`. Drop it after upgrading GoogleTest.
+  - Tests include only GoogleTest's public header, `<gtest/gtest.h>`. Its internal headers are
+    marked `IWYU pragma: private`, so `misc-include-cleaner` asks for `gtest.h` too.
   - clang-format sorts includes into blocks separated by a blank line, from the most specific to
     the most general: the file's own header, the test fixture, `Domain/`, `Application/`,
     `InterfaceAdapters/`, `Infrastructure/` (one block per layer, so a dependency on an outer
