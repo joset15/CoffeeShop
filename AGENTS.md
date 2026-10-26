@@ -7,11 +7,11 @@ as Clean Architecture and uses classic GoF patterns:
 
 | Layer | Namespace | Headers | Sources | Notes |
 |---|---|---|---|---|
-| Domain | `coffee_shop::domain` | `include/Domain/` | `src/Domain/` | `Beverages` (`IBeverage`, `Coffee`, `Tea`, ...), `Ingredients` (decorators over `IBeverage`: `Sugar`, `Milk`, ...), `BeverageFactories` (singleton factories), `BeverageBuilder` (`IBeverageBuilder` interface, `BeverageBuilderBase` with the shared state, concrete builders, `BeverageBuildDirector`) |
+| Domain | `coffee_shop::domain` | `include/Domain/` | `src/Domain/` | `Beverages` (`IBeverage`, `Coffee`, `Tea`, ...), `Ingredients` (decorators over `IBeverage`: `Sugar`, `Milk`, ...), `BeverageFactories` (`BeverageFactory`, `IngredientFactory`, `BeverageBuilderSimpleFactory`: plain classes, injected by reference), `BeverageBuilder` (`IBeverageBuilder` interface, `BeverageBuilderBase` with the shared state, concrete builders, `BeverageBuildDirector`) |
 | Application | `coffee_shop::application` | `include/Application/UseCases/` | `src/Application/UseCases/` | Use cases (`AddNewOrderUC`, `ListOrdersUC`), their output ports (`IAddNewOrderOutputPort`, `IListOrdersOutputPort`) and `IOrderRepository` |
 | InterfaceAdapters | `coffee_shop::interface_adapters` (`Gateways`: `...::gateways`) | `include/InterfaceAdapters/` | `src/InterfaceAdapters/` | `BeverageController`, `TextPresenter` (implements the output ports, writes text to a `std::ostream`), `OrderRepository`, `Gateways/OrderDiskDataSource` |
 | Infrastructure | `coffee_shop::infrastructure::ui` | `include/Infrastructure/UI/` | `src/Infrastructure/UI/` | `ConsoleMenu`: console menus that read the user's choices from a stream (library `ConsoleUi`, grouped in the `Infrastructure` interface target) |
-| App | global `main()` | n/a | `apps/ConsoleApp/main.cpp` | `CoffeeShopApp` executable: wires `ConsoleMenu`, `BeverageController`, `OrderRepository` and two `TextPresenter`s (screen and `orders.txt`) |
+| App | global `main()` | n/a | `apps/ConsoleApp/main.cpp` | `CoffeeShopApp` executable and composition root: creates and wires the factories, `OrderRepository`, `BeverageController`, `ConsoleMenu` and two `TextPresenter`s (screen and `orders.txt`) |
 
 Dependencies point inward: Domain must not include Application, InterfaceAdapters or Infrastructure
 headers. Infrastructure (UI) is the outermost layer; menu texts belong there, not in the Domain.
@@ -35,10 +35,25 @@ ConsoleMenu ──► BeverageController ──► use case ──► output por
   follows the dependency rule (outer layer → inner layer); add input ports only if a use case
   needs to be replaced or faked behind the controller.
 
+### Creating objects and ownership
+
+- No singletons or other global state. Every dependency is passed **by reference to the
+  constructor** and kept as a private pointer (see "Code style"). Classes depend on the
+  interface when there is one: `AddNewOrderUC` and `BeverageController` take a
+  `domain::IBeverageBuilderFactory &`, not `BeverageBuilderSimpleFactory`.
+- `main()` is the **composition root**: it creates the factories, the repository, the controller,
+  the menu and the presenters, and wires them together. They are local variables declared in
+  dependency order, so they are destroyed in reverse order and no object outlives what it
+  points to. A new dependency is created there and passed down; nothing below `main()` creates
+  its own collaborators.
+- `BeverageBuilderSimpleFactory::createBeverageBuilder()` returns a `std::unique_ptr`: the caller
+  (`AddNewOrderUC`) owns the builder. `BeverageBuildDirector` gets the builder by reference in
+  its constructor and only uses it while building, so a director always has a builder.
+
 ### Beverages and ingredient rules
 
 Each `BeverageVariety` has a builder, created by `BeverageBuilderSimpleFactory`.
-`BeverageBuildDirector::buildBeverage(ingredients)` adds the requested ingredients in a fixed order
+`BeverageBuildDirector(builder).buildBeverage(ingredients)` adds the requested ingredients in a fixed order
 (sugar, milk, honey, lemon, water) and returns `false` as soon as the builder refuses one, or if two
 kinds of milk (milk, soy milk, cream) are requested together. A refused ingredient rejects the order.
 
@@ -135,7 +150,10 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
   - `test_support::describe({CoffeeLatteName, SugarName})` builds an expected description
     (`BeverageDescription_TestHelpers.hpp`), because C++17 can't `+` two `std::string_view`s;
   - `FakeOrderRepository` (`OrderRepository_TestDoubles.hpp`) and `FakeAddNewOrderOutputPort` /
-    `FakeListOrdersOutputPort` (`OutputPort_TestDoubles.hpp`).
+    `FakeListOrdersOutputPort` (`OutputPort_TestDoubles.hpp`);
+  - `DomainFactories` (`DomainFactories_TestHelpers.hpp`): the three real factories wired as in
+    `main()`. Declare it before the members that use it, e.g.
+    `BeverageController m_BeverageController{m_Factories.m_BuilderFactory, m_OrderRepository};`.
 - `TextPresenter` tests write to a `std::ostringstream`.
 - `ConsoleMenu` takes a `std::istream`/`std::ostream`, so menu tests feed it a
   `std::istringstream` (see `tests/UnitTests/Infrastructure/`).
@@ -202,7 +220,9 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
   them empty: say what the function does, what it returns and when it fails.
 - Don't keep commented-out code (git history has it). A `TODO:` comment says, in English, what is
   missing and why.
-- Use smart pointers (`std::shared_ptr`/`std::make_shared`, `std::unique_ptr`). Don't use raw `new`/`delete`.
+- Use smart pointers, and prefer `std::unique_ptr` (`std::make_unique`): every object has one owner.
+  Use `std::shared_ptr` only when ownership is really shared (nothing needs it today). An object
+  that is only used, not owned, is passed by reference. Don't use raw `new`/`delete`.
 - `.editorconfig`: UTF-8, final newline, trim trailing whitespace, native line endings.
 - CMake files: 2-space indent, 100 columns, formatted by **gersemi** (`.gersemirc`) and linted by
   **cmake-lint** (`.cmakelintrc`). New targets follow the existing pattern: call
