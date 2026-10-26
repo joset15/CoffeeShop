@@ -183,8 +183,8 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 
 - clang-format (`.clang-format`): 2-space indent, **Allman braces**, 80 columns, `PointerAlignment: Right`
   (`const std::shared_ptr<IBeverage> &beverage`), and includes regrouped into blocks (see
-  "Includes" below). The whole tree is formatted: `clang-format -i` on any file should change
-  only what you changed.
+  "Includes" below). The whole tree is formatted, and the clang-format pre-commit hook keeps it so:
+  `clang-format -i` on any file should change only what you changed.
 - clang-tidy checks (`.clang-tidy`): `clang-diagnostic-*`, `clang-analyzer-*`, `cppcoreguidelines-*`,
   `modernize-*` (except `modernize-use-trailing-return-type`), `readability-*` (including
   `readability-identifier-naming`), `bugprone-*`, `performance-*`, `misc-const-correctness`,
@@ -278,10 +278,22 @@ pre-commit run --all-files
 
 - pre-commit is **run by hand** before committing. It is not installed as a git hook (don't run
   `pre-commit install`). The first run downloads the hook environments.
-- The hooks are standard hygiene checks (trailing whitespace, YAML/JSON validity,
-  `pretty-format-json --no-sort-keys`, large files, merge conflicts, mixed line endings,
-  Windows-illegal names), cmake-lint, and gersemi. Some hooks (trailing whitespace, gersemi)
-  fix files in place: review and stage those changes.
+- The hooks are standard hygiene checks (trailing whitespace, one final newline, YAML/JSON
+  validity, `pretty-format-json --no-sort-keys`, large files, merge conflicts, mixed line endings,
+  Windows-illegal names), cmake-lint, gersemi and clang-format.
+- Several hooks (trailing whitespace, `end-of-file-fixer`, mixed line endings, gersemi,
+  clang-format) **fix files in place and then report "Failed"**. Review the changes, `git add`
+  them and run pre-commit again: the second run must pass without changes.
+- What each hook skips:
+  - All hooks skip the legacy files outside the CMake build (the Qt project and the old VS
+    solution for the tests, listed in the global `exclude` of `.pre-commit-config.yaml`).
+  - `end-of-file-fixer` skips `.vcxproj`, `.filters` and `.cd`: Visual Studio saves them without
+    a final newline, so fixing them would only cause churn.
+  - clang-format only checks C/C++ files under `include/`, `src/`, `apps/` and `tests/` (by default
+    the hook would also format JSON).
+- The clang-format hook is pinned to `v19.1.5`, the version that ships with Visual Studio 2022
+  (`VC\Tools\Llvm`), so the editor and the hook format the same way. When Visual Studio updates
+  its clang-format, update the hook's `rev` too (the first run after a change downloads it).
 - `no-commit-to-branch` fails when the current branch is `main` or `staging`. Since the hooks are
   not installed, it only warns when you run them; it doesn't block the commit.
 - There is no clang-tidy hook on purpose: the build already runs clang-tidy with
