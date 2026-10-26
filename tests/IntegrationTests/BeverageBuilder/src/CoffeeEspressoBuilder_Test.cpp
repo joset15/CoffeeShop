@@ -14,8 +14,8 @@ TEST_F(GivenACoffeeEspressoBuilder,
   ingredients.push_back(Ingredient::Sugar);
 
   // Act
-  bool built = m_BeverageBuildDirector->buildBeverage(ingredients);
-  std::string coffeeWithSugar =
+  const bool built = m_BeverageBuildDirector->buildBeverage(ingredients);
+  const std::string coffeeWithSugar =
       m_CoffeeEspressoBuilder->takeBeverage()->getDescription();
 
   // Assert
@@ -33,7 +33,7 @@ TEST_F(GivenACoffeeEspressoBuilder, WhenBeverageIsTakenThenBuilderIsReset)
   m_CoffeeEspressoBuilder->takeBeverage();
 
   // Act
-  std::unique_ptr<IBeverage> secondBeverage =
+  const std::unique_ptr<IBeverage> secondBeverage =
       m_CoffeeEspressoBuilder->takeBeverage();
 
   // Assert

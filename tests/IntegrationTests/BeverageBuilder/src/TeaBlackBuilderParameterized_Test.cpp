@@ -21,15 +21,15 @@ TEST_P(GivenSomeIngredientsForTeaBlackBuilder,
 {
   // AAA: Arrange, Act, Assert
   // Arrange
-  std::list<Ingredient> ingredients = std::get<0>(GetParam());
-  bool isValidMix = std::get<1>(GetParam());
-  std::string beverageName = std::get<2>(GetParam());
+  const std::list<Ingredient> ingredients = std::get<0>(GetParam());
+  const bool isValidMix = std::get<1>(GetParam());
+  const std::string beverageName = std::get<2>(GetParam());
 
   // Act
-  bool buildSuccess = m_BeverageBuildDirector->buildBeverage(ingredients);
+  const bool buildSuccess = m_BeverageBuildDirector->buildBeverage(ingredients);
   EXPECT_EQ(buildSuccess, isValidMix);
 
-  std::string teaWithSomeIngredients =
+  const std::string teaWithSomeIngredients =
       m_TeaBlackBuilder->takeBeverage()->getDescription();
 
   // Assert

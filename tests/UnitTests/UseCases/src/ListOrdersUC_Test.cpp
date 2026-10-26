@@ -17,7 +17,7 @@ TEST_F(GivenAnOrderRepository, WhenThereAreNoOrdersThenAnEmptyListIsSent)
   ListOrdersUC listOrdersUC("ListOrdersUC", m_OrderRepository, m_OutputPort);
 
   // Act
-  bool success = listOrdersUC.execute();
+  const bool success = listOrdersUC.execute();
 
   // Assert
   ASSERT_TRUE(success);

@@ -30,7 +30,7 @@ bool AddNewOrderUC::addNewOrder(
 {
   auto director = std::make_unique<domain::BeverageBuildDirector>();
 
-  std::shared_ptr<domain::IBeverageBuilder> beverageBuilder =
+  const std::shared_ptr<domain::IBeverageBuilder> beverageBuilder =
       domain::BeverageBuilderSimpleFactory::getInstance()
           ->createBeverageBuilder(beverageVariety);
   if (!beverageBuilder)

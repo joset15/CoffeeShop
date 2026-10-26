@@ -8,7 +8,7 @@ TEST_F(GivenACocoaBuilder, WhenCreamIsAddedThenItIsRejected)
 {
   // AAA: Arrange, Act, Assert
   // Act
-  bool creamAdded = m_CocoaBuilder->addMilk(Ingredient::Cream);
+  const bool creamAdded = m_CocoaBuilder->addMilk(Ingredient::Cream);
 
   // Assert
   ASSERT_FALSE(creamAdded);
