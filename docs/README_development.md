@@ -84,4 +84,3 @@
 # System architecture
 
 ![Main Class Diagram](./images/MainClassDiagram.png)
-
