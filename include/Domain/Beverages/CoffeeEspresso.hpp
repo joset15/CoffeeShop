@@ -2,6 +2,7 @@
 #define COFFEE_ESPRESSO_HPP
 
 #include "Domain/Beverages/Coffee.hpp"
+
 #include <string>
 #include <string_view>
 

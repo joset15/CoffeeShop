@@ -1,4 +1,5 @@
 #include "InterfaceAdapters/TextPresenter.hpp"
+
 #include <ostream>
 #include <string>
 #include <string_view>

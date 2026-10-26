@@ -1,8 +1,6 @@
 #ifndef ADD_NEW_ORDER_UC_HPP
 #define ADD_NEW_ORDER_UC_HPP
 
-#include "Application/UseCases/NewOrderReq.hpp"
-
 #include "Domain/BeverageFactories/IBeverageBuilderFactory.hpp"
 #include "Domain/Beverages/BeverageVariety.hpp"
 #include "Domain/Beverages/IBeverage.hpp"
@@ -10,6 +8,7 @@
 
 #include "Application/UseCases/IAddNewOrderOutputPort.hpp"
 #include "Application/UseCases/IOrderRepository.hpp"
+#include "Application/UseCases/NewOrderReq.hpp"
 
 #include <utility>
 #include <vector>

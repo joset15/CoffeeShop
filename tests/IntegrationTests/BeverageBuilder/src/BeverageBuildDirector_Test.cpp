@@ -1,6 +1,5 @@
 #include "../include/BeverageBuildDirector_TestFixtures.hpp"
 
-#include "BeverageDescription_TestHelpers.hpp"
 #include "Domain/Beverages/BeverageVariety.hpp"
 #include "Domain/Beverages/Cocoa.hpp"
 #include "Domain/Beverages/CoffeeDecaf.hpp"
@@ -12,6 +11,8 @@
 #include "Domain/Ingredients/Milk.hpp"
 #include "Domain/Ingredients/SoyMilk.hpp"
 #include "Domain/Ingredients/Sugar.hpp"
+
+#include "BeverageDescription_TestHelpers.hpp"
 
 #include <gtest/gtest.h>
 

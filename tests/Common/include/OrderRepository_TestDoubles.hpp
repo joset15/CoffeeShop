@@ -1,8 +1,9 @@
 #ifndef ORDER_REPOSITORY_TESTDOUBLES_HPP
 #define ORDER_REPOSITORY_TESTDOUBLES_HPP
 
-#include "Application/UseCases/IOrderRepository.hpp"
 #include "Domain/Beverages/IBeverage.hpp"
+
+#include "Application/UseCases/IOrderRepository.hpp"
 
 #include <memory>
 #include <string>

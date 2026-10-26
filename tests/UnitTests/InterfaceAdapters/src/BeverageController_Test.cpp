@@ -1,10 +1,12 @@
 #include "../include/BeverageController_TestFixtures.hpp"
 
-#include "BeverageDescription_TestHelpers.hpp"
 #include "Domain/Beverages/CoffeeEspresso.hpp"
 #include "Domain/Ingredients/Sugar.hpp"
 
+#include "BeverageDescription_TestHelpers.hpp"
+
 #include <gtest/gtest.h>
+
 #include <string>
 #include <vector>
 

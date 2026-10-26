@@ -1,11 +1,13 @@
 #include "../include/Sugar_TestFixtures.hpp"
 
-#include "BeverageDescription_TestHelpers.hpp"
 #include "Domain/Beverages/Coffee.hpp"
 #include "Domain/Beverages/IBeverage.hpp"
 #include "Domain/Ingredients/Sugar.hpp"
 
+#include "BeverageDescription_TestHelpers.hpp"
+
 #include <gtest/gtest.h>
+
 #include <memory>
 #include <string>
 #include <utility>

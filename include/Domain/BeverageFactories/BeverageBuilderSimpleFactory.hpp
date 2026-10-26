@@ -5,6 +5,7 @@
 #include "Domain/BeverageFactories/IBeverageFactory.hpp"
 #include "Domain/BeverageFactories/IIngredientFactory.hpp"
 #include "Domain/Beverages/BeverageVariety.hpp"
+
 #include <memory>
 
 namespace coffee_shop::domain

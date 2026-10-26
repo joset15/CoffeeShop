@@ -1,4 +1,5 @@
 #include "Infrastructure/UI/ConsoleMenu.hpp"
+
 #include "Domain/Beverages/BeverageVariety.hpp"
 #include "Domain/Ingredients/Ingredient.hpp"
 

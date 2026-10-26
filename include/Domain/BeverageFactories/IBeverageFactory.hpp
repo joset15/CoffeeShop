@@ -3,6 +3,7 @@
 
 #include "Domain/Beverages/BeverageVariety.hpp"
 #include "Domain/Beverages/IBeverage.hpp"
+
 #include <memory>
 
 namespace coffee_shop::domain

@@ -4,6 +4,7 @@
 #include "Domain/Beverages/Coffee.hpp"
 
 #include <gtest/gtest.h>
+
 #include <memory>
 
 namespace coffee_shop::domain

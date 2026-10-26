@@ -1,4 +1,5 @@
 #include "Domain/BeverageFactories/IngredientFactory.hpp"
+
 #include "Domain/Beverages/IBeverage.hpp"
 #include "Domain/Ingredients/Cream.hpp"
 #include "Domain/Ingredients/Honey.hpp"
@@ -8,6 +9,7 @@
 #include "Domain/Ingredients/SoyMilk.hpp"
 #include "Domain/Ingredients/Sugar.hpp"
 #include "Domain/Ingredients/Water.hpp"
+
 #include <memory>
 #include <utility>
 

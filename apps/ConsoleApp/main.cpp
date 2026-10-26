@@ -1,11 +1,14 @@
-#include "Application/UseCases/NewOrderReq.hpp"
 #include "Domain/BeverageFactories/BeverageBuilderSimpleFactory.hpp"
 #include "Domain/BeverageFactories/BeverageFactory.hpp"
 #include "Domain/BeverageFactories/IngredientFactory.hpp"
-#include "Infrastructure/UI/ConsoleMenu.hpp"
+
+#include "Application/UseCases/NewOrderReq.hpp"
+
 #include "InterfaceAdapters/BeverageController.hpp"
 #include "InterfaceAdapters/OrderRepository.hpp"
 #include "InterfaceAdapters/TextPresenter.hpp"
+
+#include "Infrastructure/UI/ConsoleMenu.hpp"
 
 #include <crtdbg.h>
 #include <cstdio>
