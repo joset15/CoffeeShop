@@ -1,6 +1,7 @@
 #include "../include/Coffee_TestFixtures.hpp"
 
 #include "Domain/Beverages/Coffee.hpp"
+#include <gtest/gtest.h>
 #include <string>
 
 namespace coffee_shop::domain

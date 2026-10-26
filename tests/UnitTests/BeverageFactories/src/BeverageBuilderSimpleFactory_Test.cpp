@@ -1,5 +1,7 @@
 #include "../include/BeverageBuilderSimpleFactory_TestFixtures.hpp"
 
+#include "Domain/BeverageBuilder/IBeverageBuilder.hpp"
+#include "Domain/Beverages/BeverageVariety.hpp"
 #include "Domain/Beverages/Cocoa.hpp"
 #include "Domain/Beverages/CoffeeDecaf.hpp"
 #include "Domain/Beverages/CoffeeEspresso.hpp"
@@ -7,7 +9,10 @@
 #include "Domain/Beverages/TeaBlack.hpp"
 #include "Domain/Beverages/TeaGreen.hpp"
 
+#include <gtest/gtest-param-test.h>
+#include <gtest/gtest.h>
 #include <memory>
+#include <tuple>
 
 namespace coffee_shop::domain
 {

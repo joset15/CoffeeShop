@@ -2,11 +2,13 @@
 
 #include "BeverageDescription_TestHelpers.hpp"
 #include "Domain/Beverages/Coffee.hpp"
+#include "Domain/Beverages/IBeverage.hpp"
 #include "Domain/Ingredients/Milk.hpp"
 #include "Domain/Ingredients/Sugar.hpp"
 
+#include <gtest/gtest.h>
+#include <memory>
 #include <stdexcept>
-#include <string>
 #include <utility>
 
 namespace coffee_shop::domain

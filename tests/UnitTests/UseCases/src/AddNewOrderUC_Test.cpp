@@ -1,5 +1,6 @@
 #include "../include/AddNewOrderUC_TestFixtures.hpp"
 
+#include "Application/UseCases/AddNewOrderUC.hpp"
 #include "BeverageDescription_TestHelpers.hpp"
 #include "Domain/Beverages/Cocoa.hpp"
 #include "Domain/Beverages/CoffeeEspresso.hpp"
@@ -7,6 +8,7 @@
 #include "Domain/Ingredients/Milk.hpp"
 #include "Domain/Ingredients/Sugar.hpp"
 
+#include <gtest/gtest.h>
 #include <string>
 #include <vector>
 

@@ -2,8 +2,13 @@
 
 #include "BeverageDescription_TestHelpers.hpp"
 #include "Domain/Beverages/CoffeeEspresso.hpp"
+#include "Domain/Ingredients/Ingredient.hpp"
 #include "Domain/Ingredients/Sugar.hpp"
+#include <gtest/gtest-param-test.h>
+#include <gtest/gtest.h>
 #include <string>
+#include <tuple>
+#include <vector>
 
 namespace coffee_shop::domain
 {

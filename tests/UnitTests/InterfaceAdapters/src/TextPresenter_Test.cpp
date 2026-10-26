@@ -1,6 +1,6 @@
 #include "../include/TextPresenter_TestFixtures.hpp"
 
-#include <string>
+#include <gtest/gtest.h>
 #include <vector>
 
 namespace coffee_shop::interface_adapters

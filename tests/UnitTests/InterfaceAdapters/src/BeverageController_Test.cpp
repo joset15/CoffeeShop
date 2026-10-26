@@ -4,6 +4,7 @@
 #include "Domain/Beverages/CoffeeEspresso.hpp"
 #include "Domain/Ingredients/Sugar.hpp"
 
+#include <gtest/gtest.h>
 #include <string>
 #include <vector>
 
