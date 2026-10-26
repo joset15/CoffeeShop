@@ -1,5 +1,4 @@
 #include "Domain/BeverageFactories/BeverageFactory.hpp"
-#include <cassert>
 
 namespace coffee_shop::domain
 {
@@ -27,9 +26,6 @@ BeverageFactory::createBeverage(BeverageVariety beverageVariety)
     break;
   case BeverageVariety::Cocoa:
     newBeverage = std::make_unique<Cocoa>();
-    break;
-  default:
-    assert(false && "Unexpected beverageType");
     break;
   }
 

@@ -1,5 +1,4 @@
 #include "Domain/BeverageBuilder/CoffeeBuilder.hpp"
-#include <cassert>
 
 namespace coffee_shop::domain
 {
@@ -30,7 +29,7 @@ bool CoffeeBuilder::addMilk(Ingredient typeOfMilk)
     decorateWith(Ingredient::SoyMilk);
     break;
   default:
-    assert(false && "Invalid type of milk");
+    // Not a kind of milk.
     return false;
   }
 

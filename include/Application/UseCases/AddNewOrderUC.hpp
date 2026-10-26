@@ -15,6 +15,7 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 
 namespace coffee_shop::application
 {
@@ -42,7 +43,7 @@ public:
 
 private:
   bool addNewOrder(domain::BeverageVariety beverageVariety,
-                   const std::list<domain::Ingredient> &ingredients);
+                   const std::vector<domain::Ingredient> &ingredients);
 
   /// @brief Where new orders are saved (not owned, never null: set from a
   /// reference).

@@ -9,7 +9,7 @@ TEST_F(GivenADirector, WhenCocoaWithMilkIsBuiltThenDescriptionHasMilk)
 {
   // AAA: Arrange, Act, Assert
   // Act
-  bool built = build(BeverageVariety::Cocoa, {Ingredient::Milk});
+  const bool built = build(BeverageVariety::Cocoa, {Ingredient::Milk});
 
   // Assert
   ASSERT_TRUE(built);
@@ -21,7 +21,7 @@ TEST_F(GivenADirector, WhenCocoaWithLemonIsBuiltThenItIsRejected)
 {
   // AAA: Arrange, Act, Assert
   // Act
-  bool built = build(BeverageVariety::Cocoa, {Ingredient::Lemon});
+  const bool built = build(BeverageVariety::Cocoa, {Ingredient::Lemon});
 
   // Assert
   ASSERT_FALSE(built);
@@ -31,7 +31,8 @@ TEST_F(GivenADirector, WhenWaterIsRequestedThenItIsRejected)
 {
   // AAA: Arrange, Act, Assert
   // Act
-  bool built = build(BeverageVariety::CoffeeEspresso, {Ingredient::Water});
+  const bool built =
+      build(BeverageVariety::CoffeeEspresso, {Ingredient::Water});
 
   // Assert
   ASSERT_FALSE(built);
@@ -41,7 +42,7 @@ TEST_F(GivenADirector, WhenTwoKindsOfMilkAreRequestedThenItIsRejected)
 {
   // AAA: Arrange, Act, Assert
   // Act
-  bool built =
+  const bool built =
       build(BeverageVariety::TeaBlack, {Ingredient::Milk, Ingredient::SoyMilk});
 
   // Assert
@@ -52,7 +53,7 @@ TEST_F(GivenADirector, WhenLatteWithSugarIsBuiltThenDescriptionHasSugar)
 {
   // AAA: Arrange, Act, Assert
   // Act
-  bool built = build(BeverageVariety::CoffeeLatte, {Ingredient::Sugar});
+  const bool built = build(BeverageVariety::CoffeeLatte, {Ingredient::Sugar});
 
   // Assert
   ASSERT_TRUE(built);
@@ -64,7 +65,7 @@ TEST_F(GivenADirector, WhenMilkIsAddedToLatteThenItIsRejected)
 {
   // AAA: Arrange, Act, Assert
   // Act
-  bool built = build(BeverageVariety::CoffeeLatte, {Ingredient::SoyMilk});
+  const bool built = build(BeverageVariety::CoffeeLatte, {Ingredient::SoyMilk});
 
   // Assert
   ASSERT_FALSE(built);
@@ -74,7 +75,7 @@ TEST_F(GivenADirector, WhenDecafWithSoyMilkIsBuiltThenDescriptionHasSoyMilk)
 {
   // AAA: Arrange, Act, Assert
   // Act
-  bool built = build(BeverageVariety::CoffeeDecaf, {Ingredient::SoyMilk});
+  const bool built = build(BeverageVariety::CoffeeDecaf, {Ingredient::SoyMilk});
 
   // Assert
   ASSERT_TRUE(built);
@@ -86,7 +87,7 @@ TEST_F(GivenADirector, WhenDecafWithHoneyIsBuiltThenItIsRejected)
 {
   // AAA: Arrange, Act, Assert
   // Act
-  bool built = build(BeverageVariety::CoffeeDecaf, {Ingredient::Honey});
+  const bool built = build(BeverageVariety::CoffeeDecaf, {Ingredient::Honey});
 
   // Assert
   ASSERT_FALSE(built);
@@ -97,7 +98,7 @@ TEST_F(GivenADirector,
 {
   // AAA: Arrange, Act, Assert
   // Act
-  bool built =
+  const bool built =
       build(BeverageVariety::TeaGreen, {Ingredient::Lemon, Ingredient::Honey});
 
   // Assert
@@ -110,7 +111,7 @@ TEST_F(GivenADirector, WhenGreenTeaWithMilkAndLemonIsBuiltThenItIsRejected)
 {
   // AAA: Arrange, Act, Assert
   // Act
-  bool built =
+  const bool built =
       build(BeverageVariety::TeaGreen, {Ingredient::Milk, Ingredient::Lemon});
 
   // Assert

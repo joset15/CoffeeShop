@@ -4,11 +4,12 @@
 #include "Domain/Beverages/BeverageVariety.hpp"
 #include "Domain/Ingredients/Ingredients.hpp"
 
+#include <cstdint>
 #include <istream>
-#include <list>
 #include <optional>
 #include <ostream>
 #include <string>
+#include <vector>
 
 namespace coffee_shop::infrastructure::ui
 {
@@ -18,7 +19,7 @@ class ConsoleMenu
 {
 public:
   /// @brief The options of the main menu.
-  enum class MainOption
+  enum class MainOption : std::uint8_t
   {
     Quit = 0,
     AddOrder = 1,
@@ -42,7 +43,7 @@ public:
 
   /// @brief Asks for the ingredients, as numbers on one line.
   /// @return The ingredients (empty for none or at the end of the input).
-  [[nodiscard]] std::list<domain::Ingredient> askIngredients();
+  [[nodiscard]] std::vector<domain::Ingredient> askIngredients();
 
   /// @brief Waits until the user presses Enter.
   void waitForEnter();

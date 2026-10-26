@@ -14,7 +14,7 @@ TEST_F(GivenAnEspressoWithSugarOrder, WhenExecutedThenOrderIsSaved)
                               m_OutputPort);
 
   // Act
-  bool success = addNewOrderUC.execute();
+  const bool success = addNewOrderUC.execute();
 
   // Assert
   ASSERT_TRUE(success);
@@ -32,7 +32,7 @@ TEST_F(GivenAnEspressoWithLemonOrder, WhenExecutedThenNothingIsSaved)
                               m_OutputPort);
 
   // Act
-  bool success = addNewOrderUC.execute();
+  const bool success = addNewOrderUC.execute();
 
   // Assert
   ASSERT_FALSE(success);
@@ -47,7 +47,7 @@ TEST_F(GivenALatteOrder, WhenExecutedThenOrderIsSaved)
                               m_OutputPort);
 
   // Act
-  bool success = addNewOrderUC.execute();
+  const bool success = addNewOrderUC.execute();
 
   // Assert
   ASSERT_TRUE(success);
@@ -65,7 +65,7 @@ TEST_F(GivenACocoaWithMilkOrder, WhenExecutedThenOrderIsSaved)
                               m_OutputPort);
 
   // Act
-  bool success = addNewOrderUC.execute();
+  const bool success = addNewOrderUC.execute();
 
   // Assert
   ASSERT_TRUE(success);

@@ -17,12 +17,11 @@ TEST_F(GivenAnOrderRepository, WhenThereAreNoOrdersThenAnEmptyListIsSent)
   ListOrdersUC listOrdersUC("ListOrdersUC", m_OrderRepository, m_OutputPort);
 
   // Act
-  bool success = listOrdersUC.execute();
+  const bool success = listOrdersUC.execute();
 
   // Assert
   ASSERT_TRUE(success);
-  ASSERT_TRUE(m_OutputPort.getListedDescriptions().has_value());
-  ASSERT_TRUE(m_OutputPort.getListedDescriptions()->empty());
+  ASSERT_EQ(m_OutputPort.getListedDescriptions(), std::vector<std::string>{});
 }
 
 TEST_F(GivenAnOrderRepository, WhenThereAreOrdersThenTheyAreSentInOrder)

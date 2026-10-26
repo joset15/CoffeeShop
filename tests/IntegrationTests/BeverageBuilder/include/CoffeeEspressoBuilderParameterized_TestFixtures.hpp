@@ -10,6 +10,7 @@
 #include <gtest/gtest.h>
 #include <memory>
 #include <tuple>
+#include <vector>
 
 namespace coffee_shop::domain
 {
@@ -18,7 +19,7 @@ namespace coffee_shop::domain
 ///
 class GivenSomeIngredientsForCoffeeEspressoBuilder
     : public ::testing::TestWithParam<
-          std::tuple<std::list<Ingredient>, bool, std::string>>
+          std::tuple<std::vector<Ingredient>, bool, std::string>>
 {
 protected:
   void SetUp() override

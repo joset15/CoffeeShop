@@ -8,18 +8,19 @@
 #include "TeaBlack.hpp"
 #include "TeaGreen.hpp"
 
+#include <cstdint>
+
 namespace coffee_shop::domain
 {
 /// @brief The varieties of beverages.
-enum class BeverageVariety
+enum class BeverageVariety : std::uint8_t
 {
   CoffeeEspresso,
   CoffeeLatte,
   CoffeeDecaf,
   TeaBlack,
   TeaGreen,
-  Cocoa,
-  // LastVariety
+  Cocoa
 };
 } // namespace coffee_shop::domain
 

@@ -22,7 +22,10 @@ public:
 
   /// @brief A latte already has milk, so no milk (of any kind) can be added.
   /// @return Always false.
-  bool addMilk(Ingredient /*typeOfMilk*/) override { return false; }
+  bool addMilk([[maybe_unused]] Ingredient typeOfMilk) override
+  {
+    return false;
+  }
 
 private:
   /// @brief Creates the base beverage and resets the CoffeeBuilder state.
