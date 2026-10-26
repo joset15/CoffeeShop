@@ -9,10 +9,12 @@
 #include <string_view>
 #include <vector>
 
+namespace coffee_shop::interface_adapters
+{
 /// @brief Writes the results of the use cases as text lines to a stream
 /// (the console, a file, or a string in the tests).
-class TextPresenter : public IAddNewOrderOutputPort,
-                      public IListOrdersOutputPort
+class TextPresenter : public application::IAddNewOrderOutputPort,
+                      public application::IListOrdersOutputPort
 {
 public:
   /// @brief Creates a presenter that writes to the given stream.
@@ -34,5 +36,6 @@ private:
   /// @brief Where the text is written (not owned, never null).
   std::ostream *m_Output;
 };
+} // namespace coffee_shop::interface_adapters
 
 #endif // TEXT_PRESENTER_HPP

@@ -9,12 +9,12 @@
 #include <string_view>
 #include <vector>
 
-namespace coffee_shop
+namespace coffee_shop::test_support
 {
 ///
 /// \brief Records what the "add new order" use case reports.
 ///
-class FakeAddNewOrderOutputPort : public IAddNewOrderOutputPort
+class FakeAddNewOrderOutputPort : public application::IAddNewOrderOutputPort
 {
 public:
   void orderAdded(std::string_view description) override
@@ -39,7 +39,7 @@ private:
 ///
 /// \brief Records the last list sent by the "list orders" use case.
 ///
-class FakeListOrdersOutputPort : public IListOrdersOutputPort
+class FakeListOrdersOutputPort : public application::IListOrdersOutputPort
 {
 public:
   void ordersListed(const std::vector<std::string> &descriptions) override
@@ -57,6 +57,6 @@ public:
 private:
   std::optional<std::vector<std::string>> m_ListedDescriptions;
 };
-} // namespace coffee_shop
+} // namespace coffee_shop::test_support
 
 #endif // OUTPUT_PORT_TESTDOUBLES_HPP

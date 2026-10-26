@@ -5,7 +5,7 @@
 #include <string>
 #include <string_view>
 
-namespace coffee_shop
+namespace coffee_shop::test_support
 {
 /// @brief Builds the expected description of a beverage.
 /// @param names The beverage name followed by its ingredient names.
@@ -23,6 +23,6 @@ inline std::string describe(std::initializer_list<std::string_view> names)
   }
   return description;
 }
-} // namespace coffee_shop
+} // namespace coffee_shop::test_support
 
 #endif // BEVERAGE_DESCRIPTION_TESTHELPERS_HPP

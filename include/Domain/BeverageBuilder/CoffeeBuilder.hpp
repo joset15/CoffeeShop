@@ -3,6 +3,8 @@
 
 #include "BeverageBuilderBase.hpp"
 
+namespace coffee_shop::domain
+{
 class CoffeeBuilder : public BeverageBuilderBase
 {
 public:
@@ -41,5 +43,6 @@ private:
   /// @brief True if the beverage has milk.
   bool m_HasMilk = false;
 };
+} // namespace coffee_shop::domain
 
 #endif // COFFEE_BUILDER_HPP

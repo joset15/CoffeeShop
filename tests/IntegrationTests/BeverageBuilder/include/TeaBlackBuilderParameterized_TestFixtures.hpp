@@ -11,7 +11,7 @@
 #include <memory>
 #include <tuple>
 
-namespace coffee_shop
+namespace coffee_shop::domain
 {
 /// @brief A fixture for testing a TeaBlackBuilder.
 class GivenSomeIngredientsForTeaBlackBuilder
@@ -33,7 +33,6 @@ protected:
   std::unique_ptr<BeverageBuildDirector> m_BeverageBuildDirector;
   std::shared_ptr<TeaBlackBuilder> m_TeaBlackBuilder;
 };
-
-} // namespace coffee_shop
+} // namespace coffee_shop::domain
 
 #endif // TEA_BLACK_BUILDER_TESTFIXTURES_HPP

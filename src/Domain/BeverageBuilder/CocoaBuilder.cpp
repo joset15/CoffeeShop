@@ -1,5 +1,7 @@
 #include "Domain/BeverageBuilder/CocoaBuilder.hpp"
 
+namespace coffee_shop::domain
+{
 void CocoaBuilder::resetImpl()
 {
   setBaseBeverage(BeverageVariety::Cocoa);
@@ -29,3 +31,4 @@ bool CocoaBuilder::addMilk(Ingredient typeOfMilk)
   m_HasMilk = true;
   return true;
 };
+} // namespace coffee_shop::domain

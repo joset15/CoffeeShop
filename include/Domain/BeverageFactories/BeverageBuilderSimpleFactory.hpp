@@ -5,6 +5,8 @@
 #include "IBeverageBuilderFactory.hpp"
 #include <memory>
 
+namespace coffee_shop::domain
+{
 /// @brief Creates the builder for each beverage variety (singleton).
 class BeverageBuilderSimpleFactory final : public IBeverageBuilderFactory
 {
@@ -37,5 +39,6 @@ private:
   /// @brief Private: the singleton is never deleted from outside.
   ~BeverageBuilderSimpleFactory() override = default;
 };
+} // namespace coffee_shop::domain
 
 #endif // BEVERAGE_BUILDER_SIMPLE_FACTORY_HPP

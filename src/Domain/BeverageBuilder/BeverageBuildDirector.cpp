@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+namespace coffee_shop::domain
+{
 bool BeverageBuildDirector::buildBeverage(
     const std::list<Ingredient> &ingredients)
 {
@@ -92,3 +94,4 @@ bool BeverageBuildDirector::addWater(const std::list<Ingredient> &ingredients)
 
   return true;
 }
+} // namespace coffee_shop::domain

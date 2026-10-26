@@ -1,6 +1,8 @@
 #include "Domain/BeverageBuilder/TeaBuilder.hpp"
 #include <cassert>
 
+namespace coffee_shop::domain
+{
 void TeaBuilder::resetImpl()
 {
   m_HasMilk = false;
@@ -60,3 +62,4 @@ bool TeaBuilder::addLemon()
   m_HasLemon = true;
   return true;
 };
+} // namespace coffee_shop::domain

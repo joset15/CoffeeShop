@@ -5,6 +5,8 @@
 #include <sstream>
 #include <string_view>
 
+namespace coffee_shop::infrastructure::ui
+{
 namespace
 {
 /// @brief A menu entry: what the user sees and what it selects.
@@ -15,24 +17,24 @@ template <typename ValueType> struct MenuEntry
 };
 
 /// @brief The beverages, in menu order (entry N is option N + 1).
-constexpr std::array<MenuEntry<BeverageVariety>, 6> BeverageEntries{{
-    {BeverageVariety::CoffeeEspresso, "Coffee espresso"},
-    {BeverageVariety::CoffeeLatte, "Coffee latte"},
-    {BeverageVariety::CoffeeDecaf, "Coffee decaf"},
-    {BeverageVariety::TeaBlack, "Black tea"},
-    {BeverageVariety::TeaGreen, "Green tea"},
-    {BeverageVariety::Cocoa, "Cocoa"},
+constexpr std::array<MenuEntry<domain::BeverageVariety>, 6> BeverageEntries{{
+    {domain::BeverageVariety::CoffeeEspresso, "Coffee espresso"},
+    {domain::BeverageVariety::CoffeeLatte, "Coffee latte"},
+    {domain::BeverageVariety::CoffeeDecaf, "Coffee decaf"},
+    {domain::BeverageVariety::TeaBlack, "Black tea"},
+    {domain::BeverageVariety::TeaGreen, "Green tea"},
+    {domain::BeverageVariety::Cocoa, "Cocoa"},
 }};
 
 /// @brief The ingredients, in menu order (entry N is option N + 1).
-constexpr std::array<MenuEntry<Ingredient>, 7> IngredientEntries{{
-    {Ingredient::Sugar, "Sugar"},
-    {Ingredient::Milk, "Milk"},
-    {Ingredient::Cream, "Cream"},
-    {Ingredient::Honey, "Honey"},
-    {Ingredient::Lemon, "Lemon"},
-    {Ingredient::SoyMilk, "Soy milk"},
-    {Ingredient::Water, "Water"},
+constexpr std::array<MenuEntry<domain::Ingredient>, 7> IngredientEntries{{
+    {domain::Ingredient::Sugar, "Sugar"},
+    {domain::Ingredient::Milk, "Milk"},
+    {domain::Ingredient::Cream, "Cream"},
+    {domain::Ingredient::Honey, "Honey"},
+    {domain::Ingredient::Lemon, "Lemon"},
+    {domain::Ingredient::SoyMilk, "Soy milk"},
+    {domain::Ingredient::Water, "Water"},
 }};
 
 /// @brief Parses a whole word as a number.
@@ -84,7 +86,7 @@ std::optional<ConsoleMenu::MainOption> ConsoleMenu::askMainOption()
   return static_cast<MainOption>(*number);
 }
 
-std::optional<BeverageVariety> ConsoleMenu::askBeverageVariety()
+std::optional<domain::BeverageVariety> ConsoleMenu::askBeverageVariety()
 {
   *m_Output << "Choose a beverage (0 to cancel):\n";
   printEntries(*m_Output, BeverageEntries);
@@ -97,7 +99,7 @@ std::optional<BeverageVariety> ConsoleMenu::askBeverageVariety()
   return BeverageEntries.at(static_cast<std::size_t>(*number - 1)).m_Value;
 }
 
-std::list<Ingredient> ConsoleMenu::askIngredients()
+std::list<domain::Ingredient> ConsoleMenu::askIngredients()
 {
   *m_Output << "Choose ingredients (numbers separated by spaces, Enter for "
                "none):\n";
@@ -107,7 +109,7 @@ std::list<Ingredient> ConsoleMenu::askIngredients()
   std::string line;
   while (readLine(line))
   {
-    std::list<Ingredient> ingredients;
+    std::list<domain::Ingredient> ingredients;
     bool valid = true;
     std::istringstream words(line);
     std::string word;
@@ -167,3 +169,4 @@ bool ConsoleMenu::readLine(std::string &line)
   *m_Output << "> " << std::flush;
   return static_cast<bool>(std::getline(*m_Input, line));
 }
+} // namespace coffee_shop::infrastructure::ui

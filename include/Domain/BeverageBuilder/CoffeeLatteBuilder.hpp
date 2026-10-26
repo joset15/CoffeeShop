@@ -3,6 +3,8 @@
 
 #include "CoffeeBuilder.hpp"
 
+namespace coffee_shop::domain
+{
 /// @brief Builds a coffee latte: like an espresso, but it already has milk.
 class CoffeeLatteBuilder : public CoffeeBuilder
 {
@@ -26,5 +28,6 @@ private:
   /// @brief Creates the base beverage and resets the CoffeeBuilder state.
   void resetImpl();
 };
+} // namespace coffee_shop::domain
 
 #endif // COFFEE_LATTE_BUILDER_HPP

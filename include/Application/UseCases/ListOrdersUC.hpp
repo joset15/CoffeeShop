@@ -7,6 +7,8 @@
 
 #include <string>
 
+namespace coffee_shop::application
+{
 /// @brief Sends the current orders to its output port.
 class ListOrdersUC : public UseCase
 {
@@ -29,5 +31,6 @@ private:
   /// @brief Where the list of orders is sent (not owned, never null).
   IListOrdersOutputPort *m_OutputPort;
 };
+} // namespace coffee_shop::application
 
 #endif // LIST_ORDERS_UC_HPP

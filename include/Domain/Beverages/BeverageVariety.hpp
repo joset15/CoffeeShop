@@ -8,6 +8,8 @@
 #include "TeaBlack.hpp"
 #include "TeaGreen.hpp"
 
+namespace coffee_shop::domain
+{
 /// @brief The varieties of beverages.
 enum class BeverageVariety
 {
@@ -19,5 +21,6 @@ enum class BeverageVariety
   Cocoa,
   // LastVariety
 };
+} // namespace coffee_shop::domain
 
 #endif // BEVERAGE_VARIETY_HPP

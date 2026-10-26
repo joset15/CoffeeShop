@@ -4,7 +4,7 @@
 
 #include <string>
 
-namespace coffee_shop
+namespace coffee_shop::domain
 {
 TEST_F(GivenSomeSugar, WhenSugarIsAddedToCoffeeThenDescriptionHasRightFormat)
 {
@@ -17,6 +17,8 @@ TEST_F(GivenSomeSugar, WhenSugarIsAddedToCoffeeThenDescriptionHasRightFormat)
   std::string coffeeWithSugar(beverage->getDescription());
 
   // Assert
-  ASSERT_EQ(coffeeWithSugar.compare(describe({CoffeeName, SugarName})), 0);
+  ASSERT_EQ(
+      coffeeWithSugar.compare(test_support::describe({CoffeeName, SugarName})),
+      0);
 }
-} // namespace coffee_shop
+} // namespace coffee_shop::domain

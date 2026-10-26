@@ -4,6 +4,8 @@
 #include <string>
 #include <utility>
 
+namespace coffee_shop::application
+{
 /// @brief Base class of the application use cases.
 class UseCase
 {
@@ -46,5 +48,6 @@ private:
   /// @brief Set once at construction (private, no setter).
   std::string m_UseCaseName;
 };
+} // namespace coffee_shop::application
 
 #endif // USECASE_HPP

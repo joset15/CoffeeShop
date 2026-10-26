@@ -3,6 +3,8 @@
 
 #include <string_view>
 
+namespace coffee_shop::application
+{
 /// @brief Receives the result of the "add new order" use case (output port).
 class IAddNewOrderOutputPort
 {
@@ -19,5 +21,6 @@ public:
   /// that the beverage doesn't accept).
   virtual void orderRejected() = 0;
 };
+} // namespace coffee_shop::application
 
 #endif // IADD_NEW_ORDER_OUTPUT_PORT_HPP

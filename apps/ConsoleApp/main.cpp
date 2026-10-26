@@ -9,6 +9,12 @@
 #include <fstream>
 #include <iostream>
 
+using coffee_shop::application::NewOrderReq;
+using coffee_shop::infrastructure::ui::ConsoleMenu;
+using coffee_shop::interface_adapters::BeverageController;
+using coffee_shop::interface_adapters::OrderRepository;
+using coffee_shop::interface_adapters::TextPresenter;
+
 namespace
 {
 /// @brief The file where "Print list beverage orders" writes the orders.

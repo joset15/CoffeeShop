@@ -3,12 +3,15 @@
 
 #include "Domain/Beverages/IBeverage.hpp"
 
+namespace coffee_shop::interface_adapters
+{
 class IOrderDataSource
 {
 public:
   virtual ~IOrderDataSource() = default;
 
-  virtual bool save(const IBeverage &newBeverage) = 0;
+  virtual bool save(const domain::IBeverage &newBeverage) = 0;
 };
+} // namespace coffee_shop::interface_adapters
 
 #endif // IORDERDATASOURCE_HPP

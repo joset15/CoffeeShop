@@ -4,6 +4,8 @@
 
 #include <cassert>
 
+namespace coffee_shop::domain
+{
 std::shared_ptr<IBeverageBuilder>
 BeverageBuilderSimpleFactory::createBeverageBuilder(
     BeverageVariety beverageVariety)
@@ -43,3 +45,4 @@ BeverageBuilderSimpleFactory::createBeverageBuilder(
 
   return newBeverageBuilder;
 }
+} // namespace coffee_shop::domain

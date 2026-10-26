@@ -8,7 +8,7 @@
 
 #include <gtest/gtest.h>
 
-namespace coffee_shop
+namespace coffee_shop::application
 {
 ///
 /// \brief A fixture for listing the orders of an in-memory repository.
@@ -16,9 +16,9 @@ namespace coffee_shop
 class GivenAnOrderRepository : public ::testing::Test
 {
 protected:
-  FakeOrderRepository m_OrderRepository;
-  FakeListOrdersOutputPort m_OutputPort;
+  test_support::FakeOrderRepository m_OrderRepository;
+  test_support::FakeListOrdersOutputPort m_OutputPort;
 };
-} // namespace coffee_shop
+} // namespace coffee_shop::application
 
 #endif // LIST_ORDERS_UC_TESTFIXTURES_HPP

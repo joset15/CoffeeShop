@@ -7,7 +7,7 @@
 #include <string>
 #include <utility>
 
-namespace coffee_shop
+namespace coffee_shop::domain
 {
 TEST_F(GivenANullBeverage, WhenDecoratedThenThrowsInvalidArgument)
 {
@@ -28,6 +28,6 @@ TEST_F(GivenSugarAndMilk, WhenChainedThenDescriptionContainsBoth)
 
   // Assert
   ASSERT_EQ(beverage->getDescription(),
-            describe({CoffeeName, SugarName, MilkName}));
+            test_support::describe({CoffeeName, SugarName, MilkName}));
 }
-} // namespace coffee_shop
+} // namespace coffee_shop::domain

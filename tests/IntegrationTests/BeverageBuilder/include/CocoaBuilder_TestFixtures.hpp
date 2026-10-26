@@ -9,7 +9,7 @@
 #include <gtest/gtest.h>
 #include <memory>
 
-namespace coffee_shop
+namespace coffee_shop::domain
 {
 ///
 /// \brief A fixture for testing a CocoaBuilder.
@@ -25,6 +25,6 @@ protected:
 
   std::unique_ptr<CocoaBuilder> m_CocoaBuilder;
 };
-} // namespace coffee_shop
+} // namespace coffee_shop::domain
 
 #endif // COCOA_BUILDER_TESTFIXTURES_HPP

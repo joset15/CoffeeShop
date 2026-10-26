@@ -6,6 +6,8 @@
 
 #include <string>
 
+namespace coffee_shop::application
+{
 /// @brief Cancels the orders that have not been served yet.
 ///
 /// Skeleton for a future use case: IOrderRepository has no way to cancel
@@ -27,5 +29,6 @@ private:
   /// reference).
   IOrderRepository *m_OrderRepository;
 };
+} // namespace coffee_shop::application
 
 #endif // CANCEL_EXISTING_ORDER_UC_HPP

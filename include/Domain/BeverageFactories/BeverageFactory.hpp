@@ -5,6 +5,8 @@
 #include "IBeverageFactory.hpp"
 #include <memory>
 
+namespace coffee_shop::domain
+{
 /// @brief Creates the base beverages (singleton).
 class BeverageFactory final : public IBeverageFactory
 {
@@ -36,5 +38,6 @@ private:
   /// @brief Private: the singleton is never deleted from outside.
   ~BeverageFactory() override = default;
 };
+} // namespace coffee_shop::domain
 
 #endif // BEVERAGE_FACTORY_HPP

@@ -10,6 +10,8 @@
 #include <memory>
 #include <utility>
 
+namespace coffee_shop::domain
+{
 /// @brief Common state and helpers for the concrete beverage builders.
 class BeverageBuilderBase : public IBeverageBuilder
 {
@@ -59,5 +61,6 @@ private:
   /// @brief The factory that creates ingredient decorators (not owned).
   IIngredientFactory *m_IngredientFactory = nullptr;
 };
+} // namespace coffee_shop::domain
 
 #endif // BEVERAGE_BUILDER_BASE_HPP

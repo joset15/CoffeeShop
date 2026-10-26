@@ -9,7 +9,7 @@
 
 #include <gtest/gtest.h>
 
-namespace coffee_shop
+namespace coffee_shop::interface_adapters
 {
 ///
 /// \brief A fixture for a controller backed by an in-memory repository, with
@@ -18,16 +18,16 @@ namespace coffee_shop
 class GivenABeverageController : public ::testing::Test
 {
 protected:
-  FakeOrderRepository m_OrderRepository;
+  test_support::FakeOrderRepository m_OrderRepository;
   BeverageController m_BeverageController{m_OrderRepository};
-  FakeAddNewOrderOutputPort m_AddNewOrderOutputPort;
-  FakeListOrdersOutputPort m_ListOrdersOutputPort;
+  test_support::FakeAddNewOrderOutputPort m_AddNewOrderOutputPort;
+  test_support::FakeListOrdersOutputPort m_ListOrdersOutputPort;
 
-  NewOrderReq m_ValidRequest{BeverageVariety::CoffeeEspresso,
-                             {Ingredient::Sugar}};
-  NewOrderReq m_InvalidRequest{BeverageVariety::CoffeeEspresso,
-                               {Ingredient::Lemon}};
+  application::NewOrderReq m_ValidRequest{
+      domain::BeverageVariety::CoffeeEspresso, {domain::Ingredient::Sugar}};
+  application::NewOrderReq m_InvalidRequest{
+      domain::BeverageVariety::CoffeeEspresso, {domain::Ingredient::Lemon}};
 };
-} // namespace coffee_shop
+} // namespace coffee_shop::interface_adapters
 
 #endif // BEVERAGE_CONTROLLER_TESTFIXTURES_HPP

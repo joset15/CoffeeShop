@@ -2,6 +2,8 @@
 
 #include <utility>
 
+namespace coffee_shop::application
+{
 ListOrdersUC::ListOrdersUC(std::string name,
                            const IOrderRepository &orderRepository,
                            IListOrdersOutputPort &outputPort)
@@ -15,3 +17,4 @@ bool ListOrdersUC::execute()
   m_OutputPort->ordersListed(m_OrderRepository->describeOrders());
   return true;
 }
+} // namespace coffee_shop::application

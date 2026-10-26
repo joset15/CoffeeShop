@@ -1,6 +1,8 @@
 #include "Domain/BeverageBuilder/CoffeeBuilder.hpp"
 #include <cassert>
 
+namespace coffee_shop::domain
+{
 void CoffeeBuilder::resetImpl() { m_HasMilk = false; }
 
 bool CoffeeBuilder::addSugar()
@@ -36,3 +38,4 @@ bool CoffeeBuilder::addMilk(Ingredient typeOfMilk)
 
   return true;
 };
+} // namespace coffee_shop::domain

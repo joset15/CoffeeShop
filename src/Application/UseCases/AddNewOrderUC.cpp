@@ -11,6 +11,8 @@
 #include <string>
 #include <utility>
 
+namespace coffee_shop::application
+{
 bool AddNewOrderUC::execute()
 {
   const bool added = addNewOrder(m_NewOrderReq.getBeverageVariety(),
@@ -22,14 +24,15 @@ bool AddNewOrderUC::execute()
   return added;
 }
 
-bool AddNewOrderUC::addNewOrder(BeverageVariety beverageVariety,
-                                const std::list<Ingredient> &ingredients)
+bool AddNewOrderUC::addNewOrder(
+    domain::BeverageVariety beverageVariety,
+    const std::list<domain::Ingredient> &ingredients)
 {
-  auto director = std::make_unique<BeverageBuildDirector>();
+  auto director = std::make_unique<domain::BeverageBuildDirector>();
 
-  std::shared_ptr<IBeverageBuilder> beverageBuilder =
-      BeverageBuilderSimpleFactory::getInstance()->createBeverageBuilder(
-          beverageVariety);
+  std::shared_ptr<domain::IBeverageBuilder> beverageBuilder =
+      domain::BeverageBuilderSimpleFactory::getInstance()
+          ->createBeverageBuilder(beverageVariety);
   if (!beverageBuilder)
   {
     return false; // Not a valid BeverageVariety value.
@@ -42,7 +45,7 @@ bool AddNewOrderUC::addNewOrder(BeverageVariety beverageVariety,
     return false;
   }
 
-  std::unique_ptr<IBeverage> beverage = beverageBuilder->takeBeverage();
+  std::unique_ptr<domain::IBeverage> beverage = beverageBuilder->takeBeverage();
   const std::string description = beverage->getDescription();
   if (!m_OrderRepository->save(std::move(beverage)))
   {
@@ -52,3 +55,4 @@ bool AddNewOrderUC::addNewOrder(BeverageVariety beverageVariety,
   m_OutputPort->orderAdded(description);
   return true;
 }
+} // namespace coffee_shop::application

@@ -5,7 +5,7 @@
 
 #include <gtest/gtest.h>
 
-namespace coffee_shop
+namespace coffee_shop::domain
 {
 ///
 /// \brief A fixture for a director whose builder was never set.
@@ -15,6 +15,6 @@ class GivenADirectorWithoutBuilder : public ::testing::Test
 protected:
   BeverageBuildDirector m_Director;
 };
-} // namespace coffee_shop
+} // namespace coffee_shop::domain
 
 #endif // BEVERAGE_BUILD_DIRECTOR_TESTFIXTURES_HPP

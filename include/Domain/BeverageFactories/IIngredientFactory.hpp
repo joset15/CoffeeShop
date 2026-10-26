@@ -4,6 +4,8 @@
 #include "Domain/Ingredients/Ingredients.hpp"
 #include <memory>
 
+namespace coffee_shop::domain
+{
 /// @brief Wraps beverages with ingredient decorators (Abstract Factory).
 class IIngredientFactory
 {
@@ -20,5 +22,6 @@ public:
   createIngredient(Ingredient ingredient,
                    std::unique_ptr<IBeverage> beverage) = 0;
 };
+} // namespace coffee_shop::domain
 
 #endif // IINGREDIENT_FACTORY_HPP

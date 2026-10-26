@@ -1,5 +1,7 @@
 #include "InterfaceAdapters/TextPresenter.hpp"
 
+namespace coffee_shop::interface_adapters
+{
 TextPresenter::TextPresenter(std::ostream &output) : m_Output(&output) {}
 
 void TextPresenter::orderAdded(std::string_view description)
@@ -24,3 +26,4 @@ void TextPresenter::ordersListed(const std::vector<std::string> &descriptions)
     *m_Output << description << '\n';
   }
 }
+} // namespace coffee_shop::interface_adapters

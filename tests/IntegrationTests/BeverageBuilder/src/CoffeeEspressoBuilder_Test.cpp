@@ -2,7 +2,7 @@
 #include "BeverageDescription_TestHelpers.hpp"
 #include <string>
 
-namespace coffee_shop
+namespace coffee_shop::domain
 {
 TEST_F(GivenACoffeeEspressoBuilder,
        WhenSugarIsAddedToCoffeeThenDescriptionHasRightFormat)
@@ -21,7 +21,8 @@ TEST_F(GivenACoffeeEspressoBuilder,
       m_CoffeeEspressoBuilder->takeBeverage()->getDescription();
 
   // Assert
-  ASSERT_EQ(coffeeWithSugar.compare(describe({CoffeeEspressoName, SugarName})),
+  ASSERT_EQ(coffeeWithSugar.compare(
+                test_support::describe({CoffeeEspressoName, SugarName})),
             0);
 }
 
@@ -41,4 +42,4 @@ TEST_F(GivenACoffeeEspressoBuilder, WhenBeverageIsTakenThenBuilderIsReset)
   ASSERT_EQ(secondBeverage->getDescription(), CoffeeEspressoName);
 }
 
-} // namespace coffee_shop
+} // namespace coffee_shop::domain
