@@ -9,7 +9,6 @@
 #include "Domain/Beverages/TeaBlack.hpp"
 #include "Domain/Beverages/TeaGreen.hpp"
 
-#include <gtest/gtest-param-test.h>
 #include <gtest/gtest.h>
 
 #include <memory>
@@ -17,7 +16,7 @@
 
 namespace coffee_shop::domain
 {
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     AllVarieties, GivenABeverageVariety,
     ::testing::Values(
         std::make_tuple(BeverageVariety::CoffeeEspresso, CoffeeEspressoName),
