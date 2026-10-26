@@ -42,9 +42,9 @@ constexpr std::array<MenuEntry<domain::Ingredient>, 7> IngredientEntries{{
 std::optional<int> parseNumber(std::string_view word)
 {
   int number = 0;
-  const auto result =
-      std::from_chars(word.data(), word.data() + word.size(), number);
-  if (result.ec != std::errc{} || result.ptr != word.data() + word.size())
+  if (const auto result =
+          std::from_chars(word.data(), word.data() + word.size(), number);
+      result.ec != std::errc{} || result.ptr != word.data() + word.size())
   {
     return std::nullopt;
   }
@@ -152,8 +152,8 @@ std::optional<int> ConsoleMenu::askNumber(int minimum, int maximum)
     std::string extra;
     if (words >> word && !(words >> extra))
     {
-      const auto number = parseNumber(word);
-      if (number && *number >= minimum && *number <= maximum)
+      if (const auto number = parseNumber(word);
+          number && *number >= minimum && *number <= maximum)
       {
         return number;
       }
