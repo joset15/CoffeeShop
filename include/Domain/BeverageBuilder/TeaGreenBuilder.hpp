@@ -3,6 +3,8 @@
 
 #include "TeaBuilder.hpp"
 
+namespace coffee_shop::domain
+{
 /// @brief Builds a green tea, with the same rules as a black tea.
 class TeaGreenBuilder : public TeaBuilder
 {
@@ -22,5 +24,6 @@ private:
   /// @brief Creates the base beverage and resets the TeaBuilder state.
   void resetImpl();
 };
+} // namespace coffee_shop::domain
 
 #endif // TEA_GREEN_BUILDER_HPP

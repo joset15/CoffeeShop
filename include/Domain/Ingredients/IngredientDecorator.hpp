@@ -9,6 +9,8 @@
 #include <string_view>
 #include <utility>
 
+namespace coffee_shop::domain
+{
 class IngredientDecorator : public IBeverage
 {
 public:
@@ -44,5 +46,6 @@ private:
   /// @brief The decorator owns the decorated object.
   std::unique_ptr<IBeverage> m_Beverage;
 };
+} // namespace coffee_shop::domain
 
 #endif // INGREDIENT_DECORATOR_HPP

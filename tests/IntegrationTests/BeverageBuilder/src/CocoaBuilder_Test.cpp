@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace coffee_shop
+namespace coffee_shop::domain
 {
 TEST_F(GivenACocoaBuilder, WhenCreamIsAddedThenItIsRejected)
 {
@@ -14,4 +14,4 @@ TEST_F(GivenACocoaBuilder, WhenCreamIsAddedThenItIsRejected)
   ASSERT_FALSE(creamAdded);
   ASSERT_EQ(m_CocoaBuilder->takeBeverage()->getDescription(), CocoaName);
 }
-} // namespace coffee_shop
+} // namespace coffee_shop::domain

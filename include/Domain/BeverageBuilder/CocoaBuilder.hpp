@@ -3,6 +3,8 @@
 
 #include "BeverageBuilderBase.hpp"
 
+namespace coffee_shop::domain
+{
 class CocoaBuilder : public BeverageBuilderBase
 {
 public:
@@ -47,5 +49,6 @@ private:
   /// @brief True once milk or soy milk has been added.
   bool m_HasMilk = false;
 };
+} // namespace coffee_shop::domain
 
 #endif // COCOA_BUILDER_HPP

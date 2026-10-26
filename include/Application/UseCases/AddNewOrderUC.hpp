@@ -16,6 +16,8 @@
 #include <string>
 #include <utility>
 
+namespace coffee_shop::application
+{
 /// @brief Builds the requested beverage and saves it as a new order.
 class AddNewOrderUC : public UseCase
 {
@@ -39,8 +41,8 @@ public:
   bool execute() override;
 
 private:
-  bool addNewOrder(BeverageVariety beverageVariety,
-                   const std::list<Ingredient> &ingredients);
+  bool addNewOrder(domain::BeverageVariety beverageVariety,
+                   const std::list<domain::Ingredient> &ingredients);
 
   /// @brief Where new orders are saved (not owned, never null: set from a
   /// reference).
@@ -51,5 +53,6 @@ private:
 
   NewOrderReq m_NewOrderReq;
 };
+} // namespace coffee_shop::application
 
 #endif // ADD_NEW_ORDER_UC_HPP

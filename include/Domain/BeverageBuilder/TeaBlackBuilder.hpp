@@ -3,6 +3,8 @@
 
 #include "TeaBuilder.hpp"
 
+namespace coffee_shop::domain
+{
 class TeaBlackBuilder : public TeaBuilder
 {
 public:
@@ -20,5 +22,6 @@ protected:
   /// @brief Creates the base beverage and resets the builder state.
   void resetImpl();
 };
+} // namespace coffee_shop::domain
 
 #endif // TEA_BLACK_BUILDER_HPP

@@ -2,6 +2,8 @@
 #include <cassert>
 #include <utility>
 
+namespace coffee_shop::domain
+{
 std::unique_ptr<IBeverage>
 IngredientFactory::createIngredient(Ingredient ingredient,
                                     std::unique_ptr<IBeverage> beverage)
@@ -38,3 +40,4 @@ IngredientFactory::createIngredient(Ingredient ingredient,
 
   return newIngredient;
 }
+} // namespace coffee_shop::domain

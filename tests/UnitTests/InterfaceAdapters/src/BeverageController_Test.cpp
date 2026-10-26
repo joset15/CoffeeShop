@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-namespace coffee_shop
+namespace coffee_shop::interface_adapters
 {
 TEST_F(GivenABeverageController, WhenOrderIsValidThenOrderAddedIsReported)
 {
@@ -13,9 +13,9 @@ TEST_F(GivenABeverageController, WhenOrderIsValidThenOrderAddedIsReported)
   m_BeverageController.addOrder(m_ValidRequest, m_AddNewOrderOutputPort);
 
   // Assert
-  ASSERT_EQ(
-      m_AddNewOrderOutputPort.getAddedDescriptions(),
-      (std::vector<std::string>{describe({CoffeeEspressoName, SugarName})}));
+  ASSERT_EQ(m_AddNewOrderOutputPort.getAddedDescriptions(),
+            (std::vector<std::string>{test_support::describe(
+                {domain::CoffeeEspressoName, domain::SugarName})}));
 }
 
 TEST_F(GivenABeverageController, WhenOrderIsInvalidThenRejectionIsReported)
@@ -38,8 +38,8 @@ TEST_F(GivenABeverageController, WhenOrdersAreListedThenTheAddedOrdersAreSent)
   m_BeverageController.listOrders(m_ListOrdersOutputPort);
 
   // Assert
-  ASSERT_EQ(
-      m_ListOrdersOutputPort.getListedDescriptions(),
-      (std::vector<std::string>{describe({CoffeeEspressoName, SugarName})}));
+  ASSERT_EQ(m_ListOrdersOutputPort.getListedDescriptions(),
+            (std::vector<std::string>{test_support::describe(
+                {domain::CoffeeEspressoName, domain::SugarName})}));
 }
-} // namespace coffee_shop
+} // namespace coffee_shop::interface_adapters

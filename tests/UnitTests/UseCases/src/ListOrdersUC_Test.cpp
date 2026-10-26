@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-namespace coffee_shop
+namespace coffee_shop::application
 {
 TEST_F(GivenAnOrderRepository, WhenThereAreNoOrdersThenAnEmptyListIsSent)
 {
@@ -30,8 +30,8 @@ TEST_F(GivenAnOrderRepository, WhenThereAreOrdersThenTheyAreSentInOrder)
   // AAA: Arrange, Act, Assert
   // Arrange
   m_OrderRepository.save(
-      std::make_unique<Sugar>(std::make_unique<CoffeeLatte>()));
-  m_OrderRepository.save(std::make_unique<Cocoa>());
+      std::make_unique<domain::Sugar>(std::make_unique<domain::CoffeeLatte>()));
+  m_OrderRepository.save(std::make_unique<domain::Cocoa>());
   ListOrdersUC listOrdersUC("ListOrdersUC", m_OrderRepository, m_OutputPort);
 
   // Act
@@ -41,4 +41,4 @@ TEST_F(GivenAnOrderRepository, WhenThereAreOrdersThenTheyAreSentInOrder)
   ASSERT_EQ(m_OutputPort.getListedDescriptions(),
             (std::vector<std::string>{"CoffeeLatte, Sugar", "Cocoa"}));
 }
-} // namespace coffee_shop
+} // namespace coffee_shop::application

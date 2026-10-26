@@ -3,6 +3,8 @@
 
 #include "BeverageBuilderBase.hpp"
 
+namespace coffee_shop::domain
+{
 class TeaBuilder : public BeverageBuilderBase
 {
 public:
@@ -44,5 +46,6 @@ private:
   /// @brief True once lemon has been added.
   bool m_HasLemon = false;
 };
+} // namespace coffee_shop::domain
 
 #endif // TEA_BUILDER_HPP

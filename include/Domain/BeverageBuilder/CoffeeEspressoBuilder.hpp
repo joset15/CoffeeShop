@@ -4,6 +4,8 @@
 #include "CoffeeBuilder.hpp"
 #include "IBeverageBuilder.hpp"
 
+namespace coffee_shop::domain
+{
 class CoffeeEspressoBuilder : public CoffeeBuilder
 {
 public:
@@ -22,5 +24,6 @@ private:
   /// @brief Creates the base beverage and resets the builder state.
   void resetImpl();
 };
+} // namespace coffee_shop::domain
 
 #endif // COFFEE_ESPRESSO_BUILDER_HPP

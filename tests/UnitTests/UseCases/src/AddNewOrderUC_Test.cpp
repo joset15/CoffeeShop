@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-namespace coffee_shop
+namespace coffee_shop::application
 {
 TEST_F(GivenAnEspressoWithSugarOrder, WhenExecutedThenOrderIsSaved)
 {
@@ -19,8 +19,9 @@ TEST_F(GivenAnEspressoWithSugarOrder, WhenExecutedThenOrderIsSaved)
   // Assert
   ASSERT_TRUE(success);
   ASSERT_EQ(m_OrderRepository.getSavedOrders().size(), 1U);
-  ASSERT_EQ(m_OrderRepository.getSavedOrders().front()->getDescription(),
-            describe({CoffeeEspressoName, SugarName}));
+  ASSERT_EQ(
+      m_OrderRepository.getSavedOrders().front()->getDescription(),
+      test_support::describe({domain::CoffeeEspressoName, domain::SugarName}));
 }
 
 TEST_F(GivenAnEspressoWithLemonOrder, WhenExecutedThenNothingIsSaved)
@@ -51,8 +52,9 @@ TEST_F(GivenALatteOrder, WhenExecutedThenOrderIsSaved)
   // Assert
   ASSERT_TRUE(success);
   ASSERT_EQ(m_OrderRepository.getSavedOrders().size(), 1U);
-  ASSERT_EQ(m_OrderRepository.getSavedOrders().front()->getDescription(),
-            describe({CoffeeLatteName, SugarName}));
+  ASSERT_EQ(
+      m_OrderRepository.getSavedOrders().front()->getDescription(),
+      test_support::describe({domain::CoffeeLatteName, domain::SugarName}));
 }
 
 TEST_F(GivenACocoaWithMilkOrder, WhenExecutedThenOrderIsSaved)
@@ -69,7 +71,7 @@ TEST_F(GivenACocoaWithMilkOrder, WhenExecutedThenOrderIsSaved)
   ASSERT_TRUE(success);
   ASSERT_EQ(m_OrderRepository.getSavedOrders().size(), 1U);
   ASSERT_EQ(m_OrderRepository.getSavedOrders().front()->getDescription(),
-            describe({CocoaName, MilkName}));
+            test_support::describe({domain::CocoaName, domain::MilkName}));
 }
 
 TEST_F(GivenAnEspressoWithSugarOrder, WhenExecutedThenOrderAddedIsReported)
@@ -83,9 +85,9 @@ TEST_F(GivenAnEspressoWithSugarOrder, WhenExecutedThenOrderAddedIsReported)
   addNewOrderUC.execute();
 
   // Assert
-  ASSERT_EQ(
-      m_OutputPort.getAddedDescriptions(),
-      (std::vector<std::string>{describe({CoffeeEspressoName, SugarName})}));
+  ASSERT_EQ(m_OutputPort.getAddedDescriptions(),
+            (std::vector<std::string>{test_support::describe(
+                {domain::CoffeeEspressoName, domain::SugarName})}));
   ASSERT_EQ(m_OutputPort.getRejectedCount(), 0);
 }
 
@@ -103,4 +105,4 @@ TEST_F(GivenAnEspressoWithLemonOrder, WhenExecutedThenRejectionIsReported)
   ASSERT_EQ(m_OutputPort.getRejectedCount(), 1);
   ASSERT_TRUE(m_OutputPort.getAddedDescriptions().empty());
 }
-} // namespace coffee_shop
+} // namespace coffee_shop::application

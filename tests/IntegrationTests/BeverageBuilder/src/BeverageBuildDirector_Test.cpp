@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace coffee_shop
+namespace coffee_shop::domain
 {
 TEST_F(GivenADirector, WhenCocoaWithMilkIsBuiltThenDescriptionHasMilk)
 {
@@ -14,7 +14,7 @@ TEST_F(GivenADirector, WhenCocoaWithMilkIsBuiltThenDescriptionHasMilk)
   // Assert
   ASSERT_TRUE(built);
   ASSERT_EQ(m_Builder->takeBeverage()->getDescription(),
-            describe({CocoaName, MilkName}));
+            test_support::describe({CocoaName, MilkName}));
 }
 
 TEST_F(GivenADirector, WhenCocoaWithLemonIsBuiltThenItIsRejected)
@@ -57,7 +57,7 @@ TEST_F(GivenADirector, WhenLatteWithSugarIsBuiltThenDescriptionHasSugar)
   // Assert
   ASSERT_TRUE(built);
   ASSERT_EQ(m_Builder->takeBeverage()->getDescription(),
-            describe({CoffeeLatteName, SugarName}));
+            test_support::describe({CoffeeLatteName, SugarName}));
 }
 
 TEST_F(GivenADirector, WhenMilkIsAddedToLatteThenItIsRejected)
@@ -79,7 +79,7 @@ TEST_F(GivenADirector, WhenDecafWithSoyMilkIsBuiltThenDescriptionHasSoyMilk)
   // Assert
   ASSERT_TRUE(built);
   ASSERT_EQ(m_Builder->takeBeverage()->getDescription(),
-            describe({CoffeeDecafName, SoyMilkName}));
+            test_support::describe({CoffeeDecafName, SoyMilkName}));
 }
 
 TEST_F(GivenADirector, WhenDecafWithHoneyIsBuiltThenItIsRejected)
@@ -103,7 +103,7 @@ TEST_F(GivenADirector,
   // Assert
   ASSERT_TRUE(built);
   ASSERT_EQ(m_Builder->takeBeverage()->getDescription(),
-            describe({TeaGreenName, HoneyName, LemonName}));
+            test_support::describe({TeaGreenName, HoneyName, LemonName}));
 }
 
 TEST_F(GivenADirector, WhenGreenTeaWithMilkAndLemonIsBuiltThenItIsRejected)
@@ -116,4 +116,4 @@ TEST_F(GivenADirector, WhenGreenTeaWithMilkAndLemonIsBuiltThenItIsRejected)
   // Assert
   ASSERT_FALSE(built);
 }
-} // namespace coffee_shop
+} // namespace coffee_shop::domain

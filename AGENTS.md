@@ -5,13 +5,13 @@
 CoffeeShop is a C++17 learning project for managing drink orders. It is laid out
 as Clean Architecture and uses classic GoF patterns:
 
-| Layer | Headers | Sources | Notes |
-|---|---|---|---|
-| Domain | `include/Domain/` | `src/Domain/` | `Beverages` (`IBeverage`, `Coffee`, `Tea`, ...), `Ingredients` (decorators over `IBeverage`: `Sugar`, `Milk`, ...), `BeverageFactories` (singleton factories), `BeverageBuilder` (`IBeverageBuilder` interface, `BeverageBuilderBase` with the shared state, concrete builders, `BeverageBuildDirector`) |
-| Application | `include/Application/UseCases/` | `src/Application/UseCases/` | Use cases (`AddNewOrderUC`, `ListOrdersUC`, `CancelExistingOrderUC` skeleton), their output ports (`IAddNewOrderOutputPort`, `IListOrdersOutputPort`) and `IOrderRepository` |
-| InterfaceAdapters | `include/InterfaceAdapters/` | `src/InterfaceAdapters/` | `BeverageController`, `TextPresenter` (implements the output ports, writes text to a `std::ostream`), `OrderRepository`, `Gateways/OrderDiskDataSource` |
-| Infrastructure | `include/Infrastructure/UI/` | `src/Infrastructure/UI/` | `ConsoleMenu`: console menus that read the user's choices from a stream (library `ConsoleUi`, grouped in the `Infrastructure` interface target) |
-| App | n/a | `apps/ConsoleApp/main.cpp` | `CoffeeShopApp` executable: wires `ConsoleMenu`, `BeverageController`, `OrderRepository` and two `TextPresenter`s (screen and `orders.txt`) |
+| Layer | Namespace | Headers | Sources | Notes |
+|---|---|---|---|---|
+| Domain | `coffee_shop::domain` | `include/Domain/` | `src/Domain/` | `Beverages` (`IBeverage`, `Coffee`, `Tea`, ...), `Ingredients` (decorators over `IBeverage`: `Sugar`, `Milk`, ...), `BeverageFactories` (singleton factories), `BeverageBuilder` (`IBeverageBuilder` interface, `BeverageBuilderBase` with the shared state, concrete builders, `BeverageBuildDirector`) |
+| Application | `coffee_shop::application` | `include/Application/UseCases/` | `src/Application/UseCases/` | Use cases (`AddNewOrderUC`, `ListOrdersUC`, `CancelExistingOrderUC` skeleton), their output ports (`IAddNewOrderOutputPort`, `IListOrdersOutputPort`) and `IOrderRepository` |
+| InterfaceAdapters | `coffee_shop::interface_adapters` (`Gateways`: `...::gateways`) | `include/InterfaceAdapters/` | `src/InterfaceAdapters/` | `BeverageController`, `TextPresenter` (implements the output ports, writes text to a `std::ostream`), `OrderRepository`, `Gateways/OrderDiskDataSource` |
+| Infrastructure | `coffee_shop::infrastructure::ui` | `include/Infrastructure/UI/` | `src/Infrastructure/UI/` | `ConsoleMenu`: console menus that read the user's choices from a stream (library `ConsoleUi`, grouped in the `Infrastructure` interface target) |
+| App | global `main()` | n/a | `apps/ConsoleApp/main.cpp` | `CoffeeShopApp` executable: wires `ConsoleMenu`, `BeverageController`, `OrderRepository` and two `TextPresenter`s (screen and `orders.txt`) |
 
 Dependencies point inward: Domain must not include Application, InterfaceAdapters or Infrastructure
 headers. Infrastructure (UI) is the outermost layer; menu texts belong there, not in the Domain.
@@ -124,17 +124,19 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
   `tests/IntegrationTests/CMakeLists.txt`. There is no globbing. If the test needs another library,
   add it to `target_link_libraries`.
 - Conventions: fixtures are named `Given...` (e.g. `GivenSomeSugar`), test names are
-  `When...Then...`, test code lives in `namespace coffee_shop`, and test bodies use
+  `When...Then...`, test code lives in the namespace of the code it tests (e.g.
+  `coffee_shop::domain`), and test bodies use
   `// Arrange`, `// Act`, `// Assert` comments.
 - `tests/CoffeeShop_gtest.vcxproj`, `tests/test.cpp`, `tests/pch.*` belong to the legacy VS
   solution and are not part of the CMake build.
 - All tests should pass. Add or update tests for any behavior you change.
-- Expected descriptions use `describe({CoffeeLatteName, SugarName})` from
-  `tests/Common/include/BeverageDescription_TestHelpers.hpp` (both test targets have that folder
-  on their include path), because C++17 can't concatenate `std::string_view`s with `+`.
-- Output ports are faked with `FakeAddNewOrderOutputPort` / `FakeListOrdersOutputPort`
-  (`tests/UnitTests/UseCases/include/OutputPort_TestDoubles.hpp`), and the repository with
-  `FakeOrderRepository`. `TextPresenter` tests write to a `std::ostringstream`.
+- Helpers shared by several tests live in `tests/Common/include` (both test targets have it on
+  their include path, so include them by file name) and in namespace `coffee_shop::test_support`:
+  - `test_support::describe({CoffeeLatteName, SugarName})` builds an expected description
+    (`BeverageDescription_TestHelpers.hpp`), because C++17 can't `+` two `std::string_view`s;
+  - `FakeOrderRepository` (`OrderRepository_TestDoubles.hpp`) and `FakeAddNewOrderOutputPort` /
+    `FakeListOrdersOutputPort` (`OutputPort_TestDoubles.hpp`).
+- `TextPresenter` tests write to a `std::ostringstream`.
 - `ConsoleMenu` takes a `std::istream`/`std::ostream`, so menu tests feed it a
   `std::istringstream` (see `tests/UnitTests/Infrastructure/`).
 - To try the whole app without typing, redirect its input. Each line is one answer, `Enter`
@@ -149,7 +151,8 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 - clang-format (`.clang-format`): 2-space indent, **Allman braces**, 80 columns, `PointerAlignment: Right`
   (`const std::shared_ptr<IBeverage> &beverage`), sorted includes.
 - clang-tidy checks (`.clang-tidy`): `clang-diagnostic-*`, `clang-analyzer-*`, `cppcoreguidelines-*`,
-  `modernize-*` (except `modernize-use-trailing-return-type`), and `readability-identifier-naming`.
+  `modernize-*` (except `modernize-use-trailing-return-type`), `readability-identifier-naming`,
+  `llvm-namespace-comment` and `google-build-using-namespace`.
   Project choices: interfaces may declare only `virtual ~X() = default;` (`AllowSoleDefaultDtor`);
   `tests/.clang-tidy` inherits everything but allows `protected` members in GoogleTest fixtures.
   In practice: `override` (not `virtual`) on overrides, `[[nodiscard]]` on `const` getters,
@@ -165,6 +168,18 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
     (`m_Beverage`, `m_Coffee`). Static variables are also `m_`.
   - Constants, constexpr, and enum constants: `CamelCase` (`SugarName`, `BeverageVariety::Cocoa`).
   - Macros: `UPPER_CASE`. Namespaces: `lower_case`.
+- Namespaces:
+  - Everything is in `coffee_shop::<layer>` (see the layer table). A third level only for an
+    independent component that is its own library (`infrastructure::ui`,
+    `interface_adapters::gateways`); sub-folders of one layer (e.g. `Domain/Beverages`) don't get one.
+  - Use the C++17 nested form `namespace coffee_shop::domain { ... }` and close it with
+    `} // namespace coffee_shop::domain` (both checked by clang-tidy). A `.cpp` reopens the
+    namespace instead of qualifying each definition. File-local helpers go in an unnamed namespace.
+  - Refer to another layer with its short name, e.g. `domain::IBeverage` inside
+    `coffee_shop::application`: it keeps the dependencies between layers visible.
+  - No `using namespace` directives (checked by clang-tidy; `std::*_literals` is the allowed
+    exception). In a `.cpp`, use declarations such as `using coffee_shop::infrastructure::ui::ConsoleMenu;`
+    (see `main.cpp`) or a namespace alias. Never put either in a header.
 - Headers are `.hpp`, sources `.cpp`. Use only `#ifndef NAME_HPP` / `#define NAME_HPP` include
   guards (no `#pragma once`, see C++ Core Guidelines SF.8), with a unique name and
   `#endif // NAME_HPP` at the end. Include project headers relative to `include/`, e.g.

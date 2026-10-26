@@ -6,6 +6,8 @@
 #include <string>
 #include <string_view>
 
+namespace coffee_shop::domain
+{
 /// @brief The name of this ingredient in descriptions.
 inline constexpr std::string_view WaterName = "Water";
 
@@ -22,5 +24,6 @@ public:
     return describeWith(WaterName);
   }
 };
+} // namespace coffee_shop::domain
 
 #endif // WATER_HPP

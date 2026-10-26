@@ -7,6 +7,8 @@
 #include <list>
 #include <memory>
 
+namespace coffee_shop::domain
+{
 /// @brief Builds a beverage with a builder, adding the requested ingredients
 /// in a fixed order (Builder pattern director).
 class BeverageBuildDirector
@@ -43,5 +45,6 @@ private:
 
   std::shared_ptr<IBeverageBuilder> m_BeverageBuilder;
 };
+} // namespace coffee_shop::domain
 
 #endif // BEVERAGE_BUILD_DIRECTOR_HPP

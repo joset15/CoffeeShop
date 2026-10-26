@@ -2,6 +2,8 @@
 
 #include <utility>
 
+namespace coffee_shop::application
+{
 CancelExistingOrderUC::CancelExistingOrderUC(std::string name,
                                              IOrderRepository &orderRepository)
     : UseCase(std::move(name)), m_OrderRepository(&orderRepository)
@@ -14,3 +16,4 @@ bool CancelExistingOrderUC::execute()
   // through m_OrderRepository.
   return false;
 }
+} // namespace coffee_shop::application

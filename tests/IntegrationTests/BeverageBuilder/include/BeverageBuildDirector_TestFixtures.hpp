@@ -8,7 +8,7 @@
 #include <list>
 #include <memory>
 
-namespace coffee_shop
+namespace coffee_shop::domain
 {
 ///
 /// \brief A fixture for a director that uses the real builders.
@@ -30,6 +30,6 @@ protected:
   BeverageBuildDirector m_Director;
   std::shared_ptr<IBeverageBuilder> m_Builder;
 };
-} // namespace coffee_shop
+} // namespace coffee_shop::domain
 
 #endif // BEVERAGE_BUILD_DIRECTOR_INTEGRATION_TESTFIXTURES_HPP

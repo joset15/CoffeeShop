@@ -5,6 +5,8 @@
 #include <string>
 #include <string_view>
 
+namespace coffee_shop::domain
+{
 /// @brief The name of this beverage in descriptions.
 inline constexpr std::string_view CoffeeLatteName = "CoffeeLatte";
 
@@ -18,5 +20,6 @@ public:
     return std::string(CoffeeLatteName);
   }
 };
+} // namespace coffee_shop::domain
 
 #endif // COFFEE_LATTE_HPP

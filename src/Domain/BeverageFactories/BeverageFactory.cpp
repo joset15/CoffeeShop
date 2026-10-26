@@ -1,6 +1,8 @@
 #include "Domain/BeverageFactories/BeverageFactory.hpp"
 #include <cassert>
 
+namespace coffee_shop::domain
+{
 std::unique_ptr<IBeverage>
 BeverageFactory::createBeverage(BeverageVariety beverageVariety)
 {
@@ -33,3 +35,4 @@ BeverageFactory::createBeverage(BeverageVariety beverageVariety)
 
   return newBeverage;
 }
+} // namespace coffee_shop::domain

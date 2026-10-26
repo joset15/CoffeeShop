@@ -10,6 +10,8 @@
 #include "Sugar.hpp"
 #include "Water.hpp"
 
+namespace coffee_shop::domain
+{
 enum class Ingredient
 {
   Sugar,
@@ -21,5 +23,6 @@ enum class Ingredient
   Water,
   LastIngredient
 };
+} // namespace coffee_shop::domain
 
 #endif // INGREDIENTS_HPP

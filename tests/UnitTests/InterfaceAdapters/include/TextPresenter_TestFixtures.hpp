@@ -6,7 +6,7 @@
 #include <gtest/gtest.h>
 #include <sstream>
 
-namespace coffee_shop
+namespace coffee_shop::interface_adapters
 {
 ///
 /// \brief A fixture for a presenter that writes to a string.
@@ -17,6 +17,6 @@ protected:
   std::ostringstream m_Output;
   TextPresenter m_Presenter{m_Output};
 };
-} // namespace coffee_shop
+} // namespace coffee_shop::interface_adapters
 
 #endif // TEXT_PRESENTER_TESTFIXTURES_HPP

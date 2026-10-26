@@ -6,6 +6,8 @@
 
 #include <memory>
 
+namespace coffee_shop::domain
+{
 /// @brief Builds a beverage step by step (Builder pattern).
 class IBeverageBuilder
 {
@@ -36,5 +38,6 @@ public:
   /// @brief Adds Water to the beverage.
   virtual bool addWater() = 0;
 };
+} // namespace coffee_shop::domain
 
 #endif // IBEVERAGE_BUILDER_HPP

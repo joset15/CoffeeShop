@@ -6,6 +6,8 @@
 #include "Application/UseCases/IOrderRepository.hpp"
 #include "Application/UseCases/NewOrderReq.hpp"
 
+namespace coffee_shop::interface_adapters
+{
 /// @brief Entry point from the UI to the use cases (Clean Architecture
 /// controller). Each call gets the output port that receives the result.
 class BeverageController
@@ -13,7 +15,7 @@ class BeverageController
 public:
   /// @brief Creates a controller that works on the given repository.
   /// @param orderRepository Where the use cases store and read the orders.
-  explicit BeverageController(IOrderRepository &orderRepository)
+  explicit BeverageController(application::IOrderRepository &orderRepository)
       : m_OrderRepository(&orderRepository)
   {
   }
@@ -21,17 +23,18 @@ public:
   /// @brief Runs the "add new order" use case.
   /// @param newOrderReq The requested beverage and ingredients.
   /// @param outputPort Receives whether the order was added.
-  void addOrder(const NewOrderReq &newOrderReq,
-                IAddNewOrderOutputPort &outputPort) const;
+  void addOrder(const application::NewOrderReq &newOrderReq,
+                application::IAddNewOrderOutputPort &outputPort) const;
 
   /// @brief Runs the "list orders" use case.
   /// @param outputPort Receives the list of orders.
-  void listOrders(IListOrdersOutputPort &outputPort) const;
+  void listOrders(application::IListOrdersOutputPort &outputPort) const;
 
 private:
   /// @brief Where the orders are stored (not owned, never null: set from a
   /// reference).
-  IOrderRepository *m_OrderRepository;
+  application::IOrderRepository *m_OrderRepository;
 };
+} // namespace coffee_shop::interface_adapters
 
 #endif // BEVERAGE_CONTROLLER_HPP

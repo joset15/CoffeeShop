@@ -2,7 +2,7 @@
 
 #include <list>
 
-namespace coffee_shop
+namespace coffee_shop::infrastructure::ui
 {
 TEST_F(GivenAConsoleMenu, WhenMainOptionIsEnteredThenItIsReturned)
 {
@@ -40,7 +40,7 @@ TEST_F(GivenAConsoleMenu, WhenBeverageNumberIsEnteredThenThatVarietyIsReturned)
   auto variety = menu.askBeverageVariety();
 
   // Assert
-  ASSERT_EQ(variety, BeverageVariety::Cocoa);
+  ASSERT_EQ(variety, domain::BeverageVariety::Cocoa);
 }
 
 TEST_F(GivenAConsoleMenu, WhenInvalidBeverageIsEnteredThenItAsksAgain)
@@ -53,7 +53,7 @@ TEST_F(GivenAConsoleMenu, WhenInvalidBeverageIsEnteredThenItAsksAgain)
   auto variety = menu.askBeverageVariety();
 
   // Assert
-  ASSERT_EQ(variety, BeverageVariety::TeaBlack);
+  ASSERT_EQ(variety, domain::BeverageVariety::TeaBlack);
   ASSERT_NE(m_Output.str().find("Please enter a number between 0 and 6."),
             std::string::npos);
 }
@@ -82,7 +82,8 @@ TEST_F(GivenAConsoleMenu, WhenIngredientNumbersAreEnteredThenThoseAreReturned)
 
   // Assert
   ASSERT_EQ(ingredients,
-            (std::list<Ingredient>{Ingredient::Sugar, Ingredient::Milk}));
+            (std::list<domain::Ingredient>{domain::Ingredient::Sugar,
+                                           domain::Ingredient::Milk}));
 }
 
 TEST_F(GivenAConsoleMenu, WhenEmptyLineIsEnteredThenNoIngredientsAreReturned)
@@ -108,6 +109,7 @@ TEST_F(GivenAConsoleMenu, WhenInvalidIngredientIsEnteredThenItAsksAgain)
   auto ingredients = menu.askIngredients();
 
   // Assert
-  ASSERT_EQ(ingredients, (std::list<Ingredient>{Ingredient::Lemon}));
+  ASSERT_EQ(ingredients,
+            (std::list<domain::Ingredient>{domain::Ingredient::Lemon}));
 }
-} // namespace coffee_shop
+} // namespace coffee_shop::infrastructure::ui

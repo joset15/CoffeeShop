@@ -7,7 +7,7 @@
 #include <sstream>
 #include <string>
 
-namespace coffee_shop
+namespace coffee_shop::infrastructure::ui
 {
 ///
 /// \brief A fixture for a console menu that reads from a string.
@@ -26,6 +26,6 @@ protected:
   std::istringstream m_Input;
   std::ostringstream m_Output;
 };
-} // namespace coffee_shop
+} // namespace coffee_shop::infrastructure::ui
 
 #endif // CONSOLE_MENU_TESTFIXTURES_HPP

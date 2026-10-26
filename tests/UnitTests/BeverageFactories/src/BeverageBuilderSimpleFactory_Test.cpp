@@ -2,7 +2,7 @@
 
 #include <memory>
 
-namespace coffee_shop
+namespace coffee_shop::domain
 {
 INSTANTIATE_TEST_CASE_P(
     AllVarieties, GivenABeverageVariety,
@@ -29,4 +29,4 @@ TEST_P(GivenABeverageVariety, WhenBuilderIsCreatedThenItBuildsThatBeverage)
   ASSERT_NE(builder, nullptr);
   ASSERT_EQ(builder->takeBeverage()->getDescription(), beverageName);
 }
-} // namespace coffee_shop
+} // namespace coffee_shop::domain

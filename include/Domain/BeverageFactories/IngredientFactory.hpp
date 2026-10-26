@@ -4,6 +4,8 @@
 #include "IIngredientFactory.hpp"
 #include <memory>
 
+namespace coffee_shop::domain
+{
 /// @brief Creates the ingredient decorators (singleton).
 class IngredientFactory final : public IIngredientFactory
 {
@@ -38,5 +40,6 @@ private:
   /// @brief Private: the singleton is never deleted from outside.
   ~IngredientFactory() override = default;
 };
+} // namespace coffee_shop::domain
 
 #endif // INGREDIENT_FACTORY_HPP

@@ -8,6 +8,8 @@
 #include "IIngredientFactory.hpp"
 #include <memory>
 
+namespace coffee_shop::domain
+{
 /// @brief Creates the builder for each beverage variety.
 class IBeverageBuilderFactory
 {
@@ -21,5 +23,6 @@ public:
   virtual std::shared_ptr<IBeverageBuilder>
   createBeverageBuilder(BeverageVariety beverageVariety) = 0;
 };
+} // namespace coffee_shop::domain
 
 #endif // IBEVERAGE_BUILDER_FACTORY_HPP

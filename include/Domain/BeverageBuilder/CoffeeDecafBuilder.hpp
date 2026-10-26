@@ -3,6 +3,8 @@
 
 #include "CoffeeBuilder.hpp"
 
+namespace coffee_shop::domain
+{
 /// @brief Builds a decaf coffee, with the same rules as an espresso.
 class CoffeeDecafBuilder : public CoffeeBuilder
 {
@@ -22,5 +24,6 @@ private:
   /// @brief Creates the base beverage and resets the CoffeeBuilder state.
   void resetImpl();
 };
+} // namespace coffee_shop::domain
 
 #endif // COFFEE_DECAF_BUILDER_HPP

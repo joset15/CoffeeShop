@@ -2,7 +2,9 @@
 
 #include <utility>
 
-bool OrderRepository::save(std::unique_ptr<IBeverage> newBeverage)
+namespace coffee_shop::interface_adapters
+{
+bool OrderRepository::save(std::unique_ptr<domain::IBeverage> newBeverage)
 {
   m_CurrentOrders.push_back(std::move(newBeverage));
 
@@ -23,3 +25,4 @@ std::vector<std::string> OrderRepository::describeOrders() const
 bool OrderRepository::cancelExistingOrders() { return true; }
 
 bool OrderRepository::storeOrders() { return true; }
+} // namespace coffee_shop::interface_adapters

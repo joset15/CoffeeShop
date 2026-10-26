@@ -9,7 +9,7 @@
 
 #include <gtest/gtest.h>
 
-namespace coffee_shop
+namespace coffee_shop::application
 {
 ///
 /// \brief A fixture for ordering an espresso with sugar (a valid mix).
@@ -17,9 +17,10 @@ namespace coffee_shop
 class GivenAnEspressoWithSugarOrder : public ::testing::Test
 {
 protected:
-  FakeOrderRepository m_OrderRepository;
-  FakeAddNewOrderOutputPort m_OutputPort;
-  NewOrderReq m_Request{BeverageVariety::CoffeeEspresso, {Ingredient::Sugar}};
+  test_support::FakeOrderRepository m_OrderRepository;
+  test_support::FakeAddNewOrderOutputPort m_OutputPort;
+  NewOrderReq m_Request{domain::BeverageVariety::CoffeeEspresso,
+                        {domain::Ingredient::Sugar}};
 };
 
 ///
@@ -28,9 +29,10 @@ protected:
 class GivenAnEspressoWithLemonOrder : public ::testing::Test
 {
 protected:
-  FakeOrderRepository m_OrderRepository;
-  FakeAddNewOrderOutputPort m_OutputPort;
-  NewOrderReq m_Request{BeverageVariety::CoffeeEspresso, {Ingredient::Lemon}};
+  test_support::FakeOrderRepository m_OrderRepository;
+  test_support::FakeAddNewOrderOutputPort m_OutputPort;
+  NewOrderReq m_Request{domain::BeverageVariety::CoffeeEspresso,
+                        {domain::Ingredient::Lemon}};
 };
 
 ///
@@ -39,9 +41,10 @@ protected:
 class GivenALatteOrder : public ::testing::Test
 {
 protected:
-  FakeOrderRepository m_OrderRepository;
-  FakeAddNewOrderOutputPort m_OutputPort;
-  NewOrderReq m_Request{BeverageVariety::CoffeeLatte, {Ingredient::Sugar}};
+  test_support::FakeOrderRepository m_OrderRepository;
+  test_support::FakeAddNewOrderOutputPort m_OutputPort;
+  NewOrderReq m_Request{domain::BeverageVariety::CoffeeLatte,
+                        {domain::Ingredient::Sugar}};
 };
 ///
 /// \brief A fixture for ordering a cocoa with milk.
@@ -49,10 +52,11 @@ protected:
 class GivenACocoaWithMilkOrder : public ::testing::Test
 {
 protected:
-  FakeOrderRepository m_OrderRepository;
-  FakeAddNewOrderOutputPort m_OutputPort;
-  NewOrderReq m_Request{BeverageVariety::Cocoa, {Ingredient::Milk}};
+  test_support::FakeOrderRepository m_OrderRepository;
+  test_support::FakeAddNewOrderOutputPort m_OutputPort;
+  NewOrderReq m_Request{domain::BeverageVariety::Cocoa,
+                        {domain::Ingredient::Milk}};
 };
-} // namespace coffee_shop
+} // namespace coffee_shop::application
 
 #endif // ADD_NEW_ORDER_UC_TESTFIXTURES_HPP

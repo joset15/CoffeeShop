@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-namespace coffee_shop
+namespace coffee_shop::interface_adapters
 {
 TEST_F(GivenATextPresenter, WhenOrderIsAddedThenItsDescriptionIsWritten)
 {
@@ -44,4 +44,4 @@ TEST_F(GivenATextPresenter, WhenOrdersAreListedThenOnePerLineIsWritten)
   // Assert
   ASSERT_EQ(m_Output.str(), "CoffeeLatte, Sugar\nCocoa\n");
 }
-} // namespace coffee_shop
+} // namespace coffee_shop::interface_adapters

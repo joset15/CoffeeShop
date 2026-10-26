@@ -2,17 +2,16 @@
 #include "BeverageDescription_TestHelpers.hpp"
 #include <string>
 
-namespace coffee_shop
+namespace coffee_shop::domain
 {
-
 INSTANTIATE_TEST_CASE_P(
     GiveSomeValidIngredients, GivenSomeIngredientsForTeaBlackBuilder,
     ::testing::Values(
         // clang-format off
 // Don't touch this!
-   std::make_tuple(std::list<Ingredient>{Ingredient::Sugar}, true, describe({TeaBlackName, SugarName})),
-   std::make_tuple(std::list<Ingredient>{Ingredient::Lemon}, true, describe({TeaBlackName, LemonName})),
-   std::make_tuple(std::list<Ingredient>{Ingredient::Milk, Ingredient::Lemon}, false, describe({TeaBlackName, MilkName}))
+   std::make_tuple(std::list<Ingredient>{Ingredient::Sugar}, true, test_support::describe({TeaBlackName, SugarName})),
+   std::make_tuple(std::list<Ingredient>{Ingredient::Lemon}, true, test_support::describe({TeaBlackName, LemonName})),
+   std::make_tuple(std::list<Ingredient>{Ingredient::Milk, Ingredient::Lemon}, false, test_support::describe({TeaBlackName, MilkName}))
    ));
 // clang-format on
 // Carry on formatting
@@ -37,4 +36,4 @@ TEST_P(GivenSomeIngredientsForTeaBlackBuilder,
   ASSERT_EQ(teaWithSomeIngredients.compare(beverageName), 0);
 }
 
-} // namespace coffee_shop
+} // namespace coffee_shop::domain
