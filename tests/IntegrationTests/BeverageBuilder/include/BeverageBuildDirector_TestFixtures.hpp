@@ -23,12 +23,11 @@ protected:
     m_Builder =
         BeverageBuilderSimpleFactory::getInstance()->createBeverageBuilder(
             beverageVariety);
-    m_Director.setBuilder(m_Builder);
-    return m_Director.buildBeverage(ingredients);
+    BeverageBuildDirector director(*m_Builder);
+    return director.buildBeverage(ingredients);
   }
 
-  BeverageBuildDirector m_Director;
-  std::shared_ptr<IBeverageBuilder> m_Builder;
+  std::unique_ptr<IBeverageBuilder> m_Builder;
 };
 } // namespace coffee_shop::domain
 

@@ -28,9 +28,7 @@ bool AddNewOrderUC::addNewOrder(
     domain::BeverageVariety beverageVariety,
     const std::vector<domain::Ingredient> &ingredients)
 {
-  auto director = std::make_unique<domain::BeverageBuildDirector>();
-
-  const std::shared_ptr<domain::IBeverageBuilder> beverageBuilder =
+  const std::unique_ptr<domain::IBeverageBuilder> beverageBuilder =
       domain::BeverageBuilderSimpleFactory::getInstance()
           ->createBeverageBuilder(beverageVariety);
   if (!beverageBuilder)
@@ -38,9 +36,8 @@ bool AddNewOrderUC::addNewOrder(
     return false; // Not a valid BeverageVariety value.
   }
 
-  director->setBuilder(beverageBuilder);
-
-  if (!director->buildBeverage(ingredients))
+  domain::BeverageBuildDirector director(*beverageBuilder);
+  if (!director.buildBeverage(ingredients))
   {
     return false;
   }

@@ -20,14 +20,14 @@ class GivenACoffeeEspressoBuilder : public ::testing::Test
 protected:
   void SetUp() override
   {
-    m_BeverageBuildDirector = std::make_unique<BeverageBuildDirector>();
-    m_CoffeeEspressoBuilder = std::make_shared<CoffeeEspressoBuilder>(
+    m_CoffeeEspressoBuilder = std::make_unique<CoffeeEspressoBuilder>(
         BeverageFactory::getInstance(), IngredientFactory::getInstance());
-    m_BeverageBuildDirector->setBuilder(m_CoffeeEspressoBuilder);
+    m_BeverageBuildDirector =
+        std::make_unique<BeverageBuildDirector>(*m_CoffeeEspressoBuilder);
   }
 
+  std::unique_ptr<CoffeeEspressoBuilder> m_CoffeeEspressoBuilder;
   std::unique_ptr<BeverageBuildDirector> m_BeverageBuildDirector;
-  std::shared_ptr<CoffeeEspressoBuilder> m_CoffeeEspressoBuilder;
 };
 } // namespace coffee_shop::domain
 

@@ -22,7 +22,7 @@ public:
   /// @brief Creates the builder for a beverage variety.
   /// @param beverageVariety The variety to build.
   /// @return The builder (nullptr only for an invalid BeverageVariety value).
-  std::shared_ptr<IBeverageBuilder>
+  std::unique_ptr<IBeverageBuilder>
   createBeverageBuilder(BeverageVariety beverageVariety) override;
 
   BeverageBuilderSimpleFactory(const BeverageBuilderSimpleFactory &) = delete;

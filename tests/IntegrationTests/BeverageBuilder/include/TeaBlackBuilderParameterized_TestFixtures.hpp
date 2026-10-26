@@ -22,14 +22,14 @@ class GivenSomeIngredientsForTeaBlackBuilder
 protected:
   void SetUp() override
   {
-    m_BeverageBuildDirector = std::make_unique<BeverageBuildDirector>();
-    m_TeaBlackBuilder = std::make_shared<TeaBlackBuilder>(
+    m_TeaBlackBuilder = std::make_unique<TeaBlackBuilder>(
         BeverageFactory::getInstance(), IngredientFactory::getInstance());
-    m_BeverageBuildDirector->setBuilder(m_TeaBlackBuilder);
+    m_BeverageBuildDirector =
+        std::make_unique<BeverageBuildDirector>(*m_TeaBlackBuilder);
   }
 
+  std::unique_ptr<TeaBlackBuilder> m_TeaBlackBuilder;
   std::unique_ptr<BeverageBuildDirector> m_BeverageBuildDirector;
-  std::shared_ptr<TeaBlackBuilder> m_TeaBlackBuilder;
 };
 } // namespace coffee_shop::domain
 

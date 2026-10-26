@@ -7,7 +7,7 @@ namespace coffee_shop::domain
 bool BeverageBuildDirector::buildBeverage(
     const std::vector<Ingredient> &ingredients)
 {
-  if (!m_BeverageBuilder || hasSeveralMilks(ingredients))
+  if (hasSeveralMilks(ingredients))
   {
     return false;
   }

@@ -5,36 +5,36 @@
 
 namespace coffee_shop::domain
 {
-std::shared_ptr<IBeverageBuilder>
+std::unique_ptr<IBeverageBuilder>
 BeverageBuilderSimpleFactory::createBeverageBuilder(
     BeverageVariety beverageVariety)
 {
-  std::shared_ptr<IBeverageBuilder> newBeverageBuilder = nullptr;
+  std::unique_ptr<IBeverageBuilder> newBeverageBuilder = nullptr;
 
   switch (beverageVariety)
   {
   case BeverageVariety::CoffeeEspresso:
-    newBeverageBuilder = std::make_shared<CoffeeEspressoBuilder>(
+    newBeverageBuilder = std::make_unique<CoffeeEspressoBuilder>(
         BeverageFactory::getInstance(), IngredientFactory::getInstance());
     break;
   case BeverageVariety::CoffeeLatte:
-    newBeverageBuilder = std::make_shared<CoffeeLatteBuilder>(
+    newBeverageBuilder = std::make_unique<CoffeeLatteBuilder>(
         BeverageFactory::getInstance(), IngredientFactory::getInstance());
     break;
   case BeverageVariety::CoffeeDecaf:
-    newBeverageBuilder = std::make_shared<CoffeeDecafBuilder>(
+    newBeverageBuilder = std::make_unique<CoffeeDecafBuilder>(
         BeverageFactory::getInstance(), IngredientFactory::getInstance());
     break;
   case BeverageVariety::TeaBlack:
-    newBeverageBuilder = std::make_shared<TeaBlackBuilder>(
+    newBeverageBuilder = std::make_unique<TeaBlackBuilder>(
         BeverageFactory::getInstance(), IngredientFactory::getInstance());
     break;
   case BeverageVariety::TeaGreen:
-    newBeverageBuilder = std::make_shared<TeaGreenBuilder>(
+    newBeverageBuilder = std::make_unique<TeaGreenBuilder>(
         BeverageFactory::getInstance(), IngredientFactory::getInstance());
     break;
   case BeverageVariety::Cocoa:
-    newBeverageBuilder = std::make_shared<CocoaBuilder>(
+    newBeverageBuilder = std::make_unique<CocoaBuilder>(
         BeverageFactory::getInstance(), IngredientFactory::getInstance());
     break;
   }

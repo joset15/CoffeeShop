@@ -19,8 +19,8 @@ public:
 
   /// @brief Creates the builder for a beverage variety.
   /// @param beverageVariety The variety to build.
-  /// @return The builder.
-  virtual std::shared_ptr<IBeverageBuilder>
+  /// @return The builder (nullptr only for an invalid BeverageVariety value).
+  virtual std::unique_ptr<IBeverageBuilder>
   createBeverageBuilder(BeverageVariety beverageVariety) = 0;
 };
 } // namespace coffee_shop::domain
