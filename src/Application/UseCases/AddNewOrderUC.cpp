@@ -2,10 +2,7 @@
 
 #include "Application/UseCases/NewOrderReq.hpp"
 
-#include "Domain/BeverageBuilder/BeverageBuilder.hpp"
-#include "Domain/BeverageFactories/BeverageBuilderSimpleFactory.hpp"
-#include "Domain/BeverageFactories/BeverageFactory.hpp"
-#include "Domain/BeverageFactories/IngredientFactory.hpp"
+#include "Domain/BeverageBuilder/BeverageBuildDirector.hpp"
 
 #include <memory>
 #include <string>
@@ -29,8 +26,7 @@ bool AddNewOrderUC::addNewOrder(
     const std::vector<domain::Ingredient> &ingredients)
 {
   const std::unique_ptr<domain::IBeverageBuilder> beverageBuilder =
-      domain::BeverageBuilderSimpleFactory::getInstance()
-          ->createBeverageBuilder(beverageVariety);
+      m_BeverageBuilderFactory->createBeverageBuilder(beverageVariety);
   if (!beverageBuilder)
   {
     return false; // Not a valid BeverageVariety value.

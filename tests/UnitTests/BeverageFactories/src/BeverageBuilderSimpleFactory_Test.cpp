@@ -22,8 +22,7 @@ TEST_P(GivenABeverageVariety, WhenBuilderIsCreatedThenItBuildsThatBeverage)
 
   // Act
   const std::unique_ptr<IBeverageBuilder> builder =
-      BeverageBuilderSimpleFactory::getInstance()->createBeverageBuilder(
-          beverageVariety);
+      m_Factories.m_BuilderFactory.createBeverageBuilder(beverageVariety);
 
   // Assert
   ASSERT_NE(builder, nullptr);

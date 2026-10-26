@@ -4,8 +4,7 @@
 #include "Domain/BeverageBuilder/BeverageBuildDirector.hpp"
 #include "Domain/BeverageBuilder/TeaBlackBuilder.hpp"
 
-#include "Domain/BeverageFactories/BeverageFactory.hpp"
-#include "Domain/BeverageFactories/IngredientFactory.hpp"
+#include "DomainFactories_TestHelpers.hpp"
 
 #include <gtest/gtest.h>
 #include <memory>
@@ -23,11 +22,12 @@ protected:
   void SetUp() override
   {
     m_TeaBlackBuilder = std::make_unique<TeaBlackBuilder>(
-        BeverageFactory::getInstance(), IngredientFactory::getInstance());
+        m_Factories.m_BeverageFactory, m_Factories.m_IngredientFactory);
     m_BeverageBuildDirector =
         std::make_unique<BeverageBuildDirector>(*m_TeaBlackBuilder);
   }
 
+  test_support::DomainFactories m_Factories;
   std::unique_ptr<TeaBlackBuilder> m_TeaBlackBuilder;
   std::unique_ptr<BeverageBuildDirector> m_BeverageBuildDirector;
 };

@@ -2,7 +2,7 @@
 #define BEVERAGE_BUILD_DIRECTOR_INTEGRATION_TESTFIXTURES_HPP
 
 #include "Domain/BeverageBuilder/BeverageBuildDirector.hpp"
-#include "Domain/BeverageFactories/BeverageBuilderSimpleFactory.hpp"
+#include "DomainFactories_TestHelpers.hpp"
 
 #include <gtest/gtest.h>
 #include <memory>
@@ -21,12 +21,12 @@ protected:
              const std::vector<Ingredient> &ingredients)
   {
     m_Builder =
-        BeverageBuilderSimpleFactory::getInstance()->createBeverageBuilder(
-            beverageVariety);
+        m_Factories.m_BuilderFactory.createBeverageBuilder(beverageVariety);
     BeverageBuildDirector director(*m_Builder);
     return director.buildBeverage(ingredients);
   }
 
+  test_support::DomainFactories m_Factories;
   std::unique_ptr<IBeverageBuilder> m_Builder;
 };
 } // namespace coffee_shop::domain

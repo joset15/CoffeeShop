@@ -8,8 +8,8 @@ namespace coffee_shop::domain
 class CocoaBuilder : public BeverageBuilderBase
 {
 public:
-  CocoaBuilder(IBeverageFactory *beverageFactory,
-               IIngredientFactory *ingredientFactory)
+  CocoaBuilder(IBeverageFactory &beverageFactory,
+               IIngredientFactory &ingredientFactory)
       : BeverageBuilderBase(beverageFactory, ingredientFactory)
   {
     resetImpl();

@@ -1,7 +1,4 @@
 #include "Domain/BeverageFactories/BeverageBuilderSimpleFactory.hpp"
-#include "Domain/BeverageFactories/BeverageFactory.hpp"
-#include "Domain/BeverageFactories/IngredientFactory.hpp"
-
 
 namespace coffee_shop::domain
 {
@@ -15,27 +12,27 @@ BeverageBuilderSimpleFactory::createBeverageBuilder(
   {
   case BeverageVariety::CoffeeEspresso:
     newBeverageBuilder = std::make_unique<CoffeeEspressoBuilder>(
-        BeverageFactory::getInstance(), IngredientFactory::getInstance());
+        *m_BeverageFactory, *m_IngredientFactory);
     break;
   case BeverageVariety::CoffeeLatte:
     newBeverageBuilder = std::make_unique<CoffeeLatteBuilder>(
-        BeverageFactory::getInstance(), IngredientFactory::getInstance());
+        *m_BeverageFactory, *m_IngredientFactory);
     break;
   case BeverageVariety::CoffeeDecaf:
     newBeverageBuilder = std::make_unique<CoffeeDecafBuilder>(
-        BeverageFactory::getInstance(), IngredientFactory::getInstance());
+        *m_BeverageFactory, *m_IngredientFactory);
     break;
   case BeverageVariety::TeaBlack:
     newBeverageBuilder = std::make_unique<TeaBlackBuilder>(
-        BeverageFactory::getInstance(), IngredientFactory::getInstance());
+        *m_BeverageFactory, *m_IngredientFactory);
     break;
   case BeverageVariety::TeaGreen:
     newBeverageBuilder = std::make_unique<TeaGreenBuilder>(
-        BeverageFactory::getInstance(), IngredientFactory::getInstance());
+        *m_BeverageFactory, *m_IngredientFactory);
     break;
   case BeverageVariety::Cocoa:
-    newBeverageBuilder = std::make_unique<CocoaBuilder>(
-        BeverageFactory::getInstance(), IngredientFactory::getInstance());
+    newBeverageBuilder = std::make_unique<CocoaBuilder>(*m_BeverageFactory,
+                                                        *m_IngredientFactory);
     break;
   }
 

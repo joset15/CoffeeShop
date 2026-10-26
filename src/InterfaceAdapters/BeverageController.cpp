@@ -9,8 +9,8 @@ void BeverageController::addOrder(
     const application::NewOrderReq &newOrderReq,
     application::IAddNewOrderOutputPort &outputPort) const
 {
-  application::AddNewOrderUC addNewOrderUC(newOrderReq, *m_OrderRepository,
-                                           outputPort);
+  application::AddNewOrderUC addNewOrderUC(
+      newOrderReq, *m_BeverageBuilderFactory, *m_OrderRepository, outputPort);
   addNewOrderUC.execute();
 }
 

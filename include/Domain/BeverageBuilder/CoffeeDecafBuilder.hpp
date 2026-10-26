@@ -10,8 +10,8 @@ class CoffeeDecafBuilder : public CoffeeBuilder
 {
 public:
   /// @brief The constructor.
-  CoffeeDecafBuilder(IBeverageFactory *beverageFactory,
-                     IIngredientFactory *ingredientFactory)
+  CoffeeDecafBuilder(IBeverageFactory &beverageFactory,
+                     IIngredientFactory &ingredientFactory)
       : CoffeeBuilder(beverageFactory, ingredientFactory)
   {
     resetImpl();
