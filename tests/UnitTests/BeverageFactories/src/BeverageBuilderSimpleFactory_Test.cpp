@@ -21,9 +21,8 @@ TEST_P(GivenABeverageVariety, WhenBuilderIsCreatedThenItBuildsThatBeverage)
   const auto [beverageVariety, beverageName] = GetParam();
 
   // Act
-  const std::shared_ptr<IBeverageBuilder> builder =
-      BeverageBuilderSimpleFactory::getInstance()->createBeverageBuilder(
-          beverageVariety);
+  const std::unique_ptr<IBeverageBuilder> builder =
+      m_Factories.m_BuilderFactory.createBeverageBuilder(beverageVariety);
 
   // Assert
   ASSERT_NE(builder, nullptr);

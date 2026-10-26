@@ -27,12 +27,14 @@ public:
 
 protected:
   /// @brief Stores the factories used to build the beverage.
-  /// @param beverageFactory Creates the base beverages (not owned).
-  /// @param ingredientFactory Creates the ingredient decorators (not owned).
-  BeverageBuilderBase(IBeverageFactory *beverageFactory,
-                      IIngredientFactory *ingredientFactory)
-      : m_BeverageFactory(beverageFactory),
-        m_IngredientFactory(ingredientFactory)
+  /// @param beverageFactory Creates the base beverages (not owned; must
+  /// outlive the builder).
+  /// @param ingredientFactory Creates the ingredient decorators (not owned;
+  /// must outlive the builder).
+  BeverageBuilderBase(IBeverageFactory &beverageFactory,
+                      IIngredientFactory &ingredientFactory)
+      : m_BeverageFactory(&beverageFactory),
+        m_IngredientFactory(&ingredientFactory)
   {
   }
 
@@ -55,11 +57,12 @@ private:
   /// @brief The beverage that will be built.
   std::unique_ptr<IBeverage> m_Beverage;
 
-  /// @brief The factory that creates base beverages (not owned).
-  IBeverageFactory *m_BeverageFactory = nullptr;
+  /// @brief The factory that creates base beverages (not owned, never null).
+  IBeverageFactory *m_BeverageFactory;
 
-  /// @brief The factory that creates ingredient decorators (not owned).
-  IIngredientFactory *m_IngredientFactory = nullptr;
+  /// @brief The factory that creates ingredient decorators (not owned, never
+  /// null).
+  IIngredientFactory *m_IngredientFactory;
 };
 } // namespace coffee_shop::domain
 

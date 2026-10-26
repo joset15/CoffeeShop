@@ -1,6 +1,7 @@
 #ifndef ADD_NEW_ORDER_UC_TESTFIXTURES_HPP
 #define ADD_NEW_ORDER_UC_TESTFIXTURES_HPP
 
+#include "DomainFactories_TestHelpers.hpp"
 #include "OrderRepository_TestDoubles.hpp"
 #include "OutputPort_TestDoubles.hpp"
 
@@ -17,6 +18,7 @@ namespace coffee_shop::application
 class GivenAnEspressoWithSugarOrder : public ::testing::Test
 {
 protected:
+  test_support::DomainFactories m_Factories;
   test_support::FakeOrderRepository m_OrderRepository;
   test_support::FakeAddNewOrderOutputPort m_OutputPort;
   NewOrderReq m_Request{domain::BeverageVariety::CoffeeEspresso,
@@ -29,6 +31,7 @@ protected:
 class GivenAnEspressoWithLemonOrder : public ::testing::Test
 {
 protected:
+  test_support::DomainFactories m_Factories;
   test_support::FakeOrderRepository m_OrderRepository;
   test_support::FakeAddNewOrderOutputPort m_OutputPort;
   NewOrderReq m_Request{domain::BeverageVariety::CoffeeEspresso,
@@ -41,6 +44,7 @@ protected:
 class GivenALatteOrder : public ::testing::Test
 {
 protected:
+  test_support::DomainFactories m_Factories;
   test_support::FakeOrderRepository m_OrderRepository;
   test_support::FakeAddNewOrderOutputPort m_OutputPort;
   NewOrderReq m_Request{domain::BeverageVariety::CoffeeLatte,
@@ -52,6 +56,7 @@ protected:
 class GivenACocoaWithMilkOrder : public ::testing::Test
 {
 protected:
+  test_support::DomainFactories m_Factories;
   test_support::FakeOrderRepository m_OrderRepository;
   test_support::FakeAddNewOrderOutputPort m_OutputPort;
   NewOrderReq m_Request{domain::BeverageVariety::Cocoa,

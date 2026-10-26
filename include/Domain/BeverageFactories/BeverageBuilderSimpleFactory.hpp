@@ -3,41 +3,40 @@
 
 #include "../Beverages/BeverageVariety.hpp"
 #include "IBeverageBuilderFactory.hpp"
+#include "IBeverageFactory.hpp"
+#include "IIngredientFactory.hpp"
 #include <memory>
 
 namespace coffee_shop::domain
 {
-/// @brief Creates the builder for each beverage variety (singleton).
+/// @brief Creates the builder for each beverage variety.
 class BeverageBuilderSimpleFactory final : public IBeverageBuilderFactory
 {
 public:
-  /// @brief Gets the only instance (singleton).
-  /// @return The instance; it lives until the program ends.
-  static BeverageBuilderSimpleFactory *getInstance()
+  /// @brief Creates a factory whose builders use the given factories.
+  /// @param beverageFactory Creates the base beverages (not owned; must
+  /// outlive this factory and the builders it creates).
+  /// @param ingredientFactory Creates the ingredient decorators (not owned;
+  /// same lifetime rule).
+  BeverageBuilderSimpleFactory(IBeverageFactory &beverageFactory,
+                               IIngredientFactory &ingredientFactory)
+      : m_BeverageFactory(&beverageFactory),
+        m_IngredientFactory(&ingredientFactory)
   {
-    static BeverageBuilderSimpleFactory m_BeverageBuilderFactoryInstance;
-    return &m_BeverageBuilderFactoryInstance;
   }
 
   /// @brief Creates the builder for a beverage variety.
   /// @param beverageVariety The variety to build.
   /// @return The builder (nullptr only for an invalid BeverageVariety value).
-  std::shared_ptr<IBeverageBuilder>
+  std::unique_ptr<IBeverageBuilder>
   createBeverageBuilder(BeverageVariety beverageVariety) override;
 
-  BeverageBuilderSimpleFactory(const BeverageBuilderSimpleFactory &) = delete;
-  BeverageBuilderSimpleFactory &
-  operator=(const BeverageBuilderSimpleFactory &) = delete;
-
-  BeverageBuilderSimpleFactory(BeverageBuilderSimpleFactory &&) = delete;
-  BeverageBuilderSimpleFactory &
-  operator=(BeverageBuilderSimpleFactory &&) = delete;
-
 private:
-  /// @brief Private constructor: use getInstance().
-  BeverageBuilderSimpleFactory() = default;
-  /// @brief Private: the singleton is never deleted from outside.
-  ~BeverageBuilderSimpleFactory() override = default;
+  /// @brief Creates the base beverages (not owned, never null).
+  IBeverageFactory *m_BeverageFactory;
+
+  /// @brief Creates the ingredient decorators (not owned, never null).
+  IIngredientFactory *m_IngredientFactory;
 };
 } // namespace coffee_shop::domain
 

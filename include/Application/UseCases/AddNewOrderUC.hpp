@@ -1,11 +1,9 @@
 #ifndef ADD_NEW_ORDER_UC_HPP
 #define ADD_NEW_ORDER_UC_HPP
 
-#include "UseCase.hpp"
-
-#include "IRequest.hpp"
 #include "NewOrderReq.hpp"
 
+#include "Domain/BeverageFactories/IBeverageBuilderFactory.hpp"
 #include "Domain/Beverages/BeverageVariety.hpp"
 #include "Domain/Beverages/IBeverage.hpp"
 #include "Domain/Ingredients/Ingredients.hpp"
@@ -13,37 +11,42 @@
 #include "IAddNewOrderOutputPort.hpp"
 #include "IOrderRepository.hpp"
 
-#include <string>
 #include <utility>
 #include <vector>
 
 namespace coffee_shop::application
 {
 /// @brief Builds the requested beverage and saves it as a new order.
-class AddNewOrderUC : public UseCase
+class AddNewOrderUC
 {
 public:
   /// @brief Creates the use case for one request.
-  /// @param name The name of the use case.
   /// @param request The beverage and ingredients to order.
+  /// @param beverageBuilderFactory Creates the builder of the beverage.
   /// @param orderRepository Where the new order is saved.
   /// @param outputPort Receives whether the order was added.
-  AddNewOrderUC(std::string name, NewOrderReq request,
+  AddNewOrderUC(NewOrderReq request,
+                domain::IBeverageBuilderFactory &beverageBuilderFactory,
                 IOrderRepository &orderRepository,
                 IAddNewOrderOutputPort &outputPort)
-      : UseCase(std::move(name)), m_OrderRepository(&orderRepository),
-        m_OutputPort(&outputPort), m_NewOrderReq(std::move(request))
+      : m_BeverageBuilderFactory(&beverageBuilderFactory),
+        m_OrderRepository(&orderRepository), m_OutputPort(&outputPort),
+        m_NewOrderReq(std::move(request))
   {
   }
 
   /// @brief Builds the beverage, saves the order and reports the result to
   /// the output port (orderAdded() or orderRejected()).
   /// @return False if the order was rejected.
-  bool execute() override;
+  bool execute();
 
 private:
   bool addNewOrder(domain::BeverageVariety beverageVariety,
                    const std::vector<domain::Ingredient> &ingredients);
+
+  /// @brief Creates the builders (not owned, never null: set from a
+  /// reference).
+  domain::IBeverageBuilderFactory *m_BeverageBuilderFactory;
 
   /// @brief Where new orders are saved (not owned, never null: set from a
   /// reference).

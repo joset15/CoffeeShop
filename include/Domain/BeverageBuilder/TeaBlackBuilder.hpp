@@ -8,8 +8,8 @@ namespace coffee_shop::domain
 class TeaBlackBuilder : public TeaBuilder
 {
 public:
-  TeaBlackBuilder(IBeverageFactory *beverageFactory,
-                  IIngredientFactory *ingredientFactory)
+  TeaBlackBuilder(IBeverageFactory &beverageFactory,
+                  IIngredientFactory &ingredientFactory)
       : TeaBuilder(beverageFactory, ingredientFactory)
   {
     resetImpl();

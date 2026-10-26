@@ -1,7 +1,7 @@
 #ifndef BEVERAGE_BUILDER_SIMPLE_FACTORY_TESTFIXTURES_HPP
 #define BEVERAGE_BUILDER_SIMPLE_FACTORY_TESTFIXTURES_HPP
 
-#include "Domain/BeverageFactories/BeverageBuilderSimpleFactory.hpp"
+#include "DomainFactories_TestHelpers.hpp"
 
 #include <gtest/gtest.h>
 #include <string_view>
@@ -15,6 +15,8 @@ namespace coffee_shop::domain
 class GivenABeverageVariety : public ::testing::TestWithParam<
                                   std::tuple<BeverageVariety, std::string_view>>
 {
+protected:
+  test_support::DomainFactories m_Factories;
 };
 } // namespace coffee_shop::domain
 

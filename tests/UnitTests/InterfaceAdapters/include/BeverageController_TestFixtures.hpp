@@ -1,6 +1,7 @@
 #ifndef BEVERAGE_CONTROLLER_TESTFIXTURES_HPP
 #define BEVERAGE_CONTROLLER_TESTFIXTURES_HPP
 
+#include "DomainFactories_TestHelpers.hpp"
 #include "OrderRepository_TestDoubles.hpp"
 #include "OutputPort_TestDoubles.hpp"
 
@@ -18,8 +19,10 @@ namespace coffee_shop::interface_adapters
 class GivenABeverageController : public ::testing::Test
 {
 protected:
+  test_support::DomainFactories m_Factories;
   test_support::FakeOrderRepository m_OrderRepository;
-  BeverageController m_BeverageController{m_OrderRepository};
+  BeverageController m_BeverageController{m_Factories.m_BuilderFactory,
+                                          m_OrderRepository};
   test_support::FakeAddNewOrderOutputPort m_AddNewOrderOutputPort;
   test_support::FakeListOrdersOutputPort m_ListOrdersOutputPort;
 

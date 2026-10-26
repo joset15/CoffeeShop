@@ -29,8 +29,8 @@ public:
 
 protected:
   /// @brief Only concrete teas (e.g. TeaBlackBuilder) create the base beverage.
-  TeaBuilder(IBeverageFactory *beverageFactory,
-             IIngredientFactory *ingredientFactory)
+  TeaBuilder(IBeverageFactory &beverageFactory,
+             IIngredientFactory &ingredientFactory)
       : BeverageBuilderBase(beverageFactory, ingredientFactory)
   {
     resetImpl();

@@ -4,7 +4,6 @@
 #include "Domain/Ingredients/Ingredients.hpp"
 #include "IBeverageBuilder.hpp"
 
-#include <memory>
 #include <vector>
 
 namespace coffee_shop::domain
@@ -14,17 +13,19 @@ namespace coffee_shop::domain
 class BeverageBuildDirector
 {
 public:
-  /// @brief Sets the builder used by the next build.
-  void setBuilder(const std::shared_ptr<IBeverageBuilder> &beverageBuilder)
+  /// @brief Creates a director that builds with the given builder.
+  /// @param beverageBuilder The builder to use. It isn't owned and must
+  /// outlive the director.
+  explicit BeverageBuildDirector(IBeverageBuilder &beverageBuilder)
+      : m_BeverageBuilder(&beverageBuilder)
   {
-    m_BeverageBuilder = beverageBuilder;
   }
 
-  /// @brief Builds a beverage with the builder set by setBuilder(). The
-  /// builder decides which beverage it is.
+  /// @brief Builds a beverage with the builder. The builder decides which
+  /// beverage it is; take it with IBeverageBuilder::takeBeverage().
   /// @param ingredients The requested ingredients.
-  /// @return False if there is no builder or an ingredient can't be added
-  /// (e.g. water, lemon in cocoa, milk in a latte, or two kinds of milk).
+  /// @return False if an ingredient can't be added (e.g. water, lemon in
+  /// cocoa, milk in a latte, or two kinds of milk).
   bool buildBeverage(const std::vector<Ingredient> &ingredients);
 
 private:
@@ -43,7 +44,8 @@ private:
   static bool find(const std::vector<Ingredient> &ingredients,
                    Ingredient ingredient);
 
-  std::shared_ptr<IBeverageBuilder> m_BeverageBuilder;
+  /// @brief The builder (not owned, never null: set from a reference).
+  IBeverageBuilder *m_BeverageBuilder;
 };
 } // namespace coffee_shop::domain
 

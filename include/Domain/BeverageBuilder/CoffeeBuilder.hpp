@@ -30,8 +30,8 @@ public:
   bool addWater() override { return false; }
 
 protected:
-  CoffeeBuilder(IBeverageFactory *beverageFactory,
-                IIngredientFactory *ingredientFactory)
+  CoffeeBuilder(IBeverageFactory &beverageFactory,
+                IIngredientFactory &ingredientFactory)
       : BeverageBuilderBase(beverageFactory, ingredientFactory)
   {
     resetImpl();

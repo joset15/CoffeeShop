@@ -6,18 +6,10 @@
 
 namespace coffee_shop::domain
 {
-/// @brief Creates the ingredient decorators (singleton).
+/// @brief Creates the ingredient decorators.
 class IngredientFactory final : public IIngredientFactory
 {
 public:
-  /// @brief Gets the only instance (singleton).
-  /// @return The instance; it lives until the program ends.
-  static IngredientFactory *getInstance()
-  {
-    static IngredientFactory m_IngredientFactoryInstance;
-    return &m_IngredientFactoryInstance;
-  }
-
   /// @brief Wraps a beverage with the decorator of an ingredient.
   /// @param ingredient The ingredient to add.
   /// @param beverage The beverage to decorate; the decorator takes ownership.
@@ -26,19 +18,6 @@ public:
   std::unique_ptr<IBeverage>
   createIngredient(Ingredient ingredient,
                    std::unique_ptr<IBeverage> beverage) override;
-
-  IngredientFactory(const IngredientFactory &) = delete;
-  IngredientFactory &operator=(const IngredientFactory &) = delete;
-
-  IngredientFactory(IngredientFactory &&) = delete;
-  IngredientFactory &operator=(IngredientFactory &&) = delete;
-
-private:
-  /// @brief Private constructor: use getInstance().
-  IngredientFactory() = default;
-
-  /// @brief Private: the singleton is never deleted from outside.
-  ~IngredientFactory() override = default;
 };
 } // namespace coffee_shop::domain
 

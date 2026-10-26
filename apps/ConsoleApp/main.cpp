@@ -1,4 +1,7 @@
 #include "Application/UseCases/NewOrderReq.hpp"
+#include "Domain/BeverageFactories/BeverageBuilderSimpleFactory.hpp"
+#include "Domain/BeverageFactories/BeverageFactory.hpp"
+#include "Domain/BeverageFactories/IngredientFactory.hpp"
 #include "Infrastructure/UI/ConsoleMenu.hpp"
 #include "InterfaceAdapters/BeverageController.hpp"
 #include "InterfaceAdapters/OrderRepository.hpp"
@@ -13,6 +16,9 @@
 #include <iostream>
 
 using coffee_shop::application::NewOrderReq;
+using coffee_shop::domain::BeverageBuilderSimpleFactory;
+using coffee_shop::domain::BeverageFactory;
+using coffee_shop::domain::IngredientFactory;
 using coffee_shop::infrastructure::ui::ConsoleMenu;
 using coffee_shop::interface_adapters::BeverageController;
 using coffee_shop::interface_adapters::OrderRepository;
@@ -60,9 +66,14 @@ void printOrders(const BeverageController &controller)
 /// @brief Runs the main menu until the user quits or the input ends.
 void run()
 {
-  ConsoleMenu menu(std::cin, std::cout);
+  // Composition root: create every dependency and wire them together.
+  BeverageFactory beverageFactory;
+  IngredientFactory ingredientFactory;
+  BeverageBuilderSimpleFactory beverageBuilderFactory(beverageFactory,
+                                                      ingredientFactory);
   OrderRepository orderRepository;
-  const BeverageController controller(orderRepository);
+  const BeverageController controller(beverageBuilderFactory, orderRepository);
+  ConsoleMenu menu(std::cin, std::cout);
   TextPresenter screenPresenter(std::cout);
 
   while (true)
