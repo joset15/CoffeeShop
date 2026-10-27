@@ -2,8 +2,10 @@
 #define OUTPUT_PORT_TESTDOUBLES_HPP
 
 #include "Application/UseCases/IAddNewOrderOutputPort.hpp"
+#include "Application/UseCases/ICancelOrdersOutputPort.hpp"
 #include "Application/UseCases/IListOrdersOutputPort.hpp"
 
+#include <cstddef>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -56,6 +58,23 @@ public:
 
 private:
   std::optional<std::vector<std::string>> m_ListedDescriptions;
+};
+///
+/// \brief Records the count sent by the "cancel orders" use case.
+///
+class FakeCancelOrdersOutputPort : public application::ICancelOrdersOutputPort
+{
+public:
+  void ordersCancelled(std::size_t count) override { m_CancelledCount = count; }
+
+  /// @return The last count, or nullopt if nothing was reported.
+  [[nodiscard]] const std::optional<std::size_t> &getCancelledCount() const
+  {
+    return m_CancelledCount;
+  }
+
+private:
+  std::optional<std::size_t> m_CancelledCount;
 };
 } // namespace coffee_shop::test_support
 

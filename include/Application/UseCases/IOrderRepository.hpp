@@ -3,6 +3,7 @@
 
 #include "Domain/Beverages/IBeverage.hpp"
 
+#include <cstddef>
 #include <memory>
 #include <string>
 #include <vector>
@@ -24,6 +25,10 @@ public:
   /// @brief Describes the stored orders.
   /// @return One description per order, in the order they were saved.
   [[nodiscard]] virtual std::vector<std::string> describeOrders() const = 0;
+
+  /// @brief Cancels (removes) all the stored orders.
+  /// @return How many orders were cancelled (0 if there were none).
+  virtual std::size_t cancelOrders() = 0;
 };
 } // namespace coffee_shop::application
 

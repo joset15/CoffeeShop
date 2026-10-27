@@ -7,6 +7,7 @@
 
 #include <gtest/gtest.h>
 
+#include <cstddef>
 #include <string>
 #include <vector>
 
@@ -47,5 +48,21 @@ TEST_F(GivenABeverageController, WhenOrdersAreListedThenTheAddedOrdersAreSent)
   ASSERT_EQ(m_ListOrdersOutputPort.getListedDescriptions(),
             (std::vector<std::string>{test_support::describe(
                 {domain::CoffeeEspressoName, domain::SugarName})}));
+}
+
+TEST_F(GivenABeverageController, WhenOrdersAreCancelledThenNoneAreListed)
+{
+  // AAA: Arrange, Act, Assert
+  // Arrange
+  m_BeverageController.addOrder(m_ValidRequest, m_AddNewOrderOutputPort);
+
+  // Act
+  m_BeverageController.cancelOrders(m_CancelOrdersOutputPort);
+  m_BeverageController.listOrders(m_ListOrdersOutputPort);
+
+  // Assert
+  ASSERT_EQ(m_CancelOrdersOutputPort.getCancelledCount(), std::size_t{1});
+  ASSERT_EQ(m_ListOrdersOutputPort.getListedDescriptions(),
+            std::vector<std::string>{});
 }
 } // namespace coffee_shop::interface_adapters

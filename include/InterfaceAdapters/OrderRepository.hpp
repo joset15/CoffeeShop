@@ -7,6 +7,7 @@
 
 #include "InterfaceAdapters/IOrderDataSource.hpp"
 
+#include <cstddef>
 #include <memory>
 #include <string>
 #include <vector>
@@ -29,8 +30,9 @@ public:
   /// @return One description per order, in the order they were saved.
   [[nodiscard]] std::vector<std::string> describeOrders() const override;
 
-  /// @brief Not implemented yet: always returns true.
-  static bool cancelExistingOrders();
+  /// @brief Cancels (removes) all the stored orders.
+  /// @return How many orders were cancelled (0 if there were none).
+  std::size_t cancelOrders() override;
 
   /// @brief Not implemented yet: always returns true.
   static bool storeOrders();

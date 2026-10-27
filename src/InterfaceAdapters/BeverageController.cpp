@@ -1,7 +1,9 @@
 #include "InterfaceAdapters/BeverageController.hpp"
 
 #include "Application/UseCases/AddNewOrderUC.hpp"
+#include "Application/UseCases/CancelOrdersUC.hpp"
 #include "Application/UseCases/IAddNewOrderOutputPort.hpp"
+#include "Application/UseCases/ICancelOrdersOutputPort.hpp"
 #include "Application/UseCases/IListOrdersOutputPort.hpp"
 #include "Application/UseCases/ListOrdersUC.hpp"
 #include "Application/UseCases/NewOrderReq.hpp"
@@ -22,5 +24,12 @@ void BeverageController::listOrders(
 {
   application::ListOrdersUC listOrdersUC(*m_OrderRepository, outputPort);
   listOrdersUC.execute();
+}
+
+void BeverageController::cancelOrders(
+    application::ICancelOrdersOutputPort &outputPort) const
+{
+  application::CancelOrdersUC cancelOrdersUC(*m_OrderRepository, outputPort);
+  cancelOrdersUC.execute();
 }
 } // namespace coffee_shop::interface_adapters

@@ -1,5 +1,6 @@
 #include "InterfaceAdapters/TextPresenter.hpp"
 
+#include <cstddef>
 #include <ostream>
 #include <string>
 #include <string_view>
@@ -30,5 +31,10 @@ void TextPresenter::ordersListed(const std::vector<std::string> &descriptions)
   {
     *m_Output << description << '\n';
   }
+}
+
+void TextPresenter::ordersCancelled(std::size_t count)
+{
+  *m_Output << "Info: Orders cancelled: " << count << ".\n";
 }
 } // namespace coffee_shop::interface_adapters

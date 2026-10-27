@@ -2,6 +2,7 @@
 
 #include "Domain/Beverages/IBeverage.hpp"
 
+#include <cstddef>
 #include <memory>
 #include <string>
 #include <utility>
@@ -27,7 +28,12 @@ std::vector<std::string> OrderRepository::describeOrders() const
   return descriptions;
 }
 
-bool OrderRepository::cancelExistingOrders() { return true; }
+std::size_t OrderRepository::cancelOrders()
+{
+  const std::size_t count = m_CurrentOrders.size();
+  m_CurrentOrders.clear();
+  return count;
+}
 
 bool OrderRepository::storeOrders() { return true; }
 } // namespace coffee_shop::interface_adapters

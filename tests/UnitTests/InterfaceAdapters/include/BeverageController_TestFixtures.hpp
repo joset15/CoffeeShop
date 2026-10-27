@@ -26,6 +26,7 @@ protected:
                                           m_OrderRepository};
   test_support::FakeAddNewOrderOutputPort m_AddNewOrderOutputPort;
   test_support::FakeListOrdersOutputPort m_ListOrdersOutputPort;
+  test_support::FakeCancelOrdersOutputPort m_CancelOrdersOutputPort;
 
   application::NewOrderReq m_ValidRequest{
       domain::BeverageVariety::CoffeeEspresso, {domain::Ingredient::Sugar}};

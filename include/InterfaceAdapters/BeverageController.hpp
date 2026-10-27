@@ -4,6 +4,7 @@
 #include "Domain/BeverageFactories/IBeverageBuilderFactory.hpp"
 
 #include "Application/UseCases/IAddNewOrderOutputPort.hpp"
+#include "Application/UseCases/ICancelOrdersOutputPort.hpp"
 #include "Application/UseCases/IListOrdersOutputPort.hpp"
 #include "Application/UseCases/IOrderRepository.hpp"
 #include "Application/UseCases/NewOrderReq.hpp"
@@ -34,6 +35,10 @@ public:
   /// @brief Runs the "list orders" use case.
   /// @param outputPort Receives the list of orders.
   void listOrders(application::IListOrdersOutputPort &outputPort) const;
+
+  /// @brief Runs the "cancel orders" use case.
+  /// @param outputPort Receives how many orders were cancelled.
+  void cancelOrders(application::ICancelOrdersOutputPort &outputPort) const;
 
 private:
   /// @brief Creates the builders (not owned, never null: set from a
