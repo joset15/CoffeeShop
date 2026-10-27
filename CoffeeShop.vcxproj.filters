@@ -21,7 +21,13 @@
     <ClInclude Include="include\Application\UseCases\IAddNewOrderOutputPort.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Application\UseCases\ICancelOrdersOutputPort.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\Application\UseCases\IListOrdersOutputPort.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Application\UseCases\CancelOrdersUC.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Application\UseCases\ListOrdersUC.hpp">
@@ -216,6 +222,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Domain\BeverageBuilder\TeaGreenBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application\UseCases\CancelOrdersUC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Application\UseCases\ListOrdersUC.cpp">

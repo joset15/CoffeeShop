@@ -45,4 +45,14 @@ TEST_F(GivenATextPresenter, WhenOrdersAreListedThenOnePerLineIsWritten)
   // Assert
   ASSERT_EQ(m_Output.str(), "CoffeeLatte, Sugar\nCocoa\n");
 }
+
+TEST_F(GivenATextPresenter, WhenOrdersAreCancelledThenTheCountIsWritten)
+{
+  // AAA: Arrange, Act, Assert
+  // Act
+  m_Presenter.ordersCancelled(2);
+
+  // Assert
+  ASSERT_EQ(m_Output.str(), "Info: Orders cancelled: 2.\n");
+}
 } // namespace coffee_shop::interface_adapters

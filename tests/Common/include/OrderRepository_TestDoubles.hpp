@@ -5,6 +5,7 @@
 
 #include "Application/UseCases/IOrderRepository.hpp"
 
+#include <cstddef>
 #include <memory>
 #include <string>
 #include <utility>
@@ -27,6 +28,13 @@ public:
     }
     m_SavedOrders.push_back(std::move(beverage));
     return true;
+  }
+
+  std::size_t cancelOrders() override
+  {
+    const std::size_t count = m_SavedOrders.size();
+    m_SavedOrders.clear();
+    return count;
   }
 
   /// @brief Makes every later save() fail, like a repository that can't store.

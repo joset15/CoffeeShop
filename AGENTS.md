@@ -8,7 +8,7 @@ as Clean Architecture and uses classic GoF patterns:
 | Layer | Namespace | Headers | Sources | Notes |
 |---|---|---|---|---|
 | Domain | `coffee_shop::domain` | `include/Domain/` | `src/Domain/` | `Beverages` (`IBeverage`, `Coffee`, `Tea`, ...), `Ingredients` (decorators over `IBeverage`: `Sugar`, `Milk`, ...), `BeverageFactories` (`BeverageFactory`, `IngredientFactory`, `BeverageBuilderSimpleFactory`: plain classes, injected by reference), `BeverageBuilder` (`IBeverageBuilder` interface, `BeverageBuilderBase` with the shared state, concrete builders, `BeverageBuildDirector`) |
-| Application | `coffee_shop::application` | `include/Application/UseCases/` | `src/Application/UseCases/` | Use cases (`AddNewOrderUC`, `ListOrdersUC`), their output ports (`IAddNewOrderOutputPort`, `IListOrdersOutputPort`) and `IOrderRepository` |
+| Application | `coffee_shop::application` | `include/Application/UseCases/` | `src/Application/UseCases/` | Use cases (`AddNewOrderUC`, `ListOrdersUC`, `CancelOrdersUC`), their output ports (`IAddNewOrderOutputPort`, `IListOrdersOutputPort`, `ICancelOrdersOutputPort`) and `IOrderRepository` |
 | InterfaceAdapters | `coffee_shop::interface_adapters` (`Gateways`: `...::gateways`) | `include/InterfaceAdapters/` | `src/InterfaceAdapters/` | `BeverageController`, `TextPresenter` (implements the output ports, writes text to a `std::ostream`), `OrderRepository`, `Gateways/OrderDiskDataSource` |
 | Infrastructure | `coffee_shop::infrastructure::ui` | `include/Infrastructure/UI/` | `src/Infrastructure/UI/` | `ConsoleMenu`: console menus that read the user's choices from a stream (library `ConsoleUi`, grouped in the `Infrastructure` interface target) |
 | App | global `main()` | n/a | `apps/ConsoleApp/main.cpp` | `CoffeeShopApp` executable and composition root: creates and wires the factories, `OrderRepository`, `BeverageController`, `ConsoleMenu` and two `TextPresenter`s (screen and `orders.txt`) |
@@ -27,10 +27,13 @@ ConsoleMenu ──► BeverageController ──► use case ──► output por
 
 - Use cases never print. They report the result through **their own output port**, one per use
   case (`IAddNewOrderOutputPort::orderAdded/orderRejected`,
-  `IListOrdersOutputPort::ordersListed`), and pass plain data (descriptions as `std::string`), not
-  Domain objects.
-- `BeverageController::addOrder(request, outputPort)` / `listOrders(outputPort)` create and run the
-  use case; the caller chooses the output port (the screen or a file).
+  `IListOrdersOutputPort::ordersListed`, `ICancelOrdersOutputPort::ordersCancelled`), and pass
+  plain data (descriptions as `std::string`, counts), not Domain objects.
+- `BeverageController::addOrder(request, outputPort)` / `listOrders(outputPort)` /
+  `cancelOrders(outputPort)` create and run the use case; the caller chooses the output port (the
+  screen or a file).
+- "Cancel orders" cancels **all** current orders (`IOrderRepository::cancelOrders()` returns how
+  many there were). Cancelling when there are none is not an error.
 - There are no input ports on purpose: the controller calls the use cases directly. That still
   follows the dependency rule (outer layer → inner layer); add input ports only if a use case
   needs to be replaced or faked behind the controller.
@@ -197,7 +200,9 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 - To try the whole app without typing, redirect its input. Each line is one answer, `Enter`
   lines answer "Press Enter to continue", and the app exits on `0` or at the end of the input:
   ```bat
+  :: Main menu: 1 add, 2 list on screen, 3 print to orders.txt, 4 cancel all orders, 0 exit
   :: menu_input.txt: 1, 6, "1 2", (empty), 2, (empty), 0  ->  order a cocoa with sugar and milk, list, exit
+  :: or: 1, 2, 1, (empty), 4, (empty), 2, (empty), 0  ->  order a latte with sugar, cancel all, list (empty), exit
   "build\Windows x64 Debug\Debug\bin\CoffeeShopApp.exe" < menu_input.txt
   ```
 
@@ -214,9 +219,8 @@ cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests
 - OpenCppCoverage works on the normal Debug build through its PDB files: no extra flags or build
   folder. It measures **lines** in `include/` and `src/` only (not tests, GoogleTest or the
   standard library). `apps/` is left out on purpose: no test runs `main()`.
-- Current coverage: **99.8% of lines (819 of 821)**. The only lines not covered are the stubs
-  `OrderRepository::cancelExistingOrders()` and `storeOrders()`, which will get tests when they
-  are implemented. Run the target before a PR that changes code: the figure shouldn't drop.
+- Current coverage: **99.9% of lines (839 of 840)**. The only line not covered is the stub
+  `OrderRepository::storeOrders()` (storing orders on disk is parked, see "Gotchas"). Run the target before a PR that changes code: the figure shouldn't drop.
 - Files that no test executable links are **missing from the report**, not shown at 0%. Today that
   is only `Gateways/OrderDiskDataSource.cpp` (not implemented yet). A new class that no test uses
   would be missing too, so a higher total doesn't prove it is tested.
@@ -365,6 +369,8 @@ pre-commit run --all-files
 - `apps/ConsoleApp/main.cpp` uses MSVC-specific `_CrtSetDbgFlag` (CRT leak checking).
 - "Print list beverage orders" writes `orders.txt` in the **current working directory** (it
   replaces the previous file and shows the full path). The file is gitignored.
+- Storing orders on disk is **parked** (pending, very low priority): `OrderRepository::storeOrders()`
+  is a stub, and `IOrderDataSource` / `Gateways/OrderDiskDataSource` are not used or implemented.
 - An order the director can't fulfil completely is rejected, not partly served: see the rules
   table in "Beverages and ingredient rules". The menu then shows
   "Error: Order could not be added.".

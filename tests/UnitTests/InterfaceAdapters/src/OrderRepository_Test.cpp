@@ -8,6 +8,7 @@
 
 #include <gtest/gtest.h>
 
+#include <cstddef>
 #include <memory>
 #include <string>
 #include <vector>
@@ -57,5 +58,30 @@ TEST_F(GivenAnEmptyOrderRepository,
       (std::vector<std::string>{
           test_support::describe({domain::CoffeeLatteName, domain::SugarName}),
           test_support::describe({domain::CocoaName})}));
+}
+
+TEST_F(GivenAnEmptyOrderRepository, WhenOrdersAreCancelledThenNoneAreLeft)
+{
+  // AAA: Arrange, Act, Assert
+  // Arrange
+  m_OrderRepository.save(std::make_unique<domain::CoffeeLatte>());
+  m_OrderRepository.save(std::make_unique<domain::Cocoa>());
+
+  // Act
+  const std::size_t cancelled = m_OrderRepository.cancelOrders();
+
+  // Assert
+  ASSERT_EQ(cancelled, std::size_t{2});
+  ASSERT_TRUE(m_OrderRepository.describeOrders().empty());
+}
+
+TEST_F(GivenAnEmptyOrderRepository, WhenNothingIsSavedThenNoOrdersAreCancelled)
+{
+  // AAA: Arrange, Act, Assert
+  // Act
+  const std::size_t cancelled = m_OrderRepository.cancelOrders();
+
+  // Assert
+  ASSERT_EQ(cancelled, std::size_t{0});
 }
 } // namespace coffee_shop::interface_adapters
