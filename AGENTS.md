@@ -18,11 +18,13 @@ headers. Infrastructure (UI) is the outermost layer; menu texts belong there, no
 
 ### Flow of a request
 
-```
-ConsoleMenu ──► BeverageController ──► use case ──► output port (interface, Application)
-   (UI)            (adapter)          (Application)        │ implemented by
-                                                           ▼
-                                      TextPresenter (InterfaceAdapters) ──► std::ostream
+```mermaid
+flowchart LR
+    Menu["ConsoleMenu<br/>(Infrastructure/UI)"] --> Controller["BeverageController<br/>(InterfaceAdapters)"]
+    Controller --> UseCase["Use case<br/>(Application)"]
+    UseCase --> Port["Output port<br/>(interface, Application)"]
+    Presenter["TextPresenter<br/>(InterfaceAdapters)"] -. implements .-> Port
+    Presenter --> Stream["std::ostream"]
 ```
 
 - Use cases never print. They report the result through **their own output port**, one per use
@@ -138,6 +140,33 @@ CMake options (top-level `CMakeLists.txt`):
 | `CPPCHECK_ENABLED` | OFF | Runs cppcheck during the build |
 | `BUILD_DOC` | OFF | Doxygen target `doc_doxygen` from `docs/doxygen/Doxyfile.in` |
 | `COVERAGE_ENABLED` | OFF | Adds the `coverage` target (`cmake/coverage.cmake`). MSVC only for now; needs `TESTS` and `ITESTS` and OpenCppCoverage |
+
+### Visual Studio project (MSBuild)
+
+`CoffeeShop.vcxproj` (in `CoffeeShop.sln`) builds the console app, without the tests, with
+MSBuild. It is maintained by hand **on purpose, next to CMake, to spot differences between the two
+builds**. Check it in an x64 developer environment before a PR that adds or removes files or
+changes build settings:
+
+```bat
+msbuild CoffeeShop.vcxproj /t:Rebuild /p:Configuration=Debug /p:Platform=x64      :: x64\Debug\CoffeeShop.exe
+msbuild CoffeeShop.vcxproj /t:Rebuild /p:Configuration=Release /p:Platform=x64    :: x64\Release\CoffeeShop.exe
+```
+
+- Both must build with 0 errors and 0 warnings, and the app must behave like the CMake one (try the
+  same redirected input, see "Testing"). `x64/` is gitignored.
+- Keep these settings aligned with CMake, or the two builds stop being comparable:
+  - toolset `v143`: the same compiler, and clang-tidy from Visual Studio 2022 (LLVM 19);
+  - `<LanguageStandard>stdcpp17</LanguageStandard>` and `.\include` in the include path, in **each**
+    configuration;
+  - clang-tidy (Debug only, `EnableClangTidyCodeAnalysis`) reads `.clang-tidy`: don't add a
+    `ClangTidyChecks` list;
+  - only the `Debug|x64` and `Release|x64` configurations (CMake builds x64 only).
+- Why it matters: from `9595fd9` (Dec 2023) the project had no `stdcpp17` and did not compile at
+  all. With `v142` it ran Visual Studio 2019's clang-tidy (LLVM 12) with its own list of checks,
+  which reported findings that the CMake build didn't (and vice versa).
+- Differences kept on purpose: warning level 3 (CMake uses `/W4`), a precompiled header (`pch.h`)
+  in Debug, and `/Zi`.
 
 ## Testing
 
@@ -315,9 +344,11 @@ cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests
 
 1. Add the header under `include/<Layer>/...` and the source under `src/<Layer>/...`.
 2. Add the `.cpp` to `SOURCES` in that folder's `CMakeLists.txt`.
-3. The repo also contains a hand-maintained VS solution (`CoffeeShop.sln`, `CoffeeShop.vcxproj(.filters)`)
-   and Qt files (`CoffeeShop.pro`, `CoffeeShopQt.vcxproj`, `mainQt.cpp`, `mainwindow.*`). These are
-   separate from the CMake build. Ask before updating them.
+3. Add (or remove) it in `CoffeeShop.vcxproj` and `CoffeeShop.vcxproj.filters` too, and check the
+   MSBuild build (see "Build > Visual Studio project"). Tests are not in that project.
+4. The Qt files (`CoffeeShop.pro`, `CoffeeShopQt.vcxproj`, `mainQt.cpp`, `mainwindow.*`) and the old
+   VS test project (`tests/CoffeeShop_gtest.vcxproj`) are legacy and outside both builds. Ask before
+   updating them.
 
 ## Lint / pre-commit
 
