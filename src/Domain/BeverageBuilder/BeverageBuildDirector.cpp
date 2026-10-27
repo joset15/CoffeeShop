@@ -34,8 +34,7 @@ bool BeverageBuildDirector::hasSeveralMilks(
 bool BeverageBuildDirector::find(const std::vector<Ingredient> &ingredients,
                                  Ingredient ingredient)
 {
-  return (std::find(ingredients.begin(), ingredients.end(), ingredient) !=
-          ingredients.end());
+  return std::ranges::find(ingredients, ingredient) != ingredients.end();
 }
 
 bool BeverageBuildDirector::addSugar(const std::vector<Ingredient> &ingredients)

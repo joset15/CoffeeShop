@@ -74,7 +74,7 @@ if(BUILD_DOC) # AND CMAKE_BUILD_TYPE STREQUAL "Release")
 endif(BUILD_DOC)
 
 # C++ standard (the only place where it is set)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 

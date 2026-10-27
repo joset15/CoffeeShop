@@ -28,23 +28,26 @@ template <typename ValueType> struct MenuEntry
 
 /// @brief The beverages, in menu order (entry N is option N + 1).
 constexpr std::array<MenuEntry<domain::BeverageVariety>, 6> BeverageEntries{{
-    {domain::BeverageVariety::CoffeeEspresso, "Coffee espresso"},
-    {domain::BeverageVariety::CoffeeLatte, "Coffee latte"},
-    {domain::BeverageVariety::CoffeeDecaf, "Coffee decaf"},
-    {domain::BeverageVariety::TeaBlack, "Black tea"},
-    {domain::BeverageVariety::TeaGreen, "Green tea"},
-    {domain::BeverageVariety::Cocoa, "Cocoa"},
+    {.m_Value = domain::BeverageVariety::CoffeeEspresso,
+     .m_Label = "Coffee espresso"},
+    {.m_Value = domain::BeverageVariety::CoffeeLatte,
+     .m_Label = "Coffee latte"},
+    {.m_Value = domain::BeverageVariety::CoffeeDecaf,
+     .m_Label = "Coffee decaf"},
+    {.m_Value = domain::BeverageVariety::TeaBlack, .m_Label = "Black tea"},
+    {.m_Value = domain::BeverageVariety::TeaGreen, .m_Label = "Green tea"},
+    {.m_Value = domain::BeverageVariety::Cocoa, .m_Label = "Cocoa"},
 }};
 
 /// @brief The ingredients, in menu order (entry N is option N + 1).
 constexpr std::array<MenuEntry<domain::Ingredient>, 7> IngredientEntries{{
-    {domain::Ingredient::Sugar, "Sugar"},
-    {domain::Ingredient::Milk, "Milk"},
-    {domain::Ingredient::Cream, "Cream"},
-    {domain::Ingredient::Honey, "Honey"},
-    {domain::Ingredient::Lemon, "Lemon"},
-    {domain::Ingredient::SoyMilk, "Soy milk"},
-    {domain::Ingredient::Water, "Water"},
+    {.m_Value = domain::Ingredient::Sugar, .m_Label = "Sugar"},
+    {.m_Value = domain::Ingredient::Milk, .m_Label = "Milk"},
+    {.m_Value = domain::Ingredient::Cream, .m_Label = "Cream"},
+    {.m_Value = domain::Ingredient::Honey, .m_Label = "Honey"},
+    {.m_Value = domain::Ingredient::Lemon, .m_Label = "Lemon"},
+    {.m_Value = domain::Ingredient::SoyMilk, .m_Label = "Soy milk"},
+    {.m_Value = domain::Ingredient::Water, .m_Label = "Water"},
 }};
 
 /// @brief Parses a whole word as a number.
