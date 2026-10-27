@@ -1,5 +1,7 @@
 # Settings for test code. Everything else comes from the top-level .clang-tidy.
 InheritParentConfig: true
 
-# GoogleTest fixtures share state with TEST_F bodies through protected members.
-Checks: '-cppcoreguidelines-non-private-member-variables-in-classes'
+# GoogleTest fixtures share state with TEST_F bodies through protected members, and
+# test helpers and table rows are plain structs. The misc- check is the same rule as its
+# cppcoreguidelines- alias, so both are disabled.
+Checks: '-cppcoreguidelines-non-private-member-variables-in-classes,-misc-non-private-member-variables-in-classes'
