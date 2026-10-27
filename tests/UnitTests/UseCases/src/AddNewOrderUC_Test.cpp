@@ -116,4 +116,37 @@ TEST_F(GivenAnEspressoWithLemonOrder, WhenExecutedThenRejectionIsReported)
   ASSERT_EQ(m_OutputPort.getRejectedCount(), 1);
   ASSERT_TRUE(m_OutputPort.getAddedDescriptions().empty());
 }
+TEST_F(GivenAnOrderForAVarietyWithNoBuilder, WhenExecutedThenItIsRejected)
+{
+  // AAA: Arrange, Act, Assert
+  // Arrange
+  AddNewOrderUC addNewOrderUC(m_Request, m_BuilderFactory, m_OrderRepository,
+                              m_OutputPort);
+
+  // Act
+  const bool success = addNewOrderUC.execute();
+
+  // Assert
+  ASSERT_FALSE(success);
+  ASSERT_EQ(m_OutputPort.getRejectedCount(), 1);
+  ASSERT_TRUE(m_OutputPort.getAddedDescriptions().empty());
+  ASSERT_TRUE(m_OrderRepository.getSavedOrders().empty());
+}
+
+TEST_F(GivenARepositoryThatRejectsOrders, WhenExecutedThenItIsRejected)
+{
+  // AAA: Arrange, Act, Assert
+  // Arrange
+  AddNewOrderUC addNewOrderUC(m_Request, m_Factories.m_BuilderFactory,
+                              m_OrderRepository, m_OutputPort);
+
+  // Act
+  const bool success = addNewOrderUC.execute();
+
+  // Assert
+  ASSERT_FALSE(success);
+  ASSERT_EQ(m_OutputPort.getRejectedCount(), 1);
+  ASSERT_TRUE(m_OutputPort.getAddedDescriptions().empty());
+  ASSERT_TRUE(m_OrderRepository.getSavedOrders().empty());
+}
 } // namespace coffee_shop::application

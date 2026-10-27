@@ -56,6 +56,9 @@ Each `BeverageVariety` has a builder, created by `BeverageBuilderSimpleFactory`.
 `BeverageBuildDirector(builder).buildBeverage(ingredients)` adds the requested ingredients in a fixed order
 (sugar, milk, honey, lemon, water) and returns `false` as soon as the builder refuses one, or if two
 kinds of milk (milk, soy milk, cream) are requested together. A refused ingredient rejects the order.
+The table below is tested row by row in
+`tests/IntegrationTests/BeverageBuilder/src/BeverageBuildDirectorParameterized_Test.cpp`
+(`GivenAnAcceptedOrder` / `GivenARejectedOrder`): when a rule changes, change both.
 
 | Family | Varieties (builder) | Sugar | Milk / soy milk / cream | Honey | Lemon | Water |
 |---|---|---|---|---|---|---|
@@ -150,7 +153,9 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
   - `tests/UnitTests/<Area>/src/<Class>_Test.cpp` and `tests/UnitTests/<Area>/include/<Class>_TestFixtures.hpp`
   - `tests/IntegrationTests/<Area>/src/...` and `.../include/...` (parameterized tests use `*Parameterized_Test.cpp`)
   - A test includes its fixture with a relative path, `#include "../include/<Class>_TestFixtures.hpp"`:
-    the `<Area>/include` folders are not on the include path. This is the only relative include.
+    the `<Area>/include` folders are not on the include path. For the same reason, a header in that
+    folder includes its neighbours by file name (e.g. `AddNewOrderUC_TestFixtures.hpp` includes
+    `"BeverageBuilderFactory_TestDoubles.hpp"`). These are the only relative includes.
   - Where test code goes: a fixture, or a double/mock used only by one area's tests, goes in that
     area's `include/`; a helper or double used by several areas goes in `tests/Common/include`
     (`test_support`, see below).
@@ -163,16 +168,29 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
   `// Arrange`, `// Act`, `// Assert` comments.
 - `tests/CoffeeShop_gtest.vcxproj`, `tests/test.cpp`, `tests/pch.*` belong to the legacy VS
   solution and are not part of the CMake build.
-- All tests should pass. Add or update tests for any behavior you change.
+- All tests should pass. Add or update tests for any behavior you change, and keep the coverage
+  where it is (see "Coverage"): new code comes with its tests.
+- Test what the code does (results, descriptions, what the output port receives), not how it does
+  it. Rejections also check that nothing was added or saved. To reach a guard the director never
+  calls (e.g. a second milk), test the builder directly.
+- Parameterized tests over a table use one row per case with a `m_Name` field, a name generator
+  (`OrderName`) and an `operator<<` that prints the name, so a failure reads
+  `.../EspressoWithCream  # GetParam() = EspressoWithCream` instead of raw bytes. Use
+  `operator<<`, not `PrintTo`: the naming check would reject `PrintTo`.
 - Helpers shared by several tests live in `tests/Common/include` (both test targets have it on
   their include path, so include them by file name) and in namespace `coffee_shop::test_support`:
   - `test_support::describe({CoffeeLatteName, SugarName})` builds an expected description
     (`BeverageDescription_TestHelpers.hpp`), because C++17 can't `+` two `std::string_view`s;
-  - `FakeOrderRepository` (`OrderRepository_TestDoubles.hpp`) and `FakeAddNewOrderOutputPort` /
-    `FakeListOrdersOutputPort` (`OutputPort_TestDoubles.hpp`);
+  - `FakeOrderRepository` (`OrderRepository_TestDoubles.hpp`; accepts every order until
+    `rejectOrders()` is called) and `FakeAddNewOrderOutputPort` / `FakeListOrdersOutputPort`
+    (`OutputPort_TestDoubles.hpp`);
   - `DomainFactories` (`DomainFactories_TestHelpers.hpp`): the three real factories wired as in
     `main()`. Declare it before the members that use it, e.g.
     `BeverageController m_BeverageController{m_Factories.m_BuilderFactory, m_OrderRepository};`.
+- Doubles used by one area only live in that area's `include/`, e.g.
+  `FakeBuilderFactoryWithNoVarieties` (`tests/UnitTests/UseCases/include/BeverageBuilderFactory_TestDoubles.hpp`),
+  which returns `nullptr` like the real factory does for an invalid `BeverageVariety`. They are
+  hand-written: GoogleMock is available but not used.
 - `TextPresenter` tests write to a `std::ostringstream`.
 - `ConsoleMenu` takes a `std::istream`/`std::ostream`, so menu tests feed it a
   `std::istringstream` (see `tests/UnitTests/Infrastructure/`).
@@ -196,9 +214,12 @@ cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests
 - OpenCppCoverage works on the normal Debug build through its PDB files: no extra flags or build
   folder. It measures **lines** in `include/` and `src/` only (not tests, GoogleTest or the
   standard library). `apps/` is left out on purpose: no test runs `main()`.
-- Files that no test executable links are **missing from the report**, not shown at 0%: today
-  `OrderRepository.cpp` (tests use `FakeOrderRepository`) and `Gateways/OrderDiskDataSource.cpp`.
-  Keep that in mind when reading the total.
+- Current coverage: **99.8% of lines (819 of 821)**. The only lines not covered are the stubs
+  `OrderRepository::cancelExistingOrders()` and `storeOrders()`, which will get tests when they
+  are implemented. Run the target before a PR that changes code: the figure shouldn't drop.
+- Files that no test executable links are **missing from the report**, not shown at 0%. Today that
+  is only `Gateways/OrderDiskDataSource.cpp` (not implemented yet). A new class that no test uses
+  would be missing too, so a higher total doesn't prove it is tested.
 - A failing test makes the target fail. `cmake --preset ... --fresh` resets the option to OFF.
 - Linux (gcc + gcovr, same outputs) and a GitHub Actions workflow are planned; the target warns
   and does nothing with other compilers for now.

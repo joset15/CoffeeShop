@@ -8,9 +8,6 @@ namespace coffee_shop::domain
 class TeaBuilder : public BeverageBuilderBase
 {
 public:
-  /// @brief Starts a new beverage, discarding the one being built.
-  void reset() override { resetImpl(); }
-
   /// @brief Adds sugar to the beverage.
   bool addSugar() override;
 

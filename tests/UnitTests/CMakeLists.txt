@@ -10,11 +10,14 @@ resolve_project_paths(
 set(
   SOURCES
   BeverageFactories/src/BeverageBuilderSimpleFactory_Test.cpp
+  BeverageFactories/src/IngredientFactory_Test.cpp
   Beverages/src/Coffee_Test.cpp
+  Beverages/src/Tea_Test.cpp
   Infrastructure/src/ConsoleMenu_Test.cpp
   Ingredients/src/IngredientDecorator_Test.cpp
   Ingredients/src/Sugar_Test.cpp
   InterfaceAdapters/src/BeverageController_Test.cpp
+  InterfaceAdapters/src/OrderRepository_Test.cpp
   InterfaceAdapters/src/TextPresenter_Test.cpp
   UseCases/src/AddNewOrderUC_Test.cpp
   UseCases/src/ListOrdersUC_Test.cpp
