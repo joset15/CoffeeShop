@@ -17,6 +17,7 @@ option(BUILD_DOC "Build Doxygen documentation" OFF)
 option(ASAN_ENABLED "Build this target with AddressSanitizer" OFF)
 option(CLANG_TIDY_ENABLED "Build this target with Static Analysis" ON) # STATIC_ANALISYS
 option(CPPCHECK_ENABLED "Run CppCheck static code analysis" OFF) # STATIC_ANALISYS
+option(COVERAGE_ENABLED "Add a 'coverage' target that measures the tests' code coverage" OFF)
 
 if(BUILD_USING_PCH AND CLANG_TIDY_ENABLED)
   message(FATAL_ERROR "Using PCH incompatible with clang-tidy (MSVC). ")
@@ -170,6 +171,8 @@ if(ITESTS)
   add_subdirectory(tests/IntegrationTests)
   add_dependencies(IntegrationTests AllLayers)
 endif()
+
+include(coverage) # The "coverage" target, after the test targets it runs.
 
 # Sets the startup project in a Visual Studio solution.
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT apps)
