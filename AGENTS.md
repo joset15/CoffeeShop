@@ -265,11 +265,18 @@ cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests
   `clang-format -i` on any file should change only what you changed.
 - clang-tidy checks (`.clang-tidy`): `clang-diagnostic-*`, `clang-analyzer-*`, `cppcoreguidelines-*`,
   `modernize-*` (except `modernize-use-trailing-return-type`), `readability-*` (including
-  `readability-identifier-naming`), `bugprone-*`, `performance-*`, `misc-const-correctness`,
-  `misc-include-cleaner`, `llvm-namespace-comment` and `google-build-using-namespace`. If a check turns out to be noise,
+  `readability-identifier-naming`), `bugprone-*`, `performance-*`, `misc-*` (including
+  `misc-const-correctness` and `misc-include-cleaner`), `cert-*`, `portability-*`,
+  `llvm-namespace-comment` and `google-build-using-namespace` (about 430 checks). Many `cert-*`
+  checks are aliases of checks from the other families. If a check turns out to be noise,
   disable it in `Checks` with a comment that says why, rather than adding `NOLINT`s.
+  `portability-*` only has three checks in LLVM 19 (system includes, SIMD intrinsics,
+  `const` allocators): it does **not** catch Windows vs Linux differences; the gcc build will.
   Project choices: interfaces may declare only `virtual ~X() = default;` (`AllowSoleDefaultDtor`);
-  `tests/.clang-tidy` inherits everything but allows `protected` members in GoogleTest fixtures.
+  `tests/.clang-tidy` inherits everything but allows non-private members, `protected` in
+  GoogleTest fixtures and public in test helpers and table rows. It disables the rule under both
+  of its names: `cppcoreguidelines-non-private-member-variables-in-classes` and
+  `misc-non-private-member-variables-in-classes`.
   In practice: `override` (not `virtual`) on overrides, `[[nodiscard]]` on `const` getters,
   `= default`/`= delete` instead of empty bodies, and no `protected`, `const` or reference data
   members (store an injected dependency as a private pointer set from a reference).
@@ -295,6 +302,10 @@ cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests
     `std::print` and `std::ranges::contains` (the director's `find()` helper can use the latter).
   - No exception may escape `main()` (`bugprone-exception-escape`): it catches everything and
     reports it with `std::fputs`, which can't throw (unlike `std::cerr`).
+  - To ignore a result on purpose (`cert-err33-c`, e.g. `std::fputs` while reporting a fatal error),
+    write `static_cast<void>(...)` and say why in a comment.
+  - Free functions and variables used only in one `.cpp` go in an unnamed namespace
+    (`misc-use-internal-linkage`).
   To see findings without building: `clang-tidy -p "build/Windows x64 Debug" <file.cpp>`.
 - clang-tidy naming (`.clang-tidy`). It is enforced at build time:
   - Classes/structs: `CamelCase`. Interfaces are prefixed `I` (`IBeverage`, `IIngredientFactory`)

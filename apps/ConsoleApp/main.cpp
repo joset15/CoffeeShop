@@ -122,16 +122,18 @@ int main()
     run();
     return EXIT_SUCCESS;
   }
-  // std::fputs can't throw, unlike std::cerr, so nothing escapes main().
+  // std::fputs can't throw, unlike std::cerr, so nothing escapes main(). Its
+  // result is discarded on purpose: if writing the message fails there is
+  // nothing left to do, main() returns EXIT_FAILURE anyway (cert-err33-c).
   catch (const std::exception &error)
   {
-    std::fputs("Fatal error: ", stderr);
-    std::fputs(error.what(), stderr);
-    std::fputs("\n", stderr);
+    static_cast<void>(std::fputs("Fatal error: ", stderr));
+    static_cast<void>(std::fputs(error.what(), stderr));
+    static_cast<void>(std::fputs("\n", stderr));
   }
   catch (...)
   {
-    std::fputs("Fatal error: unknown exception.\n", stderr);
+    static_cast<void>(std::fputs("Fatal error: unknown exception.\n", stderr));
   }
   return EXIT_FAILURE;
 }

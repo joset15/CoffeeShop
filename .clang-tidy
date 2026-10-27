@@ -1,4 +1,4 @@
-Checks: '-*,clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,-modernize-use-trailing-return-type,readability-*,bugprone-*,performance-*,misc-const-correctness,misc-include-cleaner,llvm-namespace-comment,google-build-using-namespace'
+Checks: '-*,clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,-modernize-use-trailing-return-type,readability-*,bugprone-*,performance-*,misc-*,cert-*,portability-*,llvm-namespace-comment,google-build-using-namespace'
 WarningsAsErrors: '*'
 # Also report findings in the project's own headers (include/ and tests/).
 # GoogleTest and the standard library are system headers, so they stay silent.
