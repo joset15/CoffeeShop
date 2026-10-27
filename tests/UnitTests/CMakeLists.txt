@@ -15,6 +15,7 @@ set(
   Ingredients/src/IngredientDecorator_Test.cpp
   Ingredients/src/Sugar_Test.cpp
   InterfaceAdapters/src/BeverageController_Test.cpp
+  InterfaceAdapters/src/OrderRepository_Test.cpp
   InterfaceAdapters/src/TextPresenter_Test.cpp
   UseCases/src/AddNewOrderUC_Test.cpp
   UseCases/src/ListOrdersUC_Test.cpp
