@@ -10,9 +10,11 @@ resolve_project_paths(
 set(
   SOURCES
   BeverageBuilder/src/BeverageBuildDirector_Test.cpp
+  BeverageBuilder/src/BeverageBuildDirectorParameterized_Test.cpp
   BeverageBuilder/src/CocoaBuilder_Test.cpp
   BeverageBuilder/src/CoffeeEspressoBuilder_Test.cpp
   BeverageBuilder/src/CoffeeEspressoBuilderParameterized_Test.cpp
+  BeverageBuilder/src/TeaBlackBuilder_Test.cpp
   BeverageBuilder/src/TeaBlackBuilderParameterized_Test.cpp
 )
 

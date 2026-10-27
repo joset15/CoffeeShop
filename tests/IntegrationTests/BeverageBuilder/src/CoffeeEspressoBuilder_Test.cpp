@@ -2,6 +2,7 @@
 
 #include "Domain/Beverages/CoffeeEspresso.hpp"
 #include "Domain/Ingredients/Ingredient.hpp"
+#include "Domain/Ingredients/Milk.hpp"
 #include "Domain/Ingredients/Sugar.hpp"
 
 #include "BeverageDescription_TestHelpers.hpp"
@@ -51,4 +52,48 @@ TEST_F(GivenACoffeeEspressoBuilder, WhenBeverageIsTakenThenBuilderIsReset)
   ASSERT_EQ(secondBeverage->getDescription(), CoffeeEspressoName);
 }
 
+TEST_F(GivenACoffeeEspressoBuilder, WhenASecondMilkIsAddedThenItIsRejected)
+{
+  // AAA: Arrange, Act, Assert
+  // Arrange
+  m_CoffeeEspressoBuilder->addMilk(Ingredient::Milk);
+
+  // Act
+  const bool creamAdded = m_CoffeeEspressoBuilder->addMilk(Ingredient::Cream);
+
+  // Assert
+  ASSERT_FALSE(creamAdded);
+  ASSERT_EQ(m_CoffeeEspressoBuilder->takeBeverage()->getDescription(),
+            test_support::describe({CoffeeEspressoName, MilkName}));
+}
+
+TEST_F(GivenACoffeeEspressoBuilder,
+       WhenSomethingElseIsAddedAsMilkThenItIsRejected)
+{
+  // AAA: Arrange, Act, Assert
+  // Act
+  const bool added = m_CoffeeEspressoBuilder->addMilk(Ingredient::Sugar);
+
+  // Assert
+  ASSERT_FALSE(added);
+  ASSERT_EQ(m_CoffeeEspressoBuilder->takeBeverage()->getDescription(),
+            CoffeeEspressoName);
+}
+
+TEST_F(GivenACoffeeEspressoBuilder,
+       WhenTheBeverageIsTakenThenMilkCanBeAddedAgain)
+{
+  // AAA: Arrange, Act, Assert
+  // Arrange
+  m_CoffeeEspressoBuilder->addMilk(Ingredient::Milk);
+  m_CoffeeEspressoBuilder->takeBeverage();
+
+  // Act
+  const bool milkAdded = m_CoffeeEspressoBuilder->addMilk(Ingredient::Milk);
+
+  // Assert
+  ASSERT_TRUE(milkAdded);
+  ASSERT_EQ(m_CoffeeEspressoBuilder->takeBeverage()->getDescription(),
+            test_support::describe({CoffeeEspressoName, MilkName}));
+}
 } // namespace coffee_shop::domain
