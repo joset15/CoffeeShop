@@ -99,6 +99,9 @@ layout. Of its `Infrastructure` folders only `UI` exists; others it lists (`Infr
   should be all hits). clang-tidy still runs on every compile and is not cached. The VS solution
   (`CoffeeShop.sln`) is separate and keeps `/Zi`.
 - Doxygen is needed only when `BUILD_DOC=ON`.
+- OpenCppCoverage is needed only when `COVERAGE_ENABLED=ON` (see "Testing > Coverage"). Install it
+  with `winget install --id OpenCppCoverage.OpenCppCoverage --exact --version 0.9.9.0`. CMake also
+  looks for it in `C:\Program Files\OpenCppCoverage`, so a terminal opened before the install works.
 
 ## Build
 
@@ -128,6 +131,7 @@ CMake options (top-level `CMakeLists.txt`):
 | `ASAN_ENABLED` | OFF | MSVC `/fsanitize=address` in Debug |
 | `CPPCHECK_ENABLED` | OFF | Runs cppcheck during the build |
 | `BUILD_DOC` | OFF | Doxygen target `doc_doxygen` from `docs/doxygen/Doxyfile.in` |
+| `COVERAGE_ENABLED` | OFF | Adds the `coverage` target (`cmake/coverage.cmake`). MSVC only for now; needs `TESTS` and `ITESTS` and OpenCppCoverage |
 
 ## Testing
 
@@ -178,6 +182,26 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
   :: menu_input.txt: 1, 6, "1 2", (empty), 2, (empty), 0  ->  order a cocoa with sugar and milk, list, exit
   "build\Windows x64 Debug\Debug\bin\CoffeeShopApp.exe" < menu_input.txt
   ```
+
+### Coverage
+
+```bat
+cmake --preset "Windows x64 Debug" -DCOVERAGE_ENABLED=ON     :: once; it stays in the cache
+cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests if needed, then measures
+```
+
+- The target runs `UnitTests.exe` and `IntegrationTests.exe` under OpenCppCoverage and merges both
+  runs into `build/<preset>/coverage/html/index.html` (to read) and
+  `build/<preset>/coverage/cobertura.xml` (Cobertura XML, for CI tools later). It takes ~15 s.
+- OpenCppCoverage works on the normal Debug build through its PDB files: no extra flags or build
+  folder. It measures **lines** in `include/` and `src/` only (not tests, GoogleTest or the
+  standard library). `apps/` is left out on purpose: no test runs `main()`.
+- Files that no test executable links are **missing from the report**, not shown at 0%: today
+  `OrderRepository.cpp` (tests use `FakeOrderRepository`) and `Gateways/OrderDiskDataSource.cpp`.
+  Keep that in mind when reading the total.
+- A failing test makes the target fail. `cmake --preset ... --fresh` resets the option to OFF.
+- Linux (gcc + gcovr, same outputs) and a GitHub Actions workflow are planned; the target warns
+  and does nothing with other compilers for now.
 
 ## Code style
 
@@ -329,5 +353,8 @@ pre-commit run --all-files
 - Corrupt object files at link time (`LNK1163`, `LNK1236`) have appeared after incremental builds.
   A clean rebuild fixes them. Don't build the same folder from Visual Studio and the command line
   at the same time (both use `build/Windows x64 Debug`).
-- On GCC/Clang the top-level file adds coverage flags when `TESTS=ON`. On Windows, coverage is
-  collected with OpenCppCoverage (`.opencppcov/`).
+- On GCC/Clang the top-level file adds coverage flags when `TESTS=ON`, but after
+  `add_subdirectory(src)`, so they would only instrument the tests. This will move to
+  `COVERAGE_ENABLED` with the Linux build. `.opencppcov/` (gitignored) holds settings of the
+  OpenCppCoverage Visual Studio extension for the legacy solution; the CMake `coverage` target
+  doesn't use it.
