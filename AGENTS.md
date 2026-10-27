@@ -2,7 +2,7 @@
 
 ## Project overview
 
-CoffeeShop is a C++17 learning project for managing drink orders. It is laid out
+CoffeeShop is a modern C++ (C++20) learning project for managing drink orders. It is laid out
 as Clean Architecture and uses classic GoF patterns:
 
 | Layer | Namespace | Headers | Sources | Notes |
@@ -157,7 +157,7 @@ msbuild CoffeeShop.vcxproj /t:Rebuild /p:Configuration=Release /p:Platform=x64  
   same redirected input, see "Testing"). `x64/` is gitignored.
 - Keep these settings aligned with CMake, or the two builds stop being comparable:
   - toolset `v143`: the same compiler, and clang-tidy from Visual Studio 2022 (LLVM 19);
-  - `<LanguageStandard>stdcpp17</LanguageStandard>` and `.\include` in the include path, in **each**
+  - `<LanguageStandard>stdcpp20</LanguageStandard>` and `.\include` in the include path, in **each**
     configuration;
   - clang-tidy (Debug only, `EnableClangTidyCodeAnalysis`) reads `.clang-tidy`: don't add a
     `ClangTidyChecks` list;
@@ -212,7 +212,7 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 - Helpers shared by several tests live in `tests/Common/include` (both test targets have it on
   their include path, so include them by file name) and in namespace `coffee_shop::test_support`:
   - `test_support::describe({CoffeeLatteName, SugarName})` builds an expected description
-    (`BeverageDescription_TestHelpers.hpp`), because C++17 can't `+` two `std::string_view`s;
+    (`BeverageDescription_TestHelpers.hpp`), because `std::string_view`s can't be joined with `+` (not before C++26);
   - `FakeOrderRepository` (`OrderRepository_TestDoubles.hpp`; accepts every order until
     `rejectOrders()` is called) and `FakeAddNewOrderOutputPort` / `FakeListOrdersOutputPort`
     (`OutputPort_TestDoubles.hpp`);
@@ -283,6 +283,16 @@ cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests
     when a value is added. Use `default` only when handling a few values on purpose.
   - Use `if (init; condition)` when the variable is only needed inside the `if`, and
     `[[maybe_unused]]` on a parameter an override doesn't need.
+  - C++20, where it makes the code clearer (don't rewrite code just to use a feature):
+    designated initializers for aggregates such as the menu tables
+    (`{.m_Value = ..., .m_Label = ...}`, required by `modernize-use-designated-initializers`;
+    the rows of test tables stay compact); `std::ranges` algorithms instead of `begin()`/`end()`
+    pairs (`modernize-use-ranges`); `for (int number = 1; const auto &entry : entries)` when a
+    counter is only needed in the loop; `using enum` before a `switch` over a scoped enum
+    (see `main.cpp`).
+  - Next standard: **C++23**, after the Linux build, so every feature is checked on MSVC and gcc.
+    MSVC 2022 only has it as `/std:c++23preview`, which already provides `std::expected`,
+    `std::print` and `std::ranges::contains` (the director's `find()` helper can use the latter).
   - No exception may escape `main()` (`bugprone-exception-escape`): it catches everything and
     reports it with `std::fputs`, which can't throw (unlike `std::cerr`).
   To see findings without building: `clang-tidy -p "build/Windows x64 Debug" <file.cpp>`.
@@ -299,7 +309,7 @@ cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests
   - Everything is in `coffee_shop::<layer>` (see the layer table). A third level only for an
     independent component that is its own library (`infrastructure::ui`,
     `interface_adapters::gateways`); sub-folders of one layer (e.g. `Domain/Beverages`) don't get one.
-  - Use the C++17 nested form `namespace coffee_shop::domain { ... }` and close it with
+  - Use the nested form (C++17) `namespace coffee_shop::domain { ... }` and close it with
     `} // namespace coffee_shop::domain` (both checked by clang-tidy). A `.cpp` reopens the
     namespace instead of qualifying each definition. File-local helpers go in an unnamed namespace.
   - Refer to another layer with its short name, e.g. `domain::IBeverage` inside
@@ -336,9 +346,10 @@ cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests
   **cmake-lint** (`.cmakelintrc`). New targets follow the existing pattern: call
   `resolve_project_paths(...)` from `cmake/files_helper.cmake`, list `SOURCES` explicitly,
   `target_include_directories(<tgt> PRIVATE ${PUBLIC_INCLUDE_PATH})`, set the VS `FOLDER` property,
-  and add the `BUILD_USING_PCH` `REUSE_FROM AllLayers` block. The C++ standard is set only once,
-  with `CMAKE_CXX_STANDARD` in the top-level `CMakeLists.txt`: don't add `/std:c++17` or
-  `cxx_std_17` to targets.
+  and add the `BUILD_USING_PCH` `REUSE_FROM AllLayers` block. The C++ standard is set only once
+  per tool, and the three places must agree: `CMAKE_CXX_STANDARD` in the top-level
+  `CMakeLists.txt` (don't add `/std:c++20` or `cxx_std_20` to targets), `<LanguageStandard>` in
+  `CoffeeShop.vcxproj` (Debug and Release), and `Standard:` in `.clang-format`.
 
 ### Adding a source file
 
