@@ -8,6 +8,7 @@
 #define VC_EXTRALEAN // Exclude rarely-used stuff from Windows headers
 
 #include <algorithm>
+#include <cstdio>
 #include <deque>
 #include <fstream>
 #include <iostream>
@@ -15,7 +16,6 @@
 #include <map>
 #include <memory>
 #include <set>
-#include <stdio.h>
 #include <string>
 #include <vector>
 
