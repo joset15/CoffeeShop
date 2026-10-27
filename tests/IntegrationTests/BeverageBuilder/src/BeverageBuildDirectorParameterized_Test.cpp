@@ -38,6 +38,11 @@ INSTANTIATE_TEST_SUITE_P(
                       BeverageVariety::CoffeeEspresso,
                       {Ingredient::Milk},
                       describe({CoffeeEspressoName, MilkName})},
+        // The same kind of milk twice is one kind: it is added only once.
+        AcceptedOrder{"EspressoWithMilkTwice",
+                      BeverageVariety::CoffeeEspresso,
+                      {Ingredient::Milk, Ingredient::Milk},
+                      describe({CoffeeEspressoName, MilkName})},
         AcceptedOrder{"EspressoWithCream",
                       BeverageVariety::CoffeeEspresso,
                       {Ingredient::Cream},

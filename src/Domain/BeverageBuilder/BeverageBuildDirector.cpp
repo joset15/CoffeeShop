@@ -3,6 +3,7 @@
 #include "Domain/Ingredients/Ingredient.hpp"
 
 #include <algorithm>
+#include <array>
 #include <vector>
 
 namespace coffee_shop::domain
@@ -24,11 +25,11 @@ bool BeverageBuildDirector::buildBeverage(
 bool BeverageBuildDirector::hasSeveralMilks(
     const std::vector<Ingredient> &ingredients)
 {
-  const int kindsOfMilk =
-      static_cast<int>(find(ingredients, Ingredient::Milk)) +
-      static_cast<int>(find(ingredients, Ingredient::SoyMilk)) +
-      static_cast<int>(find(ingredients, Ingredient::Cream));
-  return kindsOfMilk > 1;
+  // Kinds of milk, not occurrences: asking twice for milk is still one kind.
+  constexpr std::array KindsOfMilk{Ingredient::Milk, Ingredient::SoyMilk,
+                                   Ingredient::Cream};
+  return std::ranges::count_if(KindsOfMilk, [&ingredients](Ingredient milk)
+                               { return find(ingredients, milk); }) > 1;
 }
 
 bool BeverageBuildDirector::find(const std::vector<Ingredient> &ingredients,

@@ -68,8 +68,7 @@ std::optional<int> parseNumber(std::string_view word)
 template <typename Entries>
 void printEntries(std::ostream &output, const Entries &entries)
 {
-  int number = 1;
-  for (const auto &entry : entries)
+  for (int number = 1; const auto &entry : entries)
   {
     output << "  " << number << ". " << entry.m_Label << '\n';
     ++number;
