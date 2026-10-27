@@ -81,27 +81,29 @@ void run()
 
   while (true)
   {
+    using enum ConsoleMenu::MainOption;
+
     const auto option = menu.askMainOption();
-    if (!option || *option == ConsoleMenu::MainOption::Quit)
+    if (!option || *option == Quit)
     {
       return; // Exit chosen, or end of input.
     }
 
     switch (*option)
     {
-    case ConsoleMenu::MainOption::AddOrder:
+    case AddOrder:
       addOrder(menu, controller, screenPresenter);
       break;
-    case ConsoleMenu::MainOption::ScreenListOrders:
+    case ScreenListOrders:
       controller.listOrders(screenPresenter);
       break;
-    case ConsoleMenu::MainOption::PrintListOrders:
+    case PrintListOrders:
       printOrders(controller);
       break;
-    case ConsoleMenu::MainOption::CancelOrders:
+    case CancelOrders:
       controller.cancelOrders(screenPresenter);
       break;
-    case ConsoleMenu::MainOption::Quit:
+    case Quit:
       break;
     }
 
