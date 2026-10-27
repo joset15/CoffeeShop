@@ -4,6 +4,7 @@
 #include "Domain/Beverages/BeverageVariety.hpp"
 #include "Domain/Ingredients/Ingredient.hpp"
 
+#include <utility>
 #include <vector>
 
 namespace coffee_shop::application
@@ -16,10 +17,12 @@ public:
 
   /// @brief Creates the request.
   /// @param beverageVariety The beverage to order.
-  /// @param ingredients The ingredients to add to it.
+  /// @param ingredients The ingredients to add to it. Taken by value and
+  /// moved, so a temporary list (e.g. from the menu) is not copied.
   NewOrderReq(domain::BeverageVariety beverageVariety,
-              const std::vector<domain::Ingredient> &ingredients)
-      : m_BeverageVariety(beverageVariety), m_Ingredients(ingredients)
+              std::vector<domain::Ingredient> ingredients)
+      : m_BeverageVariety(beverageVariety),
+        m_Ingredients(std::move(ingredients))
   {
   }
 
