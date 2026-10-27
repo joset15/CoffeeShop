@@ -98,6 +98,9 @@ void run()
     case ConsoleMenu::MainOption::PrintListOrders:
       printOrders(controller);
       break;
+    case ConsoleMenu::MainOption::CancelOrders:
+      controller.cancelOrders(screenPresenter);
+      break;
     case ConsoleMenu::MainOption::Quit:
       break;
     }

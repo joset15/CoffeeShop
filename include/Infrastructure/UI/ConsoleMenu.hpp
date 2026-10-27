@@ -24,7 +24,8 @@ public:
     Quit = 0,
     AddOrder = 1,
     ScreenListOrders = 2,
-    PrintListOrders = 3
+    PrintListOrders = 3,
+    CancelOrders = 4
   };
 
   /// @brief Creates a menu that reads from and writes to the given streams.

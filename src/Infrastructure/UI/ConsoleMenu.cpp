@@ -85,10 +85,11 @@ std::optional<ConsoleMenu::MainOption> ConsoleMenu::askMainOption()
             << "  1. Add beverage order\n"
             << "  2. Screen list beverage orders\n"
             << "  3. Print list beverage orders\n"
+            << "  4. Cancel all orders\n"
             << "  0. Exit\n";
 
   const auto number = askNumber(static_cast<int>(MainOption::Quit),
-                                static_cast<int>(MainOption::PrintListOrders));
+                                static_cast<int>(MainOption::CancelOrders));
   if (!number)
   {
     return std::nullopt;

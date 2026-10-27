@@ -24,6 +24,20 @@ TEST_F(GivenAConsoleMenu, WhenMainOptionIsEnteredThenItIsReturned)
   ASSERT_EQ(option, ConsoleMenu::MainOption::ScreenListOrders);
 }
 
+TEST_F(GivenAConsoleMenu, WhenCancelOptionIsEnteredThenItIsReturned)
+{
+  // AAA: Arrange, Act, Assert
+  // Arrange
+  ConsoleMenu menu = menuWithInput("4\n");
+
+  // Act
+  const auto option = menu.askMainOption();
+
+  // Assert
+  ASSERT_EQ(option, ConsoleMenu::MainOption::CancelOrders);
+  ASSERT_NE(m_Output.str().find("4. Cancel all orders"), std::string::npos);
+}
+
 TEST_F(GivenAConsoleMenu, WhenInputEndsThenNoMainOptionIsReturned)
 {
   // AAA: Arrange, Act, Assert
