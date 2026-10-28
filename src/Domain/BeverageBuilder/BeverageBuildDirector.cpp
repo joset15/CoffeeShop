@@ -26,8 +26,11 @@ bool BeverageBuildDirector::hasSeveralMilks(
     const std::vector<Ingredient> &ingredients)
 {
   // Kinds of milk, not occurrences: asking twice for milk is still one kind.
-  constexpr std::array KindsOfMilk{Ingredient::Milk, Ingredient::SoyMilk,
-                                   Ingredient::Cream};
+  constexpr std::array KindsOfMilk{
+      Ingredient::Milk,
+      Ingredient::SoyMilk,
+      Ingredient::Cream,
+  };
   return std::ranges::count_if(KindsOfMilk, [&ingredients](Ingredient milk)
                                { return find(ingredients, milk); }) > 1;
 }

@@ -9,6 +9,6 @@ void TeaBlackBuilder::resetImpl()
 {
   setBaseBeverage(BeverageVariety::TeaBlack);
 
-  TeaBuilder::resetImpl();
+  TeaBuilder::resetState();
 }
 } // namespace coffee_shop::domain

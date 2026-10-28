@@ -30,11 +30,12 @@ protected:
              IIngredientFactory &ingredientFactory)
       : BeverageBuilderBase(beverageFactory, ingredientFactory)
   {
-    resetImpl();
+    resetState();
   }
 
-  /// @brief Reset the internal variable status (Milk, Lemon).
-  void resetImpl();
+  /// @brief Resets the tea state (no milk, no lemon yet). Concrete teas call
+  /// it from their own resetImpl().
+  void resetState();
 
 private:
   /// @brief True once a kind of milk has been added.
