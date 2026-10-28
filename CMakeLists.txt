@@ -93,13 +93,7 @@ add_compile_options(${PROJECT_WARNING_FLAGS})
 
 # Static analysis
 # clang-tidy can't be combined with precompiled headers (BUILD_USING_PCH).
-if(CLANG_TIDY_ENABLED)
-  set(CMAKE_CXX_CLANG_TIDY "clang-tidy") # v3.6, will search for file .clang-tidy
-  if(MSVC)
-    # CMake adds --extra-arg-before=--driver-mode=cl, which makes clang-tidy ignore /EHsc.
-    list(APPEND CMAKE_CXX_CLANG_TIDY "--extra-arg=/EHsc")
-  endif()
-endif()
+include(clang_tidy) # Finds clang-tidy (LLVM_TOOLS_DIR) and checks its version.
 
 if(CPPCHECK_ENABLED)
   set(CMAKE_CXX_CPPCHECK "cppcheck") # v3.10

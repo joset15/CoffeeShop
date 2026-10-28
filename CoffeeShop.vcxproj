@@ -132,6 +132,11 @@
     <LinkIncremental>true</LinkIncremental>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
+    <!-- clang-tidy from LLVM 23, in the folder of the user environment variable LLVM_TOOLS_DIR. -->
+    <ClangTidyToolPath>$(LLVM_TOOLS_DIR)</ClangTidyToolPath>
+    <!-- The compile commands MSBuild writes for clang-tidy include /c, which clang 23 reports as an
+         unused argument (an error with WarningsAsErrors). It is about the commands, not the code. -->
+    <ClangTidyToolExeAdditionalOptions>--extra-arg=-Wno-unused-command-line-argument</ClangTidyToolExeAdditionalOptions>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -173,6 +178,15 @@
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <!-- Fail instead of silently falling back to Visual Studio's bundled clang-tidy (LLVM 19). -->
+  <Target Name="CheckClangTidyVersion" BeforeTargets="ClangTidy">
+    <Error Condition="'$(LLVM_TOOLS_DIR)' == ''" Text="LLVM_TOOLS_DIR is not set: it must point to the bin folder of LLVM 23 (e.g. D:\LLVM\23.1.4\bin). See AGENTS.md." />
+    <Error Condition="!Exists('$(LLVM_TOOLS_DIR)\clang-tidy.exe')" Text="clang-tidy.exe not found in LLVM_TOOLS_DIR ($(LLVM_TOOLS_DIR))." />
+    <Exec Command="&quot;$(LLVM_TOOLS_DIR)\clang-tidy.exe&quot; --version" ConsoleToMSBuild="true" StandardOutputImportance="low">
+      <Output TaskParameter="ConsoleOutput" PropertyName="ClangTidyVersionText" />
+    </Exec>
+    <Error Condition="!$(ClangTidyVersionText.Contains('version 23.'))" Text="LLVM_TOOLS_DIR doesn't point to LLVM 23: $(ClangTidyVersionText)" />
+  </Target>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>

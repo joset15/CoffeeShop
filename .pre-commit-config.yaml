@@ -66,10 +66,11 @@ repos:
   # No clang-tidy hook: the CMake build already runs clang-tidy on every .cpp and project header
   # with compile_commands.json, and WarningsAsErrors makes the build fail on any finding.
 
-  # clang-format, pinned to the version shipped with Visual Studio 2022 (VC\Tools\Llvm) so both
-  # format the same way. Only C/C++ files of the CMake build (by default it also formats JSON).
+  # clang-format, pinned to the project's LLVM version (the one in LLVM_TOOLS_DIR, see AGENTS.md)
+  # so the editor and the hook format the same way. Only C/C++ files of the CMake build (by default
+  # it also formats JSON).
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v19.1.5
+    rev: v23.1.3
     hooks:
       - id: clang-format
         types_or: [c++, c]
