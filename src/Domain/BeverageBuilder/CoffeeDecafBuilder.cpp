@@ -9,6 +9,6 @@ void CoffeeDecafBuilder::resetImpl()
 {
   setBaseBeverage(BeverageVariety::CoffeeDecaf);
 
-  CoffeeBuilder::resetImpl();
+  CoffeeBuilder::resetState();
 }
 } // namespace coffee_shop::domain

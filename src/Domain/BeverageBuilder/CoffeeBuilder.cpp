@@ -4,7 +4,7 @@
 
 namespace coffee_shop::domain
 {
-void CoffeeBuilder::resetImpl() { m_HasMilk = false; }
+void CoffeeBuilder::resetState() { m_HasMilk = false; }
 
 bool CoffeeBuilder::addSugar()
 {

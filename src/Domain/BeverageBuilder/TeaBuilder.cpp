@@ -4,7 +4,7 @@
 
 namespace coffee_shop::domain
 {
-void TeaBuilder::resetImpl()
+void TeaBuilder::resetState()
 {
   m_HasMilk = false;
   m_HasLemon = false;

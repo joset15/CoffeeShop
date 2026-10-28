@@ -31,10 +31,12 @@ protected:
                 IIngredientFactory &ingredientFactory)
       : BeverageBuilderBase(beverageFactory, ingredientFactory)
   {
-    resetImpl();
+    resetState();
   }
 
-  void resetImpl();
+  /// @brief Resets the coffee state (no milk yet). Concrete coffees call it
+  /// from their own resetImpl().
+  void resetState();
 
 private:
   /// @brief True if the beverage has milk.

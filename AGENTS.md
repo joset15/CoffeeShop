@@ -77,7 +77,7 @@ Names in descriptions come from `inline constexpr std::string_view` constants ne
 `IngredientDecorator::describeWith(XName)`, e.g. `"CoffeeEspresso, Sugar"`.
 
 The tools are CMake (≥3.25; the presets file uses format v9, which needs ≥3.30), Ninja, MSVC (Visual Studio 2022), Conan **1.x**
-(GoogleTest 1.14.0), clang-tidy, and pre-commit. `docs/README_development.md` shows the target folder
+(GoogleTest 1.14.0), clang-tidy and clang-format from **LLVM 23**, and pre-commit. `docs/README_development.md` shows the target folder
 layout. Of its `Infrastructure` folders only `UI` exists; others it lists (`Infrastructure/DB`,
 `libs`, `scripts`, ...) don't exist yet.
 
@@ -92,9 +92,28 @@ layout. Of its `Infrastructure` folders only `UI` exists; others it lists (`Infr
   Conan gtest libs. In PowerShell, use
   `& "<VS>\Common7\Tools\Launch-VsDevShell.ps1" -Arch amd64 -HostArch amd64 -SkipAutomaticLocation`
   (the VS "Developer PowerShell" defaults to x86).
-- The x86 environment also puts the **32-bit clang-tidy** (`VC\Tools\Llvm\bin`) first on `PATH`.
-  It crashes (`0xC0000005`) on this project. The 64-bit one (`VC\Tools\Llvm\x64\bin`) works.
-  Check with `where.exe clang-tidy`.
+- **clang-tidy and clang-format come from LLVM 23**, not from the LLVM 19 that Visual Studio 2022
+  bundles. Only those two tools are needed (~100 MB, from the official PyPI packages), in a
+  versioned folder outside `Program Files`, pointed at by the **user** environment variable
+  `LLVM_TOOLS_DIR`:
+  ```powershell
+  python -m pip install --target "$env:TEMP\llvm-pkgs" --no-deps clang-tidy==23.1.4 clang-format==23.1.3
+  New-Item -ItemType Directory D:\LLVM\23.1.4\bin
+  Copy-Item "$env:TEMP\llvm-pkgs\clang_tidy\data\bin\clang-tidy.exe" D:\LLVM\23.1.4\bin\
+  Copy-Item "$env:TEMP\llvm-pkgs\clang_format\data\bin\clang-format.exe" D:\LLVM\23.1.4\bin\
+  Copy-Item "$env:TEMP\llvm-pkgs\clang_tidy\data\lib" D:\LLVM\23.1.4\lib -Recurse  # clang's built-in headers
+  [Environment]::SetEnvironmentVariable('LLVM_TOOLS_DIR', 'D:\LLVM\23.1.4\bin', 'User')
+  ```
+  Then restart Visual Studio and open terminals (they read the variable at start-up) and configure
+  once with `--fresh`. In Visual Studio, also point the editor at the same clang-format:
+  **Tools > Options > Text Editor > C/C++ > Code Style > Formatting**, "Use custom
+  clang-format.exe", `D:\LLVM\23.1.4\bin\clang-format.exe`. On Linux and CI, `pip install` the same
+  versions.
+- The build checks the version: CMake (`cmake/clang_tidy.cmake`) looks for clang-tidy in
+  `LLVM_TOOLS_DIR`, then on `PATH`, and stops if it isn't LLVM 23; the Visual Studio project stops
+  if `LLVM_TOOLS_DIR` is unset or isn't LLVM 23 (see "Visual Studio project"). Before LLVM 23, CMake
+  took the first `clang-tidy` on `PATH`: in an x86 environment that was Visual Studio's 32-bit one,
+  which crashes (`0xC0000005`) on this project.
 - GoogleTest comes from Conan. CMake finds it through `build/generators/` (added to
   `CMAKE_MODULE_PATH`), so that folder must exist. To regenerate it (Conan 1.x, `cmake_layout`):
   `conan install . -s build_type=Debug --build=missing`
@@ -134,7 +153,7 @@ CMake options (top-level `CMakeLists.txt`):
 | Option | Default | Effect |
 |---|---|---|
 | `TESTS` / `ITESTS` | ON | Build unit / integration test executables |
-| `CLANG_TIDY_ENABLED` | ON | Runs clang-tidy on every `.cpp` during the build, including the project headers under `include/` and `tests/` (`HeaderFilterRegex`). `.clang-tidy` has `WarningsAsErrors: '*'`, so tidy findings **break the build** |
+| `CLANG_TIDY_ENABLED` | ON | Runs clang-tidy on every `.cpp` during the build, including the project headers under `include/` and `tests/` (`HeaderFilterRegex`). `.clang-tidy` has `WarningsAsErrors: '*'`, so tidy findings **break the build**. Needs clang-tidy from LLVM 23 (`LLVM_TOOLS_DIR`, see "Setup") |
 | `BUILD_USING_PCH` | OFF | Precompiled headers. Can't be combined with `CLANG_TIDY_ENABLED` (configure stops with an error) |
 | `ASAN_ENABLED` | OFF | MSVC `/fsanitize=address` in Debug |
 | `CPPCHECK_ENABLED` | OFF | Runs cppcheck during the build |
@@ -156,7 +175,13 @@ msbuild CoffeeShop.vcxproj /t:Rebuild /p:Configuration=Release /p:Platform=x64  
 - Both must build with 0 errors and 0 warnings, and the app must behave like the CMake one (try the
   same redirected input, see "Testing"). `x64/` is gitignored.
 - Keep these settings aligned with CMake, or the two builds stop being comparable:
-  - toolset `v143`: the same compiler, and clang-tidy from Visual Studio 2022 (LLVM 19);
+  - toolset `v143`: the same compiler;
+  - clang-tidy from LLVM 23: `<ClangTidyToolPath>$(LLVM_TOOLS_DIR)</ClangTidyToolPath>`, and the
+    target `CheckClangTidyVersion` (before `ClangTidy`) stops the build if `LLVM_TOOLS_DIR` is
+    unset, has no `clang-tidy.exe` or isn't LLVM 23, instead of falling back to Visual Studio's
+    LLVM 19. `--extra-arg=-Wno-unused-command-line-argument` (`ClangTidyToolExeAdditionalOptions`)
+    is needed because the compile commands MSBuild writes for clang-tidy include `/c`, which
+    clang 23 reports as unused (an error with `WarningsAsErrors`); CMake doesn't need it;
   - `<LanguageStandard>stdcpp20</LanguageStandard>` and `.\include` in the include path, in **each**
     configuration;
   - clang-tidy (Debug only, `EnableClangTidyCodeAnalysis`) reads `.clang-tidy`: don't add a
@@ -267,11 +292,12 @@ cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests
   `modernize-*` (except `modernize-use-trailing-return-type`), `readability-*` (including
   `readability-identifier-naming`), `bugprone-*`, `performance-*`, `misc-*` (including
   `misc-const-correctness` and `misc-include-cleaner`), `cert-*`, `portability-*`,
-  `llvm-namespace-comment` and `google-build-using-namespace` (about 430 checks). Many `cert-*`
+  `llvm-namespace-comment` and `google-build-using-namespace` (about 490 checks with LLVM 23). Many `cert-*`
   checks are aliases of checks from the other families. If a check turns out to be noise,
   disable it in `Checks` with a comment that says why, rather than adding `NOLINT`s.
-  `portability-*` only has three checks in LLVM 19 (system includes, SIMD intrinsics,
-  `const` allocators): it does **not** catch Windows vs Linux differences; the gcc build will.
+  `portability-*` has six checks in LLVM 23 (e.g. `#pragma once`, inline assembler, SIMD
+  intrinsics, virtual member functions of templates): it does **not** catch most Windows vs Linux
+  differences; the gcc build will.
   Project choices: interfaces may declare only `virtual ~X() = default;` (`AllowSoleDefaultDtor`);
   `tests/.clang-tidy` inherits everything but allows non-private members, `protected` in
   GoogleTest fixtures and public in test helpers and table rows. It disables the rule under both
@@ -306,7 +332,7 @@ cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests
     write `static_cast<void>(...)` and say why in a comment.
   - Free functions and variables used only in one `.cpp` go in an unnamed namespace
     (`misc-use-internal-linkage`).
-  To see findings without building: `clang-tidy -p "build/Windows x64 Debug" <file.cpp>`.
+  To see findings without building: `"%LLVM_TOOLS_DIR%\clang-tidy" -p "build/Windows x64 Debug" <file.cpp>`.
 - clang-tidy naming (`.clang-tidy`). It is enforced at build time:
   - Classes/structs: `CamelCase`. Interfaces are prefixed `I` (`IBeverage`, `IIngredientFactory`)
     and contain only pure virtual functions. Shared implementation goes in a `...Base` class
@@ -393,9 +419,13 @@ pre-commit run --all-files
     a final newline, so fixing them would only cause churn.
   - clang-format only checks C/C++ files under `include/`, `src/`, `apps/` and `tests/` (by default
     the hook would also format JSON).
-- The clang-format hook is pinned to `v19.1.5`, the version that ships with Visual Studio 2022
-  (`VC\Tools\Llvm`), so the editor and the hook format the same way. When Visual Studio updates
-  its clang-format, update the hook's `rev` too (the first run after a change downloads it).
+- The clang-format hook is pinned to `v23.1.3`, the project's LLVM version, so the editor (set to
+  `LLVM_TOOLS_DIR`'s clang-format) and the hook format the same way.
+- To move to another LLVM version, change it everywhere at once: the tools in a new
+  `D:\LLVM\<version>` folder and `LLVM_TOOLS_DIR`, `CLANG_TIDY_REQUIRED_VERSION` in
+  `cmake/clang_tidy.cmake`, the `version 23.` check in `CoffeeShop.vcxproj`, the hook's `rev`, and
+  the Visual Studio editor setting. Measure first: run the new clang-tidy over the project and the
+  new clang-format with `--dry-run` before switching.
 - `no-commit-to-branch` fails when the current branch is `main` or `staging`. Since the hooks are
   not installed, it only warns when you run them; it doesn't block the commit.
 - There is no clang-tidy hook on purpose: the build already runs clang-tidy with

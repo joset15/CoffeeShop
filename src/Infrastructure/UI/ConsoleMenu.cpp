@@ -7,6 +7,7 @@
 #include <charconv>
 #include <cstddef>
 #include <istream>
+#include <memory>
 #include <optional>
 #include <ostream>
 #include <sstream>
@@ -26,38 +27,43 @@ template <typename ValueType> struct MenuEntry
   std::string_view m_Label;
 };
 
+// The enumerators of both enums, so each table row fits on one line (their
+// names don't clash).
+using enum domain::BeverageVariety;
+using enum domain::Ingredient;
+
 /// @brief The beverages, in menu order (entry N is option N + 1).
-constexpr std::array<MenuEntry<domain::BeverageVariety>, 6> BeverageEntries{{
-    {.m_Value = domain::BeverageVariety::CoffeeEspresso,
-     .m_Label = "Coffee espresso"},
-    {.m_Value = domain::BeverageVariety::CoffeeLatte,
-     .m_Label = "Coffee latte"},
-    {.m_Value = domain::BeverageVariety::CoffeeDecaf,
-     .m_Label = "Coffee decaf"},
-    {.m_Value = domain::BeverageVariety::TeaBlack, .m_Label = "Black tea"},
-    {.m_Value = domain::BeverageVariety::TeaGreen, .m_Label = "Green tea"},
-    {.m_Value = domain::BeverageVariety::Cocoa, .m_Label = "Cocoa"},
-}};
+constexpr auto BeverageEntries =
+    std::to_array<MenuEntry<domain::BeverageVariety>>({
+        {.m_Value = CoffeeEspresso, .m_Label = "Coffee espresso"},
+        {.m_Value = CoffeeLatte, .m_Label = "Coffee latte"},
+        {.m_Value = CoffeeDecaf, .m_Label = "Coffee decaf"},
+        {.m_Value = TeaBlack, .m_Label = "Black tea"},
+        {.m_Value = TeaGreen, .m_Label = "Green tea"},
+        {.m_Value = Cocoa, .m_Label = "Cocoa"},
+    });
 
 /// @brief The ingredients, in menu order (entry N is option N + 1).
-constexpr std::array<MenuEntry<domain::Ingredient>, 7> IngredientEntries{{
-    {.m_Value = domain::Ingredient::Sugar, .m_Label = "Sugar"},
-    {.m_Value = domain::Ingredient::Milk, .m_Label = "Milk"},
-    {.m_Value = domain::Ingredient::Cream, .m_Label = "Cream"},
-    {.m_Value = domain::Ingredient::Honey, .m_Label = "Honey"},
-    {.m_Value = domain::Ingredient::Lemon, .m_Label = "Lemon"},
-    {.m_Value = domain::Ingredient::SoyMilk, .m_Label = "Soy milk"},
-    {.m_Value = domain::Ingredient::Water, .m_Label = "Water"},
-}};
+constexpr auto IngredientEntries =
+    std::to_array<MenuEntry<domain::Ingredient>>({
+        {.m_Value = Sugar, .m_Label = "Sugar"},
+        {.m_Value = Milk, .m_Label = "Milk"},
+        {.m_Value = Cream, .m_Label = "Cream"},
+        {.m_Value = Honey, .m_Label = "Honey"},
+        {.m_Value = Lemon, .m_Label = "Lemon"},
+        {.m_Value = SoyMilk, .m_Label = "Soy milk"},
+        {.m_Value = Water, .m_Label = "Water"},
+    });
 
 /// @brief Parses a whole word as a number.
 /// @return The number, or nullopt if the word is not a number.
 std::optional<int> parseNumber(std::string_view word)
 {
   int number = 0;
-  if (const auto result =
-          std::from_chars(word.data(), word.data() + word.size(), number);
-      result.ec != std::errc{} || result.ptr != word.data() + word.size())
+  const char *const first = std::to_address(word.begin());
+  const char *const last = std::to_address(word.end());
+  if (const auto result = std::from_chars(first, last, number);
+      result.ec != std::errc{} || result.ptr != last)
   {
     return std::nullopt;
   }

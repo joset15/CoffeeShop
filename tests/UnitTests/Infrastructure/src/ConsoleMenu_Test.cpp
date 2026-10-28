@@ -18,7 +18,7 @@ TEST_F(GivenAConsoleMenu, WhenMainOptionIsEnteredThenItIsReturned)
   ConsoleMenu menu = menuWithInput("2\n");
 
   // Act
-  auto option = menu.askMainOption();
+  const auto option = menu.askMainOption();
 
   // Assert
   ASSERT_EQ(option, ConsoleMenu::MainOption::ScreenListOrders);
@@ -45,7 +45,7 @@ TEST_F(GivenAConsoleMenu, WhenInputEndsThenNoMainOptionIsReturned)
   ConsoleMenu menu = menuWithInput("");
 
   // Act
-  auto option = menu.askMainOption();
+  const auto option = menu.askMainOption();
 
   // Assert
   ASSERT_FALSE(option.has_value());
@@ -58,7 +58,7 @@ TEST_F(GivenAConsoleMenu, WhenBeverageNumberIsEnteredThenThatVarietyIsReturned)
   ConsoleMenu menu = menuWithInput("6\n");
 
   // Act
-  auto variety = menu.askBeverageVariety();
+  const auto variety = menu.askBeverageVariety();
 
   // Assert
   ASSERT_EQ(variety, domain::BeverageVariety::Cocoa);
@@ -71,7 +71,7 @@ TEST_F(GivenAConsoleMenu, WhenInvalidBeverageIsEnteredThenItAsksAgain)
   ConsoleMenu menu = menuWithInput("abc\n9\n4\n");
 
   // Act
-  auto variety = menu.askBeverageVariety();
+  const auto variety = menu.askBeverageVariety();
 
   // Assert
   ASSERT_EQ(variety, domain::BeverageVariety::TeaBlack);
@@ -86,7 +86,7 @@ TEST_F(GivenAConsoleMenu, WhenZeroIsEnteredThenBeverageChoiceIsCancelled)
   ConsoleMenu menu = menuWithInput("0\n");
 
   // Act
-  auto variety = menu.askBeverageVariety();
+  const auto variety = menu.askBeverageVariety();
 
   // Assert
   ASSERT_FALSE(variety.has_value());
@@ -99,7 +99,7 @@ TEST_F(GivenAConsoleMenu, WhenIngredientNumbersAreEnteredThenThoseAreReturned)
   ConsoleMenu menu = menuWithInput("1 2\n");
 
   // Act
-  auto ingredients = menu.askIngredients();
+  const auto ingredients = menu.askIngredients();
 
   // Assert
   ASSERT_EQ(ingredients,
@@ -114,7 +114,7 @@ TEST_F(GivenAConsoleMenu, WhenEmptyLineIsEnteredThenNoIngredientsAreReturned)
   ConsoleMenu menu = menuWithInput("\n");
 
   // Act
-  auto ingredients = menu.askIngredients();
+  const auto ingredients = menu.askIngredients();
 
   // Assert
   ASSERT_TRUE(ingredients.empty());
@@ -127,7 +127,7 @@ TEST_F(GivenAConsoleMenu, WhenInvalidIngredientIsEnteredThenItAsksAgain)
   ConsoleMenu menu = menuWithInput("1 x\n5\n");
 
   // Act
-  auto ingredients = menu.askIngredients();
+  const auto ingredients = menu.askIngredients();
 
   // Assert
   ASSERT_EQ(ingredients,

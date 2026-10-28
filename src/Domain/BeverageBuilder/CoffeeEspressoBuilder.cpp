@@ -9,6 +9,6 @@ void CoffeeEspressoBuilder::resetImpl()
 {
   setBaseBeverage(BeverageVariety::CoffeeEspresso);
 
-  CoffeeBuilder::resetImpl();
+  CoffeeBuilder::resetState();
 }
 } // namespace coffee_shop::domain
