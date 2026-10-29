@@ -15,154 +15,238 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Adapter\IOrderDataSource.hpp">
+    <ClInclude Include="include\InterfaceAdapters\IOrderDataSource.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Adapter\OrderRepository.hpp">
+    <ClInclude Include="include\Application\UseCases\IAddNewOrderOutputPort.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Adapter\PrinterPresenter.hpp">
+    <ClInclude Include="include\Application\UseCases\ICancelOrdersOutputPort.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\OrderDiskDataSource.hpp">
+    <ClInclude Include="include\Application\UseCases\IListOrdersOutputPort.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\BeverageFactory.hpp">
+    <ClInclude Include="include\Application\UseCases\CancelOrdersUC.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UseCase\IOrderOutput.hpp">
+    <ClInclude Include="include\Application\UseCases\ListOrdersUC.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UseCase\IOrderRepository.hpp">
+    <ClInclude Include="include\InterfaceAdapters\TextPresenter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UseCase\UseCase.hpp">
+    <ClInclude Include="include\Application\UseCases\IOrderRepository.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Ingredient\Sugar.hpp">
+    <ClInclude Include="include\InterfaceAdapters\BeverageController.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Ingredient\IngredientDecorator.hpp">
+    <ClInclude Include="include\InterfaceAdapters\OrderRepository.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Beverages\CoffeeDecaf.hpp">
+    <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuildDirector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Beverages\CoffeeEspresso.hpp">
+    <ClInclude Include="include\Domain\BeverageBuilder\CocoaBuilder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Beverages\CoffeeLatte.hpp">
+    <ClInclude Include="include\Domain\BeverageBuilder\CoffeeBuilder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Beverages\TeaBlack.hpp">
+    <ClInclude Include="include\Domain\BeverageBuilder\CoffeeEspressoBuilder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Beverages\TeaGreen.hpp">
+    <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuilderBase.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Ingredient\Cream.hpp">
+    <ClInclude Include="include\Domain\BeverageBuilder\CoffeeDecafBuilder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Ingredient\Honey.hpp">
+    <ClInclude Include="include\Domain\BeverageBuilder\CoffeeLatteBuilder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Ingredient\Lemon.hpp">
+    <ClInclude Include="include\Domain\BeverageBuilder\TeaGreenBuilder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Ingredient\Milk.hpp">
+    <ClInclude Include="include\Domain\BeverageBuilder\IBeverageBuilder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Ingredient\SoyMilk.hpp">
+    <ClInclude Include="include\Domain\BeverageBuilder\TeaBlackBuilder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Ingredient\Water.hpp">
+    <ClInclude Include="include\Domain\BeverageBuilder\TeaBuilder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\BeverageBuilder\BeverageDirector.hpp">
+    <ClInclude Include="include\Domain\Ingredients\Cream.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\BeverageBuilder\IBeverageBuilder.hpp">
+    <ClInclude Include="include\Domain\Ingredients\Honey.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\BeverageBuilder\CoffeeBuilder.hpp">
+    <ClInclude Include="include\Domain\Ingredients\IngredientDecorator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\BeverageBuilder\TeaBuilder.hpp">
+    <ClInclude Include="include\Domain\Ingredients\Ingredient.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\BeverageBuilder\BeverageBuildDirector.hpp">
+    <ClInclude Include="include\Domain\Ingredients\Lemon.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\BeverageBuilder\BeverageBuilder.hpp">
+    <ClInclude Include="include\Domain\Ingredients\Milk.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\BeverageBuilder\CocoaBuilder.hpp">
+    <ClInclude Include="include\Domain\Ingredients\SoyMilk.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\BeverageBuilder\CoffeeEspressoBuilder.hpp">
+    <ClInclude Include="include\Domain\Ingredients\Sugar.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\BeverageBuilder\TeaBlackBuilder.hpp">
+    <ClInclude Include="include\Domain\Ingredients\Water.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Beverages\Cocoa.hpp">
+    <ClInclude Include="include\Domain\BeverageFactories\BeverageBuilderSimpleFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Beverages\Coffee.hpp">
+    <ClInclude Include="include\Domain\BeverageFactories\BeverageFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Beverages\IBeverage.hpp">
+    <ClInclude Include="include\Domain\BeverageFactories\IBeverageBuilderFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Beverages\Tea.hpp">
+    <ClInclude Include="include\Domain\BeverageFactories\IBeverageFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Beverages\BeverageVariety.hpp">
+    <ClInclude Include="include\Domain\BeverageFactories\IIngredientFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Domain\BeverageFactories\IngredientFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Domain\Beverages\BeverageVariety.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Domain\Beverages\Cocoa.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Domain\Beverages\Coffee.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Domain\Beverages\CoffeeDecaf.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Domain\Beverages\CoffeeEspresso.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Domain\Beverages\CoffeeLatte.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Domain\Beverages\IBeverage.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Domain\Beverages\Tea.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Domain\Beverages\TeaBlack.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Domain\Beverages\TeaGreen.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Application\UseCases\AddNewOrderUC.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Infrastructure\UI\ConsoleMenu.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Application\UseCases\NewOrderReq.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InterfaceAdapters\Gateways\OrderDiskDataSource.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Adapter\OrderRepository.cpp">
+    <ClCompile Include="src\Domain\BeverageBuilder\BeverageBuildDirector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\OrderDiskDataSource.cpp">
+    <ClCompile Include="src\Domain\BeverageBuilder\CocoaBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model\BeverageFactory.cpp">
+    <ClCompile Include="src\Domain\BeverageBuilder\CoffeeBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UseCase\UseCase.cpp">
+    <ClCompile Include="src\Domain\BeverageBuilder\CoffeeEspressoBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\Domain\BeverageBuilder\TeaBlackBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model\BeverageBuilder\CoffeeBuilder.cpp">
+    <ClCompile Include="src\Domain\BeverageBuilder\TeaBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model\BeverageBuilder\TeaBuilder.cpp">
+    <ClCompile Include="src\Domain\BeverageFactories\BeverageBuilderSimpleFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model\BeverageBuilder\BeverageBuildDirector.cpp">
+    <ClCompile Include="src\Domain\BeverageFactories\BeverageFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model\BeverageBuilder\CocoaBuilder.cpp">
+    <ClCompile Include="src\Domain\BeverageFactories\IngredientFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model\BeverageBuilder\CoffeeEspressoBuilder.cpp">
+    <ClCompile Include="src\Domain\Beverages\Cocoa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model\BeverageBuilder\TeaBlackBuilder.cpp">
+    <ClCompile Include="src\Domain\Beverages\Coffee.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model\Beverages\Cocoa.cpp">
+    <ClCompile Include="src\Domain\Beverages\Tea.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model\Beverages\Coffee.cpp">
+    <ClCompile Include="src\InterfaceAdapters\BeverageController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model\Beverages\Tea.cpp">
+    <ClCompile Include="src\InterfaceAdapters\OrderRepository.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Application\UseCases\AddNewOrderUC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Domain\BeverageBuilder\CoffeeDecafBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Domain\BeverageBuilder\CoffeeLatteBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Domain\BeverageBuilder\TeaGreenBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application\UseCases\CancelOrdersUC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application\UseCases\ListOrdersUC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InterfaceAdapters\TextPresenter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Infrastructure\UI\ConsoleMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InterfaceAdapters\Gateways\OrderDiskDataSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="apps\ConsoleApp\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

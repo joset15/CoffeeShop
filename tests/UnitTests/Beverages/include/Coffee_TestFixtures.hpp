@@ -1,0 +1,24 @@
+#ifndef COFFEE_TESTFIXTURES_HPP
+#define COFFEE_TESTFIXTURES_HPP
+
+#include "Domain/Beverages/Coffee.hpp"
+
+#include <gtest/gtest.h>
+
+#include <memory>
+
+namespace coffee_shop::domain
+{
+///
+/// \brief A fixture for testing a Coffee.
+///
+class GivenACoffee : public ::testing::Test
+{
+protected:
+  void SetUp() override { m_Coffee = std::make_unique<Coffee>(); }
+
+  std::unique_ptr<Coffee> m_Coffee;
+};
+} // namespace coffee_shop::domain
+
+#endif // COFFEE_TESTFIXTURES_HPP

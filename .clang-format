@@ -20,7 +20,7 @@ AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: false
 BinPackArguments: true
 BinPackParameters: true
-BraceWrapping:   
+BraceWrapping:
   AfterClass:      false
   AfterControlStatement: false
   AfterEnum:       false
@@ -48,13 +48,30 @@ DerivePointerAlignment: false
 DisableFormat:   false
 ExperimentalAutoDetectBinPacking: false
 ForEachMacros:   [ foreach, Q_FOREACH, BOOST_FOREACH ]
-IncludeCategories: 
-  - Regex:           '^"(llvm|llvm-c|clang|clang-c)/'
-    Priority:        2
-  - Regex:           '^(<|"(gtest|isl|json)/)'
-    Priority:        3
-  - Regex:           '.*'
+# Includes are regrouped into blocks, from the most specific to the most general:
+# the file's own header (IncludeIsMainRegex), the test fixture, the project layers
+# from the inside out, shared test helpers (tests/Common), GoogleTest, and the
+# standard and system headers.
+IncludeBlocks:   Regroup
+IncludeCategories:
+  - Regex:           '^"\.\./include/'
     Priority:        1
+  - Regex:           '^"Domain/'
+    Priority:        2
+  - Regex:           '^"Application/'
+    Priority:        3
+  - Regex:           '^"InterfaceAdapters/'
+    Priority:        4
+  - Regex:           '^"Infrastructure/'
+    Priority:        5
+  - Regex:           '^"[^/]+"$'
+    Priority:        6
+  - Regex:           '^<gtest/'
+    Priority:        7
+  - Regex:           '^<'
+    Priority:        8
+  - Regex:           '.*'
+    Priority:        9
 IncludeIsMainRegex: '$'
 IndentCaseLabels: false
 IndentWidth:     2
@@ -89,7 +106,14 @@ SpacesInContainerLiterals: true
 SpacesInCStyleCastParentheses: false
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
-Standard:        Cpp11
+Standard:        c++20
 TabWidth:        8
 UseTab:          Never
+
+# Add single empty line as the last line (v16-v17)
+InsertNewlineAtEOF: true
+KeepEmptyLinesAtEOF: true
+
+# Set EOL to CRLF unless LF is predominant (v16)
+LineEnding: DeriveCRLF
 ...

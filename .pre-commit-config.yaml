@@ -1,0 +1,77 @@
+# To use (by hand, before committing; it is not installed as a git hook, so don't run
+# `pre-commit install`):
+#
+#     pre-commit run --all-files
+#
+# To update this file:
+#
+#     pre-commit autoupdate
+#
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+# See https://github.com/pre-commit/pre-commit
+
+# Legacy files outside the CMake build: the Qt project and the old VS solution for the tests.
+# Keep them as they are until it is decided whether to update or retire them.
+exclude: |
+  (?x)^(
+    \.qmake\.stash|
+    CoffeeShop\.pro|
+    CoffeeShopQt\.vcxproj(\.filters)?|
+    mainQt\.cpp|
+    mainwindow\.(cpp|h|ui)|
+    ui_mainwindow\.h|
+    tests/CoffeeShop_gtest\.vcxproj|
+    tests/packages\.config|
+    tests/pch\.(cpp|h)|
+    tests/test\.cpp
+  )$
+
+repos:
+  # Standard hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace # Trims trailing whitespace.
+      - id: end-of-file-fixer # Ensures that a file is either empty, or ends with one newline.
+        # Visual Studio saves these without a final newline; fixing them would only cause churn.
+        exclude: '\.(vcxproj|filters|cd)$'
+      - id: check-yaml # Checks yaml files for parseable syntax.
+      - id: check-json # Checks json files for parseable syntax.
+      - id: pretty-format-json # Checks that json files are sorted and indented.
+        args: ['--no-sort-keys']
+      - id: check-added-large-files # Prevents giant files from being committed.
+      - id: check-merge-conflict # Checks for files that contain merge conflict strings.
+      - id: mixed-line-ending # Replaces or checks mixed line ending.
+      - id: check-case-conflict # Checks for files that would conflict in case-insensitive filesystems.
+      - id: no-commit-to-branch # Protect specific branches from direct checkins.
+        args: ['--branch', 'main', '--branch', 'staging']
+      - id: requirements-txt-fixer # sorts entries in requirements.txt and constraints.txt and removes incorrect entries.
+      - id: check-illegal-windows-names # Check for files that cannot be created on Windows.
+
+  - repo: https://github.com/cheshirekow/cmake-format-precommit
+    rev: v0.6.10
+    hooks:
+      # - id: cmake-format
+      - id: cmake-lint
+        types: [cmake]
+        entry: cmake-lint --linelength=100 --config=.cmakelintrc
+
+  - repo: https://github.com/BlankSpruce/gersemi
+    rev: 0.17.1
+    hooks:
+      - id: gersemi
+        types: [cmake]
+
+  # No clang-tidy hook: the CMake build already runs clang-tidy on every .cpp and project header
+  # with compile_commands.json, and WarningsAsErrors makes the build fail on any finding.
+
+  # clang-format, pinned to the project's LLVM version (the one in LLVM_TOOLS_DIR, see AGENTS.md)
+  # so the editor and the hook format the same way. Only C/C++ files of the CMake build (by default
+  # it also formats JSON).
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v23.1.3
+    hooks:
+      - id: clang-format
+        types_or: [c++, c]
+        files: ^(include|src|apps|tests)/

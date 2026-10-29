@@ -1,0 +1,9 @@
+# Resolves internal repository paths
+function(resolve_project_paths SOURCE_ROOT_PATH PUBLIC_INCLUDE_PATH PRIVATE_INCLUDE_PATH)
+  set(PROJECT_ROOT ${PROJECT_SOURCE_DIR}/) # ${CMAKE_CURRENT_SOURCE_DIR} CMAKE_CURRENT_LIST_DIR
+
+  set(${SOURCE_ROOT_PATH} ${PROJECT_ROOT}/src PARENT_SCOPE)
+
+  set(${PUBLIC_INCLUDE_PATH} ${PROJECT_ROOT}/include PARENT_SCOPE) # /include/public
+  set(${PRIVATE_INCLUDE_PATH} ${PROJECT_ROOT}/include/private PARENT_SCOPE)
+endfunction()

@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
@@ -19,57 +11,89 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Adapter\IOrderDataSource.hpp" />
-    <ClInclude Include="Adapter\OrderRepository.hpp" />
-    <ClInclude Include="Adapter\PrinterPresenter.hpp" />
-    <ClInclude Include="Data\OrderDiskDataSource.hpp" />
-    <ClInclude Include="Model\BeverageBuilder\BeverageBuildDirector.hpp" />
-    <ClInclude Include="Model\BeverageBuilder\BeverageBuilder.hpp" />
-    <ClInclude Include="Model\BeverageBuilder\BeverageDirector.hpp" />
-    <ClInclude Include="Model\BeverageBuilder\CocoaBuilder.hpp" />
-    <ClInclude Include="Model\BeverageBuilder\CoffeeBuilder.hpp" />
-    <ClInclude Include="Model\BeverageBuilder\CoffeeEspressoBuilder.hpp" />
-    <ClInclude Include="Model\BeverageBuilder\IBeverageBuilder.hpp" />
-    <ClInclude Include="Model\BeverageBuilder\TeaBlackBuilder.hpp" />
-    <ClInclude Include="Model\BeverageBuilder\TeaBuilder.hpp" />
-    <ClInclude Include="Model\BeverageFactory.hpp" />
-    <ClInclude Include="Model\Beverages\BeverageVariety.hpp" />
-    <ClInclude Include="Model\Beverages\Cocoa.hpp" />
-    <ClInclude Include="Model\Beverages\Coffee.hpp" />
-    <ClInclude Include="Model\Beverages\CoffeeDecaf.hpp" />
-    <ClInclude Include="Model\Beverages\CoffeeEspresso.hpp" />
-    <ClInclude Include="Model\Beverages\CoffeeLatte.hpp" />
-    <ClInclude Include="Model\Beverages\IBeverage.hpp" />
-    <ClInclude Include="Model\Beverages\Tea.hpp" />
-    <ClInclude Include="Model\Beverages\TeaBlack.hpp" />
-    <ClInclude Include="Model\Beverages\TeaGreen.hpp" />
-    <ClInclude Include="Model\Ingredient\Cream.hpp" />
-    <ClInclude Include="Model\Ingredient\Honey.hpp" />
-    <ClInclude Include="Model\Ingredient\IngredientDecorator.hpp" />
-    <ClInclude Include="Model\Ingredient\Lemon.hpp" />
-    <ClInclude Include="Model\Ingredient\Milk.hpp" />
-    <ClInclude Include="Model\Ingredient\SoyMilk.hpp" />
-    <ClInclude Include="Model\Ingredient\Sugar.hpp" />
-    <ClInclude Include="Model\Ingredient\Water.hpp" />
-    <ClInclude Include="UseCase\IOrderOutput.hpp" />
-    <ClInclude Include="UseCase\IOrderRepository.hpp" />
-    <ClInclude Include="UseCase\UseCase.hpp" />
+    <ClInclude Include="include\Application\UseCases\AddNewOrderUC.hpp" />
+    <ClInclude Include="include\Application\UseCases\CancelOrdersUC.hpp" />
+    <ClInclude Include="include\Application\UseCases\IAddNewOrderOutputPort.hpp" />
+    <ClInclude Include="include\Application\UseCases\ICancelOrdersOutputPort.hpp" />
+    <ClInclude Include="include\Application\UseCases\IListOrdersOutputPort.hpp" />
+    <ClInclude Include="include\Application\UseCases\IOrderRepository.hpp" />
+    <ClInclude Include="include\Application\UseCases\ListOrdersUC.hpp" />
+    <ClInclude Include="include\Application\UseCases\NewOrderReq.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuildDirector.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\CocoaBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\CoffeeBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\CoffeeDecafBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\CoffeeEspressoBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\CoffeeLatteBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\BeverageBuilderBase.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\IBeverageBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\TeaBlackBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\TeaBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageBuilder\TeaGreenBuilder.hpp" />
+    <ClInclude Include="include\Domain\BeverageFactories\BeverageBuilderSimpleFactory.hpp" />
+    <ClInclude Include="include\Domain\BeverageFactories\BeverageFactory.hpp" />
+    <ClInclude Include="include\Domain\BeverageFactories\IBeverageBuilderFactory.hpp" />
+    <ClInclude Include="include\Domain\BeverageFactories\IBeverageFactory.hpp" />
+    <ClInclude Include="include\Domain\BeverageFactories\IIngredientFactory.hpp" />
+    <ClInclude Include="include\Domain\BeverageFactories\IngredientFactory.hpp" />
+    <ClInclude Include="include\Domain\Beverages\BeverageVariety.hpp" />
+    <ClInclude Include="include\Domain\Beverages\Cocoa.hpp" />
+    <ClInclude Include="include\Domain\Beverages\Coffee.hpp" />
+    <ClInclude Include="include\Domain\Beverages\CoffeeDecaf.hpp" />
+    <ClInclude Include="include\Domain\Beverages\CoffeeEspresso.hpp" />
+    <ClInclude Include="include\Domain\Beverages\CoffeeLatte.hpp" />
+    <ClInclude Include="include\Domain\Beverages\IBeverage.hpp" />
+    <ClInclude Include="include\Domain\Beverages\Tea.hpp" />
+    <ClInclude Include="include\Domain\Beverages\TeaBlack.hpp" />
+    <ClInclude Include="include\Domain\Beverages\TeaGreen.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\Cream.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\Honey.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\IngredientDecorator.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\Ingredient.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\Lemon.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\Milk.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\SoyMilk.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\Sugar.hpp" />
+    <ClInclude Include="include\Domain\Ingredients\Water.hpp" />
+    <ClInclude Include="include\Infrastructure\UI\ConsoleMenu.hpp" />
+    <ClInclude Include="include\InterfaceAdapters\BeverageController.hpp" />
+    <ClInclude Include="include\InterfaceAdapters\Gateways\OrderDiskDataSource.hpp" />
+    <ClInclude Include="include\InterfaceAdapters\IOrderDataSource.hpp" />
+    <ClInclude Include="include\InterfaceAdapters\OrderRepository.hpp" />
+    <ClInclude Include="include\InterfaceAdapters\TextPresenter.hpp" />
+    <ClInclude Include="include\pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Adapter\OrderRepository.cpp" />
-    <ClCompile Include="Data\OrderDiskDataSource.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Model\BeverageBuilder\BeverageBuildDirector.cpp" />
-    <ClCompile Include="Model\BeverageBuilder\CocoaBuilder.cpp" />
-    <ClCompile Include="Model\BeverageBuilder\CoffeeBuilder.cpp" />
-    <ClCompile Include="Model\BeverageBuilder\CoffeeEspressoBuilder.cpp" />
-    <ClCompile Include="Model\BeverageBuilder\TeaBlackBuilder.cpp" />
-    <ClCompile Include="Model\BeverageBuilder\TeaBuilder.cpp" />
-    <ClCompile Include="Model\BeverageFactory.cpp" />
-    <ClCompile Include="Model\Beverages\Cocoa.cpp" />
-    <ClCompile Include="Model\Beverages\Coffee.cpp" />
-    <ClCompile Include="Model\Beverages\Tea.cpp" />
-    <ClCompile Include="UseCase\UseCase.cpp" />
+    <ClCompile Include="apps\ConsoleApp\main.cpp" />
+    <ClCompile Include="src\Application\UseCases\AddNewOrderUC.cpp" />
+    <ClCompile Include="src\Application\UseCases\CancelOrdersUC.cpp" />
+    <ClCompile Include="src\Application\UseCases\ListOrdersUC.cpp" />
+    <ClCompile Include="src\Domain\BeverageBuilder\BeverageBuildDirector.cpp" />
+    <ClCompile Include="src\Domain\BeverageBuilder\CocoaBuilder.cpp" />
+    <ClCompile Include="src\Domain\BeverageBuilder\CoffeeBuilder.cpp" />
+    <ClCompile Include="src\Domain\BeverageBuilder\CoffeeDecafBuilder.cpp" />
+    <ClCompile Include="src\Domain\BeverageBuilder\CoffeeEspressoBuilder.cpp" />
+    <ClCompile Include="src\Domain\BeverageBuilder\CoffeeLatteBuilder.cpp" />
+    <ClCompile Include="src\Domain\BeverageBuilder\TeaBlackBuilder.cpp" />
+    <ClCompile Include="src\Domain\BeverageBuilder\TeaBuilder.cpp" />
+    <ClCompile Include="src\Domain\BeverageBuilder\TeaGreenBuilder.cpp" />
+    <ClCompile Include="src\Domain\BeverageFactories\BeverageBuilderSimpleFactory.cpp" />
+    <ClCompile Include="src\Domain\BeverageFactories\BeverageFactory.cpp" />
+    <ClCompile Include="src\Domain\BeverageFactories\IngredientFactory.cpp" />
+    <ClCompile Include="src\Domain\Beverages\Cocoa.cpp" />
+    <ClCompile Include="src\Domain\Beverages\Coffee.cpp" />
+    <ClCompile Include="src\Domain\Beverages\Tea.cpp" />
+    <ClCompile Include="src\Infrastructure\UI\ConsoleMenu.cpp" />
+    <ClCompile Include="src\InterfaceAdapters\BeverageController.cpp" />
+    <ClCompile Include="src\InterfaceAdapters\Gateways\OrderDiskDataSource.cpp" />
+    <ClCompile Include="src\InterfaceAdapters\OrderRepository.cpp" />
+    <ClCompile Include="src\InterfaceAdapters\TextPresenter.cpp" />
+    <ClCompile Include="src\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -79,29 +103,16 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -110,62 +121,26 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="x64\Debug\.conan\conanbuildinfo.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
+    <!-- clang-tidy from LLVM 23, in the folder of the user environment variable LLVM_TOOLS_DIR. -->
+    <ClangTidyToolPath>$(LLVM_TOOLS_DIR)</ClangTidyToolPath>
+    <!-- The compile commands MSBuild writes for clang-tidy include /c, which clang 23 reports as an
+         unused argument (an error with WarningsAsErrors). It is about the commands, not the code. -->
+    <ClangTidyToolExeAdditionalOptions>--extra-arg=-Wno-unused-command-line-argument</ClangTidyToolExeAdditionalOptions>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -173,6 +148,11 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <ForcedIncludeFiles>include\pch.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories);.\include</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>include\pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -187,6 +167,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories);.\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -196,6 +178,15 @@
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <!-- Fail instead of silently falling back to Visual Studio's bundled clang-tidy (LLVM 19). -->
+  <Target Name="CheckClangTidyVersion" BeforeTargets="ClangTidy">
+    <Error Condition="'$(LLVM_TOOLS_DIR)' == ''" Text="LLVM_TOOLS_DIR is not set: it must point to the bin folder of LLVM 23 (e.g. D:\LLVM\23.1.4\bin). See AGENTS.md." />
+    <Error Condition="!Exists('$(LLVM_TOOLS_DIR)\clang-tidy.exe')" Text="clang-tidy.exe not found in LLVM_TOOLS_DIR ($(LLVM_TOOLS_DIR))." />
+    <Exec Command="&quot;$(LLVM_TOOLS_DIR)\clang-tidy.exe&quot; --version" ConsoleToMSBuild="true" StandardOutputImportance="low">
+      <Output TaskParameter="ConsoleOutput" PropertyName="ClangTidyVersionText" />
+    </Exec>
+    <Error Condition="!$(ClangTidyVersionText.Contains('version 23.'))" Text="LLVM_TOOLS_DIR doesn't point to LLVM 23: $(ClangTidyVersionText)" />
+  </Target>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>

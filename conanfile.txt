@@ -1,8 +1,14 @@
 [requires]
-#gtest/1.8.1
+gtest/1.14.0
 
 [options]
-#gtest:shared=False
+gtest:shared=False
 
 [generators]
-#MSBuildDeps
+# MSBuildDeps
+CMakeDeps
+CMakeToolchain
+
+[layout]
+# Conan will create a folder named build, a subfolder named Release, and a subsubfolder named generators.
+cmake_layout
