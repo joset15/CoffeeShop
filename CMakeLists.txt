@@ -164,6 +164,7 @@ if(ITESTS)
 
   add_subdirectory(tests/IntegrationTests)
   add_dependencies(IntegrationTests AllLayers)
+  add_subdirectory(tests/AppScenarios) # The console app run end to end.
 endif()
 
 include(coverage) # The "coverage" target, after the test targets it runs.
