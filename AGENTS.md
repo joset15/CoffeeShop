@@ -445,6 +445,28 @@ pre-commit run --all-files
 - Untracked scratch files at the root (`CMakePresets_01.json`, `CMakeSettings_OK.json`,
   `ClassDiagram.cd`, `req.txt`, ...) belong to the owner. Leave them alone.
 
+### Versions and releases
+
+- [Semantic Versioning](https://semver.org/) in `0.x` until the goals are met (Linux build, Qt
+  frontend): the MINOR goes up for each milestone, the PATCH for fixes only. `1.0.0` comes when the
+  project is multiplatform with its frontends.
+- The version is set in one place: `project(VERSION ...)` in the top-level `CMakeLists.txt`.
+- `CHANGELOG.md` follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). A PR that changes
+  behavior, the build or the tools adds a line under `## [Unreleased]`, in `Added`, `Changed`,
+  `Removed` or `Fixed`.
+- The owner decides when there is a release. Suggest one when a milestone is done.
+- Releasing `X.Y.Z`:
+  1. On a `release/vX.Y.Z` branch from `develop`: set `project(VERSION X.Y.Z)`, and in
+     `CHANGELOG.md` rename `[Unreleased]` to `[X.Y.Z] - <date>`, add an empty `[Unreleased]` above
+     it and update the compare links at the end. PR to `develop`.
+  2. PR from `develop` to `main`, merged with a **merge commit** (not squash or rebase, or `main`
+     and `develop` diverge and every later release conflicts).
+  3. Tag the merge on `main` with an annotated tag and push it:
+     `git tag -a vX.Y.Z -m "<summary>"`, `git push origin vX.Y.Z`.
+  4. Create the GitHub Release from the tag, with that version's `CHANGELOG.md` section as notes.
+- Tags before `v0.5.0` stay as they are: `v0.2.0` to `v0.4.0` were made on `develop`, and
+  `v0.2.0` and `v0.3.0` are lightweight. Don't rewrite published tags.
+
 ## Gotchas
 
 - Ninja only rebuilds changed `.cpp` files, so a new finding in a header shows up when a `.cpp`
