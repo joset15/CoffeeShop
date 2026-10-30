@@ -52,6 +52,14 @@ repos:
       - id: requirements-txt-fixer # sorts entries in requirements.txt and constraints.txt and removes incorrect entries.
       - id: check-illegal-windows-names # Check for files that cannot be created on Windows.
 
+  # The GitHub Actions workflows, composite actions and Dependabot settings, against their schemas.
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.30.0
+    hooks:
+      - id: check-github-workflows
+      - id: check-github-actions
+      - id: check-dependabot
+
   - repo: https://github.com/cheshirekow/cmake-format-precommit
     rev: v0.6.10
     hooks:
