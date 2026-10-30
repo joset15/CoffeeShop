@@ -1,0 +1,64 @@
+# Installs what scripts/dev.py needs on a GitHub-hosted Windows runner. Visual Studio 2022, CMake
+# and Ninja come with the runner; dev.py sets up the x64 developer environment by itself.
+name: Set up the Windows build
+description: Python, Conan 1, ccache and, when asked, LLVM 23 (clang-tidy) and OpenCppCoverage.
+
+inputs:
+  llvm:
+    description: Install clang-tidy from LLVM 23 and set LLVM_TOOLS_DIR (needed with clang-tidy).
+    default: "false"
+  opencppcoverage:
+    description: Install OpenCppCoverage (needed by the coverage target).
+    default: "false"
+  cache-key:
+    description: Name of this job's ccache cache.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        # Conan 1.61 is older than Python 3.12, so the CI stays on 3.11. dev.py also works with
+        # Python 3.8.
+        python-version: "3.11"
+
+    # The same versions as on the developers' machines (see AGENTS.md, "Setup").
+    - name: Install Conan 1
+      shell: pwsh
+      run: |
+        python -m pip install --disable-pip-version-check "conan==1.61.0"
+        conan profile new default --detect --force
+
+    - name: Cache the Conan packages (GoogleTest)
+      uses: actions/cache@v4
+      with:
+        path: ~/.conan/data
+        key: conan-${{ runner.os }}-${{ hashFiles('conanfile.txt') }}
+
+    - name: Install LLVM 23 (clang-tidy)
+      if: inputs.llvm == 'true'
+      shell: pwsh
+      run: |
+        $target = Join-Path $env:RUNNER_TEMP "llvm"
+        python -m pip install --disable-pip-version-check --no-deps --target $target "clang-tidy==23.1.4"
+        "LLVM_TOOLS_DIR=$(Join-Path $target 'clang_tidy\data\bin')" >> $env:GITHUB_ENV
+
+    - name: Install OpenCppCoverage
+      if: inputs.opencppcoverage == 'true'
+      shell: pwsh
+      run: choco install opencppcoverage --version 0.9.9.0 --yes --no-progress
+
+    # ccache only caches the compiler; clang-tidy still runs on every file.
+    - name: Install ccache
+      shell: pwsh
+      run: |
+        choco install ccache --yes --no-progress
+        "CCACHE_DIR=$(Join-Path $env:RUNNER_TEMP 'ccache')" >> $env:GITHUB_ENV
+
+    - name: Cache the compiled objects (ccache)
+      uses: actions/cache@v4
+      with:
+        path: ${{ runner.temp }}/ccache
+        key: ccache-${{ inputs.cache-key }}-${{ github.sha }}
+        restore-keys: ccache-${{ inputs.cache-key }}-

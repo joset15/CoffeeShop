@@ -7,9 +7,9 @@
   },
   "configurePresets": [
     {
-      "name": "Windows x64 Debug",
-      "displayName": "Windows x64 Debug",
-      "description": "Sets Ninja generator, compilers, x64 architecture, build and install directory, debug build type",
+      "name": "windows-base",
+      "hidden": true,
+      "description": "Settings shared by the Windows presets. Run CMake from an x64 developer environment",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "architecture": {
@@ -20,7 +20,6 @@
         "$comment": "To use a Doxygen that is not on PATH, add \"PATH\": \"<doxygen bin folder>;$penv{PATH}\"."
       },
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}",
         "TESTS": {
           "type": "BOOL",
@@ -38,30 +37,32 @@
       }
     },
     {
+      "name": "Windows x64 Debug",
+      "displayName": "Windows x64 Debug",
+      "description": "Ninja, x64, Debug, with clang-tidy and the tests",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
       "name": "Windows x64 Release",
       "displayName": "Windows x64 Release",
-      "description": "Sets Ninja generator, compilers, x64 architecture, build and install directory, debug build type",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/out/build/${presetName}",
-      "architecture": {
-        "value": "x64",
-        "strategy": "external"
-      },
+      "description": "Ninja, x64, Release, with clang-tidy and the tests",
+      "inherits": "windows-base",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
-        "TESTS": {
-          "type": "BOOL",
-          "value": "ON"
-        },
-        "ITESTS": "ON"
-      },
-      "vendor": {
-        "microsoft.com/VisualStudioSettings/CMake/1.0": {
-          "hostOS": [
-            "Windows"
-          ]
-        }
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "Windows x64 Debug ASan",
+      "displayName": "Windows x64 Debug ASan",
+      "description": "Ninja, x64, Debug with AddressSanitizer, without clang-tidy (the Debug preset runs it)",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "ASAN_ENABLED": "ON",
+        "CLANG_TIDY_ENABLED": "OFF"
       }
     },
     {
@@ -87,6 +88,100 @@
           "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"
         }
       }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "Windows x64 Debug",
+      "configurePreset": "Windows x64 Debug"
+    },
+    {
+      "name": "Windows x64 Release",
+      "configurePreset": "Windows x64 Release"
+    },
+    {
+      "name": "Windows x64 Debug ASan",
+      "configurePreset": "Windows x64 Debug ASan"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "windows-test-base",
+      "hidden": true,
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "Windows x64 Debug",
+      "inherits": "windows-test-base",
+      "configurePreset": "Windows x64 Debug"
+    },
+    {
+      "name": "Windows x64 Release",
+      "inherits": "windows-test-base",
+      "configurePreset": "Windows x64 Release"
+    },
+    {
+      "name": "Windows x64 Debug ASan",
+      "inherits": "windows-test-base",
+      "configurePreset": "Windows x64 Debug ASan"
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "Windows x64 Debug",
+      "description": "Configure, build and test in one command",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "Windows x64 Debug"
+        },
+        {
+          "type": "build",
+          "name": "Windows x64 Debug"
+        },
+        {
+          "type": "test",
+          "name": "Windows x64 Debug"
+        }
+      ]
+    },
+    {
+      "name": "Windows x64 Release",
+      "description": "Configure, build and test in one command",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "Windows x64 Release"
+        },
+        {
+          "type": "build",
+          "name": "Windows x64 Release"
+        },
+        {
+          "type": "test",
+          "name": "Windows x64 Release"
+        }
+      ]
+    },
+    {
+      "name": "Windows x64 Debug ASan",
+      "description": "Configure, build and test in one command",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "Windows x64 Debug ASan"
+        },
+        {
+          "type": "build",
+          "name": "Windows x64 Debug ASan"
+        },
+        {
+          "type": "test",
+          "name": "Windows x64 Debug ASan"
+        }
+      ]
     }
   ]
 }

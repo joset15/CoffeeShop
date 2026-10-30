@@ -104,10 +104,11 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") # MATCHES
 
   if(ASAN_ENABLED)
     message(STATUS "ASAN ENABLED")
-    set(ENV{ASAN_SAVE_DUMPS} "AsanDumpInfo.dmp") # ASAN_SAVE_DUMPS=MyFileName.dmp
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od /D_DEBUG /fsanitize=address")
-
-    unset(ASAN_ENABLED)
+    # GoogleTest comes from Conan without AddressSanitizer. Its std::vector and std::string are not
+    # annotated, so the instrumented code reports false "container-overflow" errors on them. These
+    # macros turn the annotations off; every other AddressSanitizer check still runs.
+    add_compile_definitions(_DISABLE_VECTOR_ANNOTATION _DISABLE_STRING_ANNOTATION)
   else()
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od /D_DEBUG") # /MTd
   endif()
@@ -164,6 +165,7 @@ if(ITESTS)
 
   add_subdirectory(tests/IntegrationTests)
   add_dependencies(IntegrationTests AllLayers)
+  add_subdirectory(tests/AppScenarios) # The console app run end to end.
 endif()
 
 include(coverage) # The "coverage" target, after the test targets it runs.
