@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- GitHub Actions workflow for Windows: tests and coverage, AddressSanitizer, the Visual Studio project
+  and pre-commit. Dependabot keeps its actions up to date.
+- `scripts/dev.py` for the usual tasks: build, tests, AddressSanitizer, coverage and MSBuild.
+- CMake build, test and workflow presets, and a `Windows x64 Debug ASan` preset.
+- The console app run end to end as CTest tests (`tests/AppScenarios`).
+
+### Changed
+
+- The `Windows x64 Release` preset builds in `build/` instead of `out/build/`.
+
+### Fixed
+
+- The tests stopped with a false `container-overflow` error under AddressSanitizer.
+
 ## [0.5.0] - 2026-10-29
 
 ### Added

@@ -1,13 +1,18 @@
-# Checks every pull request to develop and main with the same commands as on a developer's machine
+# Checks pull requests to develop and main with the same commands as on a developer's machine
 # (scripts/dev.py, see AGENTS.md). It can also be run by hand from the Actions tab.
 #
-# The repository is private: Windows minutes count double, so the jobs run in parallel and a new
-# push to the same pull request cancels the run that is still going.
+# The repository is private and Windows minutes count double, so:
+# - a change that only touches Markdown files runs nothing;
+# - a draft pull request only runs pre-commit (the Windows jobs start with "Ready for review");
+# - a new push to the same pull request cancels the run that is still going.
 name: CI
 
 on:
   pull_request:
     branches: [develop, main]
+    # The default types, plus ready_for_review: from draft to ready.
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths-ignore: ["**.md"]
   workflow_dispatch:
 
 concurrency:
@@ -20,6 +25,7 @@ permissions:
 jobs:
   tests:
     name: Tests and coverage (Debug, clang-tidy)
+    if: ${{ !github.event.pull_request.draft }}
     runs-on: windows-2022
     timeout-minutes: 30
     steps:
@@ -44,6 +50,7 @@ jobs:
 
   asan:
     name: Tests with AddressSanitizer
+    if: ${{ !github.event.pull_request.draft }}
     runs-on: windows-2022
     timeout-minutes: 30
     steps:
@@ -56,6 +63,7 @@ jobs:
 
   msbuild:
     name: Visual Studio project (MSBuild)
+    if: ${{ !github.event.pull_request.draft }}
     runs-on: windows-2022
     timeout-minutes: 30
     steps:
