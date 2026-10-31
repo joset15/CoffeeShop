@@ -476,10 +476,11 @@ python scripts/dev.py all                                   :: everything the CI
 | Visual Studio project (MSBuild) | `windows-2022` | `dev.py msbuild` | 4 min |
 | pre-commit | `ubuntu-latest` | `pre-commit run --all-files` | 0.5 min |
 
-- It runs on pull requests to `develop` and `main`, and by hand from the Actions tab once the
-  workflow is on `main`. A new push cancels the run in progress.
-- The repository is private and Windows minutes count double, so a full run costs about 33 minutes
-  (measured with empty caches):
+- It runs on pull requests to `develop` and `main`, and by hand from the Actions tab. A new push
+  cancels the run in progress.
+- The repository is private, so the runs use the plan's monthly Actions credit, and a Windows minute
+  costs more than a Linux one. A full run takes 11 to 14 Windows minutes (with and without caches)
+  and less than 1 Linux minute:
   - a change that only touches Markdown files runs nothing;
   - a **draft** pull request runs only pre-commit (1 minute). Run `python scripts/dev.py all`
     locally, and mark it "Ready for review" at the end: that starts the Windows jobs, and every
@@ -492,7 +493,8 @@ python scripts/dev.py all                                   :: everything the CI
 ## Git / PR guidelines
 
 - Work on a feature branch created from `develop` (e.g. `feature/unique-ptr-decorator`).
-  PRs target `develop`. `main` only receives merges from `develop`.
+  PRs target `develop`, the default branch. `main` only receives merges from `develop`.
+- A PR for planned work links its issue in the description (`Closes #12`), see "Planning".
 - Commit messages are one short sentence in past tense, ending with a period. Prefixes like
   `Improvement:` are optional, e.g. `Fixed "resolve_project_paths" cmake function.`
 - Before committing, make sure the Debug preset builds (this also runs clang-tidy), `ctest` passes
@@ -501,6 +503,25 @@ python scripts/dev.py all                                   :: everything the CI
   (`conan.lock`, `conaninfo.txt`, `graph_info.json`, ...), or `CMakeUserPresets.json`. All of these are gitignored.
 - Untracked scratch files at the root (`CMakePresets_01.json`, `CMakeSettings_OK.json`,
   `ClassDiagram.cd`, `req.txt`, ...) belong to the owner. Leave them alone.
+
+### Planning
+
+Each piece of information lives in one place:
+
+| Where | What |
+|---|---|
+| GitHub milestones and issues | One milestone per version and one issue per planned PR, with its scope and status |
+| `docs/ROADMAP.md` | Goals, order of the versions, dependencies, design decisions and unscheduled ideas |
+| `CHANGELOG.md` and git | What is done |
+
+- Before starting a PR, read `docs/ROADMAP.md` and the issues of the current milestone. The current
+  milestone is the first version in the roadmap that isn't released:
+  `gh issue list --milestone "v0.6.0"`.
+- Create issues only for the next milestones; the rest stays under "Ideas" in the roadmap. Don't
+  write the status of a PR in `docs/ROADMAP.md`.
+- A decision that affects several PRs goes in the roadmap, and one that only affects a PR goes in
+  its issue or description. When it becomes how the code works, it moves to this file.
+- `Closes #12` closes the issue when the PR is merged because `develop` is the default branch.
 
 ### Versions and releases
 
