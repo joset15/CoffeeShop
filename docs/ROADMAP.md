@@ -96,6 +96,8 @@ flowchart LR
 
 Not planned yet. An idea gets an issue and a milestone when it is scheduled.
 
+- More UIs and platforms, see [the analysis](analysis/ui-and-platforms.md): a text-based UI, a UI for
+  IoT and low-power devices, macOS and Android.
 - A workflow that publishes the GitHub Release when a tag is pushed.
 - Migrate to Conan 2, which also allows GoogleTest 1.16 or later. Postponed because the owner still
   uses Conan 1 in other projects.

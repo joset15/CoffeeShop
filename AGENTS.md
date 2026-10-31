@@ -512,6 +512,8 @@ Each piece of information lives in one place:
 |---|---|
 | GitHub milestones and issues | One milestone per version and one issue per planned PR, with its scope and status |
 | `docs/ROADMAP.md` | Goals, order of the versions, dependencies, design decisions and unscheduled ideas |
+| `docs/analysis/` | Notes on options that are not decided: links, pros and cons, open questions |
+| `docs/adr/` | When it is needed: one file per important decision, with its reasons |
 | `CHANGELOG.md` and git | What is done |
 
 - Before starting a PR, read `docs/ROADMAP.md` and the issues of the current milestone. The current
@@ -521,6 +523,7 @@ Each piece of information lives in one place:
   write the status of a PR in `docs/ROADMAP.md`.
 - A decision that affects several PRs goes in the roadmap, and one that only affects a PR goes in
   its issue or description. When it becomes how the code works, it moves to this file.
+- Dependencies between issues use GitHub's "blocked by" relation, not text in the description.
 - `Closes #12` closes the issue when the PR is merged because `develop` is the default branch.
 
 ### Versions and releases
