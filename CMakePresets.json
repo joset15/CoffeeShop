@@ -16,6 +16,11 @@
         "value": "x64",
         "strategy": "external"
       },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
       "environment": {
         "$comment": "To use a Doxygen that is not on PATH, add \"PATH\": \"<doxygen bin folder>;$penv{PATH}\"."
       },
@@ -66,27 +71,50 @@
       }
     },
     {
-      "name": "linux-default",
-      "displayName": "Linux Debug",
-      "description": "Sets Ninja generator, compilers, build and install directory, debug build type",
+      "name": "linux-base",
+      "hidden": true,
+      "description": "Settings shared by the Linux presets: gcc and Ninja",
       "generator": "Ninja",
-      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+        "CMAKE_CXX_COMPILER": "g++",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}",
+        "TESTS": {
+          "type": "BOOL",
+          "value": "ON"
+        },
+        "ITESTS": "ON",
+        "ASAN_ENABLED": "OFF"
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "hostOS": [
             "Linux"
-          ],
-          "clangTidyChecks": "clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,readability-identifier-naming",
-          "enableMicrosoftCodeAnalysis": true,
-          "enableClangTidyCodeAnalysis": true
-        },
-        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-          "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"
+          ]
         }
+      }
+    },
+    {
+      "name": "Linux GCC Debug",
+      "displayName": "Linux GCC Debug",
+      "description": "Ninja, gcc, Debug, with clang-tidy and the tests",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "Linux GCC Release",
+      "displayName": "Linux GCC Release",
+      "description": "Ninja, gcc, Release, with clang-tidy and the tests",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
       }
     }
   ],
@@ -102,11 +130,19 @@
     {
       "name": "Windows x64 Debug ASan",
       "configurePreset": "Windows x64 Debug ASan"
+    },
+    {
+      "name": "Linux GCC Debug",
+      "configurePreset": "Linux GCC Debug"
+    },
+    {
+      "name": "Linux GCC Release",
+      "configurePreset": "Linux GCC Release"
     }
   ],
   "testPresets": [
     {
-      "name": "windows-test-base",
+      "name": "test-base",
       "hidden": true,
       "output": {
         "outputOnFailure": true
@@ -114,18 +150,28 @@
     },
     {
       "name": "Windows x64 Debug",
-      "inherits": "windows-test-base",
+      "inherits": "test-base",
       "configurePreset": "Windows x64 Debug"
     },
     {
       "name": "Windows x64 Release",
-      "inherits": "windows-test-base",
+      "inherits": "test-base",
       "configurePreset": "Windows x64 Release"
     },
     {
       "name": "Windows x64 Debug ASan",
-      "inherits": "windows-test-base",
+      "inherits": "test-base",
       "configurePreset": "Windows x64 Debug ASan"
+    },
+    {
+      "name": "Linux GCC Debug",
+      "inherits": "test-base",
+      "configurePreset": "Linux GCC Debug"
+    },
+    {
+      "name": "Linux GCC Release",
+      "inherits": "test-base",
+      "configurePreset": "Linux GCC Release"
     }
   ],
   "workflowPresets": [
@@ -180,6 +226,42 @@
         {
           "type": "test",
           "name": "Windows x64 Debug ASan"
+        }
+      ]
+    },
+    {
+      "name": "Linux GCC Debug",
+      "description": "Configure, build and test in one command",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "Linux GCC Debug"
+        },
+        {
+          "type": "build",
+          "name": "Linux GCC Debug"
+        },
+        {
+          "type": "test",
+          "name": "Linux GCC Debug"
+        }
+      ]
+    },
+    {
+      "name": "Linux GCC Release",
+      "description": "Configure, build and test in one command",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "Linux GCC Release"
+        },
+        {
+          "type": "build",
+          "name": "Linux GCC Release"
+        },
+        {
+          "type": "test",
+          "name": "Linux GCC Release"
         }
       ]
     }
