@@ -23,4 +23,4 @@ endif()
 
 add_subdirectory(Gateways)
 
-target_link_libraries(InterfaceAdapters Gateways)
+target_link_libraries(InterfaceAdapters Gateways UseCases)

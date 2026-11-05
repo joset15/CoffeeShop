@@ -106,3 +106,9 @@ Not planned yet. An idea gets an issue and a milestone when it is scheduled.
 - `static_assert` that the `ConsoleMenu` tables cover every value of their enum.
 - Store orders on disk (very low priority, see "Gotchas" in `AGENTS.md`).
 - Remove the `BeverageBuildDirector_Test` cases that repeat rows of the rules table.
+- One presenter per use case (`AddNewOrderPresenter`, ...), as in Robert C. Martin's examples, instead
+  of one `TextPresenter` that implements every output port. Worth it if a presenter grows or needs
+  its own state.
+- Mark the leaf classes `final` (concrete builders, ingredient decorators) to say that they aren't
+  meant to be derived from. gcc's `-Wsuggest-final-*` points at some of them, but it was left out
+  because it also points at classes that have subclasses.

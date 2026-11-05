@@ -10,6 +10,8 @@ set(SOURCES AddNewOrderUC.cpp CancelOrdersUC.cpp ListOrdersUC.cpp)
 add_library(UseCases ${SOURCES})
 
 target_include_directories(UseCases PRIVATE ${PUBLIC_INCLUDE_PATH})
+# The libraries it uses. gcc's linker needs them; MSVC's finds them anyway.
+target_link_libraries(UseCases PRIVATE BeverageBuilder)
 
 set_target_properties(UseCases PROPERTIES FOLDER "Application/UseCases")
 

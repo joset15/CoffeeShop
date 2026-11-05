@@ -20,11 +20,6 @@ else()
   message(STATUS "Disabled pre-compiled header support")
 endif()
 
-# The project only builds with MSVC for now.
-if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  message(FATAL_ERROR "Unknown compiler: ${CMAKE_CXX_COMPILER_ID}")
-endif()
-
 set_target_properties(AllLayers PROPERTIES FOLDER "src")
 
 add_subdirectory(Application)

@@ -14,7 +14,7 @@ bool TeaBuilder::addSugar()
 {
   decorateWith(Ingredient::Sugar);
   return true;
-};
+}
 
 /// @brief Adds milk to the beverage.
 /// @param typeOfMilk The type of milk we are adding.
@@ -36,20 +36,23 @@ bool TeaBuilder::addMilk(Ingredient typeOfMilk)
   case Ingredient::SoyMilk:
     decorateWith(Ingredient::SoyMilk);
     break;
-  default:
+  case Ingredient::Sugar:
+  case Ingredient::Honey:
+  case Ingredient::Lemon:
+  case Ingredient::Water:
     // Not a kind of milk.
     return false;
   }
 
   m_HasMilk = true;
   return true;
-};
+}
 
 bool TeaBuilder::addHoney()
 {
   decorateWith(Ingredient::Honey);
   return true;
-};
+}
 
 bool TeaBuilder::addLemon()
 {
@@ -62,5 +65,5 @@ bool TeaBuilder::addLemon()
 
   m_HasLemon = true;
   return true;
-};
+}
 } // namespace coffee_shop::domain
