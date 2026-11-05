@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The console app run end to end as CTest tests (`tests/AppScenarios`).
 - Linux build with gcc: `Linux GCC Debug` and `Linux GCC Release` presets, `scripts/dev.py` on
   Linux, and a Linux job in the CI.
+- Coverage on Linux with gcc and gcovr, with the same outputs as on Windows, and a `Coverage` preset
+  per system: `python scripts/dev.py coverage` measures it on both, and so does the CI.
 
 ### Changed
 
@@ -25,6 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and `-Wsuggest-final-*`, nor `-fno-rtti`; MSVC adds C4061. A `switch` over an enum lists every
   value, without `default`.
 - `scripts/dev.py` no longer lets Conan rewrite `CMakeUserPresets.json`.
+- The Linux builds no longer instrument the tests for coverage: only the `Linux GCC Coverage` preset
+  does, and it instruments the whole project.
+- The CI coverage reports are `coverage-report-windows` and `coverage-report-linux`.
 
 ### Fixed
 

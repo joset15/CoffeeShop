@@ -47,10 +47,7 @@ flowchart LR
 
 ### Linux
 
-- Coverage uses gcc and gcovr, with the same outputs as on Windows (HTML and Cobertura XML) and
-  measuring only `include/` and `src/`.
-- Sanitizers: ASan and UBSan with gcc. The current gcc block in `CMakeLists.txt` also adds
-  `-fno-rtti`, which may clash with GoogleTest: review it there.
+- Sanitizers: ASan and UBSan with gcc.
 - MemorySanitizer is not planned: everything would have to be instrumented, for little value.
   ThreadSanitizer only if a frontend adds threads.
 
@@ -109,6 +106,10 @@ Not planned yet. An idea gets an issue and a milestone when it is scheduled.
 - One presenter per use case (`AddNewOrderPresenter`, ...), as in Robert C. Martin's examples, instead
   of one `TextPresenter` that implements every output port. Worth it if a presenter grows or needs
   its own state.
+- Precompiled headers aren't used: `BUILD_USING_PCH` is `OFF` in every preset and in the CI, because
+  it can't be combined with clang-tidy. Add a preset without clang-tidy and with precompiled headers
+  (as `Windows x64 Debug ASan` is without clang-tidy), with a precompiled header for the tests that
+  includes `<gtest/gtest.h>` (they reuse `include/pch.h`, which doesn't). Measure the gain first.
 - Mark the leaf classes `final` (concrete builders, ingredient decorators) to say that they aren't
   meant to be derived from. gcc's `-Wsuggest-final-*` points at some of them, but it was left out
   because it also points at classes that have subclasses.
