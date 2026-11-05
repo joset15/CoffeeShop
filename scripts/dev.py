@@ -186,14 +186,19 @@ def command_asan(args, env):
 
 
 def command_coverage(args, env):
-    """Measures the tests' line coverage (Debug, OpenCppCoverage) and prints a summary."""
-    windows_only("coverage", "issue #28")
+    """Measures the tests' line coverage (Debug) and prints a summary.
+
+    The "<system> Coverage" workflow preset builds the coverage target: OpenCppCoverage on the
+    Debug build on Windows, a build with --coverage and gcovr on Linux.
+    """
     conan_install("Debug", env)
-    preset = preset_name("Debug")
+    if is_windows():
+        preset, build_dir = "Windows x64 Coverage", "Windows x64 Debug"  # It shares Debug's folder.
+    else:
+        preset = build_dir = "Linux GCC Coverage"
     fresh = ["--fresh"] if args.fresh else []
-    run(["cmake", "--preset", preset, "-DCOVERAGE_ENABLED=ON", *fresh], env)
-    run(["cmake", "--build", "--preset", preset, "--target", "coverage"], env)
-    print_coverage_summary(BUILD_DIR / preset / "coverage")
+    run(["cmake", "--workflow", "--preset", preset, *fresh], env)
+    print_coverage_summary(BUILD_DIR / build_dir / "coverage")
 
 
 def print_coverage_summary(coverage_dir):
@@ -202,13 +207,14 @@ def print_coverage_summary(coverage_dir):
     covered = int(report.get("lines-covered"))
     valid = int(report.get("lines-valid"))
     percent = 100.0 * covered / valid if valid else 100.0
-    print(f"\nCoverage: {percent:.1f}% of lines ({covered} of {valid}).")
+    system = "Windows" if is_windows() else "Linux"
+    print(f"\nCoverage ({system}): {percent:.1f}% of lines ({covered} of {valid}).")
     print(f"Report: {coverage_dir / 'html' / 'index.html'}")
 
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:
         with open(summary, "a", encoding="utf-8") as file:
-            file.write("### Coverage\n\n| Lines | Covered | Total |\n|---|---|---|\n")
+            file.write(f"### Coverage ({system})\n\n| Lines | Covered | Total |\n|---|---|---|\n")
             file.write(f"| **{percent:.1f}%** | {covered} | {valid} |\n")
 
 
@@ -224,11 +230,12 @@ def command_msbuild(args, env):
 def command_all(args, env):
     """What the CI checks: tests, AddressSanitizer, coverage and MSBuild (Debug and Release).
 
-    On Linux, only the tests for now.
+    On Linux, the tests and the coverage for now.
     """
     args.config = "Debug"
     command_test(args, env)
     if not is_windows():
+        command_coverage(args, env)
         return
     command_asan(args, env)
     command_coverage(args, env)
@@ -269,7 +276,7 @@ def make_parser():
         prog="python scripts/dev.py",
         description="Usual tasks of the CoffeeShop project. On Windows, every command sets up the\n"
         "x64 Visual Studio environment; on Linux, it uses gcc. Every command runs `conan install`\n"
-        "first if GoogleTest is missing. On Linux, `asan`, `coverage` and `msbuild` don't run yet.",
+        "first if GoogleTest is missing. On Linux, `asan` and `msbuild` don't run yet.",
         epilog="Examples:\n"
         "  python scripts/dev.py test                     build and run the tests (Debug)\n"
         "  python scripts/dev.py build --config Release   build Release\n"
@@ -296,12 +303,12 @@ def make_parser():
     add("test", "configure, build and run the tests (CMake workflow preset)")
     add("asan", "build and run the tests with AddressSanitizer (Debug; Windows only for now)",
         config=False)
-    add("coverage", "measure the tests' line coverage (Debug, OpenCppCoverage; Windows only for now)",
-        config=False)
+    add("coverage", "measure the tests' line coverage (Debug; OpenCppCoverage on Windows, gcovr\n"
+        "on Linux)", config=False)
     add("msbuild", "rebuild CoffeeShop.vcxproj with MSBuild, warnings as errors (Windows only)",
         config_default=None)
     add("all", "as the CI: tests, AddressSanitizer, coverage and MSBuild Debug and Release on\n"
-        "Windows; the tests on Linux", config=False)
+        "Windows; the tests and the coverage on Linux", config=False)
     return parser
 
 
