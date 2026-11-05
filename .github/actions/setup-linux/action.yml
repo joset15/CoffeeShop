@@ -1,6 +1,6 @@
 # Installs what scripts/dev.py needs on a GitHub-hosted Linux runner. gcc comes with the runner.
 name: Set up the Linux build
-description: Python, Conan 1, CMake 3, Ninja, LLVM 23 (clang-tidy) and ccache.
+description: Python, Conan 1, CMake 3, Ninja, gcovr, LLVM 23 (clang-tidy) and ccache.
 
 inputs:
   cache-key:
@@ -17,10 +17,11 @@ runs:
 
     # The same versions as on the developers' machines (see AGENTS.md, "Setup"). CMake stays on
     # 3.x, as on Windows: the runner may bring CMake 4.
-    - name: Install Conan 1, CMake and Ninja
+    - name: Install Conan 1, CMake, Ninja and gcovr
       shell: bash
       run: |
-        python -m pip install --disable-pip-version-check "conan==1.61.0" "cmake>=3.30,<4" ninja
+        python -m pip install --disable-pip-version-check "conan==1.61.0" "cmake>=3.30,<4" ninja \
+          "gcovr==8.8"
         conan profile new default --detect --force
 
     - name: Cache the Conan packages (GoogleTest)
