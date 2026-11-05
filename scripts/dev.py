@@ -1,13 +1,15 @@
 """Usual tasks of the CoffeeShop project: build, tests, AddressSanitizer, coverage and MSBuild.
 
-Run it from any folder and any terminal: on Windows it sets up the x64 Visual Studio environment
-by itself (no "x64 Native Tools" prompt needed) and runs `conan install` when the GoogleTest
-package for the configuration is missing. The same commands run locally and in the CI.
+Run it from any folder and any terminal. On Windows it sets up the x64 Visual Studio environment
+by itself (no "x64 Native Tools" prompt needed); on Linux it uses gcc. It runs `conan install`
+when the GoogleTest package for the configuration is missing. The same commands run locally and in
+the CI.
 
     python scripts/dev.py help
 """
 
 import argparse
+import contextlib
 import os
 import platform
 import shutil
@@ -18,7 +20,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 BUILD_DIR = ROOT / "build"
-GENERATORS_DIR = BUILD_DIR / "generators"
+USER_PRESETS = ROOT / "CMakeUserPresets.json"
 CONFIGS = ("Debug", "Release")
 
 
@@ -30,11 +32,28 @@ class DevError(Exception):
 # Environment
 
 
+def is_windows():
+    """Tells whether this is Windows (MSVC); otherwise it is Linux (gcc)."""
+    return platform.system() == "Windows"
+
+
+def windows_only(task, linux_plan=None):
+    """Stops a task that only exists on Windows for now."""
+    if not is_windows():
+        planned = f" On Linux it is planned: {linux_plan}." if linux_plan else ""
+        raise DevError(f"'{task}' only runs on Windows.{planned}")
+
+
 def preset_name(config, asan=False):
     """Returns the CMake preset for a configuration (see CMakePresets.json)."""
-    if platform.system() != "Windows":
-        raise DevError("Only Windows is supported for now (the Linux build is planned).")
-    return "Windows x64 Debug ASan" if asan else f"Windows x64 {config}"
+    system = platform.system()
+    if system == "Windows":
+        return "Windows x64 Debug ASan" if asan else f"Windows x64 {config}"
+    if system == "Linux":
+        if asan:
+            windows_only("asan", "issue #29")
+        return f"Linux GCC {config}"
+    raise DevError(f"{system} is not supported: only Windows and Linux.")
 
 
 def visual_studio_environment():
@@ -79,6 +98,8 @@ def user_llvm_tools_dir():
 
 def build_environment():
     """Returns the environment to run CMake, CTest and MSBuild in."""
+    if not is_windows():
+        return dict(os.environ)
     env = visual_studio_environment()
     if "LLVM_TOOLS_DIR" not in env:
         llvm_tools_dir = user_llvm_tools_dir()
@@ -97,13 +118,45 @@ def run(command, env, cwd=ROOT):
         raise DevError(f"'{subprocess.list2cmdline(command)}' failed.")
 
 
+def conan_generators_dir(config):
+    """Returns where Conan writes the CMake files of a configuration.
+
+    With Visual Studio there is one folder for every configuration; with gcc, one per configuration.
+    """
+    return BUILD_DIR / "generators" if is_windows() else BUILD_DIR / config / "generators"
+
+
+@contextlib.contextmanager
+def user_presets_kept():
+    """Keeps CMakeUserPresets.json as it was while Conan runs.
+
+    Conan 1 adds its own presets to that file, with paths of the system it runs on. In a folder
+    shared by Windows and WSL, those paths would break the other system's build.
+    """
+    saved = USER_PRESETS.read_bytes() if USER_PRESETS.exists() else None
+    try:
+        yield
+    finally:
+        if saved is None:
+            if USER_PRESETS.exists():
+                USER_PRESETS.unlink()
+        else:
+            USER_PRESETS.write_bytes(saved)
+
+
 def conan_install(config, env):
     """Installs GoogleTest with Conan for a configuration, if it isn't installed yet."""
-    if (GENERATORS_DIR / f"GTest-{config.lower()}-x86_64-data.cmake").exists():
+    if any(conan_generators_dir(config).glob(f"GTest-{config.lower()}-*-data.cmake")):
         return
     if shutil.which("conan", path=env.get("PATH", env.get("Path"))) is None:
         raise DevError("Conan not found. Install Conan 1.x: python -m pip install \"conan<2\".")
-    run(["conan", "install", ".", "-s", f"build_type={config}", "--build=missing"], env)
+    command = ["conan", "install", ".", "-s", f"build_type={config}", "--build=missing"]
+    if not is_windows():
+        # gcc's standard library has two ABIs. The one named "C++11" is gcc's default since gcc 5,
+        # for every -std (also C++20); Conan 1 detects the old one, and GoogleTest wouldn't link.
+        command += ["-s", "compiler.libcxx=libstdc++11"]
+    with user_presets_kept():
+        run(command, env)
 
 
 # ------------------------------------------------------------------------------------------------
@@ -134,6 +187,7 @@ def command_asan(args, env):
 
 def command_coverage(args, env):
     """Measures the tests' line coverage (Debug, OpenCppCoverage) and prints a summary."""
+    windows_only("coverage", "issue #28")
     conan_install("Debug", env)
     preset = preset_name("Debug")
     fresh = ["--fresh"] if args.fresh else []
@@ -160,6 +214,7 @@ def print_coverage_summary(coverage_dir):
 
 def command_msbuild(args, env):
     """Rebuilds the Visual Studio project CoffeeShop.vcxproj (warnings are errors)."""
+    windows_only("msbuild")
     configs = CONFIGS if args.config is None else (args.config,)
     for config in configs:
         run(["msbuild", "CoffeeShop.vcxproj", "/t:Rebuild", f"/p:Configuration={config}",
@@ -167,9 +222,14 @@ def command_msbuild(args, env):
 
 
 def command_all(args, env):
-    """What the CI checks: tests, AddressSanitizer, coverage and MSBuild (Debug and Release)."""
+    """What the CI checks: tests, AddressSanitizer, coverage and MSBuild (Debug and Release).
+
+    On Linux, only the tests for now.
+    """
     args.config = "Debug"
     command_test(args, env)
+    if not is_windows():
+        return
     command_asan(args, env)
     command_coverage(args, env)
     args.config = None
@@ -207,12 +267,13 @@ def make_parser():
     """Builds the command line parser: one subcommand per task, plus `help`."""
     parser = HelpOnErrorParser(
         prog="python scripts/dev.py",
-        description="Usual tasks of the CoffeeShop project. Every command sets up the x64 Visual\n"
-        "Studio environment, and runs `conan install` first if GoogleTest is missing.",
+        description="Usual tasks of the CoffeeShop project. On Windows, every command sets up the\n"
+        "x64 Visual Studio environment; on Linux, it uses gcc. Every command runs `conan install`\n"
+        "first if GoogleTest is missing. On Linux, `asan`, `coverage` and `msbuild` don't run yet.",
         epilog="Examples:\n"
         "  python scripts/dev.py test                     build and run the tests (Debug)\n"
         "  python scripts/dev.py build --config Release   build Release\n"
-        "  python scripts/dev.py all                      everything the CI checks\n\n"
+        "  python scripts/dev.py all                      everything the CI checks on this system\n\n"
         "python scripts/dev.py <command> -h shows the options of a command.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -233,12 +294,14 @@ def make_parser():
 
     add("build", "configure and build, with clang-tidy")
     add("test", "configure, build and run the tests (CMake workflow preset)")
-    add("asan", "build and run the tests with AddressSanitizer (Debug)", config=False)
-    add("coverage", "measure the tests' line coverage (Debug, OpenCppCoverage)", config=False)
-    add("msbuild", "rebuild CoffeeShop.vcxproj with MSBuild, warnings as errors",
-        config_default=None)
-    add("all", "tests, AddressSanitizer, coverage and MSBuild Debug and Release (as the CI)",
+    add("asan", "build and run the tests with AddressSanitizer (Debug; Windows only for now)",
         config=False)
+    add("coverage", "measure the tests' line coverage (Debug, OpenCppCoverage; Windows only for now)",
+        config=False)
+    add("msbuild", "rebuild CoffeeShop.vcxproj with MSBuild, warnings as errors (Windows only)",
+        config_default=None)
+    add("all", "as the CI: tests, AddressSanitizer, coverage and MSBuild Debug and Release on\n"
+        "Windows; the tests on Linux", config=False)
     return parser
 
 

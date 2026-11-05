@@ -54,7 +54,9 @@ if(NOT result EQUAL 0)
 endif()
 
 string(REPLACE "\r\n" "\n" output "${output}")
-file(TO_NATIVE_PATH "${WORK_DIR}" native_work_dir)
+# cmake_path, not file(TO_NATIVE_PATH): on Linux, the latter escapes the spaces (build/Linux GCC
+# Debug), and the path that the app prints would no longer match.
+cmake_path(NATIVE_PATH WORK_DIR native_work_dir)
 string(REPLACE "${native_work_dir}" "<WORK_DIR>" output "${output}")
 string(REPLACE "<WORK_DIR>\\" "<WORK_DIR>/" output "${output}") # Windows separator.
 check_text("${output}" "${SCENARIO}.expected.txt")

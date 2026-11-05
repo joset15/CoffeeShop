@@ -25,7 +25,13 @@ endif()
 
 # Including Files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/build/generators") # Conan
+# Conan's files: build/generators with MSVC, build/<build type>/generators with gcc. Only one of
+# them, because a folder shared by Windows and WSL can have both.
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/build/generators")
+else()
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/build/${CMAKE_BUILD_TYPE}/generators")
+endif()
 
 include(cpp_warnings)
 
@@ -122,17 +128,12 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") # MATCHES
 elseif((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
   message(STATUS "Setting GCC/GNU flags")
 
-  set(
-    CMAKE_CXX_FLAGS
-    "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -fno-rtti -Wno-psabi -fexceptions"
-  )
+  # The warnings come from cmake/cpp_warnings.cmake, as with MSVC.
   if(ASAN_ENABLED)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -fsanitize=address -static-libasan")
   else()
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0")
   endif()
-
-  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -fno-strict-aliasing -Werror")
 else()
   message(FATAL_ERROR "Unknown compiler: ${CMAKE_CXX_COMPILER_ID}")
 endif()

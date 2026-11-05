@@ -1,9 +1,10 @@
 # Checks pull requests to develop and main with the same commands as on a developer's machine
 # (scripts/dev.py, see AGENTS.md). It can also be run by hand from the Actions tab.
 #
-# The repository is private and Windows minutes count double, so:
+# The repository is private, so the runs use the plan's monthly Actions credit, and a Windows minute
+# costs more than a Linux one:
 # - a change that only touches Markdown files runs nothing;
-# - a draft pull request only runs pre-commit (the Windows jobs start with "Ready for review");
+# - a draft pull request only runs the Linux jobs (the Windows jobs start with "Ready for review");
 # - a new push to the same pull request cancels the run that is still going.
 name: CI
 
@@ -74,6 +75,19 @@ jobs:
           cache-key: msbuild
       - name: Rebuild Debug (clang-tidy) and Release
         run: python scripts/dev.py msbuild
+
+  linux:
+    name: Linux (gcc, clang-tidy)
+    # Also in drafts: Linux minutes are cheap, and they test the pull request before the Windows jobs.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup-linux
+        with:
+          cache-key: linux
+      - name: Build and test
+        run: python scripts/dev.py test
 
   pre-commit:
     name: pre-commit

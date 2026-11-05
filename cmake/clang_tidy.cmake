@@ -51,4 +51,8 @@ set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE}")
 if(MSVC)
   # CMake adds --extra-arg-before=--driver-mode=cl, which makes clang-tidy ignore /EHsc.
   list(APPEND CMAKE_CXX_CLANG_TIDY "--extra-arg=/EHsc")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  # clang doesn't know some gcc warnings (e.g. -Wlogical-op), and WarningsAsErrors would stop on
+  # them.
+  list(APPEND CMAKE_CXX_CLANG_TIDY "--extra-arg=-Wno-unknown-warning-option")
 endif()

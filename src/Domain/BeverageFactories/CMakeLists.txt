@@ -10,6 +10,8 @@ set(SOURCES BeverageBuilderSimpleFactory.cpp BeverageFactory.cpp IngredientFacto
 
 add_library(BeverageFactories ${SOURCES})
 target_include_directories(BeverageFactories PRIVATE ${PUBLIC_INCLUDE_PATH})
+# The libraries it uses. gcc's linker needs them; MSVC's finds them anyway.
+target_link_libraries(BeverageFactories PRIVATE BeverageBuilder Beverages)
 
 set_target_properties(BeverageFactories PROPERTIES FOLDER "Domain/BeverageFactories")
 

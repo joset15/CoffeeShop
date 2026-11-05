@@ -14,10 +14,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `scripts/dev.py` for the usual tasks: build, tests, AddressSanitizer, coverage and MSBuild.
 - CMake build, test and workflow presets, and a `Windows x64 Debug ASan` preset.
 - The console app run end to end as CTest tests (`tests/AppScenarios`).
+- Linux build with gcc: `Linux GCC Debug` and `Linux GCC Release` presets, `scripts/dev.py` on
+  Linux, and a Linux job in the CI.
 
 ### Changed
 
 - The `Windows x64 Release` preset builds in `build/` instead of `out/build/`.
+- The libraries declare the libraries they use, which gcc's linker needs.
+- Compiler warnings: gcc no longer uses `-Weffc++`, `-Wswitch-default`, `-Wmultiple-inheritance`
+  and `-Wsuggest-final-*`, nor `-fno-rtti`; MSVC adds C4061. A `switch` over an enum lists every
+  value, without `default`.
+- `scripts/dev.py` no longer lets Conan rewrite `CMakeUserPresets.json`.
 
 ### Fixed
 
