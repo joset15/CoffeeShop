@@ -134,6 +134,12 @@ elseif((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL
   else()
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0")
   endif()
+
+  # Coverage (cmake/coverage.cmake) needs every target instrumented, so before add_subdirectory().
+  if(COVERAGE_ENABLED)
+    add_compile_options(--coverage)
+    add_link_options(--coverage)
+  endif()
 else()
   message(FATAL_ERROR "Unknown compiler: ${CMAKE_CXX_COMPILER_ID}")
 endif()
@@ -150,12 +156,6 @@ add_dependencies(CoffeeShopApp AllLayers)
 
 if(TESTS)
   message(STATUS "Compiling Unit Tests")
-
-  if((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fprofile-arcs -ftest-coverage")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
-  endif()
 
   add_subdirectory(tests/UnitTests)
   add_dependencies(UnitTests AllLayers)

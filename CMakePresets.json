@@ -71,6 +71,16 @@
       }
     },
     {
+      "name": "Windows x64 Coverage",
+      "displayName": "Windows x64 Coverage",
+      "description": "The Debug build with the coverage target. OpenCppCoverage measures that same build, so it shares its folder and nothing is rebuilt",
+      "inherits": "Windows x64 Debug",
+      "binaryDir": "${sourceDir}/build/Windows x64 Debug",
+      "cacheVariables": {
+        "COVERAGE_ENABLED": "ON"
+      }
+    },
+    {
       "name": "linux-base",
       "hidden": true,
       "description": "Settings shared by the Linux presets: gcc and Ninja",
@@ -116,28 +126,77 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       }
+    },
+    {
+      "name": "Linux GCC Coverage",
+      "displayName": "Linux GCC Coverage",
+      "description": "Debug compiled with --coverage, in its own folder, with the coverage target (gcovr). Without clang-tidy (the Debug preset runs it)",
+      "inherits": "Linux GCC Debug",
+      "cacheVariables": {
+        "COVERAGE_ENABLED": "ON",
+        "CLANG_TIDY_ENABLED": "OFF"
+      }
     }
   ],
   "buildPresets": [
     {
+      "name": "windows-build",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "linux-build",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
       "name": "Windows x64 Debug",
+      "inherits": "windows-build",
       "configurePreset": "Windows x64 Debug"
     },
     {
       "name": "Windows x64 Release",
+      "inherits": "windows-build",
       "configurePreset": "Windows x64 Release"
     },
     {
       "name": "Windows x64 Debug ASan",
+      "inherits": "windows-build",
       "configurePreset": "Windows x64 Debug ASan"
     },
     {
+      "name": "Windows x64 Coverage",
+      "inherits": "windows-build",
+      "configurePreset": "Windows x64 Coverage",
+      "targets": [
+        "coverage"
+      ]
+    },
+    {
       "name": "Linux GCC Debug",
+      "inherits": "linux-build",
       "configurePreset": "Linux GCC Debug"
     },
     {
       "name": "Linux GCC Release",
+      "inherits": "linux-build",
       "configurePreset": "Linux GCC Release"
+    },
+    {
+      "name": "Linux GCC Coverage",
+      "inherits": "linux-build",
+      "configurePreset": "Linux GCC Coverage",
+      "targets": [
+        "coverage"
+      ]
     }
   ],
   "testPresets": [
@@ -149,28 +208,48 @@
       }
     },
     {
-      "name": "Windows x64 Debug",
+      "name": "windows-test",
+      "hidden": true,
       "inherits": "test-base",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "linux-test",
+      "hidden": true,
+      "inherits": "test-base",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "Windows x64 Debug",
+      "inherits": "windows-test",
       "configurePreset": "Windows x64 Debug"
     },
     {
       "name": "Windows x64 Release",
-      "inherits": "test-base",
+      "inherits": "windows-test",
       "configurePreset": "Windows x64 Release"
     },
     {
       "name": "Windows x64 Debug ASan",
-      "inherits": "test-base",
+      "inherits": "windows-test",
       "configurePreset": "Windows x64 Debug ASan"
     },
     {
       "name": "Linux GCC Debug",
-      "inherits": "test-base",
+      "inherits": "linux-test",
       "configurePreset": "Linux GCC Debug"
     },
     {
       "name": "Linux GCC Release",
-      "inherits": "test-base",
+      "inherits": "linux-test",
       "configurePreset": "Linux GCC Release"
     }
   ],
@@ -230,6 +309,20 @@
       ]
     },
     {
+      "name": "Windows x64 Coverage",
+      "description": "Configure, then build the coverage target, which runs the tests and writes the reports",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "Windows x64 Coverage"
+        },
+        {
+          "type": "build",
+          "name": "Windows x64 Coverage"
+        }
+      ]
+    },
+    {
       "name": "Linux GCC Debug",
       "description": "Configure, build and test in one command",
       "steps": [
@@ -262,6 +355,20 @@
         {
           "type": "test",
           "name": "Linux GCC Release"
+        }
+      ]
+    },
+    {
+      "name": "Linux GCC Coverage",
+      "description": "Configure, then build the coverage target, which runs the tests and writes the reports",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "Linux GCC Coverage"
+        },
+        {
+          "type": "build",
+          "name": "Linux GCC Coverage"
         }
       ]
     }
