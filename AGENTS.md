@@ -76,16 +76,32 @@ Names in descriptions come from `inline constexpr std::string_view` constants ne
 (`CoffeeEspressoName`, `SugarName`, ...). Ingredients build their part with
 `IngredientDecorator::describeWith(XName)`, e.g. `"CoffeeEspresso, Sugar"`.
 
-The tools are CMake (≥3.25; the presets file uses format v9, which needs ≥3.30), Ninja, MSVC (Visual Studio 2022), Conan **1.x**
-(GoogleTest 1.14.0), clang-tidy and clang-format from **LLVM 23**, and pre-commit. `docs/README_development.md` shows the target folder
+The tools are CMake 3.x (≥3.25; the presets file uses format v9, which needs ≥3.30), Ninja, MSVC (Visual
+Studio 2022) on Windows and gcc (12 or later) on Linux, Conan **1.x** (GoogleTest 1.14.0), clang-tidy and
+clang-format from **LLVM 23**, and pre-commit. `docs/README_development.md` shows the target folder
 layout. Of its `Infrastructure` folders only `UI` exists; others it lists (`Infrastructure/DB`,
 `libs`, ...) don't exist yet.
 
 ## Setup
 
-- **Windows + MSVC only.** `src/CMakeLists.txt` stops with `FATAL_ERROR` for any compiler
-  other than MSVC, so the `linux-default` preset does not work.
-- `python scripts/dev.py` (see "Scripts and CI") sets up the environment by itself. To run CMake by
+- **Windows with MSVC, and Linux with gcc.** Other compilers (clang, Apple Clang) aren't tried
+  yet. `python scripts/dev.py` (see "Scripts and CI") works on both.
+- **Linux:** gcc 12 or later, Ninja, CMake 3.30 or later but 3.x, Conan 1.61.0 and clang-tidy 23.1.4.
+  Debian 12 has gcc 12 and Ninja, but only CMake 3.25, and no LLVM 23. Install with `apt` what it
+  has, and the rest with **pipx** (Debian blocks `pip install` outside a virtual environment); it
+  puts each tool in `~/.local/bin`:
+  ```bash
+  sudo apt install g++ ninja-build ccache pipx
+  pipx install "conan==1.61.0"
+  pipx install "cmake>=3.30,<4"
+  pipx install clang-tidy==23.1.4
+  ```
+  CMake stays on 3.x on every machine: CMake 4 dropped the compatibility with very old minimum
+  versions, which files that Conan 1 generates may rely on.
+- **WSL on the Windows checkout** (e.g. `/mnt/d/...`) works: each system builds in its own
+  `build/<preset>` folder and has its own Conan folder. Run `dev.py` rather than `conan install` by
+  hand: it keeps Conan from rewriting `CMakeUserPresets.json` (see "Build").
+- **Windows:** `dev.py` sets up the environment by itself. To run CMake by
   hand, use an **x64** Developer environment (x64 Native Tools prompt, or call
   `vcvars64.bat`). The presets use `architecture.strategy: external`, so CMake picks up whatever
   `cl` is on `PATH`. With the x86 `cl` the build fails at link time with
@@ -108,20 +124,25 @@ layout. Of its `Infrastructure` folders only `UI` exists; others it lists (`Infr
   Then restart Visual Studio and open terminals (they read the variable at start-up) and configure
   once with `--fresh`. In Visual Studio, also point the editor at the same clang-format:
   **Tools > Options > Text Editor > C/C++ > Code Style > Formatting**, "Use custom
-  clang-format.exe", `D:\LLVM\23.1.4\bin\clang-format.exe`. On Linux and CI, `pip install` the same
-  versions.
+  clang-format.exe", `D:\LLVM\23.1.4\bin\clang-format.exe`. On Linux, install the same version with pipx (see
+  above); the CI installs it with pip.
 - The build checks the version: CMake (`cmake/clang_tidy.cmake`) looks for clang-tidy in
   `LLVM_TOOLS_DIR`, then on `PATH`, and stops if it isn't LLVM 23; the Visual Studio project stops
   if `LLVM_TOOLS_DIR` is unset or isn't LLVM 23 (see "Visual Studio project"). Before LLVM 23, CMake
   took the first `clang-tidy` on `PATH`: in an x86 environment that was Visual Studio's 32-bit one,
   which crashes (`0xC0000005`) on this project.
-- GoogleTest comes from Conan. CMake finds it through `build/generators/` (added to
-  `CMAKE_MODULE_PATH`), so that folder must exist. To regenerate it (Conan 1.x, `cmake_layout`):
+- GoogleTest comes from Conan. CMake finds it through the folder Conan writes (added to
+  `CMAKE_MODULE_PATH`), so that folder must exist: `build/generators/` with MSVC (one for both
+  configurations) and `build/<build type>/generators/` with gcc. `dev.py` runs `conan install` when
+  it is missing; by hand (Conan 1.x, `cmake_layout`):
   `conan install . -s build_type=Debug --build=missing`
+  On Linux, add `-s compiler.libcxx=libstdc++11`. libstdc++ has two ABIs, and the one named "C++11"
+  is gcc's default since gcc 5, for every `-std` (C++20 too). Conan 1 detects the old one, and then
+  GoogleTest doesn't link (`undefined reference to ...std::__cxx11::basic_string...`).
   With Conan 1, ConanCenter offers GoogleTest up to 1.15.0; newer versions are only published for
   Conan 2. The default Conan profile still says Visual Studio 16 (2019): its static gtest library
   links fine with the VS 2022 build.
-- `ccache` is used automatically if it is on `PATH`. It can only cache MSVC builds with embedded
+- `ccache` is used automatically if it is on `PATH`, on both systems. It can only cache MSVC builds with embedded
   debug info, so the CMake build uses `/Z7` (`CMAKE_MSVC_DEBUG_INFORMATION_FORMAT`) instead of
   `/Zi`; the linker still produces `.pdb` files. Check it with `ccache -s` (a second clean build
   should be all hits). clang-tidy still runs on every compile and is not cached. The VS solution
@@ -140,17 +161,27 @@ cmake --build "build/Windows x64 Debug"
 cmake --workflow --preset "Windows x64 Debug"   :: configure, build and test in one command
 ```
 
-- Outputs: `build/<preset>/Debug/bin/{CoffeeShopApp,UnitTests,IntegrationTests}.exe`, libs in `.../lib`.
+```bash
+python3 scripts/dev.py test                  # Linux; or by hand:
+cmake --workflow --preset "Linux GCC Debug"  # binary dir: build/Linux GCC Debug
+```
+
+- Outputs: `build/<preset>/<config>/bin/{CoffeeShopApp,UnitTests,IntegrationTests}` (`.exe` on
+  Windows), libs in `.../lib`.
 - The presets are `Windows x64 Debug`, `Windows x64 Release` and `Windows x64 Debug ASan` (without
-  clang-tidy, which the Debug preset already runs), each with configure, build, test and workflow
-  presets, in `build/<preset>`. Release needs its own `conan install` with
+  clang-tidy, which the Debug preset already runs), and `Linux GCC Debug` and `Linux GCC Release`.
+  Each has configure, build, test and workflow presets, in `build/<preset>`, and only appears on
+  its own system (`condition` on `hostSystemName`). Release needs its own `conan install` with
   `-s build_type=Release`; `dev.py` runs it when the package is missing.
 - The `default` preset in `CMakeUserPresets.json` (from `build/generators/CMakePresets.json`)
-  is a stale Conan preset (VS 2019 generator). Use the `Windows x64 *` presets instead.
+  is a stale Conan preset (VS 2019 generator). Use the `Windows x64 *` and `Linux GCC *` presets instead.
 - Conan 1 rewrites `CMakeUserPresets.json` on every `conan install` while it has
   `"vendor": { "conan": {} }`, and fails (`JSONDecodeError` in the `CMakeToolchain` generator)
   if the file isn't strict JSON, e.g. has a `//` comment. Keep it strict JSON, or remove the
-  `vendor` entry if you edit the file by hand.
+  `vendor` entry if you edit the file by hand. It also writes **absolute paths of the system it
+  runs on** in `include`: in a folder shared by Windows and WSL, the other system can't use any
+  preset (`File not found`). `dev.py` restores the file after Conan runs; if it already has an
+  absolute path, make it relative (`"include": ["build/generators/CMakePresets.json"]`).
 - In-source builds are blocked.
 
 CMake options (top-level `CMakeLists.txt`):
@@ -158,9 +189,9 @@ CMake options (top-level `CMakeLists.txt`):
 | Option | Default | Effect |
 |---|---|---|
 | `TESTS` / `ITESTS` | ON | Build unit / integration test executables |
-| `CLANG_TIDY_ENABLED` | ON | Runs clang-tidy on every `.cpp` during the build, including the project headers under `include/` and `tests/` (`HeaderFilterRegex`). `.clang-tidy` has `WarningsAsErrors: '*'`, so tidy findings **break the build**. Needs clang-tidy from LLVM 23 (`LLVM_TOOLS_DIR`, see "Setup") |
+| `CLANG_TIDY_ENABLED` | ON | Runs clang-tidy on every `.cpp` during the build, including the project headers under `include/` and `tests/` (`HeaderFilterRegex`). `.clang-tidy` has `WarningsAsErrors: '*'`, so tidy findings **break the build**. Needs clang-tidy from LLVM 23 (`LLVM_TOOLS_DIR`, or on `PATH`, see "Setup"). With gcc it ignores the warning options that clang doesn't know (`-Wno-unknown-warning-option`) |
 | `BUILD_USING_PCH` | OFF | Precompiled headers. Can't be combined with `CLANG_TIDY_ENABLED` (configure stops with an error) |
-| `ASAN_ENABLED` | OFF | MSVC `/fsanitize=address` in Debug. GoogleTest comes from Conan without ASan, so it also defines `_DISABLE_VECTOR_ANNOTATION` and `_DISABLE_STRING_ANNOTATION`: without them, the tests stop with a false `container-overflow`. That check is lost; the others still run. The executables need the ASan DLL, which the x64 developer environment has on `PATH` |
+| `ASAN_ENABLED` | OFF | MSVC `/fsanitize=address` in Debug (gcc: issue #29). GoogleTest comes from Conan without ASan, so it also defines `_DISABLE_VECTOR_ANNOTATION` and `_DISABLE_STRING_ANNOTATION`: without them, the tests stop with a false `container-overflow`. That check is lost; the others still run. The executables need the ASan DLL, which the x64 developer environment has on `PATH` |
 | `CPPCHECK_ENABLED` | OFF | Runs cppcheck during the build |
 | `BUILD_DOC` | OFF | Doxygen target `doc_doxygen` from `docs/doxygen/Doxyfile.in` |
 | `COVERAGE_ENABLED` | OFF | Adds the `coverage` target (`cmake/coverage.cmake`). MSVC only for now; needs `TESTS` and `ITESTS` and OpenCppCoverage |
@@ -206,6 +237,8 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 "build/Windows x64 Debug/Debug/bin/UnitTests.exe" --gtest_filter=GivenACoffee.*
 ```
 
+On Linux, the same with `build/Linux GCC Debug` and without `.exe`.
+
 - Framework: GoogleTest 1.14.0, linked with `GTest::gtest_main` (no hand-written `main`).
   Tests are registered with `gtest_discover_tests`. Parameterized tests use
   `INSTANTIATE_TEST_SUITE_P`: the old `INSTANTIATE_TEST_CASE_P` is deprecated, and clang-tidy turns
@@ -225,7 +258,8 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
     (`ConsoleAppScenario.*`). `<Name>.input.txt` has one answer per line; its output must match
     `<Name>.expected.txt`, and `orders.txt` must match `<Name>.orders.txt` if that file exists. To
     add one, add its name to `SCENARIOS` in that folder's `CMakeLists.txt`. `run_scenario.cmake`
-    ignores line endings and writes the app's path as `<WORK_DIR>/`.
+    ignores line endings and writes the app's path as `<WORK_DIR>/`. It converts that path with
+    `cmake_path(NATIVE_PATH)`: `file(TO_NATIVE_PATH)` escapes spaces on Linux (`Linux\ GCC\ Debug`).
 - **New test files must be added by hand** to `SOURCES` in `tests/UnitTests/CMakeLists.txt` or
   `tests/IntegrationTests/CMakeLists.txt`. There is no globbing. If the test needs another library,
   add it to `target_link_libraries`.
@@ -308,7 +342,12 @@ cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests
   disable it in `Checks` with a comment that says why, rather than adding `NOLINT`s.
   `portability-*` has six checks in LLVM 23 (e.g. `#pragma once`, inline assembler, SIMD
   intrinsics, virtual member functions of templates): it does **not** catch most Windows vs Linux
-  differences; the gcc build will.
+  differences; the gcc build does.
+- Compiler warnings come from `cmake/cpp_warnings.cmake`: `/W4` and a list of `/w1...` with MSVC,
+  `-Wall -Wextra` and many more with gcc. A warning that clashes with these rules is left out with
+  a comment that says why (`-Weffc++`, `-Wswitch-default`, `-Wmultiple-inheritance`,
+  `-Wsuggest-final-*`). Warnings don't break the CMake build (clang-tidy findings do), but a PR
+  shouldn't add any: check both systems.
   Project choices: interfaces may declare only `virtual ~X() = default;` (`AllowSoleDefaultDtor`);
   `tests/.clang-tidy` inherits everything but allows non-private members, `protected` in
   GoogleTest fixtures and public in test helpers and table rows. It disables the rule under both
@@ -322,9 +361,11 @@ cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests
     `clang-tidy --fix` puts it on the right (`bool const`), so move it after using `--fix`.
   - Use `std::vector` for sequences (e.g. the ingredient list); `std::list` needs a reason.
   - Give enums a small underlying type: `enum class Ingredient : std::uint8_t`.
-  - A `switch` that covers every value of an enum has no `default`: then clang-tidy
-    (`clang-diagnostic-switch`, which breaks the build) and MSVC (C4062) report a missing `case`
-    when a value is added. Use `default` only when handling a few values on purpose.
+  - A `switch` over an enum has no `default` and lists every value, grouping the ones handled
+    alike (`case Ingredient::Sugar: case Ingredient::Honey: ... return false;`). Then a new value
+    is reported in every `switch`: by clang-tidy (`clang-diagnostic-switch`, which breaks the
+    build), gcc (`-Wswitch-enum`) and MSVC (C4061, C4062). Otherwise a `default` would quietly
+    decide for the new value, e.g. reject a new kind of milk.
   - Use `if (init; condition)` when the variable is only needed inside the `if`, and
     `[[maybe_unused]]` on a parameter an override doesn't need.
   - C++20, where it makes the code clearer (don't rewrite code just to use a feature):
@@ -394,7 +435,10 @@ cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests
   **cmake-lint** (`.cmakelintrc`). New targets follow the existing pattern: call
   `resolve_project_paths(...)` from `cmake/files_helper.cmake`, list `SOURCES` explicitly,
   `target_include_directories(<tgt> PRIVATE ${PUBLIC_INCLUDE_PATH})`, set the VS `FOLDER` property,
-  and add the `BUILD_USING_PCH` `REUSE_FROM AllLayers` block. The C++ standard is set only once
+  and add the `BUILD_USING_PCH` `REUSE_FROM AllLayers` block. A library declares the libraries it
+  uses with `target_link_libraries`: gcc's linker needs them (MSVC's finds them anyway), and they
+  show the dependencies between layers, which must point inward (e.g. `UseCases` →
+  `BeverageBuilder`, `InterfaceAdapters` → `UseCases`). The C++ standard is set only once
   per tool, and the three places must agree: `CMAKE_CXX_STANDARD` in the top-level
   `CMakeLists.txt` (don't add `/std:c++20` or `cxx_std_20` to targets), `<LanguageStandard>` in
   `CoffeeShop.vcxproj` (Debug and Release), and `Standard:` in `.clang-format`.
@@ -438,7 +482,8 @@ pre-commit run --all-files
 - To move to another LLVM version, change it everywhere at once: the tools in a new
   `D:\LLVM\<version>` folder and `LLVM_TOOLS_DIR`, `CLANG_TIDY_REQUIRED_VERSION` in
   `cmake/clang_tidy.cmake`, the `version 23.` check in `CoffeeShop.vcxproj`, the hook's `rev`, the
-  clang-tidy version in `.github/actions/setup-windows/action.yml`, and the Visual Studio editor
+  clang-tidy version in `.github/actions/setup-windows/action.yml` and
+  `.github/actions/setup-linux/action.yml`, the pipx install on Linux, and the Visual Studio editor
   setting. Measure first: run the new clang-tidy over the project and the
   new clang-format with `--dry-run` before switching.
 - `no-commit-to-branch` fails when the current branch is `main` or `staging`. Since the hooks are
@@ -451,9 +496,10 @@ pre-commit run --all-files
 
 ## Scripts and CI
 
-`scripts/dev.py` runs the usual tasks, locally and in the CI. It sets up the x64 Visual Studio
-environment by itself, reads `LLVM_TOOLS_DIR` from the registry if the terminal doesn't have it, and
-runs `conan install` if the package is missing. It uses only the standard library and must stay
+`scripts/dev.py` runs the usual tasks, locally and in the CI, on Windows and Linux. On Windows it
+sets up the x64 Visual Studio environment by itself and reads `LLVM_TOOLS_DIR` from the registry if
+the terminal doesn't have it; on Linux it uses gcc. It runs `conan install` if the package is missing,
+without letting Conan change `CMakeUserPresets.json`. It uses only the standard library and must stay
 compatible with Python 3.8. Any command line error shows the full help.
 
 ```bat
@@ -463,28 +509,35 @@ python scripts/dev.py build [--config Release] [--fresh]    :: configure and bui
 python scripts/dev.py asan                                  :: tests with AddressSanitizer
 python scripts/dev.py coverage                              :: coverage, with a summary
 python scripts/dev.py msbuild [--config Debug]              :: CoffeeShop.vcxproj; both by default
-python scripts/dev.py all                                   :: everything the CI runs on Windows
+python scripts/dev.py all                                   :: everything the CI runs on this system
 ```
 
+On Linux, `asan`, `coverage` and `msbuild` stop with a message (issues #29 and #28; MSBuild is
+Windows only), and `all` runs the tests.
+
 `.github/workflows/ci.yml` calls those commands, with the setup in
-`.github/actions/setup-windows`:
+`.github/actions/setup-windows` and `.github/actions/setup-linux`:
 
 | Job | Runner | Commands | Time |
 |---|---|---|---|
 | Tests and coverage (Debug, clang-tidy) | `windows-2022` | `dev.py test`, `dev.py coverage` | 8.5 min |
 | Tests with AddressSanitizer | `windows-2022` | `dev.py asan` | 2 min |
 | Visual Studio project (MSBuild) | `windows-2022` | `dev.py msbuild` | 4 min |
+| Linux (gcc, clang-tidy) | `ubuntu-24.04` (gcc 13) | `dev.py test` | 3 min |
 | pre-commit | `ubuntu-latest` | `pre-commit run --all-files` | 0.5 min |
 
 - It runs on pull requests to `develop` and `main`, and by hand from the Actions tab. A new push
   cancels the run in progress.
 - The repository is private, so the runs use the plan's monthly Actions credit, and a Windows minute
   costs more than a Linux one. A full run takes 11 to 14 Windows minutes (with and without caches)
-  and less than 1 Linux minute:
+  and about 4 Linux minutes:
   - a change that only touches Markdown files runs nothing;
-  - a **draft** pull request runs only pre-commit (1 minute). Run `python scripts/dev.py all`
+  - a **draft** pull request runs only the Linux jobs (about 4 minutes). Run `python scripts/dev.py all`
     locally, and mark it "Ready for review" at the end: that starts the Windows jobs, and every
     later push repeats them.
+- The caches (Conan, ccache, pre-commit) are saved per pull request: a new pull request starts
+  without them, and later pushes to it use them. Saving them on `develop` would need a run after
+  every merge, which costs more than the first run of each pull request saves.
 - Coverage appears in the summary of the job, and the HTML report stays as an artifact for 14 days.
 - ConanCenter has no GoogleTest binary for VS 2022 under Conan 1, so the CI builds it once and keeps
   it in the Conan cache. clang-tidy can't be cached, and it takes most of the tests job.
@@ -552,7 +605,10 @@ Each piece of information lives in one place:
 
 - Ninja only rebuilds changed `.cpp` files, so a new finding in a header shows up when a `.cpp`
   that includes it is recompiled. Use `--clean-first` to re-check everything.
-- `apps/ConsoleApp/main.cpp` uses MSVC-specific `_CrtSetDbgFlag` (CRT leak checking).
+- `apps/ConsoleApp/main.cpp` calls `_CrtSetDbgFlag` (CRT leak checking) only with MSVC
+  (`#ifdef _MSC_VER`).
+- A gcc 12 Release build shows one `-Wrestrict` warning in GoogleTest code inlined into a test; it
+  looks like a false positive of gcc 12.
 - "Print list beverage orders" writes `orders.txt` in the **current working directory** (it
   replaces the previous file and shows the full path). The file is gitignored.
 - Storing orders on disk is **parked** (pending, very low priority): `OrderRepository::storeOrders()`
