@@ -44,7 +44,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: coverage-report
+          name: coverage-report-windows
           path: build/Windows x64 Debug/coverage/html
           retention-days: 14
           if-no-files-found: ignore
@@ -77,7 +77,7 @@ jobs:
         run: python scripts/dev.py msbuild
 
   linux:
-    name: Linux (gcc, clang-tidy)
+    name: Linux tests and coverage (gcc, clang-tidy)
     # Also in drafts: Linux minutes are cheap, and they test the pull request before the Windows jobs.
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -88,6 +88,17 @@ jobs:
           cache-key: linux
       - name: Build and test
         run: python scripts/dev.py test
+      # A second build, with --coverage and without clang-tidy (the "Linux GCC Coverage" preset).
+      - name: Coverage
+        run: python scripts/dev.py coverage
+      - name: Upload the coverage report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-report-linux
+          path: build/Linux GCC Coverage/coverage/html
+          retention-days: 14
+          if-no-files-found: ignore
 
   pre-commit:
     name: pre-commit

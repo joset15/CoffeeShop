@@ -95,6 +95,7 @@ layout. Of its `Infrastructure` folders only `UI` exists; others it lists (`Infr
   pipx install "conan==1.61.0"
   pipx install "cmake>=3.30,<4"
   pipx install clang-tidy==23.1.4
+  pipx install gcovr==8.8              # only for the coverage
   ```
   CMake stays on 3.x on every machine: CMake 4 dropped the compatibility with very old minimum
   versions, which files that Conan 1 generates may rely on.
@@ -148,9 +149,10 @@ layout. Of its `Infrastructure` folders only `UI` exists; others it lists (`Infr
   should be all hits). clang-tidy still runs on every compile and is not cached. The VS solution
   (`CoffeeShop.sln`) is separate and keeps `/Zi`.
 - Doxygen is needed only when `BUILD_DOC=ON`.
-- OpenCppCoverage is needed only when `COVERAGE_ENABLED=ON` (see "Testing > Coverage"). Install it
-  with `winget install --id OpenCppCoverage.OpenCppCoverage --exact --version 0.9.9.0`. CMake also
-  looks for it in `C:\Program Files\OpenCppCoverage`, so a terminal opened before the install works.
+- The coverage (see "Testing > Coverage") needs OpenCppCoverage on Windows and gcovr on Linux. Install
+  OpenCppCoverage with `winget install --id OpenCppCoverage.OpenCppCoverage --exact --version 0.9.9.0`.
+  CMake also looks for it in `C:\Program Files\OpenCppCoverage`, so a terminal opened before the
+  install works.
 
 ## Build
 
@@ -169,9 +171,11 @@ cmake --workflow --preset "Linux GCC Debug"  # binary dir: build/Linux GCC Debug
 - Outputs: `build/<preset>/<config>/bin/{CoffeeShopApp,UnitTests,IntegrationTests}` (`.exe` on
   Windows), libs in `.../lib`.
 - The presets are `Windows x64 Debug`, `Windows x64 Release` and `Windows x64 Debug ASan` (without
-  clang-tidy, which the Debug preset already runs), and `Linux GCC Debug` and `Linux GCC Release`.
-  Each has configure, build, test and workflow presets, in `build/<preset>`, and only appears on
-  its own system (`condition` on `hostSystemName`). Release needs its own `conan install` with
+  clang-tidy, which the Debug preset already runs), `Linux GCC Debug` and `Linux GCC Release`, and
+  one `Coverage` preset per system (see "Testing > Coverage"). Each has configure, build, test (not
+  the coverage ones) and workflow presets, in `build/<preset>`. The configure, build and test presets
+  only appear on their own system (`condition` on `hostSystemName`); workflow presets can't have a
+  condition, so CMake refuses those of the other system. Release needs its own `conan install` with
   `-s build_type=Release`; `dev.py` runs it when the package is missing.
 - The `default` preset in `CMakeUserPresets.json` (from `build/generators/CMakePresets.json`)
   is a stale Conan preset (VS 2019 generator). Use the `Windows x64 *` and `Linux GCC *` presets instead.
@@ -194,7 +198,7 @@ CMake options (top-level `CMakeLists.txt`):
 | `ASAN_ENABLED` | OFF | MSVC `/fsanitize=address` in Debug (gcc: issue #29). GoogleTest comes from Conan without ASan, so it also defines `_DISABLE_VECTOR_ANNOTATION` and `_DISABLE_STRING_ANNOTATION`: without them, the tests stop with a false `container-overflow`. That check is lost; the others still run. The executables need the ASan DLL, which the x64 developer environment has on `PATH` |
 | `CPPCHECK_ENABLED` | OFF | Runs cppcheck during the build |
 | `BUILD_DOC` | OFF | Doxygen target `doc_doxygen` from `docs/doxygen/Doxyfile.in` |
-| `COVERAGE_ENABLED` | OFF | Adds the `coverage` target (`cmake/coverage.cmake`). MSVC only for now; needs `TESTS` and `ITESTS` and OpenCppCoverage |
+| `COVERAGE_ENABLED` | OFF | Adds the `coverage` target (`cmake/coverage.cmake`), with MSVC (OpenCppCoverage) and gcc (`--coverage` on every target, and gcovr). Needs `TESTS` and `ITESTS`. Set by the `Coverage` presets |
 
 ### Visual Studio project (MSBuild)
 
@@ -307,25 +311,41 @@ On Linux, the same with `build/Linux GCC Debug` and without `.exe`.
 ### Coverage
 
 ```bat
-python scripts/dev.py coverage                               :: or, in an x64 developer environment:
-cmake --preset "Windows x64 Debug" -DCOVERAGE_ENABLED=ON     :: once; it stays in the cache
-cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests if needed, then measures
+python scripts/dev.py coverage                       :: on both systems; or, by hand:
+cmake --workflow --preset "Windows x64 Coverage"     :: from an x64 developer environment
+cmake --workflow --preset "Linux GCC Coverage"       :: on Linux
 ```
 
-- The target runs `UnitTests.exe` and `IntegrationTests.exe` under OpenCppCoverage and merges both
-  runs into `build/<preset>/coverage/html/index.html` (to read) and
-  `build/<preset>/coverage/cobertura.xml` (Cobertura XML, which `dev.py` reads). It takes ~15 s.
-- OpenCppCoverage works on the normal Debug build through its PDB files: no extra flags or build
-  folder. It measures **lines** in `include/` and `src/` only (not tests, GoogleTest or the
-  standard library). `apps/` is left out on purpose: no test runs `main()`.
-- Current coverage: **99.9% of lines (843 of 844)**. The only line not covered is the stub
-  `OrderRepository::storeOrders()` (storing orders on disk is parked, see "Gotchas"). Run the target before a PR that changes code: the figure shouldn't drop.
-- Files that no test executable links are **missing from the report**, not shown at 0%. Today that
-  is only `Gateways/OrderDiskDataSource.cpp` (not implemented yet). A new class that no test uses
-  would be missing too, so a higher total doesn't prove it is tested.
-- A failing test makes the target fail. `cmake --preset ... --fresh` resets the option to OFF.
-- Linux (gcc + gcovr, same outputs) is planned; the target warns and does nothing with other
-  compilers for now.
+- The `coverage` target runs `UnitTests` and `IntegrationTests` and writes, in its build folder,
+  `coverage/html/index.html` (to read) and `coverage/cobertura.xml` (Cobertura XML, which `dev.py`
+  reads to print the total). It measures **lines** in `include/` and `src/` only (not tests,
+  GoogleTest or the standard library). `apps/` is left out on purpose: no test runs `main()`. A
+  failing test makes the target fail.
+- The two systems measure differently, so their presets differ:
+
+  | | `Windows x64 Coverage` | `Linux GCC Coverage` |
+  |---|---|---|
+  | Tool | OpenCppCoverage, on the normal Debug build through its PDB files | gcc's `--coverage` on every target (top-level `CMakeLists.txt`), then gcovr |
+  | Folder | Debug's, `build/Windows x64 Debug`: nothing is rebuilt | Its own, `build/Linux GCC Coverage`: the instrumented build is a different one |
+  | clang-tidy | As in Debug | Off: the Debug preset runs it |
+
+- gcovr runs from the source folder, because gcovr 8 resolves relative `--filter`s from the current
+  folder (from the build folder it found nothing: 0 of 0 lines). It runs with
+  `--exclude-noncode-lines`: gcc puts, on the closing brace of a function that returns a local object,
+  the cleanup for an exception that no test throws there, and without the option five `}` counted
+  as not covered. The HTML report also shows functions and branches; the figure that counts is the
+  lines.
+- Current coverage, which a PR that changes code shouldn't lower:
+
+  | System | Lines | Not covered |
+  |---|---|---|
+  | Windows | **99.9% (843 of 844)** | the stub `OrderRepository::storeOrders()` (storing orders on disk is parked, see "Gotchas") |
+  | Linux | **99.6% (509 of 511)** | the same stub, and `Gateways/OrderDiskDataSource.cpp` |
+
+  The totals differ because gcov and OpenCppCoverage don't count the same lines as executable.
+- A file that no test executable links (today only `Gateways/OrderDiskDataSource.cpp`, not
+  implemented yet) is **missing** from the Windows report and at **0%** in the Linux one. A higher
+  Windows total doesn't prove that a new class is tested: check the Linux report.
 
 ## Code style
 
@@ -512,33 +532,36 @@ python scripts/dev.py msbuild [--config Debug]              :: CoffeeShop.vcxpro
 python scripts/dev.py all                                   :: everything the CI runs on this system
 ```
 
-On Linux, `asan`, `coverage` and `msbuild` stop with a message (issues #29 and #28; MSBuild is
-Windows only), and `all` runs the tests.
+On Linux, `asan` and `msbuild` stop with a message (issue #29; MSBuild is Windows only), and
+`all` runs the tests and the coverage.
 
 `.github/workflows/ci.yml` calls those commands, with the setup in
 `.github/actions/setup-windows` and `.github/actions/setup-linux`:
 
 | Job | Runner | Commands | Time |
 |---|---|---|---|
-| Tests and coverage (Debug, clang-tidy) | `windows-2022` | `dev.py test`, `dev.py coverage` | 8.5 min |
-| Tests with AddressSanitizer | `windows-2022` | `dev.py asan` | 2 min |
-| Visual Studio project (MSBuild) | `windows-2022` | `dev.py msbuild` | 4 min |
-| Linux (gcc, clang-tidy) | `ubuntu-24.04` (gcc 13) | `dev.py test` | 3 min |
+| Tests and coverage (Debug, clang-tidy) | `windows-2022` | `dev.py test`, `dev.py coverage` | 6 to 11 min |
+| Tests with AddressSanitizer | `windows-2022` | `dev.py asan` | 2 to 4 min |
+| Visual Studio project (MSBuild) | `windows-2022` | `dev.py msbuild` | 3.5 to 4.5 min |
+| Linux tests and coverage (gcc, clang-tidy) | `ubuntu-24.04` (gcc 13) | `dev.py test`, `dev.py coverage` | 3 to 4.5 min |
 | pre-commit | `ubuntu-latest` | `pre-commit run --all-files` | 0.5 min |
 
 - It runs on pull requests to `develop` and `main`, and by hand from the Actions tab. A new push
   cancels the run in progress.
 - The repository is private, so the runs use the plan's monthly Actions credit, and a Windows minute
-  costs more than a Linux one. A full run takes 11 to 14 Windows minutes (with and without caches)
-  and about 4 Linux minutes:
+  costs more than a Linux one. A full run takes 11 to 20 Windows minutes (with and without caches,
+  and the speed of the runner varies) and 4 to 5 Linux minutes:
   - a change that only touches Markdown files runs nothing;
-  - a **draft** pull request runs only the Linux jobs (about 4 minutes). Run `python scripts/dev.py all`
+  - a **draft** pull request runs only the Linux jobs (4 to 5 minutes). Run `python scripts/dev.py all`
     locally, and mark it "Ready for review" at the end: that starts the Windows jobs, and every
     later push repeats them.
 - The caches (Conan, ccache, pre-commit) are saved per pull request: a new pull request starts
   without them, and later pushes to it use them. Saving them on `develop` would need a run after
   every merge, which costs more than the first run of each pull request saves.
-- Coverage appears in the summary of the job, and the HTML report stays as an artifact for 14 days.
+- Both systems measure the coverage: it appears in the summary of each job, as "Coverage (Windows)"
+  and "Coverage (Linux)", and the HTML reports stay as artifacts for 14 days
+  (`coverage-report-windows`, `coverage-report-linux`). On Linux it is a second build, instrumented and
+  without clang-tidy: about 45 s.
 - ConanCenter has no GoogleTest binary for VS 2022 under Conan 1, so the CI builds it once and keeps
   it in the Conan cache. clang-tidy can't be cached, and it takes most of the tests job.
 - Dependabot opens one grouped pull request a month to `develop` for the actions.
@@ -622,8 +645,8 @@ Each piece of information lives in one place:
 - Corrupt object files at link time (`LNK1163`, `LNK1236`) have appeared after incremental builds.
   A clean rebuild fixes them. Don't build the same folder from Visual Studio and the command line
   at the same time (both use `build/Windows x64 Debug`).
-- On GCC/Clang the top-level file adds coverage flags when `TESTS=ON`, but after
-  `add_subdirectory(src)`, so they would only instrument the tests. This will move to
-  `COVERAGE_ENABLED` with the Linux build. `.opencppcov/` (gitignored) holds settings of the
-  OpenCppCoverage Visual Studio extension for the legacy solution; the CMake `coverage` target
-  doesn't use it.
+- The gcc coverage counters (`.gcda`) add up from run to run, so the `coverage` target deletes
+  them first. A build folder used before with other flags keeps old `.gcno`/`.gcda` files: start
+  from an empty folder to check that a build isn't instrumented.
+- `.opencppcov/` (gitignored) holds settings of the OpenCppCoverage Visual Studio extension for the
+  legacy solution; the CMake `coverage` target doesn't use it.
