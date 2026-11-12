@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Linux, and a Linux job in the CI.
 - Coverage on Linux with gcc and gcovr, with the same outputs as on Windows, and a `Coverage` preset
   per system: `python scripts/dev.py coverage` measures it on both, and so does the CI.
+- AddressSanitizer and UndefinedBehaviorSanitizer on Linux: option `UBSAN_ENABLED`, preset
+  `Linux GCC Debug Sanitizers`, `python scripts/dev.py asan` on Linux, and a step in the Linux CI
+  job. A UBSan error makes the test fail.
 
 ### Changed
 
