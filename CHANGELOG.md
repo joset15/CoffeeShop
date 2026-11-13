@@ -7,36 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-11-13
+
 ### Added
 
-- GitHub Actions workflow for Windows: tests and coverage, AddressSanitizer, the Visual Studio project
-  and pre-commit. Dependabot keeps its actions up to date.
-- `scripts/dev.py` for the usual tasks: build, tests, AddressSanitizer, coverage and MSBuild.
-- CMake build, test and workflow presets, and a `Windows x64 Debug ASan` preset.
+- Linux build with gcc 12 or later: `Linux GCC Debug` and `Linux GCC Release` presets. The tests, the
+  coverage (gcovr) and the sanitizers also run on Linux.
+- `scripts/dev.py` for the usual tasks on Windows and Linux: build, tests, sanitizers, coverage and,
+  on Windows, MSBuild. It runs `conan install` when the package is missing, without letting Conan
+  rewrite `CMakeUserPresets.json`.
+- GitHub Actions workflow: tests and coverage, AddressSanitizer and the Visual Studio project on
+  Windows; tests, sanitizers and coverage on Linux; and pre-commit. Dependabot keeps its actions up
+  to date.
+- CMake build, test and workflow presets, including `Windows x64 Debug ASan`,
+  `Linux GCC Debug Sanitizers` (AddressSanitizer and UndefinedBehaviorSanitizer) and a `Coverage`
+  preset per system.
+- Option `UBSAN_ENABLED` (gcc and clang). A UBSan error makes the test fail.
 - The console app run end to end as CTest tests (`tests/AppScenarios`).
-- Linux build with gcc: `Linux GCC Debug` and `Linux GCC Release` presets, `scripts/dev.py` on
-  Linux, and a Linux job in the CI.
-- Coverage on Linux with gcc and gcovr, with the same outputs as on Windows, and a `Coverage` preset
-  per system: `python scripts/dev.py coverage` measures it on both, and so does the CI.
-- AddressSanitizer and UndefinedBehaviorSanitizer on Linux: option `UBSAN_ENABLED`, preset
-  `Linux GCC Debug Sanitizers`, `python scripts/dev.py asan` on Linux, and a step in the Linux CI
-  job. A UBSan error makes the test fail.
 
 ### Changed
 
 - The `Windows x64 Release` preset builds in `build/` instead of `out/build/`.
 - The libraries declare the libraries they use, which gcc's linker needs.
-- Compiler warnings: gcc no longer uses `-Weffc++`, `-Wswitch-default`, `-Wmultiple-inheritance`
-  and `-Wsuggest-final-*`, nor `-fno-rtti`; MSVC adds C4061. A `switch` over an enum lists every
+- Compiler warnings: gcc no longer uses `-Weffc++`, `-Wswitch-default`, `-Wmultiple-inheritance`,
+  `-Wsuggest-final-*` or `-fno-rtti`, and MSVC adds C4061. A `switch` over an enum lists every
   value, without `default`.
-- `scripts/dev.py` no longer lets Conan rewrite `CMakeUserPresets.json`.
-- The Linux builds no longer instrument the tests for coverage: only the `Linux GCC Coverage` preset
-  does, and it instruments the whole project.
-- The CI coverage reports are `coverage-report-windows` and `coverage-report-linux`.
 
 ### Fixed
 
-- The tests stopped with a false `container-overflow` error under AddressSanitizer.
+- The tests stopped with a false `container-overflow` error under AddressSanitizer on Windows.
 
 ## [0.5.0] - 2026-10-29
 
@@ -137,7 +136,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - First version: a Qt Widgets application (qmake) to manage drink orders, with `Model`, `UseCase`,
   `Adapter` and `Data` folders.
 
-[Unreleased]: https://github.com/joset15/CoffeeShop/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/joset15/CoffeeShop/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/joset15/CoffeeShop/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/joset15/CoffeeShop/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/joset15/CoffeeShop/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/joset15/CoffeeShop/compare/v0.2.0...v0.3.0

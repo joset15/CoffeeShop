@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.25)
 
 project(
   CoffeeShop
-  VERSION 0.5.0
+  VERSION 0.6.0
   LANGUAGES CXX
   DESCRIPTION "C++/CMake project for a modern development approach: CMake, Conan, GTest..."
   HOMEPAGE_URL https://github.com/joset15/CoffeeShop
