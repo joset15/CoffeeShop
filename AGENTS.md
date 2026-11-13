@@ -545,7 +545,7 @@ sanitizers and the coverage on both systems, and MSBuild on Windows.
 |---|---|---|---|
 | Tests and coverage (Debug, clang-tidy) | `windows-2022` | `dev.py test`, `dev.py coverage` | 6 to 11 min |
 | Tests with AddressSanitizer | `windows-2022` | `dev.py asan` | 2 to 7 min |
-| Visual Studio project (MSBuild) | `windows-2022` | `dev.py msbuild` | 3.5 to 4.5 min |
+| Visual Studio project (MSBuild) | `windows-2022` | `dev.py msbuild` | 3.5 to 5 min |
 | Linux tests, sanitizers and coverage (gcc, clang-tidy) | `ubuntu-24.04` (gcc 13) | `dev.py test`, `dev.py asan`, `dev.py coverage` | 4 to 5 min |
 | pre-commit | `ubuntu-latest` | `pre-commit run --all-files` | 0.5 min |
 
@@ -598,7 +598,7 @@ Each piece of information lives in one place:
 
 - Before starting a PR, read `docs/ROADMAP.md` and the issues of the current milestone. The current
   milestone is the first version in the roadmap that isn't released:
-  `gh issue list --milestone "v0.6.0"`.
+  `gh issue list --milestone "v0.7.0"`.
 - Create issues only for the next milestones; the rest stays under "Ideas" in the roadmap. Don't
   write the status of a PR in `docs/ROADMAP.md`.
 - A decision that affects several PRs goes in the roadmap, and one that only affects a PR goes in
