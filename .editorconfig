@@ -7,6 +7,11 @@ end_of_line = native
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+# The console app's expected output: its prompts end with a space, and it ends without a newline.
+[tests/AppScenarios/*.expected.txt]
+insert_final_newline = false
+trim_trailing_whitespace = false
+
 [*.hpp,*.cpp]
 # indent_style = tab
 # indent_size = tab

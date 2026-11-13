@@ -23,7 +23,7 @@ public:
   {
     decorateWith(Ingredient::Sugar);
     return true;
-  };
+  }
 
   /// @brief Adds milk to the beverage.
   /// @param typeOfMilk The type of milk we are adding.
@@ -34,7 +34,7 @@ public:
   {
     decorateWith(Ingredient::Honey);
     return true;
-  };
+  }
 
   /// @brief Adds lemon to the beverage.
   bool addLemon() override { return false; }

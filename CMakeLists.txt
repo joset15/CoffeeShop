@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.25)
 
 project(
   CoffeeShop
-  VERSION 0.5.0
+  VERSION 0.6.0
   LANGUAGES CXX
   DESCRIPTION "C++/CMake project for a modern development approach: CMake, Conan, GTest..."
   HOMEPAGE_URL https://github.com/joset15/CoffeeShop
@@ -15,6 +15,7 @@ option(TESTS "Build GTest Unit Tests" ON)
 option(ITESTS "Build GTest Integration Tests" ON)
 option(BUILD_DOC "Build Doxygen documentation" OFF)
 option(ASAN_ENABLED "Build this target with AddressSanitizer" OFF)
+option(UBSAN_ENABLED "Build with UndefinedBehaviorSanitizer (gcc and clang)" OFF)
 option(CLANG_TIDY_ENABLED "Build this target with Static Analysis" ON) # STATIC_ANALISYS
 option(CPPCHECK_ENABLED "Run CppCheck static code analysis" OFF) # STATIC_ANALISYS
 option(COVERAGE_ENABLED "Add a 'coverage' target that measures the tests' code coverage" OFF)
@@ -25,7 +26,13 @@ endif()
 
 # Including Files
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/build/generators") # Conan
+# Conan's files: build/generators with MSVC, build/<build type>/generators with gcc. Only one of
+# them, because a folder shared by Windows and WSL can have both.
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/build/generators")
+else()
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/build/${CMAKE_BUILD_TYPE}/generators")
+endif()
 
 include(cpp_warnings)
 
@@ -104,12 +111,16 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") # MATCHES
 
   if(ASAN_ENABLED)
     message(STATUS "ASAN ENABLED")
-    set(ENV{ASAN_SAVE_DUMPS} "AsanDumpInfo.dmp") # ASAN_SAVE_DUMPS=MyFileName.dmp
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od /D_DEBUG /fsanitize=address")
-
-    unset(ASAN_ENABLED)
+    # GoogleTest comes from Conan without AddressSanitizer. Its std::vector and std::string are not
+    # annotated, so the instrumented code reports false "container-overflow" errors on them. These
+    # macros turn the annotations off; every other AddressSanitizer check still runs.
+    add_compile_definitions(_DISABLE_VECTOR_ANNOTATION _DISABLE_STRING_ANNOTATION)
   else()
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od /D_DEBUG") # /MTd
+  endif()
+  if(UBSAN_ENABLED)
+    message(WARNING "UBSAN_ENABLED: MSVC has no UndefinedBehaviorSanitizer, so it is ignored.")
   endif()
 
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /DNDEBUG") # /MT
@@ -121,17 +132,33 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") # MATCHES
 elseif((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
   message(STATUS "Setting GCC/GNU flags")
 
-  set(
-    CMAKE_CXX_FLAGS
-    "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -fno-rtti -Wno-psabi -fexceptions"
-  )
+  # The warnings come from cmake/cpp_warnings.cmake, as with MSVC.
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0")
+
+  # Sanitizers, on every target (also the tests), so before add_subdirectory(). AddressSanitizer
+  # includes LeakSanitizer. libstdc++ doesn't annotate its containers by default, so GoogleTest
+  # from Conan, without sanitizers, gives no false "container-overflow" here (unlike MSVC).
+  set(SANITIZERS)
   if(ASAN_ENABLED)
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -fsanitize=address -static-libasan")
-  else()
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0")
+    list(APPEND SANITIZERS address)
+  endif()
+  if(UBSAN_ENABLED)
+    list(APPEND SANITIZERS undefined)
+    # By default UBSan only prints the error and the test still passes: stop instead.
+    add_compile_options(-fno-sanitize-recover=all)
+  endif()
+  if(SANITIZERS)
+    list(JOIN SANITIZERS "," SANITIZERS)
+    message(STATUS "Sanitizers: ${SANITIZERS}")
+    add_compile_options(-fsanitize=${SANITIZERS} -fno-omit-frame-pointer)
+    add_link_options(-fsanitize=${SANITIZERS})
   endif()
 
-  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -fno-strict-aliasing -Werror")
+  # Coverage (cmake/coverage.cmake) needs every target instrumented, so before add_subdirectory().
+  if(COVERAGE_ENABLED)
+    add_compile_options(--coverage)
+    add_link_options(--coverage)
+  endif()
 else()
   message(FATAL_ERROR "Unknown compiler: ${CMAKE_CXX_COMPILER_ID}")
 endif()
@@ -149,12 +176,6 @@ add_dependencies(CoffeeShopApp AllLayers)
 if(TESTS)
   message(STATUS "Compiling Unit Tests")
 
-  if((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fprofile-arcs -ftest-coverage")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
-  endif()
-
   add_subdirectory(tests/UnitTests)
   add_dependencies(UnitTests AllLayers)
 endif()
@@ -164,6 +185,7 @@ if(ITESTS)
 
   add_subdirectory(tests/IntegrationTests)
   add_dependencies(IntegrationTests AllLayers)
+  add_subdirectory(tests/AppScenarios) # The console app run end to end.
 endif()
 
 include(coverage) # The "coverage" target, after the test targets it runs.

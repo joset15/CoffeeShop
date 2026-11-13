@@ -10,13 +10,16 @@
 
 #include "Infrastructure/UI/ConsoleMenu.hpp"
 
-#include <crtdbg.h>
 #include <cstdio>
 #include <cstdlib>
 #include <exception>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+
+#ifdef _MSC_VER
+#include <crtdbg.h>
+#endif
 
 using coffee_shop::application::NewOrderReq;
 using coffee_shop::domain::BeverageBuilderSimpleFactory;
@@ -114,8 +117,11 @@ void run()
 
 int main()
 {
-  // Report memory leaks when the program ends (MSVC debug CRT).
+#ifdef _MSC_VER
+  // Report memory leaks when the program ends (MSVC debug CRT). On Linux, an
+  // AddressSanitizer build reports them.
   _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
 
   try
   {

@@ -50,7 +50,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Cl
     -Woverloaded-virtual # Overloaded virtual function names.
     -Wsign-conversion # Implicit conversions between signed and unsigned integers.
     -Wshadow # One variable shadows another.
-    -Wswitch-enum # A switch statement has an index of enumerated type and lacks a case.
+    -Wswitch-enum # A switch over an enum doesn't list every value, even if it has a default.
     -Wundef # An undefined identifier is evaluated in an #if directive.
     -Wunused # Enable all -Wunused- warnings.
   )
@@ -60,10 +60,12 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Cl
       APPEND
       PROJECT_WARNING_FLAGS
       -Wdisabled-optimization # GCC’s optimizers are unable to handle the code effectively.
-      -Weffc++ # Warnings related to guidelines from Scott Meyers’ Effective C++ books.
+      # No -Weffc++: it predates C++11 and doesn't know default member initializers, so it reports
+      # almost every class. clang-tidy's cppcoreguidelines-* checks cover what is still current.
       -Wlogical-op # Warn when a logical operator is always evaluating to true or false.
       -Wsign-promo # Overload resolution chooses a promotion from unsigned to a signed type.
-      -Wswitch-default # A switch statement does not have a default case.
+      # No -Wswitch-default: a switch that covers every value of an enum has no default, so that
+      # adding a value is reported (see AGENTS.md, "Code style").
       -Wredundant-decls # Something is declared more than once in the same scope.
     )
     if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.6)
@@ -85,8 +87,8 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Cl
         APPEND
         PROJECT_WARNING_FLAGS
         -Wdate-time # Warn when encountering macros that might prevent bit-wise-identical compilations.
-        -Wsuggest-final-methods # Virtual methods that could be declared final or in an anonymous namespace.
-        -Wsuggest-final-types # Types with virtual methods that can be declared final or in an anonymous namespace.
+        # No -Wsuggest-final-methods or -Wsuggest-final-types: they are optimization hints, only in
+        # Release, and they also report classes that have subclasses (Coffee, CoffeeLatte).
         -Wsuggest-override # Overriding virtual functions that are not marked with the override keyword.
       )
     endif()
@@ -96,7 +98,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Cl
         PROJECT_WARNING_FLAGS
         -Wduplicated-cond # Warn about duplicated conditions in an if-else-if chain.
         -Wmisleading-indentation # Warn when indentation does not reflect the block structure.
-        -Wmultiple-inheritance # Do not allow multiple inheritance.
+        # No -Wmultiple-inheritance: TextPresenter implements several output port interfaces.
         -Wnull-dereference # Dereferencing a pointer may lead to undefined behavior.
       )
     endif()
@@ -139,6 +141,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     PROJECT_WARNING_FLAGS
     /permissive- # Specify standards conformance mode to the compiler.
     /W4 # Enable level 4 warnings.
+    /w14061 # Enumerator not explicitly handled by a case label, even with a default (-Wswitch-enum).
     /w14062 # Enumerator 'identifier' in a switch of enum 'enumeration' is not handled.
     /w14242 # The types are different, possible loss of data. The compiler makes the conversion.
     /w14254 # A larger bit field was assigned to a smaller bit field, possible loss of data.

@@ -1,0 +1,46 @@
+Main menu
+  1. Add beverage order
+  2. Screen list beverage orders
+  3. Print list beverage orders
+  4. Cancel all orders
+  0. Exit
+> Choose a beverage (0 to cancel):
+  1. Coffee espresso
+  2. Coffee latte
+  3. Coffee decaf
+  4. Black tea
+  5. Green tea
+  6. Cocoa
+> Choose ingredients (numbers separated by spaces, Enter for none):
+  1. Sugar
+  2. Milk
+  3. Cream
+  4. Honey
+  5. Lemon
+  6. Soy milk
+  7. Water
+> Info: Order added: CoffeeLatte, Sugar.
+Press Enter to continue...
+> Main menu
+  1. Add beverage order
+  2. Screen list beverage orders
+  3. Print list beverage orders
+  4. Cancel all orders
+  0. Exit
+> Info: Orders cancelled: 1.
+Press Enter to continue...
+> Main menu
+  1. Add beverage order
+  2. Screen list beverage orders
+  3. Print list beverage orders
+  4. Cancel all orders
+  0. Exit
+> No orders yet.
+Press Enter to continue...
+> Main menu
+  1. Add beverage order
+  2. Screen list beverage orders
+  3. Print list beverage orders
+  4. Cancel all orders
+  0. Exit
+> 

@@ -26,12 +26,17 @@ bool CocoaBuilder::addMilk(Ingredient typeOfMilk)
   case Ingredient::SoyMilk:
     decorateWith(Ingredient::SoyMilk);
     break;
-  default:
-    // Cocoa only accepts milk or soy milk (e.g. cream is rejected).
+  case Ingredient::Cream:
+  case Ingredient::Sugar:
+  case Ingredient::Honey:
+  case Ingredient::Lemon:
+  case Ingredient::Water:
+    // Cocoa only accepts milk or soy milk: cream, and what isn't milk, is
+    // rejected.
     return false;
   }
 
   m_HasMilk = true;
   return true;
-};
+}
 } // namespace coffee_shop::domain

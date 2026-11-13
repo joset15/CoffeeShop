@@ -33,9 +33,12 @@ repos:
     rev: v5.0.0
     hooks:
       - id: trailing-whitespace # Trims trailing whitespace.
+        # The console app's expected output ends its prompts with a space.
+        exclude: '^tests/AppScenarios/.*\.expected\.txt$'
       - id: end-of-file-fixer # Ensures that a file is either empty, or ends with one newline.
         # Visual Studio saves these without a final newline; fixing them would only cause churn.
-        exclude: '\.(vcxproj|filters|cd)$'
+        # The console app's expected output ends with a prompt, without a newline.
+        exclude: '(\.(vcxproj|filters|cd)|^tests/AppScenarios/.*\.expected\.txt)$'
       - id: check-yaml # Checks yaml files for parseable syntax.
       - id: check-json # Checks json files for parseable syntax.
       - id: pretty-format-json # Checks that json files are sorted and indented.
@@ -48,6 +51,14 @@ repos:
         args: ['--branch', 'main', '--branch', 'staging']
       - id: requirements-txt-fixer # sorts entries in requirements.txt and constraints.txt and removes incorrect entries.
       - id: check-illegal-windows-names # Check for files that cannot be created on Windows.
+
+  # The GitHub Actions workflows, composite actions and Dependabot settings, against their schemas.
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.30.0
+    hooks:
+      - id: check-github-workflows
+      - id: check-github-actions
+      - id: check-dependabot
 
   - repo: https://github.com/cheshirekow/cmake-format-precommit
     rev: v0.6.10

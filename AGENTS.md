@@ -76,16 +76,34 @@ Names in descriptions come from `inline constexpr std::string_view` constants ne
 (`CoffeeEspressoName`, `SugarName`, ...). Ingredients build their part with
 `IngredientDecorator::describeWith(XName)`, e.g. `"CoffeeEspresso, Sugar"`.
 
-The tools are CMake (≥3.25; the presets file uses format v9, which needs ≥3.30), Ninja, MSVC (Visual Studio 2022), Conan **1.x**
-(GoogleTest 1.14.0), clang-tidy and clang-format from **LLVM 23**, and pre-commit. `docs/README_development.md` shows the target folder
+The tools are CMake 3.x (≥3.25; the presets file uses format v9, which needs ≥3.30), Ninja, MSVC (Visual
+Studio 2022) on Windows and gcc (12 or later) on Linux, Conan **1.x** (GoogleTest 1.14.0), clang-tidy and
+clang-format from **LLVM 23**, and pre-commit. `docs/README_development.md` shows the target folder
 layout. Of its `Infrastructure` folders only `UI` exists; others it lists (`Infrastructure/DB`,
-`libs`, `scripts`, ...) don't exist yet.
+`libs`, ...) don't exist yet.
 
 ## Setup
 
-- **Windows + MSVC only.** `src/CMakeLists.txt` stops with `FATAL_ERROR` for any compiler
-  other than MSVC, so the `linux-default` preset does not work.
-- Run from an **x64** Developer environment (x64 Native Tools prompt, or call
+- **Windows with MSVC, and Linux with gcc.** Other compilers (clang, Apple Clang) aren't tried
+  yet. `python scripts/dev.py` (see "Scripts and CI") works on both.
+- **Linux:** gcc 12 or later, Ninja, CMake 3.30 or later but 3.x, Conan 1.61.0 and clang-tidy 23.1.4.
+  Debian 12 has gcc 12 and Ninja, but only CMake 3.25, and no LLVM 23. Install with `apt` what it
+  has, and the rest with **pipx** (Debian blocks `pip install` outside a virtual environment); it
+  puts each tool in `~/.local/bin`:
+  ```bash
+  sudo apt install g++ ninja-build ccache pipx
+  pipx install "conan==1.61.0"
+  pipx install "cmake>=3.30,<4"
+  pipx install clang-tidy==23.1.4
+  pipx install gcovr==8.8              # only for the coverage
+  ```
+  CMake stays on 3.x on every machine: CMake 4 dropped the compatibility with very old minimum
+  versions, which files that Conan 1 generates may rely on.
+- **WSL on the Windows checkout** (e.g. `/mnt/d/...`) works: each system builds in its own
+  `build/<preset>` folder and has its own Conan folder. Run `dev.py` rather than `conan install` by
+  hand: it keeps Conan from rewriting `CMakeUserPresets.json` (see "Build").
+- **Windows:** `dev.py` sets up the environment by itself. To run CMake by
+  hand, use an **x64** Developer environment (x64 Native Tools prompt, or call
   `vcvars64.bat`). The presets use `architecture.strategy: external`, so CMake picks up whatever
   `cl` is on `PATH`. With the x86 `cl` the build fails at link time with
   `LNK4272: library machine type 'x64' conflicts with target machine type 'x86'` against the
@@ -107,45 +125,68 @@ layout. Of its `Infrastructure` folders only `UI` exists; others it lists (`Infr
   Then restart Visual Studio and open terminals (they read the variable at start-up) and configure
   once with `--fresh`. In Visual Studio, also point the editor at the same clang-format:
   **Tools > Options > Text Editor > C/C++ > Code Style > Formatting**, "Use custom
-  clang-format.exe", `D:\LLVM\23.1.4\bin\clang-format.exe`. On Linux and CI, `pip install` the same
-  versions.
+  clang-format.exe", `D:\LLVM\23.1.4\bin\clang-format.exe`. On Linux, install the same version with pipx (see
+  above); the CI installs it with pip.
 - The build checks the version: CMake (`cmake/clang_tidy.cmake`) looks for clang-tidy in
   `LLVM_TOOLS_DIR`, then on `PATH`, and stops if it isn't LLVM 23; the Visual Studio project stops
   if `LLVM_TOOLS_DIR` is unset or isn't LLVM 23 (see "Visual Studio project"). Before LLVM 23, CMake
   took the first `clang-tidy` on `PATH`: in an x86 environment that was Visual Studio's 32-bit one,
   which crashes (`0xC0000005`) on this project.
-- GoogleTest comes from Conan. CMake finds it through `build/generators/` (added to
-  `CMAKE_MODULE_PATH`), so that folder must exist. To regenerate it (Conan 1.x, `cmake_layout`):
+- GoogleTest comes from Conan. CMake finds it through the folder Conan writes (added to
+  `CMAKE_MODULE_PATH`), so that folder must exist: `build/generators/` with MSVC (one for both
+  configurations) and `build/<build type>/generators/` with gcc. `dev.py` runs `conan install` when
+  it is missing; by hand (Conan 1.x, `cmake_layout`):
   `conan install . -s build_type=Debug --build=missing`
+  On Linux, add `-s compiler.libcxx=libstdc++11`. libstdc++ has two ABIs, and the one named "C++11"
+  is gcc's default since gcc 5, for every `-std` (C++20 too). Conan 1 detects the old one, and then
+  GoogleTest doesn't link (`undefined reference to ...std::__cxx11::basic_string...`).
   With Conan 1, ConanCenter offers GoogleTest up to 1.15.0; newer versions are only published for
   Conan 2. The default Conan profile still says Visual Studio 16 (2019): its static gtest library
   links fine with the VS 2022 build.
-- `ccache` is used automatically if it is on `PATH`. It can only cache MSVC builds with embedded
+- `ccache` is used automatically if it is on `PATH`, on both systems. It can only cache MSVC builds with embedded
   debug info, so the CMake build uses `/Z7` (`CMAKE_MSVC_DEBUG_INFORMATION_FORMAT`) instead of
   `/Zi`; the linker still produces `.pdb` files. Check it with `ccache -s` (a second clean build
   should be all hits). clang-tidy still runs on every compile and is not cached. The VS solution
   (`CoffeeShop.sln`) is separate and keeps `/Zi`.
 - Doxygen is needed only when `BUILD_DOC=ON`.
-- OpenCppCoverage is needed only when `COVERAGE_ENABLED=ON` (see "Testing > Coverage"). Install it
-  with `winget install --id OpenCppCoverage.OpenCppCoverage --exact --version 0.9.9.0`. CMake also
-  looks for it in `C:\Program Files\OpenCppCoverage`, so a terminal opened before the install works.
+- The coverage (see "Testing > Coverage") needs OpenCppCoverage on Windows and gcovr on Linux. Install
+  OpenCppCoverage with `winget install --id OpenCppCoverage.OpenCppCoverage --exact --version 0.9.9.0`.
+  CMake also looks for it in `C:\Program Files\OpenCppCoverage`, so a terminal opened before the
+  install works.
 
 ## Build
 
 ```bat
+python scripts/dev.py build                 :: or, from an x64 developer environment:
 cmake --preset "Windows x64 Debug"          :: binary dir: build/Windows x64 Debug
 cmake --build "build/Windows x64 Debug"
+cmake --workflow --preset "Windows x64 Debug"   :: configure, build and test in one command
 ```
 
-- Outputs: `build/<preset>/Debug/bin/{CoffeeShopApp,UnitTests,IntegrationTests}.exe`, libs in `.../lib`.
-- The `Windows x64 Release` preset builds into `out/build/Windows x64 Release`. Conan generated
-  only Debug gtest packages, so Release needs another `conan install` with `-s build_type=Release`.
+```bash
+python3 scripts/dev.py test                  # Linux; or by hand:
+cmake --workflow --preset "Linux GCC Debug"  # binary dir: build/Linux GCC Debug
+```
+
+- Outputs: `build/<preset>/<config>/bin/{CoffeeShopApp,UnitTests,IntegrationTests}` (`.exe` on
+  Windows), libs in `.../lib`.
+- The presets are `Windows x64 Debug`, `Windows x64 Release` and `Windows x64 Debug ASan`,
+  `Linux GCC Debug`, `Linux GCC Release` and `Linux GCC Debug Sanitizers` (ASan and UBSan; the
+  sanitizer presets are without clang-tidy, which the Debug preset already runs), and one
+  `Coverage` preset per system (see "Testing > Coverage"). Each has configure, build, test (not
+  the coverage ones) and workflow presets, in `build/<preset>`. The configure, build and test presets
+  only appear on their own system (`condition` on `hostSystemName`); workflow presets can't have a
+  condition, so CMake refuses those of the other system. Release needs its own `conan install` with
+  `-s build_type=Release`; `dev.py` runs it when the package is missing.
 - The `default` preset in `CMakeUserPresets.json` (from `build/generators/CMakePresets.json`)
-  is a stale Conan preset (VS 2019 generator). Use the `Windows x64 *` presets instead.
+  is a stale Conan preset (VS 2019 generator). Use the `Windows x64 *` and `Linux GCC *` presets instead.
 - Conan 1 rewrites `CMakeUserPresets.json` on every `conan install` while it has
   `"vendor": { "conan": {} }`, and fails (`JSONDecodeError` in the `CMakeToolchain` generator)
   if the file isn't strict JSON, e.g. has a `//` comment. Keep it strict JSON, or remove the
-  `vendor` entry if you edit the file by hand.
+  `vendor` entry if you edit the file by hand. It also writes **absolute paths of the system it
+  runs on** in `include`: in a folder shared by Windows and WSL, the other system can't use any
+  preset (`File not found`). `dev.py` restores the file after Conan runs; if it already has an
+  absolute path, make it relative (`"include": ["build/generators/CMakePresets.json"]`).
 - In-source builds are blocked.
 
 CMake options (top-level `CMakeLists.txt`):
@@ -153,12 +194,13 @@ CMake options (top-level `CMakeLists.txt`):
 | Option | Default | Effect |
 |---|---|---|
 | `TESTS` / `ITESTS` | ON | Build unit / integration test executables |
-| `CLANG_TIDY_ENABLED` | ON | Runs clang-tidy on every `.cpp` during the build, including the project headers under `include/` and `tests/` (`HeaderFilterRegex`). `.clang-tidy` has `WarningsAsErrors: '*'`, so tidy findings **break the build**. Needs clang-tidy from LLVM 23 (`LLVM_TOOLS_DIR`, see "Setup") |
+| `CLANG_TIDY_ENABLED` | ON | Runs clang-tidy on every `.cpp` during the build, including the project headers under `include/` and `tests/` (`HeaderFilterRegex`). `.clang-tidy` has `WarningsAsErrors: '*'`, so tidy findings **break the build**. Needs clang-tidy from LLVM 23 (`LLVM_TOOLS_DIR`, or on `PATH`, see "Setup"). With gcc it ignores the warning options that clang doesn't know (`-Wno-unknown-warning-option`) |
 | `BUILD_USING_PCH` | OFF | Precompiled headers. Can't be combined with `CLANG_TIDY_ENABLED` (configure stops with an error) |
-| `ASAN_ENABLED` | OFF | MSVC `/fsanitize=address` in Debug |
+| `ASAN_ENABLED` | OFF | AddressSanitizer (with LeakSanitizer on Linux). **MSVC:** `/fsanitize=address` in Debug. GoogleTest comes from Conan without ASan, so it also defines `_DISABLE_VECTOR_ANNOTATION` and `_DISABLE_STRING_ANNOTATION`: without them, the tests stop with a false `container-overflow`. That check is lost; the others still run. The executables need the ASan DLL, which the x64 developer environment has on `PATH`. **gcc:** `-fsanitize=address` on every target, with `-fno-omit-frame-pointer`; no macros are needed, because libstdc++ doesn't annotate its containers by default |
+| `UBSAN_ENABLED` | OFF | UndefinedBehaviorSanitizer, gcc and clang only (MSVC has none: it warns and ignores it). `-fsanitize=undefined` with `-fno-sanitize-recover=all`: by default UBSan only prints the error, and the test still passes. The `Linux GCC Debug Sanitizers` test preset sets `UBSAN_OPTIONS=print_stacktrace=1` |
 | `CPPCHECK_ENABLED` | OFF | Runs cppcheck during the build |
 | `BUILD_DOC` | OFF | Doxygen target `doc_doxygen` from `docs/doxygen/Doxyfile.in` |
-| `COVERAGE_ENABLED` | OFF | Adds the `coverage` target (`cmake/coverage.cmake`). MSVC only for now; needs `TESTS` and `ITESTS` and OpenCppCoverage |
+| `COVERAGE_ENABLED` | OFF | Adds the `coverage` target (`cmake/coverage.cmake`), with MSVC (OpenCppCoverage) and gcc (`--coverage` on every target, and gcovr). Needs `TESTS` and `ITESTS`. Set by the `Coverage` presets |
 
 ### Visual Studio project (MSBuild)
 
@@ -201,6 +243,8 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 "build/Windows x64 Debug/Debug/bin/UnitTests.exe" --gtest_filter=GivenACoffee.*
 ```
 
+On Linux, the same with `build/Linux GCC Debug` and without `.exe`.
+
 - Framework: GoogleTest 1.14.0, linked with `GTest::gtest_main` (no hand-written `main`).
   Tests are registered with `gtest_discover_tests`. Parameterized tests use
   `INSTANTIATE_TEST_SUITE_P`: the old `INSTANTIATE_TEST_CASE_P` is deprecated, and clang-tidy turns
@@ -216,6 +260,12 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
   - Where test code goes: a fixture, or a double/mock used only by one area's tests, goes in that
     area's `include/`; a helper or double used by several areas goes in `tests/Common/include`
     (`test_support`, see below).
+  - `tests/AppScenarios/`: the console app run end to end, as CTest tests
+    (`ConsoleAppScenario.*`). `<Name>.input.txt` has one answer per line; its output must match
+    `<Name>.expected.txt`, and `orders.txt` must match `<Name>.orders.txt` if that file exists. To
+    add one, add its name to `SCENARIOS` in that folder's `CMakeLists.txt`. `run_scenario.cmake`
+    ignores line endings and writes the app's path as `<WORK_DIR>/`. It converts that path with
+    `cmake_path(NATIVE_PATH)`: `file(TO_NATIVE_PATH)` escapes spaces on Linux (`Linux\ GCC\ Debug`).
 - **New test files must be added by hand** to `SOURCES` in `tests/UnitTests/CMakeLists.txt` or
   `tests/IntegrationTests/CMakeLists.txt`. There is no globbing. If the test needs another library,
   add it to `target_link_libraries`.
@@ -251,7 +301,7 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 - `TextPresenter` tests write to a `std::ostringstream`.
 - `ConsoleMenu` takes a `std::istream`/`std::ostream`, so menu tests feed it a
   `std::istringstream` (see `tests/UnitTests/Infrastructure/`).
-- To try the whole app without typing, redirect its input. Each line is one answer, `Enter`
+- To try the whole app without typing (the scenarios above do this in `ctest`), redirect its input. Each line is one answer, `Enter`
   lines answer "Press Enter to continue", and the app exits on `0` or at the end of the input:
   ```bat
   :: Main menu: 1 add, 2 list on screen, 3 print to orders.txt, 4 cancel all orders, 0 exit
@@ -263,24 +313,41 @@ ctest --test-dir "build/Windows x64 Debug" -R GivenSomeSugar     :: filter by re
 ### Coverage
 
 ```bat
-cmake --preset "Windows x64 Debug" -DCOVERAGE_ENABLED=ON     :: once; it stays in the cache
-cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests if needed, then measures
+python scripts/dev.py coverage                       :: on both systems; or, by hand:
+cmake --workflow --preset "Windows x64 Coverage"     :: from an x64 developer environment
+cmake --workflow --preset "Linux GCC Coverage"       :: on Linux
 ```
 
-- The target runs `UnitTests.exe` and `IntegrationTests.exe` under OpenCppCoverage and merges both
-  runs into `build/<preset>/coverage/html/index.html` (to read) and
-  `build/<preset>/coverage/cobertura.xml` (Cobertura XML, for CI tools later). It takes ~15 s.
-- OpenCppCoverage works on the normal Debug build through its PDB files: no extra flags or build
-  folder. It measures **lines** in `include/` and `src/` only (not tests, GoogleTest or the
-  standard library). `apps/` is left out on purpose: no test runs `main()`.
-- Current coverage: **99.9% of lines (839 of 840)**. The only line not covered is the stub
-  `OrderRepository::storeOrders()` (storing orders on disk is parked, see "Gotchas"). Run the target before a PR that changes code: the figure shouldn't drop.
-- Files that no test executable links are **missing from the report**, not shown at 0%. Today that
-  is only `Gateways/OrderDiskDataSource.cpp` (not implemented yet). A new class that no test uses
-  would be missing too, so a higher total doesn't prove it is tested.
-- A failing test makes the target fail. `cmake --preset ... --fresh` resets the option to OFF.
-- Linux (gcc + gcovr, same outputs) and a GitHub Actions workflow are planned; the target warns
-  and does nothing with other compilers for now.
+- The `coverage` target runs `UnitTests` and `IntegrationTests` and writes, in its build folder,
+  `coverage/html/index.html` (to read) and `coverage/cobertura.xml` (Cobertura XML, which `dev.py`
+  reads to print the total). It measures **lines** in `include/` and `src/` only (not tests,
+  GoogleTest or the standard library). `apps/` is left out on purpose: no test runs `main()`. A
+  failing test makes the target fail.
+- The two systems measure differently, so their presets differ:
+
+  | | `Windows x64 Coverage` | `Linux GCC Coverage` |
+  |---|---|---|
+  | Tool | OpenCppCoverage, on the normal Debug build through its PDB files | gcc's `--coverage` on every target (top-level `CMakeLists.txt`), then gcovr |
+  | Folder | Debug's, `build/Windows x64 Debug`: nothing is rebuilt | Its own, `build/Linux GCC Coverage`: the instrumented build is a different one |
+  | clang-tidy | As in Debug | Off: the Debug preset runs it |
+
+- gcovr runs from the source folder, because gcovr 8 resolves relative `--filter`s from the current
+  folder (from the build folder it found nothing: 0 of 0 lines). It runs with
+  `--exclude-noncode-lines`: gcc puts, on the closing brace of a function that returns a local object,
+  the cleanup for an exception that no test throws there, and without the option five `}` counted
+  as not covered. The HTML report also shows functions and branches; the figure that counts is the
+  lines.
+- Current coverage, which a PR that changes code shouldn't lower:
+
+  | System | Lines | Not covered |
+  |---|---|---|
+  | Windows | **99.9% (843 of 844)** | the stub `OrderRepository::storeOrders()` (storing orders on disk is parked, see "Gotchas") |
+  | Linux | **99.6% (509 of 511)** | the same stub, and `Gateways/OrderDiskDataSource.cpp` |
+
+  The totals differ because gcov and OpenCppCoverage don't count the same lines as executable.
+- A file that no test executable links (today only `Gateways/OrderDiskDataSource.cpp`, not
+  implemented yet) is **missing** from the Windows report and at **0%** in the Linux one. A higher
+  Windows total doesn't prove that a new class is tested: check the Linux report.
 
 ## Code style
 
@@ -297,7 +364,12 @@ cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests
   disable it in `Checks` with a comment that says why, rather than adding `NOLINT`s.
   `portability-*` has six checks in LLVM 23 (e.g. `#pragma once`, inline assembler, SIMD
   intrinsics, virtual member functions of templates): it does **not** catch most Windows vs Linux
-  differences; the gcc build will.
+  differences; the gcc build does.
+- Compiler warnings come from `cmake/cpp_warnings.cmake`: `/W4` and a list of `/w1...` with MSVC,
+  `-Wall -Wextra` and many more with gcc. A warning that clashes with these rules is left out with
+  a comment that says why (`-Weffc++`, `-Wswitch-default`, `-Wmultiple-inheritance`,
+  `-Wsuggest-final-*`). Warnings don't break the CMake build (clang-tidy findings do), but a PR
+  shouldn't add any: check both systems.
   Project choices: interfaces may declare only `virtual ~X() = default;` (`AllowSoleDefaultDtor`);
   `tests/.clang-tidy` inherits everything but allows non-private members, `protected` in
   GoogleTest fixtures and public in test helpers and table rows. It disables the rule under both
@@ -311,9 +383,11 @@ cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests
     `clang-tidy --fix` puts it on the right (`bool const`), so move it after using `--fix`.
   - Use `std::vector` for sequences (e.g. the ingredient list); `std::list` needs a reason.
   - Give enums a small underlying type: `enum class Ingredient : std::uint8_t`.
-  - A `switch` that covers every value of an enum has no `default`: then clang-tidy
-    (`clang-diagnostic-switch`, which breaks the build) and MSVC (C4062) report a missing `case`
-    when a value is added. Use `default` only when handling a few values on purpose.
+  - A `switch` over an enum has no `default` and lists every value, grouping the ones handled
+    alike (`case Ingredient::Sugar: case Ingredient::Honey: ... return false;`). Then a new value
+    is reported in every `switch`: by clang-tidy (`clang-diagnostic-switch`, which breaks the
+    build), gcc (`-Wswitch-enum`) and MSVC (C4061, C4062). Otherwise a `default` would quietly
+    decide for the new value, e.g. reject a new kind of milk.
   - Use `if (init; condition)` when the variable is only needed inside the `if`, and
     `[[maybe_unused]]` on a parameter an override doesn't need.
   - C++20, where it makes the code clearer (don't rewrite code just to use a feature):
@@ -383,7 +457,10 @@ cmake --build "build/Windows x64 Debug" --target coverage    :: builds the tests
   **cmake-lint** (`.cmakelintrc`). New targets follow the existing pattern: call
   `resolve_project_paths(...)` from `cmake/files_helper.cmake`, list `SOURCES` explicitly,
   `target_include_directories(<tgt> PRIVATE ${PUBLIC_INCLUDE_PATH})`, set the VS `FOLDER` property,
-  and add the `BUILD_USING_PCH` `REUSE_FROM AllLayers` block. The C++ standard is set only once
+  and add the `BUILD_USING_PCH` `REUSE_FROM AllLayers` block. A library declares the libraries it
+  uses with `target_link_libraries`: gcc's linker needs them (MSVC's finds them anyway), and they
+  show the dependencies between layers, which must point inward (e.g. `UseCases` →
+  `BeverageBuilder`, `InterfaceAdapters` → `UseCases`). The C++ standard is set only once
   per tool, and the three places must agree: `CMAKE_CXX_STANDARD` in the top-level
   `CMakeLists.txt` (don't add `/std:c++20` or `cxx_std_20` to targets), `<LanguageStandard>` in
   `CoffeeShop.vcxproj` (Debug and Release), and `Standard:` in `.clang-format`.
@@ -408,7 +485,8 @@ pre-commit run --all-files
   `pre-commit install`). The first run downloads the hook environments.
 - The hooks are standard hygiene checks (trailing whitespace, one final newline, YAML/JSON
   validity, `pretty-format-json --no-sort-keys`, large files, merge conflicts, mixed line endings,
-  Windows-illegal names), cmake-lint, gersemi and clang-format.
+  Windows-illegal names), the schemas of the GitHub Actions files (`check-jsonschema`), cmake-lint,
+  gersemi and clang-format.
 - Several hooks (trailing whitespace, `end-of-file-fixer`, mixed line endings, gersemi,
   clang-format) **fix files in place and then report "Failed"**. Review the changes, `git add`
   them and run pre-commit again: the second run must pass without changes.
@@ -417,33 +495,116 @@ pre-commit run --all-files
     solution for the tests, listed in the global `exclude` of `.pre-commit-config.yaml`).
   - `end-of-file-fixer` skips `.vcxproj`, `.filters` and `.cd`: Visual Studio saves them without
     a final newline, so fixing them would only cause churn.
+  - `trailing-whitespace` and `end-of-file-fixer` skip `tests/AppScenarios/*.expected.txt`
+    (`.editorconfig` too): the app's prompts end with a space, and its output ends without a newline.
   - clang-format only checks C/C++ files under `include/`, `src/`, `apps/` and `tests/` (by default
     the hook would also format JSON).
 - The clang-format hook is pinned to `v23.1.3`, the project's LLVM version, so the editor (set to
   `LLVM_TOOLS_DIR`'s clang-format) and the hook format the same way.
 - To move to another LLVM version, change it everywhere at once: the tools in a new
   `D:\LLVM\<version>` folder and `LLVM_TOOLS_DIR`, `CLANG_TIDY_REQUIRED_VERSION` in
-  `cmake/clang_tidy.cmake`, the `version 23.` check in `CoffeeShop.vcxproj`, the hook's `rev`, and
-  the Visual Studio editor setting. Measure first: run the new clang-tidy over the project and the
+  `cmake/clang_tidy.cmake`, the `version 23.` check in `CoffeeShop.vcxproj`, the hook's `rev`, the
+  clang-tidy version in `.github/actions/setup-windows/action.yml` and
+  `.github/actions/setup-linux/action.yml`, the pipx install on Linux, and the Visual Studio editor
+  setting. Measure first: run the new clang-tidy over the project and the
   new clang-format with `--dry-run` before switching.
 - `no-commit-to-branch` fails when the current branch is `main` or `staging`. Since the hooks are
   not installed, it only warns when you run them; it doesn't block the commit.
 - There is no clang-tidy hook on purpose: the build already runs clang-tidy with
   `compile_commands.json` and fails on any finding.
-- `CMakePresets.json` must be strict JSON (no `//` comments). Put notes in `"$comment"` fields.
+- `CMakePresets.json` must be strict JSON (no `//` comments). Put notes in `description` fields:
+  format v9 rejects `"$comment"` (it needs v10, CMake 3.31), except under `environment`, where any
+  name is valid because it defines a variable.
+
+## Scripts and CI
+
+`scripts/dev.py` runs the usual tasks, locally and in the CI, on Windows and Linux. On Windows it
+sets up the x64 Visual Studio environment by itself and reads `LLVM_TOOLS_DIR` from the registry if
+the terminal doesn't have it; on Linux it uses gcc. It runs `conan install` if the package is missing,
+without letting Conan change `CMakeUserPresets.json`. It uses only the standard library and must stay
+compatible with Python 3.8. Any command line error shows the full help.
+
+```bat
+python scripts/dev.py help
+python scripts/dev.py test [--config Release] [--fresh]     :: configure, build and run the tests
+python scripts/dev.py build [--config Release] [--fresh]    :: configure and build
+python scripts/dev.py asan                                  :: tests with the sanitizers
+python scripts/dev.py coverage                              :: coverage, with a summary
+python scripts/dev.py msbuild [--config Debug]              :: CoffeeShop.vcxproj; both by default
+python scripts/dev.py all                                   :: everything the CI runs on this system
+```
+
+`asan` runs AddressSanitizer on Windows, and AddressSanitizer and UndefinedBehaviorSanitizer on
+Linux. `msbuild` only exists on Windows; on Linux it stops with a message. `all` runs the tests, the
+sanitizers and the coverage on both systems, and MSBuild on Windows.
+
+`.github/workflows/ci.yml` calls those commands, with the setup in
+`.github/actions/setup-windows` and `.github/actions/setup-linux`:
+
+| Job | Runner | Commands | Time |
+|---|---|---|---|
+| Tests and coverage (Debug, clang-tidy) | `windows-2022` | `dev.py test`, `dev.py coverage` | 6 to 11 min |
+| Tests with AddressSanitizer | `windows-2022` | `dev.py asan` | 2 to 7 min |
+| Visual Studio project (MSBuild) | `windows-2022` | `dev.py msbuild` | 3.5 to 5 min |
+| Linux tests, sanitizers and coverage (gcc, clang-tidy) | `ubuntu-24.04` (gcc 13) | `dev.py test`, `dev.py asan`, `dev.py coverage` | 4 to 5 min |
+| pre-commit | `ubuntu-latest` | `pre-commit run --all-files` | 0.5 min |
+
+- It runs on pull requests to `develop` and `main`, and by hand from the Actions tab. A new push
+  cancels the run in progress.
+- The repository is private, so the runs use the plan's monthly Actions credit, and a Windows minute
+  costs more than a Linux one. A full run takes 11 to 23 Windows minutes (with and without caches,
+  and the speed of the runner varies) and 5 to 6 Linux minutes:
+  - a change that only touches Markdown files runs nothing;
+  - a **draft** pull request runs only the Linux jobs (5 to 6 minutes). Run `python scripts/dev.py all`
+    locally, and mark it "Ready for review" at the end: that starts the Windows jobs, and every
+    later push repeats them.
+- The caches (Conan, ccache, pre-commit) are saved per pull request: a new pull request starts
+  without them, and later pushes to it use them. Saving them on `develop` would need a run after
+  every merge, which costs more than the first run of each pull request saves.
+- Both systems measure the coverage: it appears in the summary of each job, as "Coverage (Windows)"
+  and "Coverage (Linux)", and the HTML reports stay as artifacts for 14 days
+  (`coverage-report-windows`, `coverage-report-linux`).
+- On Linux, the sanitizers and the coverage are builds of their own, without clang-tidy: about 50 s
+  and 45 s.
+- ConanCenter has no GoogleTest binary for VS 2022 under Conan 1, so the CI builds it once and keeps
+  it in the Conan cache. clang-tidy can't be cached, and it takes most of the tests job.
+- Dependabot opens one grouped pull request a month to `develop` for the actions.
 
 ## Git / PR guidelines
 
 - Work on a feature branch created from `develop` (e.g. `feature/unique-ptr-decorator`).
-  PRs target `develop`. `main` only receives merges from `develop`.
+  PRs target `develop`, the default branch. `main` only receives merges from `develop`.
+- A PR for planned work links its issue in the description (`Closes #12`), see "Planning".
 - Commit messages are one short sentence in past tense, ending with a period. Prefixes like
   `Improvement:` are optional, e.g. `Fixed "resolve_project_paths" cmake function.`
-- Before committing, make sure the Debug preset builds (this also runs clang-tidy), `ctest` passes,
-  and `pre-commit run --all-files` is clean.
+- Before committing, make sure the Debug preset builds (this also runs clang-tidy), `ctest` passes
+  (`python scripts/dev.py test` does both), and `pre-commit run --all-files` is clean.
 - Don't commit build output (`build/`, `out/`, `Debug/`, `x64/`, `.vs/`), Conan artifacts
   (`conan.lock`, `conaninfo.txt`, `graph_info.json`, ...), or `CMakeUserPresets.json`. All of these are gitignored.
 - Untracked scratch files at the root (`CMakePresets_01.json`, `CMakeSettings_OK.json`,
   `ClassDiagram.cd`, `req.txt`, ...) belong to the owner. Leave them alone.
+
+### Planning
+
+Each piece of information lives in one place:
+
+| Where | What |
+|---|---|
+| GitHub milestones and issues | One milestone per version and one issue per planned PR, with its scope and status |
+| `docs/ROADMAP.md` | Goals, order of the versions, dependencies, design decisions and unscheduled ideas |
+| `docs/analysis/` | Notes on options that are not decided: links, pros and cons, open questions |
+| `docs/adr/` | When it is needed: one file per important decision, with its reasons |
+| `CHANGELOG.md` and git | What is done |
+
+- Before starting a PR, read `docs/ROADMAP.md` and the issues of the current milestone. The current
+  milestone is the first version in the roadmap that isn't released:
+  `gh issue list --milestone "v0.7.0"`.
+- Create issues only for the next milestones; the rest stays under "Ideas" in the roadmap. Don't
+  write the status of a PR in `docs/ROADMAP.md`.
+- A decision that affects several PRs goes in the roadmap, and one that only affects a PR goes in
+  its issue or description. When it becomes how the code works, it moves to this file.
+- Dependencies between issues use GitHub's "blocked by" relation, not text in the description.
+- `Closes #12` closes the issue when the PR is merged because `develop` is the default branch.
 
 ### Versions and releases
 
@@ -471,7 +632,10 @@ pre-commit run --all-files
 
 - Ninja only rebuilds changed `.cpp` files, so a new finding in a header shows up when a `.cpp`
   that includes it is recompiled. Use `--clean-first` to re-check everything.
-- `apps/ConsoleApp/main.cpp` uses MSVC-specific `_CrtSetDbgFlag` (CRT leak checking).
+- `apps/ConsoleApp/main.cpp` calls `_CrtSetDbgFlag` (CRT leak checking) only with MSVC
+  (`#ifdef _MSC_VER`).
+- A gcc 12 Release build shows one `-Wrestrict` warning in GoogleTest code inlined into a test; it
+  looks like a false positive of gcc 12.
 - "Print list beverage orders" writes `orders.txt` in the **current working directory** (it
   replaces the previous file and shows the full path). The file is gitignored.
 - Storing orders on disk is **parked** (pending, very low priority): `OrderRepository::storeOrders()`
@@ -485,8 +649,8 @@ pre-commit run --all-files
 - Corrupt object files at link time (`LNK1163`, `LNK1236`) have appeared after incremental builds.
   A clean rebuild fixes them. Don't build the same folder from Visual Studio and the command line
   at the same time (both use `build/Windows x64 Debug`).
-- On GCC/Clang the top-level file adds coverage flags when `TESTS=ON`, but after
-  `add_subdirectory(src)`, so they would only instrument the tests. This will move to
-  `COVERAGE_ENABLED` with the Linux build. `.opencppcov/` (gitignored) holds settings of the
-  OpenCppCoverage Visual Studio extension for the legacy solution; the CMake `coverage` target
-  doesn't use it.
+- The gcc coverage counters (`.gcda`) add up from run to run, so the `coverage` target deletes
+  them first. A build folder used before with other flags keeps old `.gcno`/`.gcda` files: start
+  from an empty folder to check that a build isn't instrumented.
+- `.opencppcov/` (gitignored) holds settings of the OpenCppCoverage Visual Studio extension for the
+  legacy solution; the CMake `coverage` target doesn't use it.

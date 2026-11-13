@@ -7,20 +7,24 @@
   },
   "configurePresets": [
     {
-      "name": "Windows x64 Debug",
-      "displayName": "Windows x64 Debug",
-      "description": "Sets Ninja generator, compilers, x64 architecture, build and install directory, debug build type",
+      "name": "windows-base",
+      "hidden": true,
+      "description": "Settings shared by the Windows presets. Run CMake from an x64 developer environment",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "architecture": {
         "value": "x64",
         "strategy": "external"
       },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
       "environment": {
         "$comment": "To use a Doxygen that is not on PATH, add \"PATH\": \"<doxygen bin folder>;$penv{PATH}\"."
       },
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}",
         "TESTS": {
           "type": "BOOL",
@@ -38,55 +42,377 @@
       }
     },
     {
+      "name": "Windows x64 Debug",
+      "displayName": "Windows x64 Debug",
+      "description": "Ninja, x64, Debug, with clang-tidy and the tests",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
       "name": "Windows x64 Release",
       "displayName": "Windows x64 Release",
-      "description": "Sets Ninja generator, compilers, x64 architecture, build and install directory, debug build type",
+      "description": "Ninja, x64, Release, with clang-tidy and the tests",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "Windows x64 Debug ASan",
+      "displayName": "Windows x64 Debug ASan",
+      "description": "Ninja, x64, Debug with AddressSanitizer, without clang-tidy (the Debug preset runs it)",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "ASAN_ENABLED": "ON",
+        "CLANG_TIDY_ENABLED": "OFF"
+      }
+    },
+    {
+      "name": "Windows x64 Coverage",
+      "displayName": "Windows x64 Coverage",
+      "description": "The Debug build with the coverage target. OpenCppCoverage measures that same build, so it shares its folder and nothing is rebuilt",
+      "inherits": "Windows x64 Debug",
+      "binaryDir": "${sourceDir}/build/Windows x64 Debug",
+      "cacheVariables": {
+        "COVERAGE_ENABLED": "ON"
+      }
+    },
+    {
+      "name": "linux-base",
+      "hidden": true,
+      "description": "Settings shared by the Linux presets: gcc and Ninja",
       "generator": "Ninja",
-      "binaryDir": "${sourceDir}/out/build/${presetName}",
-      "architecture": {
-        "value": "x64",
-        "strategy": "external"
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
       },
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+        "CMAKE_CXX_COMPILER": "g++",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}",
         "TESTS": {
           "type": "BOOL",
           "value": "ON"
         },
-        "ITESTS": "ON"
-      },
-      "vendor": {
-        "microsoft.com/VisualStudioSettings/CMake/1.0": {
-          "hostOS": [
-            "Windows"
-          ]
-        }
-      }
-    },
-    {
-      "name": "linux-default",
-      "displayName": "Linux Debug",
-      "description": "Sets Ninja generator, compilers, build and install directory, debug build type",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/out/build/${presetName}",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+        "ITESTS": "ON",
+        "ASAN_ENABLED": "OFF"
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "hostOS": [
             "Linux"
-          ],
-          "clangTidyChecks": "clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,readability-identifier-naming",
-          "enableMicrosoftCodeAnalysis": true,
-          "enableClangTidyCodeAnalysis": true
-        },
-        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-          "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"
+          ]
         }
       }
+    },
+    {
+      "name": "Linux GCC Debug",
+      "displayName": "Linux GCC Debug",
+      "description": "Ninja, gcc, Debug, with clang-tidy and the tests",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "Linux GCC Release",
+      "displayName": "Linux GCC Release",
+      "description": "Ninja, gcc, Release, with clang-tidy and the tests",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "Linux GCC Debug Sanitizers",
+      "displayName": "Linux GCC Debug Sanitizers",
+      "description": "Ninja, gcc, Debug with AddressSanitizer and UndefinedBehaviorSanitizer, without clang-tidy (the Debug preset runs it)",
+      "inherits": "Linux GCC Debug",
+      "cacheVariables": {
+        "ASAN_ENABLED": "ON",
+        "UBSAN_ENABLED": "ON",
+        "CLANG_TIDY_ENABLED": "OFF"
+      }
+    },
+    {
+      "name": "Linux GCC Coverage",
+      "displayName": "Linux GCC Coverage",
+      "description": "Debug compiled with --coverage, in its own folder, with the coverage target (gcovr). Without clang-tidy (the Debug preset runs it)",
+      "inherits": "Linux GCC Debug",
+      "cacheVariables": {
+        "COVERAGE_ENABLED": "ON",
+        "CLANG_TIDY_ENABLED": "OFF"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "windows-build",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "linux-build",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "Windows x64 Debug",
+      "inherits": "windows-build",
+      "configurePreset": "Windows x64 Debug"
+    },
+    {
+      "name": "Windows x64 Release",
+      "inherits": "windows-build",
+      "configurePreset": "Windows x64 Release"
+    },
+    {
+      "name": "Windows x64 Debug ASan",
+      "inherits": "windows-build",
+      "configurePreset": "Windows x64 Debug ASan"
+    },
+    {
+      "name": "Windows x64 Coverage",
+      "inherits": "windows-build",
+      "configurePreset": "Windows x64 Coverage",
+      "targets": [
+        "coverage"
+      ]
+    },
+    {
+      "name": "Linux GCC Debug",
+      "inherits": "linux-build",
+      "configurePreset": "Linux GCC Debug"
+    },
+    {
+      "name": "Linux GCC Release",
+      "inherits": "linux-build",
+      "configurePreset": "Linux GCC Release"
+    },
+    {
+      "name": "Linux GCC Debug Sanitizers",
+      "inherits": "linux-build",
+      "configurePreset": "Linux GCC Debug Sanitizers"
+    },
+    {
+      "name": "Linux GCC Coverage",
+      "inherits": "linux-build",
+      "configurePreset": "Linux GCC Coverage",
+      "targets": [
+        "coverage"
+      ]
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "test-base",
+      "hidden": true,
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-test",
+      "hidden": true,
+      "inherits": "test-base",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "linux-test",
+      "hidden": true,
+      "inherits": "test-base",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "Windows x64 Debug",
+      "inherits": "windows-test",
+      "configurePreset": "Windows x64 Debug"
+    },
+    {
+      "name": "Windows x64 Release",
+      "inherits": "windows-test",
+      "configurePreset": "Windows x64 Release"
+    },
+    {
+      "name": "Windows x64 Debug ASan",
+      "inherits": "windows-test",
+      "configurePreset": "Windows x64 Debug ASan"
+    },
+    {
+      "name": "Linux GCC Debug",
+      "inherits": "linux-test",
+      "configurePreset": "Linux GCC Debug"
+    },
+    {
+      "name": "Linux GCC Release",
+      "inherits": "linux-test",
+      "configurePreset": "Linux GCC Release"
+    },
+    {
+      "name": "Linux GCC Debug Sanitizers",
+      "inherits": "linux-test",
+      "configurePreset": "Linux GCC Debug Sanitizers",
+      "environment": {
+        "UBSAN_OPTIONS": "print_stacktrace=1"
+      }
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "Windows x64 Debug",
+      "description": "Configure, build and test in one command",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "Windows x64 Debug"
+        },
+        {
+          "type": "build",
+          "name": "Windows x64 Debug"
+        },
+        {
+          "type": "test",
+          "name": "Windows x64 Debug"
+        }
+      ]
+    },
+    {
+      "name": "Windows x64 Release",
+      "description": "Configure, build and test in one command",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "Windows x64 Release"
+        },
+        {
+          "type": "build",
+          "name": "Windows x64 Release"
+        },
+        {
+          "type": "test",
+          "name": "Windows x64 Release"
+        }
+      ]
+    },
+    {
+      "name": "Windows x64 Debug ASan",
+      "description": "Configure, build and test in one command",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "Windows x64 Debug ASan"
+        },
+        {
+          "type": "build",
+          "name": "Windows x64 Debug ASan"
+        },
+        {
+          "type": "test",
+          "name": "Windows x64 Debug ASan"
+        }
+      ]
+    },
+    {
+      "name": "Windows x64 Coverage",
+      "description": "Configure, then build the coverage target, which runs the tests and writes the reports",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "Windows x64 Coverage"
+        },
+        {
+          "type": "build",
+          "name": "Windows x64 Coverage"
+        }
+      ]
+    },
+    {
+      "name": "Linux GCC Debug",
+      "description": "Configure, build and test in one command",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "Linux GCC Debug"
+        },
+        {
+          "type": "build",
+          "name": "Linux GCC Debug"
+        },
+        {
+          "type": "test",
+          "name": "Linux GCC Debug"
+        }
+      ]
+    },
+    {
+      "name": "Linux GCC Release",
+      "description": "Configure, build and test in one command",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "Linux GCC Release"
+        },
+        {
+          "type": "build",
+          "name": "Linux GCC Release"
+        },
+        {
+          "type": "test",
+          "name": "Linux GCC Release"
+        }
+      ]
+    },
+    {
+      "name": "Linux GCC Debug Sanitizers",
+      "description": "Configure, build and test in one command",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "Linux GCC Debug Sanitizers"
+        },
+        {
+          "type": "build",
+          "name": "Linux GCC Debug Sanitizers"
+        },
+        {
+          "type": "test",
+          "name": "Linux GCC Debug Sanitizers"
+        }
+      ]
+    },
+    {
+      "name": "Linux GCC Coverage",
+      "description": "Configure, then build the coverage target, which runs the tests and writes the reports",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "Linux GCC Coverage"
+        },
+        {
+          "type": "build",
+          "name": "Linux GCC Coverage"
+        }
+      ]
     }
   ]
 }

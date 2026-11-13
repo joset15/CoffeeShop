@@ -1,0 +1,126 @@
+# Checks pull requests to develop and main with the same commands as on a developer's machine
+# (scripts/dev.py, see AGENTS.md). It can also be run by hand from the Actions tab.
+#
+# The repository is private, so the runs use the plan's monthly Actions credit, and a Windows minute
+# costs more than a Linux one:
+# - a change that only touches Markdown files runs nothing;
+# - a draft pull request only runs the Linux jobs (the Windows jobs start with "Ready for review");
+# - a new push to the same pull request cancels the run that is still going.
+name: CI
+
+on:
+  pull_request:
+    branches: [develop, main]
+    # The default types, plus ready_for_review: from draft to ready.
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths-ignore: ["**.md"]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: Tests and coverage (Debug, clang-tidy)
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup-windows
+        with:
+          llvm: "true"
+          opencppcoverage: "true"
+          cache-key: tests
+      - name: Build and test
+        run: python scripts/dev.py test
+      - name: Coverage
+        run: python scripts/dev.py coverage
+      - name: Upload the coverage report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-report-windows
+          path: build/Windows x64 Debug/coverage/html
+          retention-days: 14
+          if-no-files-found: ignore
+
+  asan:
+    name: Tests with AddressSanitizer
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup-windows
+        with:
+          cache-key: asan
+      - name: Build and test with AddressSanitizer
+        run: python scripts/dev.py asan
+
+  msbuild:
+    name: Visual Studio project (MSBuild)
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup-windows
+        with:
+          llvm: "true"
+          cache-key: msbuild
+      - name: Rebuild Debug (clang-tidy) and Release
+        run: python scripts/dev.py msbuild
+
+  linux:
+    name: Linux tests, sanitizers and coverage (gcc, clang-tidy)
+    # Also in drafts: Linux minutes are cheap, and they test the pull request before the Windows jobs.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup-linux
+        with:
+          cache-key: linux
+      - name: Build and test
+        run: python scripts/dev.py test
+      # Another build, without clang-tidy: the "Linux GCC Debug Sanitizers" preset.
+      - name: Build and test with AddressSanitizer and UndefinedBehaviorSanitizer
+        run: python scripts/dev.py asan
+      # Another build, with --coverage and without clang-tidy (the "Linux GCC Coverage" preset).
+      - name: Coverage
+        run: python scripts/dev.py coverage
+      - name: Upload the coverage report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-report-linux
+          path: build/Linux GCC Coverage/coverage/html
+          retention-days: 14
+          if-no-files-found: ignore
+
+  pre-commit:
+    name: pre-commit
+    # The hooks don't depend on the platform, and Linux minutes are cheaper.
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: actions/cache@v6
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+      - name: Run the hooks
+        run: |
+          python -m pip install --disable-pip-version-check pre-commit
+          pre-commit run --all-files --show-diff-on-failure
+        env:
+          # It protects local branches; in a pull request the checkout is not on a branch.
+          SKIP: no-commit-to-branch

@@ -1,0 +1,13 @@
+# Keeps the versions of the GitHub Actions used by the workflows up to date, with a pull request to
+# develop when there is a new one.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    # The workflows, and the composite actions they use.
+    directories: ["/", "/.github/actions/*"]
+    target-branch: develop
+    schedule:
+      interval: monthly
+    groups:
+      github-actions:
+        patterns: ["*"]

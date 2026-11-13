@@ -10,7 +10,7 @@ bool CoffeeBuilder::addSugar()
 {
   decorateWith(Ingredient::Sugar);
   return true;
-};
+}
 
 bool CoffeeBuilder::addMilk(Ingredient typeOfMilk)
 {
@@ -30,7 +30,10 @@ bool CoffeeBuilder::addMilk(Ingredient typeOfMilk)
   case Ingredient::SoyMilk:
     decorateWith(Ingredient::SoyMilk);
     break;
-  default:
+  case Ingredient::Sugar:
+  case Ingredient::Honey:
+  case Ingredient::Lemon:
+  case Ingredient::Water:
     // Not a kind of milk.
     return false;
   }
@@ -38,5 +41,5 @@ bool CoffeeBuilder::addMilk(Ingredient typeOfMilk)
   m_HasMilk = true;
 
   return true;
-};
+}
 } // namespace coffee_shop::domain
