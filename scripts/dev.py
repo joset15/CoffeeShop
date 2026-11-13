@@ -37,22 +37,23 @@ def is_windows():
     return platform.system() == "Windows"
 
 
-def windows_only(task, linux_plan=None):
-    """Stops a task that only exists on Windows for now."""
+def windows_only(task):
+    """Stops a task that only exists on Windows."""
     if not is_windows():
-        planned = f" On Linux it is planned: {linux_plan}." if linux_plan else ""
-        raise DevError(f"'{task}' only runs on Windows.{planned}")
+        raise DevError(f"'{task}' only runs on Windows.")
 
 
 def preset_name(config, asan=False):
-    """Returns the CMake preset for a configuration (see CMakePresets.json)."""
+    """Returns the CMake preset for a configuration (see CMakePresets.json).
+
+    With `asan`, the sanitizers preset: AddressSanitizer on Windows, and also
+    UndefinedBehaviorSanitizer on Linux (MSVC has none).
+    """
     system = platform.system()
     if system == "Windows":
         return "Windows x64 Debug ASan" if asan else f"Windows x64 {config}"
     if system == "Linux":
-        if asan:
-            windows_only("asan", "issue #29")
-        return f"Linux GCC {config}"
+        return "Linux GCC Debug Sanitizers" if asan else f"Linux GCC {config}"
     raise DevError(f"{system} is not supported: only Windows and Linux.")
 
 
@@ -179,7 +180,10 @@ def command_test(args, env):
 
 
 def command_asan(args, env):
-    """Builds and runs the tests with AddressSanitizer (Debug, without clang-tidy)."""
+    """Builds and runs the tests with the sanitizers (Debug, without clang-tidy).
+
+    AddressSanitizer on Windows; AddressSanitizer and UndefinedBehaviorSanitizer on Linux.
+    """
     conan_install("Debug", env)
     fresh = ["--fresh"] if args.fresh else []
     run(["cmake", "--workflow", "--preset", preset_name("Debug", asan=True), *fresh], env)
@@ -228,19 +232,14 @@ def command_msbuild(args, env):
 
 
 def command_all(args, env):
-    """What the CI checks: tests, AddressSanitizer, coverage and MSBuild (Debug and Release).
-
-    On Linux, the tests and the coverage for now.
-    """
+    """What the CI checks: tests, sanitizers, coverage and, on Windows, MSBuild (Debug and Release)."""
     args.config = "Debug"
     command_test(args, env)
-    if not is_windows():
-        command_coverage(args, env)
-        return
     command_asan(args, env)
     command_coverage(args, env)
-    args.config = None
-    command_msbuild(args, env)
+    if is_windows():
+        args.config = None
+        command_msbuild(args, env)
 
 
 COMMANDS = {
@@ -276,7 +275,7 @@ def make_parser():
         prog="python scripts/dev.py",
         description="Usual tasks of the CoffeeShop project. On Windows, every command sets up the\n"
         "x64 Visual Studio environment; on Linux, it uses gcc. Every command runs `conan install`\n"
-        "first if GoogleTest is missing. On Linux, `asan` and `msbuild` don't run yet.",
+        "first if GoogleTest is missing. `msbuild` only exists on Windows.",
         epilog="Examples:\n"
         "  python scripts/dev.py test                     build and run the tests (Debug)\n"
         "  python scripts/dev.py build --config Release   build Release\n"
@@ -301,14 +300,14 @@ def make_parser():
 
     add("build", "configure and build, with clang-tidy")
     add("test", "configure, build and run the tests (CMake workflow preset)")
-    add("asan", "build and run the tests with AddressSanitizer (Debug; Windows only for now)",
-        config=False)
+    add("asan", "build and run the tests with AddressSanitizer (Debug), and on Linux also with\n"
+        "UndefinedBehaviorSanitizer", config=False)
     add("coverage", "measure the tests' line coverage (Debug; OpenCppCoverage on Windows, gcovr\n"
         "on Linux)", config=False)
     add("msbuild", "rebuild CoffeeShop.vcxproj with MSBuild, warnings as errors (Windows only)",
         config_default=None)
-    add("all", "as the CI: tests, AddressSanitizer, coverage and MSBuild Debug and Release on\n"
-        "Windows; the tests and the coverage on Linux", config=False)
+    add("all", "as the CI: tests, sanitizers and coverage, and on Windows MSBuild Debug and\n"
+        "Release", config=False)
     return parser
 
 

@@ -128,6 +128,17 @@
       }
     },
     {
+      "name": "Linux GCC Debug Sanitizers",
+      "displayName": "Linux GCC Debug Sanitizers",
+      "description": "Ninja, gcc, Debug with AddressSanitizer and UndefinedBehaviorSanitizer, without clang-tidy (the Debug preset runs it)",
+      "inherits": "Linux GCC Debug",
+      "cacheVariables": {
+        "ASAN_ENABLED": "ON",
+        "UBSAN_ENABLED": "ON",
+        "CLANG_TIDY_ENABLED": "OFF"
+      }
+    },
+    {
       "name": "Linux GCC Coverage",
       "displayName": "Linux GCC Coverage",
       "description": "Debug compiled with --coverage, in its own folder, with the coverage target (gcovr). Without clang-tidy (the Debug preset runs it)",
@@ -191,6 +202,11 @@
       "configurePreset": "Linux GCC Release"
     },
     {
+      "name": "Linux GCC Debug Sanitizers",
+      "inherits": "linux-build",
+      "configurePreset": "Linux GCC Debug Sanitizers"
+    },
+    {
       "name": "Linux GCC Coverage",
       "inherits": "linux-build",
       "configurePreset": "Linux GCC Coverage",
@@ -251,6 +267,14 @@
       "name": "Linux GCC Release",
       "inherits": "linux-test",
       "configurePreset": "Linux GCC Release"
+    },
+    {
+      "name": "Linux GCC Debug Sanitizers",
+      "inherits": "linux-test",
+      "configurePreset": "Linux GCC Debug Sanitizers",
+      "environment": {
+        "UBSAN_OPTIONS": "print_stacktrace=1"
+      }
     }
   ],
   "workflowPresets": [
@@ -355,6 +379,24 @@
         {
           "type": "test",
           "name": "Linux GCC Release"
+        }
+      ]
+    },
+    {
+      "name": "Linux GCC Debug Sanitizers",
+      "description": "Configure, build and test in one command",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "Linux GCC Debug Sanitizers"
+        },
+        {
+          "type": "build",
+          "name": "Linux GCC Debug Sanitizers"
+        },
+        {
+          "type": "test",
+          "name": "Linux GCC Debug Sanitizers"
         }
       ]
     },

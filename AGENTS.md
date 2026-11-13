@@ -170,9 +170,10 @@ cmake --workflow --preset "Linux GCC Debug"  # binary dir: build/Linux GCC Debug
 
 - Outputs: `build/<preset>/<config>/bin/{CoffeeShopApp,UnitTests,IntegrationTests}` (`.exe` on
   Windows), libs in `.../lib`.
-- The presets are `Windows x64 Debug`, `Windows x64 Release` and `Windows x64 Debug ASan` (without
-  clang-tidy, which the Debug preset already runs), `Linux GCC Debug` and `Linux GCC Release`, and
-  one `Coverage` preset per system (see "Testing > Coverage"). Each has configure, build, test (not
+- The presets are `Windows x64 Debug`, `Windows x64 Release` and `Windows x64 Debug ASan`,
+  `Linux GCC Debug`, `Linux GCC Release` and `Linux GCC Debug Sanitizers` (ASan and UBSan; the
+  sanitizer presets are without clang-tidy, which the Debug preset already runs), and one
+  `Coverage` preset per system (see "Testing > Coverage"). Each has configure, build, test (not
   the coverage ones) and workflow presets, in `build/<preset>`. The configure, build and test presets
   only appear on their own system (`condition` on `hostSystemName`); workflow presets can't have a
   condition, so CMake refuses those of the other system. Release needs its own `conan install` with
@@ -195,7 +196,8 @@ CMake options (top-level `CMakeLists.txt`):
 | `TESTS` / `ITESTS` | ON | Build unit / integration test executables |
 | `CLANG_TIDY_ENABLED` | ON | Runs clang-tidy on every `.cpp` during the build, including the project headers under `include/` and `tests/` (`HeaderFilterRegex`). `.clang-tidy` has `WarningsAsErrors: '*'`, so tidy findings **break the build**. Needs clang-tidy from LLVM 23 (`LLVM_TOOLS_DIR`, or on `PATH`, see "Setup"). With gcc it ignores the warning options that clang doesn't know (`-Wno-unknown-warning-option`) |
 | `BUILD_USING_PCH` | OFF | Precompiled headers. Can't be combined with `CLANG_TIDY_ENABLED` (configure stops with an error) |
-| `ASAN_ENABLED` | OFF | MSVC `/fsanitize=address` in Debug (gcc: issue #29). GoogleTest comes from Conan without ASan, so it also defines `_DISABLE_VECTOR_ANNOTATION` and `_DISABLE_STRING_ANNOTATION`: without them, the tests stop with a false `container-overflow`. That check is lost; the others still run. The executables need the ASan DLL, which the x64 developer environment has on `PATH` |
+| `ASAN_ENABLED` | OFF | AddressSanitizer (with LeakSanitizer on Linux). **MSVC:** `/fsanitize=address` in Debug. GoogleTest comes from Conan without ASan, so it also defines `_DISABLE_VECTOR_ANNOTATION` and `_DISABLE_STRING_ANNOTATION`: without them, the tests stop with a false `container-overflow`. That check is lost; the others still run. The executables need the ASan DLL, which the x64 developer environment has on `PATH`. **gcc:** `-fsanitize=address` on every target, with `-fno-omit-frame-pointer`; no macros are needed, because libstdc++ doesn't annotate its containers by default |
+| `UBSAN_ENABLED` | OFF | UndefinedBehaviorSanitizer, gcc and clang only (MSVC has none: it warns and ignores it). `-fsanitize=undefined` with `-fno-sanitize-recover=all`: by default UBSan only prints the error, and the test still passes. The `Linux GCC Debug Sanitizers` test preset sets `UBSAN_OPTIONS=print_stacktrace=1` |
 | `CPPCHECK_ENABLED` | OFF | Runs cppcheck during the build |
 | `BUILD_DOC` | OFF | Doxygen target `doc_doxygen` from `docs/doxygen/Doxyfile.in` |
 | `COVERAGE_ENABLED` | OFF | Adds the `coverage` target (`cmake/coverage.cmake`), with MSVC (OpenCppCoverage) and gcc (`--coverage` on every target, and gcovr). Needs `TESTS` and `ITESTS`. Set by the `Coverage` presets |
@@ -526,14 +528,15 @@ compatible with Python 3.8. Any command line error shows the full help.
 python scripts/dev.py help
 python scripts/dev.py test [--config Release] [--fresh]     :: configure, build and run the tests
 python scripts/dev.py build [--config Release] [--fresh]    :: configure and build
-python scripts/dev.py asan                                  :: tests with AddressSanitizer
+python scripts/dev.py asan                                  :: tests with the sanitizers
 python scripts/dev.py coverage                              :: coverage, with a summary
 python scripts/dev.py msbuild [--config Debug]              :: CoffeeShop.vcxproj; both by default
 python scripts/dev.py all                                   :: everything the CI runs on this system
 ```
 
-On Linux, `asan` and `msbuild` stop with a message (issue #29; MSBuild is Windows only), and
-`all` runs the tests and the coverage.
+`asan` runs AddressSanitizer on Windows, and AddressSanitizer and UndefinedBehaviorSanitizer on
+Linux. `msbuild` only exists on Windows; on Linux it stops with a message. `all` runs the tests, the
+sanitizers and the coverage on both systems, and MSBuild on Windows.
 
 `.github/workflows/ci.yml` calls those commands, with the setup in
 `.github/actions/setup-windows` and `.github/actions/setup-linux`:
@@ -541,18 +544,18 @@ On Linux, `asan` and `msbuild` stop with a message (issue #29; MSBuild is Window
 | Job | Runner | Commands | Time |
 |---|---|---|---|
 | Tests and coverage (Debug, clang-tidy) | `windows-2022` | `dev.py test`, `dev.py coverage` | 6 to 11 min |
-| Tests with AddressSanitizer | `windows-2022` | `dev.py asan` | 2 to 4 min |
+| Tests with AddressSanitizer | `windows-2022` | `dev.py asan` | 2 to 7 min |
 | Visual Studio project (MSBuild) | `windows-2022` | `dev.py msbuild` | 3.5 to 4.5 min |
-| Linux tests and coverage (gcc, clang-tidy) | `ubuntu-24.04` (gcc 13) | `dev.py test`, `dev.py coverage` | 3 to 4.5 min |
+| Linux tests, sanitizers and coverage (gcc, clang-tidy) | `ubuntu-24.04` (gcc 13) | `dev.py test`, `dev.py asan`, `dev.py coverage` | 4 to 5 min |
 | pre-commit | `ubuntu-latest` | `pre-commit run --all-files` | 0.5 min |
 
 - It runs on pull requests to `develop` and `main`, and by hand from the Actions tab. A new push
   cancels the run in progress.
 - The repository is private, so the runs use the plan's monthly Actions credit, and a Windows minute
-  costs more than a Linux one. A full run takes 11 to 20 Windows minutes (with and without caches,
-  and the speed of the runner varies) and 4 to 5 Linux minutes:
+  costs more than a Linux one. A full run takes 11 to 23 Windows minutes (with and without caches,
+  and the speed of the runner varies) and 5 to 6 Linux minutes:
   - a change that only touches Markdown files runs nothing;
-  - a **draft** pull request runs only the Linux jobs (4 to 5 minutes). Run `python scripts/dev.py all`
+  - a **draft** pull request runs only the Linux jobs (5 to 6 minutes). Run `python scripts/dev.py all`
     locally, and mark it "Ready for review" at the end: that starts the Windows jobs, and every
     later push repeats them.
 - The caches (Conan, ccache, pre-commit) are saved per pull request: a new pull request starts
@@ -560,8 +563,9 @@ On Linux, `asan` and `msbuild` stop with a message (issue #29; MSBuild is Window
   every merge, which costs more than the first run of each pull request saves.
 - Both systems measure the coverage: it appears in the summary of each job, as "Coverage (Windows)"
   and "Coverage (Linux)", and the HTML reports stay as artifacts for 14 days
-  (`coverage-report-windows`, `coverage-report-linux`). On Linux it is a second build, instrumented and
-  without clang-tidy: about 45 s.
+  (`coverage-report-windows`, `coverage-report-linux`).
+- On Linux, the sanitizers and the coverage are builds of their own, without clang-tidy: about 50 s
+  and 45 s.
 - ConanCenter has no GoogleTest binary for VS 2022 under Conan 1, so the CI builds it once and keeps
   it in the Conan cache. clang-tidy can't be cached, and it takes most of the tests job.
 - Dependabot opens one grouped pull request a month to `develop` for the actions.

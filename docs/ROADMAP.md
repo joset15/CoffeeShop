@@ -47,7 +47,6 @@ flowchart LR
 
 ### Linux
 
-- Sanitizers: ASan and UBSan with gcc.
 - MemorySanitizer is not planned: everything would have to be instrumented, for little value.
   ThreadSanitizer only if a frontend adds threads.
 
