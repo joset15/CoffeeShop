@@ -16,7 +16,7 @@ Documents for the [developers](./docs/README_development.md).
 | Compiler warnings (MSVC and gcc) | In use |
 | AddressSanitizer and UndefinedBehaviorSanitizer, in the tests | In use |
 | cppcheck 2.10 | Tried and discarded: nothing relevant that clang-tidy misses |
-| DeepSource | Being measured |
+| DeepSource | On trial: nothing found in the project's code so far |
 | CodeQL, SonarQube Cloud, Semgrep, OpenSSF Scorecard | To evaluate |
 
 How each one was measured, and why it was kept or discarded:

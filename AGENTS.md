@@ -527,7 +527,7 @@ doesn't. Each tool tried, kept or discarded, is described in
 | Compiler warnings | In use | `cmake/cpp_warnings.cmake` |
 | ASan, UBSan | In use, in the tests | ASan on Windows, ASan and UBSan on Linux (`dev.py asan`) |
 | cppcheck 2.10 | Discarded | Only two style suggestions that clang-tidy doesn't make; the `CPPCHECK_ENABLED` option was removed |
-| DeepSource | Being measured (#30) | `.deepsource.toml` skips the legacy files, as pre-commit does |
+| DeepSource | On trial, on every pull request | Found nothing in the project's code, only in two legacy files; kept as a second opinion until `v0.7.0` is closed. `.deepsource.toml` skips the legacy files, as pre-commit does, and its default branch (in DeepSource's settings) is `develop` |
 | CodeQL, SonarQube Cloud, Semgrep, OpenSSF Scorecard | To evaluate (#41) | |
 
 Update this table, the one in the README and the analysis together.
