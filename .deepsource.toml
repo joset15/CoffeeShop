@@ -1,4 +1,22 @@
 version = 1
 
+# The legacy files outside the CMake build, the same that pre-commit skips (its global "exclude").
+exclude_patterns = [
+  ".qmake.stash",
+  "CoffeeShop.pro",
+  "CoffeeShopQt.vcxproj",
+  "CoffeeShopQt.vcxproj.filters",
+  "mainQt.cpp",
+  "mainwindow.cpp",
+  "mainwindow.h",
+  "mainwindow.ui",
+  "ui_mainwindow.h",
+  "tests/CoffeeShop_gtest.vcxproj",
+  "tests/packages.config",
+  "tests/pch.cpp",
+  "tests/pch.h",
+  "tests/test.cpp",
+]
+
 [[analyzers]]
 name = "cxx"

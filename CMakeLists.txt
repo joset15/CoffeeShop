@@ -17,7 +17,6 @@ option(BUILD_DOC "Build Doxygen documentation" OFF)
 option(ASAN_ENABLED "Build this target with AddressSanitizer" OFF)
 option(UBSAN_ENABLED "Build with UndefinedBehaviorSanitizer (gcc and clang)" OFF)
 option(CLANG_TIDY_ENABLED "Build this target with Static Analysis" ON) # STATIC_ANALISYS
-option(CPPCHECK_ENABLED "Run CppCheck static code analysis" OFF) # STATIC_ANALISYS
 option(COVERAGE_ENABLED "Add a 'coverage' target that measures the tests' code coverage" OFF)
 
 if(BUILD_USING_PCH AND CLANG_TIDY_ENABLED)
@@ -101,10 +100,6 @@ add_compile_options(${PROJECT_WARNING_FLAGS})
 # Static analysis
 # clang-tidy can't be combined with precompiled headers (BUILD_USING_PCH).
 include(clang_tidy) # Finds clang-tidy (LLVM_TOOLS_DIR) and checks its version.
-
-if(CPPCHECK_ENABLED)
-  set(CMAKE_CXX_CPPCHECK "cppcheck") # v3.10
-endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") # MATCHES
   message(STATUS "Setting MSVC flags")

@@ -198,7 +198,6 @@ CMake options (top-level `CMakeLists.txt`):
 | `BUILD_USING_PCH` | OFF | Precompiled headers. Can't be combined with `CLANG_TIDY_ENABLED` (configure stops with an error) |
 | `ASAN_ENABLED` | OFF | AddressSanitizer (with LeakSanitizer on Linux). **MSVC:** `/fsanitize=address` in Debug. GoogleTest comes from Conan without ASan, so it also defines `_DISABLE_VECTOR_ANNOTATION` and `_DISABLE_STRING_ANNOTATION`: without them, the tests stop with a false `container-overflow`. That check is lost; the others still run. The executables need the ASan DLL, which the x64 developer environment has on `PATH`. **gcc:** `-fsanitize=address` on every target, with `-fno-omit-frame-pointer`; no macros are needed, because libstdc++ doesn't annotate its containers by default |
 | `UBSAN_ENABLED` | OFF | UndefinedBehaviorSanitizer, gcc and clang only (MSVC has none: it warns and ignores it). `-fsanitize=undefined` with `-fno-sanitize-recover=all`: by default UBSan only prints the error, and the test still passes. The `Linux GCC Debug Sanitizers` test preset sets `UBSAN_OPTIONS=print_stacktrace=1` |
-| `CPPCHECK_ENABLED` | OFF | Runs cppcheck during the build |
 | `BUILD_DOC` | OFF | Doxygen target `doc_doxygen` from `docs/doxygen/Doxyfile.in` |
 | `COVERAGE_ENABLED` | OFF | Adds the `coverage` target (`cmake/coverage.cmake`), with MSVC (OpenCppCoverage) and gcc (`--coverage` on every target, and gcovr). Needs `TESTS` and `ITESTS`. Set by the `Coverage` presets |
 
