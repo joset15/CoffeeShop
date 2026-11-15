@@ -515,6 +515,23 @@ pre-commit run --all-files
   format v9 rejects `"$comment"` (it needs v10, CMake 3.31), except under `environment`, where any
   name is valid because it defines a variable.
 
+## Static analysis and quality tools
+
+clang-tidy is the reference: a new tool stays only if it finds something relevant that clang-tidy
+doesn't. Each tool tried, kept or discarded, is described in
+[`docs/analysis/quality-tools.md`](docs/analysis/quality-tools.md), with how it was measured.
+
+| Tool | Status | Why |
+|---|---|---|
+| clang-tidy 23 | In use, on every build | About 490 checks; findings break the build (see "Code style") |
+| Compiler warnings | In use | `cmake/cpp_warnings.cmake` |
+| ASan, UBSan | In use, in the tests | ASan on Windows, ASan and UBSan on Linux (`dev.py asan`) |
+| cppcheck 2.10 | Discarded | Only two style suggestions that clang-tidy doesn't make; the `CPPCHECK_ENABLED` option was removed |
+| DeepSource | Being measured (#30) | `.deepsource.toml` skips the legacy files, as pre-commit does |
+| CodeQL, SonarQube Cloud, Semgrep, OpenSSF Scorecard | To evaluate (#41) | |
+
+Update this table, the one in the README and the analysis together.
+
 ## Scripts and CI
 
 `scripts/dev.py` runs the usual tasks, locally and in the CI, on Windows and Linux. On Windows it
@@ -591,7 +608,7 @@ Each piece of information lives in one place:
 |---|---|
 | GitHub milestones and issues | One milestone per version and one issue per planned PR, with its scope and status |
 | `docs/ROADMAP.md` | Goals, order of the versions, dependencies, design decisions and unscheduled ideas |
-| `docs/analysis/` | Notes on options that are not decided: links, pros and cons, open questions |
+| `docs/analysis/` | Notes on options: links, pros and cons, open questions, and the tools tried with why each one was kept or discarded |
 | `docs/adr/` | When it is needed: one file per important decision, with its reasons |
 | `CHANGELOG.md` and git | What is done |
 
