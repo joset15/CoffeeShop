@@ -96,6 +96,10 @@ add_custom_target(
     ${OPENCPPCOVERAGE_EXECUTABLE} ${COVERAGE_OPTIONS} --input_coverage ${COVERAGE_DIR}/UnitTests.cov
     --export_type html:${COVERAGE_DIR}/html --export_type cobertura:${COVERAGE_DIR}/cobertura.xml --
     $<TARGET_FILE:IntegrationTests>
+  # Paths relative to the repository, as gcovr writes them (Codecov needs them).
+  COMMAND
+    ${CMAKE_COMMAND} -DREPORT=${COVERAGE_DIR}/cobertura.xml -DROOT=${PROJECT_SOURCE_DIR} -P
+    ${PROJECT_SOURCE_DIR}/cmake/normalize_cobertura.cmake
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
   COMMENT "Measuring test coverage (report: ${COVERAGE_DIR}/html/index.html)"
   VERBATIM
