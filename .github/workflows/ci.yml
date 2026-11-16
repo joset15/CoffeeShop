@@ -40,6 +40,16 @@ jobs:
         run: python scripts/dev.py test
       - name: Coverage
         run: python scripts/dev.py coverage
+      # A Codecov failure doesn't fail the job: the coverage is also in the job summary.
+      - name: Upload the coverage to Codecov
+        uses: codecov/codecov-action@v7
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: build/Windows x64 Debug/coverage/cobertura.xml
+          flags: windows
+          name: windows
+          disable_search: true
+          fail_ci_if_error: false
       - name: Upload the coverage report
         if: always()
         uses: actions/upload-artifact@v7
@@ -94,6 +104,16 @@ jobs:
       # Another build, with --coverage and without clang-tidy (the "Linux GCC Coverage" preset).
       - name: Coverage
         run: python scripts/dev.py coverage
+      # A Codecov failure doesn't fail the job: the coverage is also in the job summary.
+      - name: Upload the coverage to Codecov
+        uses: codecov/codecov-action@v7
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: build/Linux GCC Coverage/coverage/cobertura.xml
+          flags: linux
+          name: linux
+          disable_search: true
+          fail_ci_if_error: false
       - name: Upload the coverage report
         if: always()
         uses: actions/upload-artifact@v7
