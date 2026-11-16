@@ -75,6 +75,9 @@ flowchart LR
 - The first targets are the `ConsoleMenu` parsing (no crash on any input) and the director's rules
   (properties).
 - C++23 comes after Linux so that every feature is checked on MSVC and gcc.
+- With C++23, `OrderRepository::describeOrders()` and its test double (`FakeOrderRepository`) can
+  build the vector with `std::views::transform` and `std::ranges::to` instead of a raw loop: cppcheck
+  suggested it (`useStlAlgorithm`), and with C++20's `std::ranges::transform` it isn't clearer.
 
 ### Frontends
 

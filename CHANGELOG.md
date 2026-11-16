@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- MIT license.
+
+### Removed
+
+- Option `CPPCHECK_ENABLED`: it had never run, and measured against clang-tidy, cppcheck 2.10 only
+  suggested two `std::transform` loops.
+
 ## [0.6.0] - 2026-11-13
 
 ### Added

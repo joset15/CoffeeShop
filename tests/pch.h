@@ -10,6 +10,7 @@
 #include <gtest/gtest.h>
 
 #include <algorithm>
+#include <cstdio>
 #include <deque>
 #include <fstream>
 #include <iostream>
@@ -17,7 +18,6 @@
 #include <map>
 #include <memory>
 #include <set>
-#include <stdio.h>
 #include <string>
 #include <vector>
 
