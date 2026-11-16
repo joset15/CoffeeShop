@@ -347,6 +347,13 @@ cmake --workflow --preset "Linux GCC Coverage"       :: on Linux
 - A file that no test executable links (today only `Gateways/OrderDiskDataSource.cpp`, not
   implemented yet) is **missing** from the Windows report and at **0%** in the Linux one. A higher
   Windows total doesn't prove that a new class is tested: check the Linux report.
+- OpenCppCoverage writes the drive as the source and each file from there, with backslashes
+  (`users\...\CoffeeShop\include\...`). `cmake/normalize_cobertura.cmake`, run by the Windows
+  `coverage` target, rewrites `cobertura.xml` with paths relative to the repository and `/`, as gcovr
+  writes them; Codecov needs them to match the files. It stops with an error if a file isn't under
+  `include/` or `src/` afterwards (e.g. a different letter case in the path).
+- **Codecov** receives both reports from the CI (see "Scripts and CI") and shows them in the README
+  badges, one per system.
 
 ## Code style
 
@@ -529,6 +536,7 @@ doesn't. Each tool tried, kept or discarded, is described in
 | cppcheck 2.10 | Discarded | Only two style suggestions that clang-tidy doesn't make; the `CPPCHECK_ENABLED` option was removed |
 | DeepSource | On trial, on every pull request | Found nothing in the project's code, only in two legacy files; kept as a second opinion until `v0.7.0` is closed. `.deepsource.toml` skips the legacy files, as pre-commit does, and its default branch (in DeepSource's settings) is `develop` |
 | CodeQL, SonarQube Cloud, Semgrep, OpenSSF Scorecard | To evaluate (#41) | |
+| Codecov | In use | The coverage of both systems, uploaded by the CI (see "Scripts and CI") |
 
 Update this table, the one in the README and the analysis together.
 
@@ -565,21 +573,42 @@ sanitizers and the coverage on both systems, and MSBuild on Windows.
 | Linux tests, sanitizers and coverage (gcc, clang-tidy) | `ubuntu-24.04` (gcc 13) | `dev.py test`, `dev.py asan`, `dev.py coverage` | 4 to 5 min |
 | pre-commit | `ubuntu-latest` | `pre-commit run --all-files` | 0.5 min |
 
-- It runs on pull requests to `develop` and `main`, and by hand from the Actions tab. A new push
-  cancels the run in progress.
-- The repository is private, so the runs use the plan's monthly Actions credit, and a Windows minute
-  costs more than a Linux one. A full run takes 11 to 23 Windows minutes (with and without caches,
-  and the speed of the runner varies) and 5 to 6 Linux minutes:
-  - a change that only touches Markdown files runs nothing;
-  - a **draft** pull request runs only the Linux jobs (5 to 6 minutes). Run `python scripts/dev.py all`
-    locally, and mark it "Ready for review" at the end: that starts the Windows jobs, and every
-    later push repeats them.
-- The caches (Conan, ccache, pre-commit) are saved per pull request: a new pull request starts
-  without them, and later pushes to it use them. Saving them on `develop` would need a run after
-  every merge, which costs more than the first run of each pull request saves.
+- It runs on pull requests to `develop` and `main`, on every merge into `develop`, and by hand from
+  the Actions tab. A full run takes 11 to 23 Windows minutes (with and without caches, and the speed
+  of the runner varies) and 5 to 6 Linux minutes.
+- The repository is public, so the standard runners are free. The CI still **uses its minutes
+  sparingly**, so that it doesn't wait on runners for nothing and is ready if the repository becomes
+  private again (see "CI and services" in `docs/ROADMAP.md`):
+
+  | Rule | Why |
+  |---|---|
+  | A change that only touches Markdown files runs nothing (`paths-ignore`) | Nothing to build or test |
+  | A **draft** pull request only runs the Linux jobs | While working there are many pushes; Linux answers in 2 to 5 minutes, and Windows runs once, at the end |
+  | A new push to a pull request cancels its run in progress | The old result is no longer useful |
+  | Every merge into `develop` runs everything, without cancelling | It feeds the coverage badges, and the caches that new pull requests inherit |
+
+  So run `python scripts/dev.py all` locally, and mark the pull request "Ready for review" at the
+  end: that starts the Windows jobs, and every later push repeats them.
+- The caches (Conan, ccache, pre-commit) are saved per branch. A pull request uses its own and those
+  of `develop`, which the run after each merge keeps up to date.
 - Both systems measure the coverage: it appears in the summary of each job, as "Coverage (Windows)"
   and "Coverage (Linux)", and the HTML reports stay as artifacts for 14 days
   (`coverage-report-windows`, `coverage-report-linux`).
+- **Codecov:** each job uploads its `cobertura.xml` with `codecov/codecov-action`, with its own flag
+  (`windows`, `linux`) and the `CODECOV_TOKEN` repository secret. `.github/codecov.yml` sets:
+  - `carryforward` on both flags: a draft only uploads Linux, and Windows keeps its last report;
+  - `partials_as_hits`: lines only, as the project measures. Without it, Codecov counted the lines
+    with a branch not taken as not covered (79% instead of 99.6% on Linux);
+  - informational statuses (`codecov/project`, `codecov/patch`): they never block a pull request.
+
+  The action runs with `disable_search` and `plugins: noop` (the report is ready: no gcov, Xcode or
+  coverage.py), and `fail_ci_if_error: false`: a Codecov failure doesn't fail the job, since the
+  figure is also in the job summary.
+- **Badges:** the coverage badges are shields.io's for Codecov, per flag and for the `develop`
+  branch, so that each one says its system. They round to whole numbers (99.57% shows as 100%):
+  Codecov's own badge does the same, and `precision` in `codecov.yml` didn't change either. Codecov's
+  default branch is still `main`: it only lists branches that have received an upload, so the
+  badges name `develop` explicitly.
 - On Linux, the sanitizers and the coverage are builds of their own, without clang-tidy: about 50 s
   and 45 s.
 - ConanCenter has no GoogleTest binary for VS 2022 under Conan 1, so the CI builds it once and keeps

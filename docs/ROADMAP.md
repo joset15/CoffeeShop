@@ -54,19 +54,18 @@ flowchart LR
 
 - It comes after Linux so that the coverage badge and the developer documentation cover both
   platforms from the start.
-- Decide first whether the repository becomes public, because that decides which services are free
-  and whether their badges work. Then choose them.
-- Measure DeepSource against the project's clang-tidy checks before keeping it, and do the same with
-  any other analyzer: keep it only if it finds what clang-tidy doesn't.
+- The repository became public, with the MIT license, so that the services, their badges and the CI
+  are free (#30).
+- Every analyzer is measured against clang-tidy before keeping it: it stays only if it finds what
+  clang-tidy doesn't. The results are in `docs/analysis/quality-tools.md`; CodeQL, SonarQube Cloud,
+  Semgrep and OpenSSF Scorecard are evaluated in #41.
 - Badges show real data from the CI or a service. Don't add badges with fixed values.
 - Developer documentation: review the README and `docs/README_development.md`, and try `BUILD_DOC`
   (Doxygen).
-- Publish the Doxygen site from the CI, on GitHub Pages: the owner's plan offers it for this private
-  repository. Check first whether the site would be visible to everyone. CodeDocs is the alternative
-  if the repository becomes public.
-- Measure the documentation coverage with Coverxygen on the public API, and show it as a badge. A
-  badge from a Gist and shields.io also works in a private repository, for this and for the test
-  coverage, but the Gist's figures are public.
+- Publish the Doxygen site from the CI, on GitHub Pages (free for public repositories). CodeDocs is
+  the alternative.
+- Measure the documentation coverage with Coverxygen on the public API, and show it as a badge (for
+  example from a Gist and shields.io, as Codecov doesn't measure documentation).
 
 ### Fuzzing and C++23
 
@@ -87,9 +86,19 @@ flowchart LR
 
 ### CI and services
 
-- The repository stays private for now, so the runs use the plan's monthly Actions credit, and a
-  Windows minute costs more than a Linux one: think of the cost before adding jobs.
-- Codecov is parked until `v0.7.0`: for now, the coverage is shown in the job summary.
+- The CI uses its minutes sparingly although the repository is public and its standard runners are
+  free: Markdown-only changes run nothing, drafts only run Linux, and a new push cancels the old run
+  (see "Scripts and CI" in `AGENTS.md`). It keeps the CI quick, and ready if the repository becomes
+  private again. **Review this policy** if the CI grows or the way of working changes: for example,
+  running everything on drafts too.
+- If the repository becomes **private** again, each minute uses the plan's monthly credit, and a
+  Windows minute costs more than a Linux one. Then:
+  1. keep the rules above, which already save minutes;
+  2. review the run after each merge into `develop`: a full run per merge, about $0.20 at November
+     2026 prices. Without it, the coverage badges stop updating and new pull requests start without
+     caches;
+  3. check the services: Codecov and the shields.io badges need a token or stop showing, and CodeQL
+     and SonarQube Cloud (#41) stop being free.
 
 ## Ideas
 

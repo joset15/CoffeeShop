@@ -21,6 +21,7 @@ Documents for the [developers](./docs/README_development.md).
 | AddressSanitizer and UndefinedBehaviorSanitizer, in the tests | In use |
 | cppcheck 2.10 | Tried and discarded: nothing relevant that clang-tidy misses |
 | DeepSource | On trial: nothing found in the project's code so far |
+| Codecov | In use: the coverage of both systems, in the badges above |
 | CodeQL, SonarQube Cloud, Semgrep, OpenSSF Scorecard | To evaluate |
 
 How each one was measured, and why it was kept or discarded:

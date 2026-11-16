@@ -9,7 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- MIT license.
+- MIT license. The repository is public.
+- Codecov: the CI uploads the coverage of both systems, each with its own flag.
+- README badges: coverage per system, last release and license. The CI badge shows `develop`.
+- The CI also runs after every merge into `develop`, for the coverage badges and the caches.
+
+### Changed
+
+- The Windows coverage report (`cobertura.xml`) has paths relative to the repository, as on Linux.
 
 ### Removed
 
