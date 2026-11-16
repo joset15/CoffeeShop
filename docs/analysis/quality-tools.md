@@ -19,6 +19,7 @@ relevant that clang-tidy doesn't.
 | SonarQube Cloud | External service | To evaluate (#41) | |
 | Semgrep (Community) | Pattern-based rules | To evaluate (#41) | |
 | OpenSSF Scorecard | Repository security practices | To evaluate (#41) | |
+| Codecov | Coverage service, with badges | In use (2026-11) | Both systems' reports, one flag each; see "Scripts and CI" in `AGENTS.md` |
 
 ## cppcheck 2.10
 
