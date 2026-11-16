@@ -22,3 +22,10 @@ coverage:
 
 comment:
   layout: "condensed_header, diff, flags, condensed_files"
+
+parsers:
+  cobertura:
+    # Lines only, as the project measures (see AGENTS.md): gcovr's report also has the branches of
+    # each line, and Codecov would count a line with a branch not taken as not covered (79% instead
+    # of 99.6% on Linux).
+    partials_as_hits: true

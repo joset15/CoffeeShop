@@ -49,6 +49,7 @@ jobs:
           flags: windows
           name: windows
           disable_search: true
+          plugins: noop # the report is ready: no gcov, Xcode or coverage.py
           fail_ci_if_error: false
       - name: Upload the coverage report
         if: always()
@@ -113,6 +114,7 @@ jobs:
           flags: linux
           name: linux
           disable_search: true
+          plugins: noop # the report is ready: no gcov, Xcode or coverage.py
           fail_ci_if_error: false
       - name: Upload the coverage report
         if: always()
