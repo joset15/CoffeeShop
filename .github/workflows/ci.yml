@@ -1,11 +1,10 @@
 # Checks pull requests to develop and main with the same commands as on a developer's machine
-# (scripts/dev.py, see AGENTS.md). It can also be run by hand from the Actions tab.
+# (scripts/dev.py, see AGENTS.md), and develop after each merge, so that the coverage badges and the
+# caches have its figures. It can also be run by hand from the Actions tab.
 #
-# The repository is private, so the runs use the plan's monthly Actions credit, and a Windows minute
-# costs more than a Linux one:
-# - a change that only touches Markdown files runs nothing;
-# - a draft pull request only runs the Linux jobs (the Windows jobs start with "Ready for review");
-# - a new push to the same pull request cancels the run that is still going.
+# - A change that only touches Markdown files runs nothing.
+# - A draft pull request only runs the Linux jobs (the Windows jobs start with "Ready for review").
+# - A new push to the same pull request cancels the run that is still going.
 name: CI
 
 on:
@@ -14,11 +13,15 @@ on:
     # The default types, plus ready_for_review: from draft to ready.
     types: [opened, synchronize, reopened, ready_for_review]
     paths-ignore: ["**.md"]
+  push:
+    branches: [develop]
+    paths-ignore: ["**.md"]
   workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  # On develop every merge keeps its run, so that each one uploads its coverage.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read

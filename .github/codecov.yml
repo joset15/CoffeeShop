@@ -10,6 +10,9 @@ flags:
     carryforward: true
 
 coverage:
+  # One decimal, rounded down: 99.57% shows as 99.5%, not as 100%.
+  precision: 1
+  round: down
   status:
     # Informational: the coverage shows in the pull request, but doesn't block it. The figure
     # shouldn't drop (see "Testing > Coverage" in AGENTS.md).

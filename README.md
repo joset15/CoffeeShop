@@ -1,4 +1,8 @@
-﻿[![CI](https://github.com/joset15/CoffeeShop/actions/workflows/ci.yml/badge.svg)](https://github.com/joset15/CoffeeShop/actions/workflows/ci.yml)
+﻿[![CI](https://github.com/joset15/CoffeeShop/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/joset15/CoffeeShop/actions/workflows/ci.yml?query=branch%3Adevelop)
+[![Coverage Windows](https://img.shields.io/codecov/c/github/joset15/CoffeeShop/develop?flag=windows&label=coverage%20windows&logo=codecov)](https://app.codecov.io/gh/joset15/CoffeeShop/tree/develop?flags%5B0%5D=windows)
+[![Coverage Linux](https://img.shields.io/codecov/c/github/joset15/CoffeeShop/develop?flag=linux&label=coverage%20linux&logo=codecov)](https://app.codecov.io/gh/joset15/CoffeeShop/tree/develop?flags%5B0%5D=linux)
+[![Release](https://img.shields.io/github/v/release/joset15/CoffeeShop)](https://github.com/joset15/CoffeeShop/releases/latest)
+[![License: MIT](https://img.shields.io/github/license/joset15/CoffeeShop)](./LICENSE)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 
 # CoffeeShop
