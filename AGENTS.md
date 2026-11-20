@@ -227,6 +227,10 @@ msbuild CoffeeShop.vcxproj /t:Rebuild /p:Configuration=Release /p:Platform=x64  
     configuration;
   - clang-tidy (Debug only, `EnableClangTidyCodeAnalysis`) reads `.clang-tidy`: don't add a
     `ClangTidyChecks` list;
+  - Debug also runs MSVC's own analyzer (`RunCodeAnalysis`, `/analyze` with
+    `NativeRecommendedRules`, external headers left out). MSBuild passes `/analyze:quiet`, but a
+    finding is still reported as a warning, which `dev.py msbuild` (`/warnaserror`) turns into an
+    error. It finds nothing today (see `docs/analysis/quality-tools.md`);
   - only the `Debug|x64` and `Release|x64` configurations (CMake builds x64 only).
 - Why it matters: from `9595fd9` (Dec 2023) the project had no `stdcpp17` and did not compile at
   all. With `v142` it ran Visual Studio 2019's clang-tidy (LLVM 12) with its own list of checks,
@@ -376,7 +380,9 @@ cmake --workflow --preset "Linux GCC Coverage"       :: on Linux
   a comment that says why (`-Weffc++`, `-Wswitch-default`, `-Wmultiple-inheritance`,
   `-Wsuggest-final-*`). Warnings don't break the CMake build (clang-tidy findings do), but a PR
   shouldn't add any: check both systems.
-  Project choices: interfaces may declare only `virtual ~X() = default;` (`AllowSoleDefaultDtor`);
+  Project choices: a function's cognitive complexity can't go over 15
+  (`readability-function-cognitive-complexity`, stricter than its default of 25; the highest today
+  is 6); interfaces may declare only `virtual ~X() = default;` (`AllowSoleDefaultDtor`);
   `tests/.clang-tidy` inherits everything but allows non-private members, `protected` in
   GoogleTest fixtures and public in test helpers and table rows. It disables the rule under both
   of its names: `cppcoreguidelines-non-private-member-variables-in-classes` and
@@ -539,7 +545,10 @@ if it finds something relevant there. Each tool tried, kept or discarded, is des
 | CodeQL | In use: GitHub's default setup, Extended suite | No alerts in C++ or Python; found two unpinned third-party actions in the workflows. Covers future JavaScript too |
 | Semgrep (Community) | Discarded for now | No C++ rules in its free edition; review it with the first frontend that has JavaScript |
 | SonarQube Cloud | On trial, automatic analysis | Nothing in C++ or Python; found how the workflows install tools with pip (exact versions, wheels only). Compare with DeepSource when `v0.7.0` is closed |
-| OpenSSF Scorecard | To evaluate (#41) | |
+| OpenSSF Scorecard | In use, `.github/workflows/scorecard.yml` | Scores the repository's practices; it asked to pin every action by SHA and for a security policy (`SECURITY.md`) |
+| MSVC Code Analysis, native rules | In use, in the Visual Studio project | Nothing found; it already ran in Debug (`RunCodeAnalysis`), and a finding fails the MSBuild job (see "Visual Studio project") |
+| MSVC C++ Core Check | Discarded | 397 warnings, none a real bug: GoogleTest's macros, `noexcept` suggestions and GSL rules |
+| Lizard 1.26.1 | Discarded | Low complexity (cyclomatic at most 10); clang-tidy's cognitive complexity is enforced instead, with a threshold of 15 |
 | Dependency graph, Dependabot alerts | In use | Sees the workflows' actions and the legacy `tests/packages.config`, not Conan; more useful with JavaScript dependencies |
 | Codecov | In use | The coverage of both systems, uploaded by the CI (see "Scripts and CI") |
 
@@ -624,6 +633,10 @@ sanitizers and the coverage on both systems, and MSBuild on Windows.
   published as source, so pip builds it; that finding is accepted until the migration to Conan 2.
   Dependabot doesn't update these versions: update them by hand, as clang-tidy's.
 - Dependabot opens one grouped pull request a month to `develop` for the actions.
+- `.github/workflows/scorecard.yml` runs OpenSSF Scorecard on every push to `develop`, on pull
+  requests and weekly (see "Static analysis and quality tools"). CodeQL and SonarQube Cloud run on
+  GitHub's and SonarQube Cloud's side, without files in the repository.
+- Every action, also GitHub's own, is pinned by commit SHA with its version in a comment.
 
 ## Git / PR guidelines
 
@@ -638,6 +651,8 @@ sanitizers and the coverage on both systems, and MSBuild on Windows.
   (`conan.lock`, `conaninfo.txt`, `graph_info.json`, ...), or `CMakeUserPresets.json`. All of these are gitignored.
 - Untracked scratch files at the root (`CMakePresets_01.json`, `CMakeSettings_OK.json`,
   `ClassDiagram.cd`, `req.txt`, ...) belong to the owner. Leave them alone.
+- Security reports come through GitHub's private vulnerability reporting (`SECURITY.md`), never as
+  public issues.
 
 ### Planning
 

@@ -42,3 +42,6 @@ CheckOptions:
   - { key: cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor, value: true }
   # pch.h is only used by the precompiled-header build (BUILD_USING_PCH), not for its symbols.
   - { key: misc-include-cleaner.IgnoreHeaders, value: 'pch\.h' }
+  # Stricter than the default (25): no function goes over 15 today. See
+  # docs/analysis/quality-tools.md ("Lizard").
+  - { key: readability-function-cognitive-complexity.Threshold, value: 15 }

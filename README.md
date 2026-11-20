@@ -30,10 +30,17 @@ Documents for the [developers](./docs/README_development.md).
 | Dependency graph and Dependabot alerts | In use: the workflows' actions (GitHub doesn't read Conan's files) |
 | Semgrep (Community) | Discarded for now: no C++ rules; to review with the JavaScript frontends |
 | SonarQube Cloud (automatic analysis) | On trial: nothing in C++ or Python; findings in the workflows, fixed |
-| OpenSSF Scorecard | To evaluate |
+| OpenSSF Scorecard | In use: the repository's security practices, in the badge above |
+| MSVC Code Analysis (native rules, in the Visual Studio project) | In use: nothing found so far |
+| MSVC C++ Core Check | Tried and discarded: no real bug, mostly noise from GoogleTest's macros |
+| Lizard | Tried and discarded: low complexity; clang-tidy limits it instead |
 
 How each one was measured, and why it was kept or discarded:
 [docs/analysis/quality-tools.md](./docs/analysis/quality-tools.md).
+
+## Security
+
+To report a vulnerability, see [SECURITY.md](./SECURITY.md).
 
 ## License
 

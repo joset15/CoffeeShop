@@ -125,6 +125,9 @@ Not planned yet. An idea gets an issue and a milestone when it is scheduled.
   it can't be combined with clang-tidy. Add a preset without clang-tidy and with precompiled headers
   (as `Windows x64 Debug ASan` is without clang-tidy), with a precompiled header for the tests that
   includes `<gtest/gtest.h>` (they reuse `include/pch.h`, which doesn't). Measure the gain first.
+- Review the `noexcept` suggestions of MSVC's C++ Core Check (25 functions, rule F.6): `noexcept`
+  is a promise for the future, so only where a function must never throw (see
+  `docs/analysis/quality-tools.md`).
 - Mark the leaf classes `final` (concrete builders, ingredient decorators) to say that they aren't
   meant to be derived from. gcc's `-Wsuggest-final-*` points at some of them, but it was left out
   because it also points at classes that have subclasses.

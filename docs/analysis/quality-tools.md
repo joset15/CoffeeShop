@@ -23,7 +23,10 @@ The reference depends on the code:
 | CodeQL | Security, GitHub code scanning (default setup, Extended) | **In use** (2026-11) | Nothing in C++ or Python; two real findings in the workflows; it will also cover JavaScript |
 | SonarQube Cloud | External service, automatic analysis | **On trial** (2026-11) | Nothing in C++ or Python; four findings in the workflows that CodeQL missed. Compare with DeepSource when `v0.7.0` is closed |
 | Semgrep (Community) | Pattern-based rules | **Discarded for now** (2026-11) | No C++ rules in the Community edition; review it with the first frontend that has JavaScript |
-| OpenSSF Scorecard | Repository security practices | To evaluate (#41) | |
+| OpenSSF Scorecard | Repository security practices, a workflow | **In use** (2026-11) | Pinned dependencies and a security policy fixed; see its section |
+| MSVC Code Analysis, native rules | Static analysis, in the Visual Studio project | **In use** (it already ran, silently) | Nothing found; a finding fails the MSBuild job |
+| MSVC C++ Core Check | Static analysis (C++ Core Guidelines) | **Discarded** (2026-11) | Noise from GoogleTest's macros, `noexcept` suggestions and GSL rules; no real bug |
+| Lizard 1.26.1 | Complexity metrics | **Discarded** (2026-11) | Low complexity; clang-tidy's cognitive complexity is enforced instead (threshold 15) |
 | Dependency graph and Dependabot alerts | Known vulnerabilities in the dependencies GitHub can read | **In use** (2026-11) | Today it only sees the actions; more useful with JavaScript dependencies |
 | Codecov | Coverage service, with badges | In use (2026-11) | Both systems' reports, one flag each; see "Scripts and CI" in `AGENTS.md` |
 
@@ -178,3 +181,81 @@ plays the same role and found nothing that SonarQube Cloud doesn't.
   found.
 - **Cost:** none in the CI (it runs on SonarQube Cloud's side), and one more check on every pull
   request. It also covers JavaScript and HTML, for the frontends.
+
+## OpenSSF Scorecard
+
+**In use**, with `.github/workflows/scorecard.yml`. It scores the repository's security practices,
+not the code.
+
+- **Integration:** `ossf/scorecard-action` on every push to `develop`, on pull requests (an
+  experimental trigger: it analyzes but doesn't publish) and every Monday. The results go to the
+  Security tab (as CodeQL's) and to an artifact; from `develop` they are also published, for its
+  public API and badge (https://scorecard.dev/viewer/?uri=github.com/joset15/CoffeeShop).
+  Publishing has rules: no workflow-level write permissions, an Ubuntu runner and only a few
+  allowed actions. The workflow has `contents: read` at its level, not `read-all`, as SonarQube
+  Cloud asked (`githubactions:S8234`).
+- **How it was measured:** its first analysis, on this pull request.
+
+  | Check | Before | After | What was done |
+  |---|---|---|---|
+  | Pinned-Dependencies | 5/10 | 8/10 | Every action pinned by commit SHA, with its version in a comment (Dependabot updates them). What is left: `pip install` without hashes, accepted: the versions are exact and come from wheels only |
+  | Security-Policy | 0/10 | Fixed | `SECURITY.md`, with GitHub's private vulnerability reporting (enabled in the repository's settings) |
+  | SAST | 0/10 | | It looks at merged pull requests: it grows with CodeQL on the next ones |
+  | Fuzzing | 0/10 | | Planned for `v0.8.0` |
+  | Binary-Artifacts, Dangerous-Workflow, Dependency-Update-Tool, License, Packaging, Token-Permissions, Vulnerabilities | No findings | | |
+
+  The checks that need the published results (e.g. branch protection, code review, maintained) show
+  up after the first run on `develop`.
+- **Cost:** a job of about 20 seconds on Linux. The actions it uses are pinned by SHA.
+
+## MSVC Code Analysis (`/analyze`)
+
+The analyzer of Visual Studio's compiler, with two kinds of rules. Measured on 2026-11-20 in build
+folders of their own, with clang-tidy and ccache off, leaving out external headers
+(`/analyze:external-`, `/external:anglebrackets`).
+
+| Rules | Findings | Decision |
+|---|---|---|
+| Native (`NativeRecommendedRules`, `C6xxx`: null pointers, buffer overruns, uninitialized memory...) | 0 | **In use**, in the Visual Studio project |
+| C++ Core Check (`CppCoreCheckRules`, `C26xxx`) | 397, none a real bug | **Discarded** |
+
+- **The native rules already ran** in the Visual Studio project: its Debug configuration has
+  `RunCodeAnalysis`, which compiles with `/analyze` and `NativeRecommendedRules`. MSBuild passes
+  `/analyze:quiet`, so nothing showed in the console, but a finding is reported as a warning, and
+  `dev.py msbuild` builds with `/warnaserror`: a deliberate null pointer dereference (`C6011`) in
+  `src/` made the MSBuild job fail. It analyzes the app's 25 files, without the tests; no extra cost.
+  It may find more in the future than today, with more complex or Windows-specific code: it is a
+  different engine from clang-tidy's `clang-analyzer-*`.
+- **C++ Core Check** found 397 warnings: 367 in the tests, from GoogleTest's macros (globals that
+  `TEST` creates, `new` inside them, a hidden `operator=`, `switch`es without `default`); and 30 in
+  the project's code: 25 "can be declared `noexcept`" (F.6) and one default constructor; 2 arithmetic
+  overflows in `ConsoleMenu.cpp` that are false positives (the number is checked to be at least 1);
+  and 2 that ask for `gsl::narrow` (the project doesn't use the GSL). The `noexcept` suggestions are
+  noted as an idea in the roadmap.
+- **Cost:** a clean build took 25 s without analysis, 51 s with the native rules and 49 s with Core
+  Check.
+- **Pitfall when measuring it again:** `/analyze` writes its warnings as `file(line) : warning`, with
+  a space before the colon. A pattern for `file(line): warning` found none, which looked like a
+  clean result; a deliberate defect showed the mistake.
+
+## Lizard 1.26.1
+
+**Discarded:** the code's complexity is low, and clang-tidy already enforces a limit.
+
+- **Integration:** a Python tool (`pip install lizard`); a pre-commit hook or a GitHub Action would
+  have to come from third parties.
+- **How it was measured:** `lizard -l cpp include src apps tests` on Windows, 209 functions.
+
+  | Metric | Result |
+  |---|---|
+  | Default thresholds (cyclomatic complexity 15, length, parameters) | None exceeded |
+  | Cyclomatic complexity | 178 functions with 1; the highest is 10 (`TeaBuilder::addMilk`) |
+  | Longest function | 38 lines (`run`, in `main.cpp`) |
+  | Most parameters | 4 |
+
+  The three `addMilk` are the "most complex" because Lizard counts each `case`, and their `switch`es
+  list every value of the enum (see "Code style" in `AGENTS.md`). Cognitive complexity counts a
+  `switch` once.
+- **Instead:** clang-tidy's `readability-function-cognitive-complexity`, which breaks the build,
+  went from its default threshold (25) to **15** in `.clang-tidy`. The highest today is 6 (`run`, in
+  `main.cpp`). SonarQube Cloud also shows the complexity of each function.
