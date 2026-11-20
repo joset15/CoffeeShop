@@ -170,7 +170,7 @@ plays the same role and found nothing that SonarQube Cloud doesn't.
   |---|---|---|---|
   | `githubactions:S7637` (2) | `ci.yml`, the two uses of `codecov/codecov-action@v7` | Use the full commit SHA | The same as CodeQL's two alerts; fixed by pinning the SHA |
   | `githubactions:S8544` (2) | `setup-linux/action.yml` and the pre-commit job in `ci.yml` | `pip install` without exact versions (`cmake>=3.30,<4`, `ninja`, `pre-commit`) | Exact versions: `cmake==3.31.10`, `ninja==1.13.2`, `pre-commit==4.7.0` |
-  | `githubactions:S8541` (2) | The same two lines | Without `--only-binary :all:`, pip may run a package's setup scripts | `--only-binary :all:` for every tool, **except Conan 1**: it is only published as source (1.61.0 and 1.66.0, the last 1.x, have no wheel), so pip builds it. Accepted in SonarQube Cloud until the migration to Conan 2, which publishes wheels |
+  | `githubactions:S8541` (2) | The same two lines | Without `--only-binary :all:`, pip may run a package's setup scripts | `--only-binary :all:` for every tool, **except Conan 1**: it is only published as source (1.61.0 and 1.66.0, the last 1.x, have no wheel), so pip builds it, and also two of its dependencies (`patch-ng`, `pluginbase`). Accepted in SonarQube Cloud until the migration to Conan 2, which publishes wheels. As it was a new line, the pull request's quality gate ("Sonar way") failed until it was accepted |
 
   The Windows setup wasn't reported: its `pip install`s already use exact versions.
 - **Compared with the other tools:** in C++ it agrees with clang-tidy. In the workflows it found
