@@ -5,6 +5,10 @@
 [![License: MIT](https://img.shields.io/github/license/joset15/CoffeeShop)](./LICENSE)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 
+[![CodeQL](https://github.com/joset15/CoffeeShop/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/joset15/CoffeeShop/actions/workflows/github-code-scanning/codeql)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=joset15_CoffeeShop&metric=alert_status)](https://sonarcloud.io/summary/overall?id=joset15_CoffeeShop)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/joset15/CoffeeShop/badge)](https://scorecard.dev/viewer/?uri=github.com/joset15/CoffeeShop)
+
 # CoffeeShop
 Management of drink orders.
 

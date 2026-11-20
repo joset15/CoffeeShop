@@ -5,6 +5,8 @@
 # - A change that only touches Markdown files runs nothing.
 # - A draft pull request only runs the Linux jobs (the Windows jobs start with "Ready for review").
 # - A new push to the same pull request cancels the run that is still going.
+# - Every action is pinned by commit SHA, with its version in a comment (OpenSSF Scorecard,
+#   CodeQL): a moved tag can't change what runs. Dependabot updates them.
 name: CI
 
 on:
@@ -33,7 +35,7 @@ jobs:
     runs-on: windows-2022
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-windows
         with:
           llvm: "true"
@@ -43,8 +45,7 @@ jobs:
         run: python scripts/dev.py test
       - name: Coverage
         run: python scripts/dev.py coverage
-      # A Codecov failure doesn't fail the job: the coverage is also in the job summary. A third-party
-      # action is pinned by commit SHA (CodeQL: actions/unpinned-tag); Dependabot updates it.
+      # A Codecov failure doesn't fail the job: the coverage is also in the job summary.
       - name: Upload the coverage to Codecov
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
@@ -57,7 +58,7 @@ jobs:
           fail_ci_if_error: false
       - name: Upload the coverage report
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: coverage-report-windows
           path: build/Windows x64 Debug/coverage/html
@@ -70,7 +71,7 @@ jobs:
     runs-on: windows-2022
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-windows
         with:
           cache-key: asan
@@ -83,7 +84,7 @@ jobs:
     runs-on: windows-2022
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-windows
         with:
           llvm: "true"
@@ -97,7 +98,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-linux
         with:
           cache-key: linux
@@ -109,8 +110,7 @@ jobs:
       # Another build, with --coverage and without clang-tidy (the "Linux GCC Coverage" preset).
       - name: Coverage
         run: python scripts/dev.py coverage
-      # A Codecov failure doesn't fail the job: the coverage is also in the job summary. A third-party
-      # action is pinned by commit SHA (CodeQL: actions/unpinned-tag); Dependabot updates it.
+      # A Codecov failure doesn't fail the job: the coverage is also in the job summary.
       - name: Upload the coverage to Codecov
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
@@ -123,7 +123,7 @@ jobs:
           fail_ci_if_error: false
       - name: Upload the coverage report
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: coverage-report-linux
           path: build/Linux GCC Coverage/coverage/html
@@ -136,11 +136,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12"
-      - uses: actions/cache@v6
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.cache/pre-commit
           key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
