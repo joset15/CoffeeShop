@@ -43,9 +43,10 @@ jobs:
         run: python scripts/dev.py test
       - name: Coverage
         run: python scripts/dev.py coverage
-      # A Codecov failure doesn't fail the job: the coverage is also in the job summary.
+      # A Codecov failure doesn't fail the job: the coverage is also in the job summary. A third-party
+      # action is pinned by commit SHA (CodeQL: actions/unpinned-tag); Dependabot updates it.
       - name: Upload the coverage to Codecov
-        uses: codecov/codecov-action@v7
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: build/Windows x64 Debug/coverage/cobertura.xml
@@ -108,9 +109,10 @@ jobs:
       # Another build, with --coverage and without clang-tidy (the "Linux GCC Coverage" preset).
       - name: Coverage
         run: python scripts/dev.py coverage
-      # A Codecov failure doesn't fail the job: the coverage is also in the job summary.
+      # A Codecov failure doesn't fail the job: the coverage is also in the job summary. A third-party
+      # action is pinned by commit SHA (CodeQL: actions/unpinned-tag); Dependabot updates it.
       - name: Upload the coverage to Codecov
-        uses: codecov/codecov-action@v7
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: build/Linux GCC Coverage/coverage/cobertura.xml

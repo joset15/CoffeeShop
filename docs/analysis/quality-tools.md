@@ -4,9 +4,14 @@ Every static analysis or quality tool that was tried on the project, with how it
 integrated, what it costs, what it found compared with clang-tidy, and the decision. A tool that is
 discarded stays here, so it isn't tried again without a reason.
 
-The reference is clang-tidy (LLVM 23, about 490 checks, see "Code style" in `AGENTS.md`), which
-runs on every build and breaks it on any finding. A new tool stays only if it finds something
-relevant that clang-tidy doesn't.
+The reference depends on the code:
+
+- **C++:** clang-tidy (LLVM 23, about 490 checks, see "Code style" in `AGENTS.md`), which runs on
+  every build and breaks it on any finding. A new tool stays only if it finds something relevant
+  that clang-tidy doesn't.
+- **Everything else** (Python in `scripts/`, the GitHub Actions workflows, and later the JavaScript
+  and HTML of the Qt and Sciter frontends): clang-tidy doesn't analyze it, so a tool stays if it
+  finds something relevant there.
 
 | Tool | Kind | Status | Decision |
 |---|---|---|---|
@@ -15,10 +20,11 @@ relevant that clang-tidy doesn't.
 | AddressSanitizer, UndefinedBehaviorSanitizer | Dynamic analysis, in the tests | In use | ASan on Windows, ASan and UBSan on Linux |
 | cppcheck 2.10 | Static analysis | **Discarded** (2026-11) | Nothing relevant that clang-tidy misses |
 | DeepSource | External service, on every pull request | **On trial** (2026-11) | Nothing in the project's code; review it when `v0.7.0` is closed |
-| CodeQL | Security, GitHub code scanning | To evaluate (#41) | |
+| CodeQL | Security, GitHub code scanning (default setup, Extended) | **In use** (2026-11) | Nothing in C++ or Python; two real findings in the workflows; it will also cover JavaScript |
 | SonarQube Cloud | External service | To evaluate (#41) | |
-| Semgrep (Community) | Pattern-based rules | To evaluate (#41) | |
+| Semgrep (Community) | Pattern-based rules | **Discarded for now** (2026-11) | No C++ rules in the Community edition; review it with the first frontend that has JavaScript |
 | OpenSSF Scorecard | Repository security practices | To evaluate (#41) | |
+| Dependency graph and Dependabot alerts | Known vulnerabilities in the dependencies GitHub can read | **In use** (2026-11) | Today it only sees the actions; more useful with JavaScript dependencies |
 | Codecov | Coverage service, with badges | In use (2026-11) | Both systems' reports, one flag each; see "Scripts and CI" in `AGENTS.md` |
 
 ## cppcheck 2.10
@@ -69,3 +75,74 @@ Review it when the `v0.7.0` milestone is closed.
   remove the repository from the app's access (GitHub > Settings > Applications > Installed GitHub
   Apps > DeepSource > Configure), which is what stops the analysis of every pull request; and update
   the tables here, in `AGENTS.md` and in the README.
+
+## Semgrep (Community Edition) 1.185.0
+
+**Discarded for now:** it has no rules for C++ in its free edition. **Review it when the first
+frontend with JavaScript arrives** (QML's JavaScript with Qt, or Sciter's HTML and JavaScript), where
+its community rules are many.
+
+- **Integration:** a local tool (`pipx install semgrep`) or a CI job; no account needed for
+  `semgrep scan`. The registry rulesets are downloaded at each run.
+- **How it was measured:** on Debian 12, `semgrep scan --metrics=off --config <ruleset>` over
+  `include/`, `src/`, `apps/` and `tests/`.
+
+  | Ruleset | Rules that ran | Files | Findings |
+  |---|---|---|---|
+  | `p/c` | 2 C rules, only on `include/pch.h` | 1 | 0 |
+  | `p/cpp` | Doesn't exist (HTTP 404 from the registry) | | |
+  | `p/default` (1074 rules) | 47 "multilang" (generic patterns, e.g. secrets) and 5 C rules on `pch.h` | 89 | 0 |
+  | `p/security-audit` (225 rules) | 2 "multilang" and 9 C rules on `pch.h` | 89 | 0 |
+
+  No rule for C++ ran on the `.cpp` and `.hpp` files: its C/C++ support, "generally available" in
+  its documentation, refers to the Pro rules, which need an account. Its default `.semgrepignore`
+  also skips `tests/` (61 files).
+- **Not tried:** the extra free registry rules that `semgrep login` offers, with an account.
+
+## CodeQL (GitHub code scanning)
+
+**In use**, with GitHub's default setup and the **Extended** query suite.
+
+- **Integration:** enabled in the repository's settings (Settings > Code security > CodeQL
+  analysis > Default); no file in the repository. It analyzes `develop` and every pull request, and
+  shows its alerts in the Security tab and on the pull request. It detects the languages by itself:
+  C/C++, Python and GitHub Actions today, JavaScript when a frontend adds it.
+- **C/C++ without a build:** the default setup uses `build-mode: none`, which doesn't analyze
+  generated code and can be less precise than a build. A build would need an advanced setup (a
+  workflow of its own); not worth it while it finds nothing in C++.
+- **How it was measured:** CodeQL 2.27.4 on `develop`, with both query suites.
+
+  | Language | Default | Extended |
+  |---|---|---|
+  | C/C++ | 58 rules, 0 alerts | 95 rules, 0 alerts |
+  | Python (`scripts/dev.py`) | 43 rules, 0 alerts | 50 rules, 0 alerts |
+  | GitHub Actions | 17 rules, 0 alerts | 23 rules, **2 alerts** |
+
+  The two alerts were `actions/unpinned-tag` (medium): `codecov/codecov-action@v7`, a third-party
+  action used by a mutable tag in a job that has the `CODECOV_TOKEN` secret. Fixed by pinning it by
+  commit SHA, with the version in a comment; Dependabot keeps updating it. GitHub's own actions
+  (`actions/*`) are published immutable, so it doesn't report them.
+- **Cost:** its runs are GitHub Actions jobs that GitHub manages, free for public repositories
+  (with a private repository it needs GitHub Code Security, which is paid). No maintenance.
+- **Decision:** kept. In C++ it agrees with clang-tidy, but it analyzes what clang-tidy can't: the
+  Python script, the workflows (where it found something real), and the future JavaScript.
+
+## Dependency graph and Dependabot alerts
+
+**In use**, enabled in the repository's settings (Settings > Code security): no file in the
+repository. Dependabot alerts were already on; the dependency graph was enabled on 2026-11-20.
+
+- **What it sees** (no open alerts when enabled):
+
+  | Dependency | From |
+  |---|---|
+  | `actions/checkout`, `actions/cache`, `actions/setup-python`, `actions/upload-artifact`, `codecov/codecov-action` | The workflows. Codecov's version is read from the comment next to its SHA |
+  | `Microsoft.googletest...` 1.8.1.4 (NuGet) | `tests/packages.config`, of the legacy Visual Studio test project, outside the build |
+
+- **What it doesn't see:** GoogleTest 1.14.0 from Conan, which the build uses (GitHub doesn't read
+  `conanfile.txt`), and the tools that the CI installs with `pip` inside the workflows (no
+  dependency file). So an alert about GoogleTest 1.8.1 would be about a legacy file; it goes away
+  when the Qt frontend replaces the legacy files (`v0.9.0`).
+- **Decision:** kept, as it costs nothing. Today it adds little next to Dependabot's monthly updates
+  of the actions; it will matter with the frontends' JavaScript dependencies (`package.json`). The
+  automatic security updates (a pull request per alert) are left off until then.

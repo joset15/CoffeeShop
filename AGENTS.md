@@ -524,8 +524,9 @@ pre-commit run --all-files
 
 ## Static analysis and quality tools
 
-clang-tidy is the reference: a new tool stays only if it finds something relevant that clang-tidy
-doesn't. Each tool tried, kept or discarded, is described in
+For C++, clang-tidy is the reference: a new tool stays only if it finds something relevant that
+clang-tidy doesn't. For the rest (Python, the workflows, and later JavaScript and HTML), a tool stays
+if it finds something relevant there. Each tool tried, kept or discarded, is described in
 [`docs/analysis/quality-tools.md`](docs/analysis/quality-tools.md), with how it was measured.
 
 | Tool | Status | Why |
@@ -535,7 +536,10 @@ doesn't. Each tool tried, kept or discarded, is described in
 | ASan, UBSan | In use, in the tests | ASan on Windows, ASan and UBSan on Linux (`dev.py asan`) |
 | cppcheck 2.10 | Discarded | Only two style suggestions that clang-tidy doesn't make; the `CPPCHECK_ENABLED` option was removed |
 | DeepSource | On trial, on every pull request | Found nothing in the project's code, only in two legacy files; kept as a second opinion until `v0.7.0` is closed. `.deepsource.toml` skips the legacy files, as pre-commit does, and its default branch (in DeepSource's settings) is `develop` |
-| CodeQL, SonarQube Cloud, Semgrep, OpenSSF Scorecard | To evaluate (#41) | |
+| CodeQL | In use: GitHub's default setup, Extended suite | No alerts in C++ or Python; found two unpinned third-party actions in the workflows. Covers future JavaScript too |
+| Semgrep (Community) | Discarded for now | No C++ rules in its free edition; review it with the first frontend that has JavaScript |
+| SonarQube Cloud, OpenSSF Scorecard | To evaluate (#41) | |
+| Dependency graph, Dependabot alerts | In use | Sees the workflows' actions and the legacy `tests/packages.config`, not Conan; more useful with JavaScript dependencies |
 | Codecov | In use | The coverage of both systems, uploaded by the CI (see "Scripts and CI") |
 
 Update this table, the one in the README and the analysis together.

@@ -83,6 +83,9 @@ flowchart LR
 - Each frontend is a new CMake app under `apps/`, with its UI in Infrastructure and its presenters
   in InterfaceAdapters. The legacy Qt files are replaced, not patched.
 - Choose between Qt Widgets and QML when planning `v0.9.0`.
+- With the first frontend that has JavaScript (QML, or Sciter's HTML and JavaScript), review the
+  analyzers for it: Semgrep was discarded for C++ but has many JavaScript rules, CodeQL already
+  covers it, and `qmllint` (from Qt) checks the `.qml` files (see `docs/analysis/quality-tools.md`).
 
 ### CI and services
 

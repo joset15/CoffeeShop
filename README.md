@@ -22,7 +22,10 @@ Documents for the [developers](./docs/README_development.md).
 | cppcheck 2.10 | Tried and discarded: nothing relevant that clang-tidy misses |
 | DeepSource | On trial: nothing found in the project's code so far |
 | Codecov | In use: the coverage of both systems, in the badges above |
-| CodeQL, SonarQube Cloud, Semgrep, OpenSSF Scorecard | To evaluate |
+| CodeQL (GitHub code scanning, default setup with the Extended suite) | In use: C++, Python and the GitHub Actions workflows |
+| Dependency graph and Dependabot alerts | In use: the workflows' actions (GitHub doesn't read Conan's files) |
+| Semgrep (Community) | Discarded for now: no C++ rules; to review with the JavaScript frontends |
+| SonarQube Cloud, OpenSSF Scorecard | To evaluate |
 
 How each one was measured, and why it was kept or discarded:
 [docs/analysis/quality-tools.md](./docs/analysis/quality-tools.md).
