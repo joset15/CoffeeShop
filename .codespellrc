@@ -1,0 +1,13 @@
+# codespell's settings, read by the pre-commit hook and by codespell run by hand from the root.
+# See "Lint / pre-commit" in AGENTS.md.
+[codespell]
+# Check the words inside names too: split them at "_" and at capital letters
+# (STATIC_ANALYSIS -> STATIC, ANALYSIS; getDescription -> get, Description).
+regex = [A-Z]{2,}(?![a-z])|[A-Z]?[a-z]+(?:'[a-z]+)?
+# Text the split would break into false findings: TeX, LaTeX, BibTeX ("Te").
+ignore-regex = [A-Za-z]*TeX
+# The StarUML model (generated, with ids that look like words), and the list of valid words.
+skip = *.mdj,.codespell-ignore-words.txt
+# Valid words that codespell reports: one per line, in lower case unless only that exact case is
+# valid. The file has no comments. It is empty today.
+ignore-words = .codespell-ignore-words.txt
