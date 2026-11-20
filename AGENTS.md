@@ -538,7 +538,8 @@ if it finds something relevant there. Each tool tried, kept or discarded, is des
 | DeepSource | On trial, on every pull request | Found nothing in the project's code, only in two legacy files; kept as a second opinion until `v0.7.0` is closed. `.deepsource.toml` skips the legacy files, as pre-commit does, and its default branch (in DeepSource's settings) is `develop` |
 | CodeQL | In use: GitHub's default setup, Extended suite | No alerts in C++ or Python; found two unpinned third-party actions in the workflows. Covers future JavaScript too |
 | Semgrep (Community) | Discarded for now | No C++ rules in its free edition; review it with the first frontend that has JavaScript |
-| SonarQube Cloud, OpenSSF Scorecard | To evaluate (#41) | |
+| SonarQube Cloud | On trial, automatic analysis | Nothing in C++ or Python; found how the workflows install tools with pip (exact versions, wheels only). Compare with DeepSource when `v0.7.0` is closed |
+| OpenSSF Scorecard | To evaluate (#41) | |
 | Dependency graph, Dependabot alerts | In use | Sees the workflows' actions and the legacy `tests/packages.config`, not Conan; more useful with JavaScript dependencies |
 | Codecov | In use | The coverage of both systems, uploaded by the CI (see "Scripts and CI") |
 
@@ -617,6 +618,11 @@ sanitizers and the coverage on both systems, and MSBuild on Windows.
   and 45 s.
 - ConanCenter has no GoogleTest binary for VS 2022 under Conan 1, so the CI builds it once and keeps
   it in the Conan cache. clang-tidy can't be cached, and it takes most of the tests job.
+- The tools the CI installs with pip have **exact versions**, and come from wheels only
+  (`--only-binary :all:`), so that a new release can't change the CI and no package runs its own
+  setup scripts (SonarQube Cloud's `S8544` and `S8541`). Conan 1 is the exception: it is only
+  published as source, so pip builds it; that finding is accepted until the migration to Conan 2.
+  Dependabot doesn't update these versions: update them by hand, as clang-tidy's.
 - Dependabot opens one grouped pull request a month to `develop` for the actions.
 
 ## Git / PR guidelines

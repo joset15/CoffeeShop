@@ -21,7 +21,7 @@ The reference depends on the code:
 | cppcheck 2.10 | Static analysis | **Discarded** (2026-11) | Nothing relevant that clang-tidy misses |
 | DeepSource | External service, on every pull request | **On trial** (2026-11) | Nothing in the project's code; review it when `v0.7.0` is closed |
 | CodeQL | Security, GitHub code scanning (default setup, Extended) | **In use** (2026-11) | Nothing in C++ or Python; two real findings in the workflows; it will also cover JavaScript |
-| SonarQube Cloud | External service | To evaluate (#41) | |
+| SonarQube Cloud | External service, automatic analysis | **On trial** (2026-11) | Nothing in C++ or Python; four findings in the workflows that CodeQL missed. Compare with DeepSource when `v0.7.0` is closed |
 | Semgrep (Community) | Pattern-based rules | **Discarded for now** (2026-11) | No C++ rules in the Community edition; review it with the first frontend that has JavaScript |
 | OpenSSF Scorecard | Repository security practices | To evaluate (#41) | |
 | Dependency graph and Dependabot alerts | Known vulnerabilities in the dependencies GitHub can read | **In use** (2026-11) | Today it only sees the actions; more useful with JavaScript dependencies |
@@ -146,3 +146,35 @@ repository. Dependabot alerts were already on; the dependency graph was enabled 
 - **Decision:** kept, as it costs nothing. Today it adds little next to Dependabot's monthly updates
   of the actions; it will matter with the frontends' JavaScript dependencies (`package.json`). The
   automatic security updates (a pull request per alert) are left off until then.
+
+## SonarQube Cloud
+
+**On trial:** kept until the `v0.7.0` milestone is closed, and then compared with DeepSource, which
+plays the same role and found nothing that SonarQube Cloud doesn't.
+
+- **Integration:** the organization `joset15` on sonarcloud.io, with the free plan for open source,
+  and the project `joset15_CoffeeShop` with **automatic analysis**: no file, secret or CI job in the
+  repository. It analyzes `develop` and every pull request, which it decorates. Its results are
+  public (https://sonarcloud.io/project/overview?id=joset15_CoffeeShop) and can be read through its
+  API. Automatic analysis doesn't take coverage (Codecov has it) and can't be combined with a
+  CI-based analysis.
+- **How it was measured:** the first analysis of `develop`, 4051 lines (C++ 3529, C 89 for the
+  `.h` files, YAML 218, Python 211, XML 4).
+
+  | Code | Findings |
+  |---|---|
+  | C++, C and Python | None: no bugs, code smells, vulnerabilities or security hotspots, and 0% duplication |
+  | GitHub Actions workflows | 6 "major" vulnerabilities (security rating C) |
+
+  | Rule | Where | Finding | What was done |
+  |---|---|---|---|
+  | `githubactions:S7637` (2) | `ci.yml`, the two uses of `codecov/codecov-action@v7` | Use the full commit SHA | The same as CodeQL's two alerts; fixed by pinning the SHA |
+  | `githubactions:S8544` (2) | `setup-linux/action.yml` and the pre-commit job in `ci.yml` | `pip install` without exact versions (`cmake>=3.30,<4`, `ninja`, `pre-commit`) | Exact versions: `cmake==3.31.10`, `ninja==1.13.2`, `pre-commit==4.7.0` |
+  | `githubactions:S8541` (2) | The same two lines | Without `--only-binary :all:`, pip may run a package's setup scripts | `--only-binary :all:` for every tool, **except Conan 1**: it is only published as source (1.61.0 and 1.66.0, the last 1.x, have no wheel), so pip builds it. Accepted in SonarQube Cloud until the migration to Conan 2, which publishes wheels |
+
+  The Windows setup wasn't reported: its `pip install`s already use exact versions.
+- **Compared with the other tools:** in C++ it agrees with clang-tidy. In the workflows it found
+  four things that CodeQL didn't (how the tools are installed with pip), next to the two they both
+  found.
+- **Cost:** none in the CI (it runs on SonarQube Cloud's side), and one more check on every pull
+  request. It also covers JavaScript and HTML, for the frontends.

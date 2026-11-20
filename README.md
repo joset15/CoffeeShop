@@ -25,7 +25,8 @@ Documents for the [developers](./docs/README_development.md).
 | CodeQL (GitHub code scanning, default setup with the Extended suite) | In use: C++, Python and the GitHub Actions workflows |
 | Dependency graph and Dependabot alerts | In use: the workflows' actions (GitHub doesn't read Conan's files) |
 | Semgrep (Community) | Discarded for now: no C++ rules; to review with the JavaScript frontends |
-| SonarQube Cloud, OpenSSF Scorecard | To evaluate |
+| SonarQube Cloud (automatic analysis) | On trial: nothing in C++ or Python; findings in the workflows, fixed |
+| OpenSSF Scorecard | To evaluate |
 
 How each one was measured, and why it was kept or discarded:
 [docs/analysis/quality-tools.md](./docs/analysis/quality-tools.md).
