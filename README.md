@@ -5,6 +5,10 @@
 [![License: MIT](https://img.shields.io/github/license/joset15/CoffeeShop)](./LICENSE)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 
+[![CodeQL](https://github.com/joset15/CoffeeShop/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/joset15/CoffeeShop/actions/workflows/github-code-scanning/codeql)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=joset15_CoffeeShop&metric=alert_status)](https://sonarcloud.io/summary/overall?id=joset15_CoffeeShop)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/joset15/CoffeeShop/badge)](https://scorecard.dev/viewer/?uri=github.com/joset15/CoffeeShop)
+
 # CoffeeShop
 Management of drink orders.
 
@@ -22,10 +26,21 @@ Documents for the [developers](./docs/README_development.md).
 | cppcheck 2.10 | Tried and discarded: nothing relevant that clang-tidy misses |
 | DeepSource | On trial: nothing found in the project's code so far |
 | Codecov | In use: the coverage of both systems, in the badges above |
-| CodeQL, SonarQube Cloud, Semgrep, OpenSSF Scorecard | To evaluate |
+| CodeQL (GitHub code scanning, default setup with the Extended suite) | In use: C++, Python and the GitHub Actions workflows |
+| Dependency graph and Dependabot alerts | In use: the workflows' actions (GitHub doesn't read Conan's files) |
+| Semgrep (Community) | Discarded for now: no C++ rules; to review with the JavaScript frontends |
+| SonarQube Cloud (automatic analysis) | On trial: nothing in C++ or Python; findings in the workflows, fixed |
+| OpenSSF Scorecard | In use: the repository's security practices, in the badge above |
+| MSVC Code Analysis (native rules, in the Visual Studio project) | In use: nothing found so far |
+| MSVC C++ Core Check | Tried and discarded: no real bug, mostly noise from GoogleTest's macros |
+| Lizard | Tried and discarded: low complexity; clang-tidy limits it instead |
 
 How each one was measured, and why it was kept or discarded:
 [docs/analysis/quality-tools.md](./docs/analysis/quality-tools.md).
+
+## Security
+
+To report a vulnerability, see [SECURITY.md](./SECURITY.md).
 
 ## License
 

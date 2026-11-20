@@ -13,10 +13,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Codecov: the CI uploads the coverage of both systems, each with its own flag.
 - README badges: coverage per system, last release and license. The CI badge shows `develop`.
 - The CI also runs after every merge into `develop`, for the coverage badges and the caches.
+- Quality and security tools: CodeQL (GitHub code scanning), SonarQube Cloud, OpenSSF Scorecard (a
+  workflow), and the dependency graph with Dependabot alerts. Their badges in the README.
+- `SECURITY.md`: how to report a vulnerability privately.
+- `docs/analysis/quality-tools.md`: every tool tried, how it was measured and why it was kept or
+  discarded.
 
 ### Changed
 
 - The Windows coverage report (`cobertura.xml`) has paths relative to the repository, as on Linux.
+- Every GitHub action is pinned by commit SHA. The tools the CI installs with pip have exact
+  versions, and come from wheels only (except Conan 1, only published as source).
+- clang-tidy's cognitive complexity threshold is 15 (it was the default, 25).
 
 ### Removed
 

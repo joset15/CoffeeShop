@@ -10,22 +10,26 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/setup-python@v7
+    - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
       with:
         # Conan 1.61 is older than Python 3.12, so the CI stays on 3.11.
         python-version: "3.11"
 
-    # The same versions as on the developers' machines (see AGENTS.md, "Setup"). CMake stays on
-    # 3.x, as on Windows: the runner may bring CMake 4.
+    # The same versions as on the developers' machines (see AGENTS.md, "Setup"), exact so that a new
+    # release can't change the CI by itself (SonarQube Cloud: githubactions:S8544). CMake stays on
+    # 3.x, as on Windows: the runner may bring CMake 4. Dependabot doesn't update these versions.
+    # Wheels only, so that no package runs its own setup scripts (S8541), except Conan 1: it is only
+    # published as source. That finding is accepted until the migration to Conan 2, which has wheels.
     - name: Install Conan 1, CMake, Ninja and gcovr
       shell: bash
       run: |
-        python -m pip install --disable-pip-version-check "conan==1.61.0" "cmake>=3.30,<4" ninja \
-          "gcovr==8.8"
+        python -m pip install --disable-pip-version-check --only-binary :all: "cmake==3.31.10" \
+          "ninja==1.13.2" "gcovr==8.8"
+        python -m pip install --disable-pip-version-check "conan==1.61.0"
         conan profile new default --detect --force
 
     - name: Cache the Conan packages (GoogleTest)
-      uses: actions/cache@v6
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: ~/.conan/data
         key: conan-${{ runner.os }}-${{ hashFiles('conanfile.txt') }}
@@ -46,7 +50,7 @@ runs:
         echo "CCACHE_DIR=$RUNNER_TEMP/ccache" >> "$GITHUB_ENV"
 
     - name: Cache the compiled objects (ccache)
-      uses: actions/cache@v6
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: ${{ runner.temp }}/ccache
         key: ccache-${{ inputs.cache-key }}-${{ github.sha }}

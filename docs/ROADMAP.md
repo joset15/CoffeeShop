@@ -83,6 +83,9 @@ flowchart LR
 - Each frontend is a new CMake app under `apps/`, with its UI in Infrastructure and its presenters
   in InterfaceAdapters. The legacy Qt files are replaced, not patched.
 - Choose between Qt Widgets and QML when planning `v0.9.0`.
+- With the first frontend that has JavaScript (QML, or Sciter's HTML and JavaScript), review the
+  analyzers for it: Semgrep was discarded for C++ but has many JavaScript rules, CodeQL already
+  covers it, and `qmllint` (from Qt) checks the `.qml` files (see `docs/analysis/quality-tools.md`).
 
 ### CI and services
 
@@ -107,8 +110,9 @@ Not planned yet. An idea gets an issue and a milestone when it is scheduled.
 - More UIs and platforms, see [the analysis](analysis/ui-and-platforms.md): a text-based UI, a UI for
   IoT and low-power devices, macOS and Android.
 - A workflow that publishes the GitHub Release when a tag is pushed.
-- Migrate to Conan 2, which also allows GoogleTest 1.16 or later. Postponed because the owner still
-  uses Conan 1 in other projects.
+- Migrate to Conan 2, which also allows GoogleTest 1.16 or later, and is published as a wheel: the
+  CI could then install every tool with `--only-binary :all:` (SonarQube Cloud's `S8541`, accepted
+  for Conan 1). Postponed because the owner still uses Conan 1 in other projects.
 - `std::span<const Ingredient>` instead of `const std::vector<Ingredient> &` in the signatures that
   take ingredients.
 - `static_assert` that the `ConsoleMenu` tables cover every value of their enum.
@@ -121,6 +125,9 @@ Not planned yet. An idea gets an issue and a milestone when it is scheduled.
   it can't be combined with clang-tidy. Add a preset without clang-tidy and with precompiled headers
   (as `Windows x64 Debug ASan` is without clang-tidy), with a precompiled header for the tests that
   includes `<gtest/gtest.h>` (they reuse `include/pch.h`, which doesn't). Measure the gain first.
+- Review the `noexcept` suggestions of MSVC's C++ Core Check (25 functions, rule F.6): `noexcept`
+  is a promise for the future, so only where a function must never throw (see
+  `docs/analysis/quality-tools.md`).
 - Mark the leaf classes `final` (concrete builders, ingredient decorators) to say that they aren't
   meant to be derived from. gcc's `-Wsuggest-final-*` points at some of them, but it was left out
   because it also points at classes that have subclasses.
