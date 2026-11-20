@@ -17,7 +17,9 @@ on:
   schedule:
     - cron: "17 6 * * 1" # Mondays, as some checks depend on time (e.g. the maintenance activity)
 
-permissions: read-all
+# Only what the workflow needs; the job adds its own (SonarQube Cloud: githubactions:S8234).
+permissions:
+  contents: read
 
 jobs:
   analysis:
