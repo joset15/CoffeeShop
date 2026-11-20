@@ -16,7 +16,7 @@ option(ITESTS "Build GTest Integration Tests" ON)
 option(BUILD_DOC "Build Doxygen documentation" OFF)
 option(ASAN_ENABLED "Build this target with AddressSanitizer" OFF)
 option(UBSAN_ENABLED "Build with UndefinedBehaviorSanitizer (gcc and clang)" OFF)
-option(CLANG_TIDY_ENABLED "Build this target with Static Analysis" ON) # STATIC_ANALISYS
+option(CLANG_TIDY_ENABLED "Build this target with Static Analysis" ON)
 option(COVERAGE_ENABLED "Add a 'coverage' target that measures the tests' code coverage" OFF)
 
 if(BUILD_USING_PCH AND CLANG_TIDY_ENABLED)

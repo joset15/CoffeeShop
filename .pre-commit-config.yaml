@@ -52,6 +52,13 @@ repos:
       - id: requirements-txt-fixer # sorts entries in requirements.txt and constraints.txt and removes incorrect entries.
       - id: check-illegal-windows-names # Check for files that cannot be created on Windows.
 
+  # Spelling of comments, documentation and names. Its settings are in .codespellrc, so running
+  # codespell by hand gives the same result. v2.4 needs Python 3.9 or later (see docs/ROADMAP.md).
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+
   # The GitHub Actions workflows, composite actions and Dependabot settings, against their schemas.
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.30.0

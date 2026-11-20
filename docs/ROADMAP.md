@@ -128,6 +128,16 @@ Not planned yet. An idea gets an issue and a milestone when it is scheduled.
 - Review the `noexcept` suggestions of MSVC's C++ Core Check (25 functions, rule F.6): `noexcept`
   is a promise for the future, so only where a function must never throw (see
   `docs/analysis/quality-tools.md`).
+- Protect `develop` and `main` with a ruleset: require a pull request and the CI jobs, and block force
+  pushes and deletions. It protects the owner from mistakes and raises OpenSSF Scorecard's
+  Branch-Protection (3/10). Without required approvals: the only developer can't approve their own
+  pull requests (see `docs/analysis/quality-tools.md`).
+- Update the owner's Python, 3.8 (end of life since October 2024), to a supported version, and
+  pre-commit with it. Then the codespell hook can move to `v2.4` (it needs 3.9 or later), and the
+  local pre-commit to the CI's 4.x (it needs 3.11). `scripts/dev.py` must stay compatible with 3.8
+  until then. Check that the tools installed in that Python (Conan 1.61, ...) work in the new one.
+- Register the project at https://www.bestpractices.dev (OpenSSF Best Practices, free): a
+  self-assessment with its own badge, which Scorecard's CII-Best-Practices check looks for.
 - Mark the leaf classes `final` (concrete builders, ingredient decorators) to say that they aren't
   meant to be derived from. gcc's `-Wsuggest-final-*` points at some of them, but it was left out
   because it also points at classes that have subclasses.

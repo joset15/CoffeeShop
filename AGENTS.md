@@ -497,8 +497,26 @@ pre-commit run --all-files
   `pre-commit install`). The first run downloads the hook environments.
 - The hooks are standard hygiene checks (trailing whitespace, one final newline, YAML/JSON
   validity, `pretty-format-json --no-sort-keys`, large files, merge conflicts, mixed line endings,
-  Windows-illegal names), the schemas of the GitHub Actions files (`check-jsonschema`), cmake-lint,
-  gersemi and clang-format.
+  Windows-illegal names), the schemas of the GitHub Actions files (`check-jsonschema`), codespell,
+  cmake-lint, gersemi and clang-format.
+- **codespell** checks the spelling of every text file: comments, documentation and also names. Its
+  settings are in `.codespellrc`, which it reads from the current folder, so `codespell` run by hand
+  from the root gives the same result as the hook:
+  - `regex` splits names at `_` and at capital letters (`STATIC_ANALYSIS`, `getDescription`):
+    by default codespell takes a whole name as one word and finds nothing inside it.
+  - A valid word that it reports goes in `.codespell-ignore-words.txt`: one per line, in lower case
+    (any case is then valid) or in its exact case (only that case is), and no comments (a `#` line
+    would be one more word).
+  - A word that the split breaks into pieces that look like misspellings, e.g. "LaTeX" ("La",
+    "Te"), goes in `ignore-regex` instead: it is removed before the split. In the word list, <!-- codespell:ignore te -->
+    "LaTeX" wouldn't match anything, and "Te" would also hide a real "Te" for "The". <!-- codespell:ignore te -->
+  - Text that quotes a misspelling on purpose (e.g. in `docs/analysis/quality-tools.md`) ignores
+    it on that line only, with a comment that names it: `<!-- codespell:ignore word -->` in
+    Markdown, `# codespell:ignore word` or `// codespell:ignore word` in code. Without a word, the
+    whole line is ignored.
+  - The hook is pinned to `v2.3.0`: `v2.4` needs Python 3.9 or later, and pre-commit builds the
+    hook's environment with the Python that runs it (3.8 on the owner's machine). The CI uses a
+    newer one.
 - Several hooks (trailing whitespace, `end-of-file-fixer`, mixed line endings, gersemi,
   clang-format) **fix files in place and then report "Failed"**. Review the changes, `git add`
   them and run pre-commit again: the second run must pass without changes.
@@ -511,6 +529,8 @@ pre-commit run --all-files
     (`.editorconfig` too): the app's prompts end with a space, and its output ends without a newline.
   - clang-format only checks C/C++ files under `include/`, `src/`, `apps/` and `tests/` (by default
     the hook would also format JSON).
+  - codespell skips the StarUML model (`*.mdj`: generated, with ids that look like words) and its
+    own word list (`skip` in `.codespellrc`).
 - The clang-format hook is pinned to `v23.1.3`, the project's LLVM version, so the editor (set to
   `LLVM_TOOLS_DIR`'s clang-format) and the hook format the same way.
 - To move to another LLVM version, change it everywhere at once: the tools in a new
@@ -551,6 +571,7 @@ if it finds something relevant there. Each tool tried, kept or discarded, is des
 | Lizard 1.26.1 | Discarded | Low complexity (cyclomatic at most 10); clang-tidy's cognitive complexity is enforced instead, with a threshold of 15 |
 | Dependency graph, Dependabot alerts | In use | Sees the workflows' actions and the legacy `tests/packages.config`, not Conan; more useful with JavaScript dependencies |
 | Codecov | In use | The coverage of both systems, uploaded by the CI (see "Scripts and CI") |
+| codespell 2.3.0 | In use, a pre-commit hook | Spelling of comments, documentation and names; found one misspelling (see "Lint / pre-commit") |
 
 Update this table, the one in the README and the analysis together.
 

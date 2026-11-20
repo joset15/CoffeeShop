@@ -29,6 +29,7 @@ The reference depends on the code:
 | Lizard 1.26.1 | Complexity metrics | **Discarded** (2026-11) | Low complexity; clang-tidy's cognitive complexity is enforced instead (threshold 15) |
 | Dependency graph and Dependabot alerts | Known vulnerabilities in the dependencies GitHub can read | **In use** (2026-11) | Today it only sees the actions; more useful with JavaScript dependencies |
 | Codecov | Coverage service, with badges | In use (2026-11) | Both systems' reports, one flag each; see "Scripts and CI" in `AGENTS.md` |
+| codespell 2.3.0 | Spelling, a pre-commit hook | **In use** (2026-11) | One misspelling, inside a name; it only finds those when names are split into words; see its section |
 
 ## cppcheck 2.10
 
@@ -194,7 +195,7 @@ not the code.
   Publishing has rules: no workflow-level write permissions, an Ubuntu runner and only a few
   allowed actions. The workflow has `contents: read` at its level, not `read-all`, as SonarQube
   Cloud asked (`githubactions:S8234`).
-- **How it was measured:** its first analysis, on this pull request.
+- **How it was measured:** its first analysis, on pull request #44.
 
   | Check | Before | After | What was done |
   |---|---|---|---|
@@ -204,8 +205,28 @@ not the code.
   | Fuzzing | 0/10 | | Planned for `v0.8.0` |
   | Binary-Artifacts, Dangerous-Workflow, Dependency-Update-Tool, License, Packaging, Token-Permissions, Vulnerabilities | No findings | | |
 
-  The checks that need the published results (e.g. branch protection, code review, maintained) show
-  up after the first run on `develop`.
+- **Published score:** **7/10** after the first run on `develop` (2026-11-20). Some checks only show
+  up there:
+
+  | Check | Score | Why, and what could be done |
+  |---|---|---|
+  | Maintained, Security-Policy, Token-Permissions, Dangerous-Workflow, Dependency-Update-Tool, Binary-Artifacts, Vulnerabilities, License, CI-Tests | 10 | |
+  | Pinned-Dependencies | 8 | `pip install` without hashes, accepted (see above) |
+  | Branch-Protection | 3 | `develop` and `main` aren't fully protected. A ruleset could require a pull request and the CI jobs, and block force pushes: it also protects the owner from mistakes. An idea in the roadmap |
+  | SAST | 2 | Not every merged pull request was analyzed yet; it grows with CodeQL |
+  | Code-Review | 0 | No pull request has an approval: the only developer can't approve their own. Accepted |
+  | CII-Best-Practices | 0 | The project isn't registered at https://www.bestpractices.dev (free, a self-assessment with its own badge). An idea in the roadmap |
+  | Fuzzing | 0 | Planned for `v0.8.0` |
+  | Contributors | 0 | Counts contributors from other organizations. Doesn't apply |
+  | Packaging, Signed-Releases | No score | No workflow publishes packages; Signed-Releases says "no releases found" although there are releases (not looked into) |
+
+  Each check below 10 is an open alert in the Security tab; it closes by itself when the check
+  reaches 10.
+- **On pull requests, its check is "neutral"** ("2 configurations not found"). On `develop` it
+  uploads three categories of results (`supply-chain/local`, `supply-chain/online-scm` and
+  `supply-chain/branch-protection`); on a pull request only the first, because the others need the
+  repository's settings and the published results. GitHub then can't compare the other two with
+  `develop`. Expected: it doesn't block the pull request.
 - **Cost:** a job of about 20 seconds on Linux. The actions it uses are pinned by SHA.
 
 ## MSVC Code Analysis (`/analyze`)
@@ -259,3 +280,40 @@ folders of their own, with clang-tidy and ccache off, leaving out external heade
 - **Instead:** clang-tidy's `readability-function-cognitive-complexity`, which breaks the build,
   went from its default threshold (25) to **15** in `.clang-tidy`. The highest today is 6 (`run`, in
   `main.cpp`). SonarQube Cloud also shows the complexity of each function.
+
+## codespell 2.3.0
+
+**In use**, as a pre-commit hook (so also in the CI's pre-commit job). It checks the spelling of
+every text file against a list of common misspellings; it isn't a dictionary of valid words, so it
+doesn't report unknown names.
+
+- **Integration:** the hook from `codespell-project/codespell`, with its settings in `.codespellrc`
+  and the valid words in `.codespell-ignore-words.txt` (see "Lint / pre-commit" in `AGENTS.md`).
+  About 1.5 seconds over the repository.
+- **Version:** `v2.3.0`, not the latest `v2.4.3`: from `v2.4` it needs Python 3.9 or later, and
+  pre-commit builds the hook's environment with the Python that runs it, 3.8 on the owner's machine.
+  Updating that Python is an idea in the roadmap.
+- **How it was measured** (2026-11-20), over the 200 text files that pre-commit checks:
+
+  | Settings | Findings |
+  |---|---|
+  | Default (dictionaries `clear` and `rare`) | 2, both false: ids in the StarUML model (`docs/CoffeShop.mdj`) |
+  | Names split at `_` and capital letters (`regex`) | 1 real: `STATIC_ANALISYS`, in a comment of `CMakeLists.txt`. And 35 "Te", from "LaTeX" in `Doxyfile.in` <!-- codespell:ignore analisys,te --> |
+  | Every dictionary (`code`, `usage`, `informal`, `names`, `en-GB_to_en-US`) | None real: `deque`, `stdio`, `copyable`, `UIs` and `/Od` (MSVC's option), and British spellings (`cancelled`, also in names such as `ordersCancelled`) |
+
+  By default codespell takes a whole name as one word (`_` counts as a letter, and it doesn't split
+  `camelCase`), so it didn't find `STATIC_ANALISYS`; it does find `analisys` on its own. A probe file <!-- codespell:ignore analisys -->
+  with `STATIC_ANALISYS`, `getDescripton` and `teh` showed that the split finds all three. <!-- codespell:ignore analisys,descripton,teh -->
+- **Decisions:**
+  - Split the names, so they are checked too, and ignore "TeX", "LaTeX" and "BibTeX" with
+    `ignore-regex`. In the word list they wouldn't help: it is compared with the pieces, and
+    ignoring "Te" would also hide a real "Te" for "The". <!-- codespell:ignore te -->
+  - Skip the StarUML model and the word list itself (it would report the words in it).
+  - Keep the default dictionaries: the others found nothing real.
+  - The comment with `STATIC_ANALISYS` was removed, not fixed: it was left from an old name of the <!-- codespell:ignore analisys -->
+    option.
+  - The valid words go in a file, one per line, instead of `ignore-words-list` in `.codespellrc`:
+    easier to read and to review. It is empty today, which a file allows and the list doesn't
+    (`expected one argument`). It has no comments: codespell takes a `#` line as one more word.
+  - Text that quotes a misspelling on purpose, as this section, ignores it on that line with an
+    inline comment that names it, e.g. `<!-- codespell:ignore teh -->` in Markdown.
