@@ -34,6 +34,7 @@ Documents for the [developers](./docs/README_development.md).
 | MSVC Code Analysis (native rules, in the Visual Studio project) | In use: nothing found so far |
 | MSVC C++ Core Check | Tried and discarded: no real bug, mostly noise from GoogleTest's macros |
 | Lizard | Tried and discarded: low complexity; clang-tidy limits it instead |
+| codespell (a pre-commit hook) | In use: the spelling of comments, documentation and names |
 
 How each one was measured, and why it was kept or discarded:
 [docs/analysis/quality-tools.md](./docs/analysis/quality-tools.md).

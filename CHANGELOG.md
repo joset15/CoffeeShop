@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `SECURITY.md`: how to report a vulnerability privately.
 - `docs/analysis/quality-tools.md`: every tool tried, how it was measured and why it was kept or
   discarded.
+- codespell, as a pre-commit hook: the spelling of comments, documentation and names, also in the
+  CI. Its settings in `.codespellrc`, and valid words in `.codespell-ignore-words.txt`.
 
 ### Changed
 
