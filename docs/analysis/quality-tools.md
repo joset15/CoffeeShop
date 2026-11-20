@@ -222,6 +222,11 @@ not the code.
 
   Each check below 10 is an open alert in the Security tab; it closes by itself when the check
   reaches 10.
+- **On pull requests, its check is "neutral"** ("2 configurations not found"). On `develop` it
+  uploads three categories of results (`supply-chain/local`, `supply-chain/online-scm` and
+  `supply-chain/branch-protection`); on a pull request only the first, because the others need the
+  repository's settings and the published results. GitHub then can't compare the other two with
+  `develop`. Expected: it doesn't block the pull request.
 - **Cost:** a job of about 20 seconds on Linux. The actions it uses are pinned by SHA.
 
 ## MSVC Code Analysis (`/analyze`)
