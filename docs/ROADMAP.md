@@ -128,6 +128,12 @@ Not planned yet. An idea gets an issue and a milestone when it is scheduled.
 - Review the `noexcept` suggestions of MSVC's C++ Core Check (25 functions, rule F.6): `noexcept`
   is a promise for the future, so only where a function must never throw (see
   `docs/analysis/quality-tools.md`).
+- Protect `develop` and `main` with a ruleset: require a pull request and the CI jobs, and block force
+  pushes and deletions. It protects the owner from mistakes and raises OpenSSF Scorecard's
+  Branch-Protection (3/10). Without required approvals: the only developer can't approve their own
+  pull requests (see `docs/analysis/quality-tools.md`).
+- Register the project at https://www.bestpractices.dev (OpenSSF Best Practices, free): a
+  self-assessment with its own badge, which Scorecard's CII-Best-Practices check looks for.
 - Mark the leaf classes `final` (concrete builders, ingredient decorators) to say that they aren't
   meant to be derived from. gcc's `-Wsuggest-final-*` points at some of them, but it was left out
   because it also points at classes that have subclasses.

@@ -194,7 +194,7 @@ not the code.
   Publishing has rules: no workflow-level write permissions, an Ubuntu runner and only a few
   allowed actions. The workflow has `contents: read` at its level, not `read-all`, as SonarQube
   Cloud asked (`githubactions:S8234`).
-- **How it was measured:** its first analysis, on this pull request.
+- **How it was measured:** its first analysis, on pull request #44.
 
   | Check | Before | After | What was done |
   |---|---|---|---|
@@ -204,8 +204,23 @@ not the code.
   | Fuzzing | 0/10 | | Planned for `v0.8.0` |
   | Binary-Artifacts, Dangerous-Workflow, Dependency-Update-Tool, License, Packaging, Token-Permissions, Vulnerabilities | No findings | | |
 
-  The checks that need the published results (e.g. branch protection, code review, maintained) show
-  up after the first run on `develop`.
+- **Published score:** **7/10** after the first run on `develop` (2026-11-20). Some checks only show
+  up there:
+
+  | Check | Score | Why, and what could be done |
+  |---|---|---|
+  | Maintained, Security-Policy, Token-Permissions, Dangerous-Workflow, Dependency-Update-Tool, Binary-Artifacts, Vulnerabilities, License, CI-Tests | 10 | |
+  | Pinned-Dependencies | 8 | `pip install` without hashes, accepted (see above) |
+  | Branch-Protection | 3 | `develop` and `main` aren't fully protected. A ruleset could require a pull request and the CI jobs, and block force pushes: it also protects the owner from mistakes. An idea in the roadmap |
+  | SAST | 2 | Not every merged pull request was analyzed yet; it grows with CodeQL |
+  | Code-Review | 0 | No pull request has an approval: the only developer can't approve their own. Accepted |
+  | CII-Best-Practices | 0 | The project isn't registered at https://www.bestpractices.dev (free, a self-assessment with its own badge). An idea in the roadmap |
+  | Fuzzing | 0 | Planned for `v0.8.0` |
+  | Contributors | 0 | Counts contributors from other organizations. Doesn't apply |
+  | Packaging, Signed-Releases | No score | No workflow publishes packages; Signed-Releases says "no releases found" although there are releases (not looked into) |
+
+  Each check below 10 is an open alert in the Security tab; it closes by itself when the check
+  reaches 10.
 - **Cost:** a job of about 20 seconds on Linux. The actions it uses are pinned by SHA.
 
 ## MSVC Code Analysis (`/analyze`)
